@@ -55,9 +55,7 @@ void SayVersion() {
         << ASTU_VERSION_MAJOR << "." 
         << ASTU_VERSION_MINOR << "."
         << ASTU_VERSION_PATCH
-        << " (" << ASTU_CONFIG 
-        << ", " << SizeOfAddressSpace() << " bit" 
-        << ")"
+        << " (" << SizeOfAddressSpace() << " bit address space)" 
         << " [build: " << __DATE__ <<", " << __TIME__ << "]"
         << endl;
 }
