@@ -15,6 +15,9 @@
 // Hello World
 void SayHello();
 
+// Informational functions
+void SayVersion();
+
 // Math functions
 double ToRadians(double deg);
 double ToDegrees(double rad);

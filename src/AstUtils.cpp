@@ -11,6 +11,7 @@
 #include <iostream>
 #include <chrono>
 #include <memory>
+#include "AstUtilsConfig.h"
 #include "math/Random.h"
 #include "gfx/Image.h"
 #include "gfx/BmpCodec.h"
@@ -39,9 +40,26 @@ std::shared_ptr<Quadtree> quadTree = std::make_shared<Quadtree>(5, 5);
 std::unique_ptr<IPatternRenderer> patternRenderer = std::make_unique<AntiAlisaingPatternRenderer>();
 Turtle turtle;
 
+int SizeOfAddressSpace() {
+    return sizeof(void*) * 8;
+}
+
 void SayHello()
 {
     cout << "Hello AST World :-)" << endl;
+}
+
+void SayVersion() {
+
+    cout << "AST Utilities Version " 
+        << ASTU_VERSION_MAJOR << "." 
+        << ASTU_VERSION_MINOR << "."
+        << ASTU_VERSION_PATCH
+        << " (" << ASTU_CONFIG 
+        << ", " << SizeOfAddressSpace() << " bit" 
+        << ")"
+        << " [build: " << __DATE__ <<", " << __TIME__ << "]"
+        << endl;
 }
 
 /////////////////////////////////////////////////

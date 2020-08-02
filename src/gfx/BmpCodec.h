@@ -67,5 +67,4 @@ namespace astu {
         /** Whether the image shouled be flipped vertically. */
         bool flipVertically;
     };
-
 }
