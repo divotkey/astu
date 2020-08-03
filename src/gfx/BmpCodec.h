@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <memory>
 #include <iostream>
 
 namespace astu {
@@ -38,14 +39,14 @@ namespace astu {
          * Convenient method to write an image directly into a file.
          *
          * @param image     the image to be encoded
-         * @param filename  the file name including the file path
+         * @param filename  the filename including the file path
          */
         void Encode(const Image & image, const char * filename) const;
 
         /**
          * Returns whether images will get flipped vertically.
          * This flags defines whether the image will be flipped
-         * along the x-axis when encoded to a file.
+         * along the x-axis.
          */
         bool IsFlipVertically() const;
 
@@ -53,18 +54,53 @@ namespace astu {
          * Defines whether the image should be flipped vertically.
          * 
          * This flags defines whether the image will be flipped
-         * along the x-axis when encoded to a file.
+         * along the x-axis.
          * 
          * The default value of thie flag is set to `true`, which
          * is the common configuration for BMP files.
          * 
          * @param flip  set to `true` if images should be flipped
-         * @return reference to this encoder for method chaining
          */            
-        BmpEncoder & SetFlipVertically(bool flip);
+        void SetFlipVertically(bool flip);
 
     private:
         /** Whether the image shouled be flipped vertically. */
         bool flipVertically;
     };
+
+    /**
+     * Decodes BMP files to images.
+     */
+    class BmpDecoder {
+    public:
+
+        /**
+         * Constructor.
+         */
+        BmpDecoder();
+
+        /**
+         * Decodes an BMP file from an input stream.
+         * This method will not close the given input stream.
+         *
+         * @param is    the input stream
+         * @return the newly created image containing the BMP data
+         * @throws std::runtime_error in case of i/o problem or if the
+         *      input stream does not contain a valid BMP file
+         */
+        std::unique_ptr<Image> Decode(std::istream& is) const;
+
+        /**
+         * Convenient method to read an image directly from a file.
+         *
+         * @param filename  the filename including the file path
+         * @return the newly created image containing the BMP data
+         * @throws std::runtime_error in case of i/o problem or if the
+         *      input file does not contain a valid BMP file
+         */
+        std::unique_ptr<Image> Decode(const char * filename) const;
+
+    private:
+    };
+
 }

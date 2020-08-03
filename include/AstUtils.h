@@ -36,6 +36,7 @@ void SetClearColor(int r, int g, int b);
 void DrawCircle(double x, double y, double r);
 void DrawLine(double x0, double y0, double x1, double y1, double w = 1);
 void WriteImage(const char* filename);
+void ReadImage(const char* filename);
 
 // Turtle Graphics
 void TurtlePenUp(); 

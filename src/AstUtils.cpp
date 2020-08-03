@@ -141,6 +141,13 @@ void SetPixel(int x, int y)
     image->SetPixel(x, y, drawColor);
 }
 
+void ReadImage(const char* filename)
+{
+    BmpDecoder decoder;
+
+    image = decoder.Decode(filename);
+}
+
 void WriteImage(const char* filename)
 {
     ValidateImage();
@@ -164,11 +171,12 @@ void WriteImage(const char* filename)
     //     //     unionPattern.Add(box);
     //     // }
     // }
-    // cout << "building quadtree.." << endl;
-    quadTree->BuildTree();
 
-    // cout << "rendering pattern.." << endl;
-    patternRenderer->Render(*rootPattern, *image);
+    if (!quadTree->IsEmpty()) {
+        quadTree->BuildTree();
+        patternRenderer->Render(*rootPattern, *image);
+    }
+
     BmpEncoder bmpEnc;
     bmpEnc.Encode(*image, filename);
 }

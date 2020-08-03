@@ -63,6 +63,10 @@ namespace astu {
 		return static_cast<unsigned int>(RoundUp2(width * bytes, 4) - width * bytes);        
     }
 
+	/////////////////////////////////////////////////
+	/////// BmpEncoder
+	/////////////////////////////////////////////////
+
     BmpEncoder::BmpEncoder()
         : flipVertically(true)
     {
@@ -74,10 +78,9 @@ namespace astu {
         return flipVertically;
     }
 
-    BmpEncoder & BmpEncoder::SetFlipVertically(bool flip)
+    void BmpEncoder::SetFlipVertically(bool flip)
     {
         flipVertically = flip;
-        return *this;
     }
 
     void BmpEncoder::Encode(const Image & image, std::ostream& os) const
@@ -151,6 +154,102 @@ namespace astu {
         }
 
         Encode(image, ofs);
-        ofs.close();
+		ofs.close();
     }
+
+	/////////////////////////////////////////////////
+	/////// BmpEncoder
+	/////////////////////////////////////////////////
+
+	BmpDecoder::BmpDecoder()
+	{
+		// Intentionally left empty.
+	}
+
+	std::unique_ptr<Image> BmpDecoder::Decode(std::istream& is) const
+	{
+		// Read file header.
+		BitmapFileHeader fh;
+
+		is.read(reinterpret_cast<char*>(&fh), sizeof(BitmapFileHeader));
+
+		if (!is.good() || is.gcount() != sizeof(BitmapFileHeader)) {
+			throw std::runtime_error("Unable to read BMP file header");
+		}
+
+		if (fh.bfType != 0x4d42) {
+			throw std::runtime_error("Unable to read BMP file, invalid header");
+		}
+
+		// Read info header.
+		BitmapInfoHeader ih;
+
+		is.read(reinterpret_cast<char*>(&ih), sizeof(ih.biSize));
+
+		if (!is.good() || is.gcount() != sizeof(ih.biSize)) {
+			throw std::runtime_error("Unable to read reading BMP info header");
+		}
+
+		if (ih.biSize != sizeof(BitmapInfoHeader)) {
+			throw std::runtime_error("Unsupported BMP format.");
+		}
+
+		is.read(reinterpret_cast<char*>(&ih.biWidth), sizeof(BitmapInfoHeader) - sizeof(ih.biSize));
+
+		if (!is.good() || is.gcount() != sizeof(BitmapInfoHeader) - sizeof(ih.biSize)) {
+			throw std::runtime_error("Unable to read reading BMP info header");
+		}
+
+		if (ih.biCompression != BI_RGB || ih.biBitCount != BYTES_PER_PIXEL * 8) {
+			throw std::runtime_error("Unsupported BMP format");
+		}
+
+		size_t readSoFar = sizeof(BitmapFileHeader) + sizeof(BitmapInfoHeader);
+		is.ignore(fh.bfOffBits - readSoFar);
+
+		bool flip = ih.biHeight >= 0;
+		ih.biHeight = std::abs(ih.biHeight);
+
+		// Each line must contain number of bytes dividable by four.
+		auto numPadding = CalcNumPadding(ih.biWidth, BYTES_PER_PIXEL);
+
+		// Read bitmap data.
+		auto result = std::make_unique<Image>(ih.biWidth, ih.biHeight);
+		for (int j = 0; j < ih.biHeight; ++j) {
+			for (int i = 0; i < ih.biWidth; ++i) {
+				unsigned char red, green, blue;
+				is.read(reinterpret_cast<char*>(&blue), 1);
+				is.read(reinterpret_cast<char*>(&green), 1);
+				is.read(reinterpret_cast<char*>(&red), 1);
+
+				if (!is.good()) {
+					throw std::runtime_error("Failed to read bitmap data");
+				}
+				result->SetPixel(i, flip ? result->GetHeight() - 1 - j : j, Color::CreateFromRgb(red, green, blue));
+			}
+
+			is.ignore(numPadding);
+			if (!is.good() || is.gcount() != numPadding) {
+				throw std::runtime_error("Failed to read bitmap data from");
+			}
+		}
+
+		return result;
+	}
+
+	std::unique_ptr<Image> BmpDecoder::Decode(const char *filename) const
+	{
+		// Open file.
+        std::ifstream ifs(filename, std::ios::in | std::ios::binary);
+        if (!ifs) {
+            throw std::runtime_error(std::string("unable to open BMP file for reading '") 
+				+ filename + "'");
+        }
+
+		auto result = Decode(ifs);
+		ifs.close();
+		return result;
+	}
+
+
 }
