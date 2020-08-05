@@ -16,6 +16,8 @@ add_library(astu
     src/gfx/Quadtree.cpp
     src/gfx/PatternRenderer.cpp
     src/gfx/Turtle.cpp
+
+    src/AstUtils1.cpp
     )
 
 target_include_directories(

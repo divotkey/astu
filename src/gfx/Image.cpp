@@ -7,7 +7,6 @@
 
 #include <stdexcept>
 #include <string>
-#include "Color.h"
 #include "Image.h"
 
 namespace astu {

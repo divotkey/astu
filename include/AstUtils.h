@@ -12,6 +12,7 @@
 
 #pragma once
 
+
 // Hello World
 void SayHello();
 
@@ -30,6 +31,10 @@ int GetMilliseconds();
 
 // Graphics Functions
 void CreateImage(int x, int y);
+void WriteImage(const char* filename);
+void ReadImage(const char* filename);
+int GetImageWidth();
+int GetImageHeight();
 void ClearImage();
 void SetDrawColor(int r, int g, int b, int a = 255);
 void SetClearColor(int r, int g, int b);

@@ -9,9 +9,9 @@
 
 #include <memory>
 
-namespace astu {
+#include "gfx/Color.h"
 
-    class Color;
+namespace astu {
 
     class Image {
     public:

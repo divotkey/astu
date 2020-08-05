@@ -148,6 +148,18 @@ void ReadImage(const char* filename)
     image = decoder.Decode(filename);
 }
 
+int GetImageWidth()
+{
+    ValidateImage();
+    return image->GetWidth();
+}
+
+int GetImageHeight()
+{
+    ValidateImage();
+    return image->GetHeight();
+}
+
 void WriteImage(const char* filename)
 {
     ValidateImage();
