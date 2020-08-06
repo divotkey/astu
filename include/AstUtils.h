@@ -19,6 +19,10 @@ void SayHello();
 // Informational functions
 void SayVersion();
 
+// I/O Functions
+int AskInt(const char* text);
+bool AskBool(const char * text);
+
 // Math functions
 double ToRadians(double deg);
 double ToDegrees(double rad);

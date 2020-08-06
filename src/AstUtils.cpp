@@ -60,6 +60,15 @@ void SayVersion() {
         << endl;
 }
 
+int AskInt(const char* text)
+{
+    int result;
+    cout << text;
+    cin >> result;
+
+    return result;
+}
+
 /////////////////////////////////////////////////
 /////// Math Functions
 /////////////////////////////////////////////////
