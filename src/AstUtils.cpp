@@ -110,8 +110,16 @@ int GetMilliseconds()
 
 void SayElapsedTime(const char* text)
 {
-    auto dt = chrono::duration_cast<chrono::milliseconds>(stopTime - startTime).count();
     cout << text << " ";
+
+    auto dt = chrono::duration_cast<chrono::milliseconds>(stopTime - startTime).count();
+
+    if (dt == 0) {
+        dt = chrono::duration_cast<chrono::nanoseconds>(stopTime - startTime).count();
+        double dtms = (dt / 1000000.0);
+        cout << dtms << " ms" << endl;
+        return;
+    }
 
     int hr = dt / (1000 * 60 * 24);
     dt -= hr * (1000 * 60 * 24);
