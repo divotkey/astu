@@ -23,6 +23,12 @@ namespace astu1 {
     /** The global storages for images, associated with handles. */
     static std::map<int, std::unique_ptr<astu::Image>> images;
 
+    /** Used to read BMP files. */
+    static astu::BmpDecoder bmpDecoder;
+
+    /** Used to write BMP files. */
+    static astu::BmpEncoder bmpEncoder;
+
     /** Incremented to create new unique image handles. */
     static int imageCounter = 0;
 
@@ -110,9 +116,7 @@ namespace astu1 {
         assert(!HasImage(imageCounter + 1));
 
         try {
-            astu::BmpDecoder decoder;
-            decoder.Decode(filename);
-            images[++imageCounter] = decoder.Decode(filename);
+            images[++imageCounter] = bmpDecoder.Decode(filename);
             return imageCounter;
         } catch (std::runtime_error & e) {
             SetLastError(e.what());
@@ -130,8 +134,7 @@ namespace astu1 {
         }
 
         try {
-            astu::BmpEncoder encoder;
-            encoder.Encode(*it->second, filename);
+            bmpEncoder.Encode(*it->second, filename);
         } catch (std::runtime_error & e) {
             SetLastError(e.what());
             return ERR_FAILED;

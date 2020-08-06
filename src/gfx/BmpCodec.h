@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <iostream>
+#include <vector>
 
 namespace astu {
 
@@ -101,6 +102,8 @@ namespace astu {
         std::unique_ptr<Image> Decode(const char * filename) const;
 
     private:
+        /** Used to buffer input stream. */
+        mutable std::vector<unsigned char> buffer;
     };
 
 }

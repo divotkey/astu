@@ -149,6 +149,7 @@ namespace astu {
 		// Create file.
         std::ofstream ofs(filename, std::ios::out | std::ios::binary);
         if (!ofs) {
+
             throw std::runtime_error(std::string("unable to open BMP file for writing '") 
 				+ filename + "'");
         }
@@ -174,11 +175,11 @@ namespace astu {
 		is.read(reinterpret_cast<char*>(&fh), sizeof(BitmapFileHeader));
 
 		if (!is.good() || is.gcount() != sizeof(BitmapFileHeader)) {
-			throw std::runtime_error("Unable to read BMP file header");
+			throw std::runtime_error("unable to read BMP file header");
 		}
 
 		if (fh.bfType != 0x4d42) {
-			throw std::runtime_error("Unable to read BMP file, invalid header");
+			throw std::runtime_error("unable to read BMP file, invalid header");
 		}
 
 		// Read info header.
@@ -187,21 +188,21 @@ namespace astu {
 		is.read(reinterpret_cast<char*>(&ih), sizeof(ih.biSize));
 
 		if (!is.good() || is.gcount() != sizeof(ih.biSize)) {
-			throw std::runtime_error("Unable to read reading BMP info header");
+			throw std::runtime_error("unable to read reading BMP info header");
 		}
 
 		if (ih.biSize != sizeof(BitmapInfoHeader)) {
-			throw std::runtime_error("Unsupported BMP format.");
+			throw std::runtime_error("unsupported BMP format");
 		}
 
 		is.read(reinterpret_cast<char*>(&ih.biWidth), sizeof(BitmapInfoHeader) - sizeof(ih.biSize));
 
 		if (!is.good() || is.gcount() != sizeof(BitmapInfoHeader) - sizeof(ih.biSize)) {
-			throw std::runtime_error("Unable to read reading BMP info header");
+			throw std::runtime_error("unable to read reading BMP info header");
 		}
 
 		if (ih.biCompression != BI_RGB || ih.biBitCount != BYTES_PER_PIXEL * 8) {
-			throw std::runtime_error("Unsupported BMP format");
+			throw std::runtime_error("unsupported BMP format");
 		}
 
 		size_t readSoFar = sizeof(BitmapFileHeader) + sizeof(BitmapInfoHeader);
@@ -213,24 +214,23 @@ namespace astu {
 		// Each line must contain number of bytes dividable by four.
 		auto numPadding = CalcNumPadding(ih.biWidth, BYTES_PER_PIXEL);
 
+		buffer.resize(ih.biWidth * 3 + numPadding);
+
 		// Read bitmap data.
 		auto result = std::make_unique<Image>(ih.biWidth, ih.biHeight);
-		for (int j = 0; j < ih.biHeight; ++j) {
+		for (int j = 0; j < ih.biHeight + 1; ++j) {
+			is.read(reinterpret_cast<char*>(buffer.data()), buffer.size());
+ 
+			if (!is.good() || is.gcount() != buffer.size()) {
+				throw std::runtime_error("unable to read bitmap data");
+			}
+			unsigned char *ptr = buffer.data();
 			for (int i = 0; i < ih.biWidth; ++i) {
 				unsigned char red, green, blue;
-				is.read(reinterpret_cast<char*>(&blue), 1);
-				is.read(reinterpret_cast<char*>(&green), 1);
-				is.read(reinterpret_cast<char*>(&red), 1);
-
-				if (!is.good()) {
-					throw std::runtime_error("Failed to read bitmap data");
-				}
+				blue = *ptr++;
+				green = *ptr++;
+				red = *ptr++;
 				result->SetPixel(i, flip ? result->GetHeight() - 1 - j : j, Color::CreateFromRgb(red, green, blue));
-			}
-
-			is.ignore(numPadding);
-			if (!is.good() || is.gcount() != numPadding) {
-				throw std::runtime_error("Failed to read bitmap data from");
 			}
 		}
 
@@ -242,14 +242,12 @@ namespace astu {
 		// Open file.
         std::ifstream ifs(filename, std::ios::in | std::ios::binary);
         if (!ifs) {
-            throw std::runtime_error(std::string("unable to open BMP file for reading '") 
-				+ filename + "'");
+            throw std::runtime_error(std::string("unable to open BMP file '") 
+				+ filename + "' for reading '");
         }
 
 		auto result = Decode(ifs);
 		ifs.close();
 		return result;
 	}
-
-
 }
