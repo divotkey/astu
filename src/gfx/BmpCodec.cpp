@@ -218,7 +218,7 @@ namespace astu {
 
 		// Read bitmap data.
 		auto result = std::make_unique<Image>(ih.biWidth, ih.biHeight);
-		for (int j = 0; j < ih.biHeight + 1; ++j) {
+		for (int j = 0; j < ih.biHeight; ++j) {
 			is.read(reinterpret_cast<char*>(buffer.data()), buffer.size());
  
 			if (!is.good() || is.gcount() != buffer.size()) {
