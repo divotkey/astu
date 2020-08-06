@@ -19,6 +19,7 @@ void SayHello();
 // Informational functions
 void SayVersion();
 
+
 // I/O Functions
 int AskInt(const char* text);
 bool AskBool(const char * text);
@@ -32,6 +33,14 @@ double GetRandomDouble();
 void StartTimer();
 void StopTimer();
 int GetMilliseconds();
+
+/**
+ * Outputs the elapsed time in a nice human readable way.
+ * 
+ * @param text   preceding text printed before elapsed time
+ */
+void SayElapsedTime(const char* text = nullptr);
+
 
 // Graphics Functions
 void CreateImage(int x, int y);

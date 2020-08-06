@@ -108,6 +108,39 @@ int GetMilliseconds()
     return static_cast<int>(dt);
 }
 
+void SayElapsedTime(const char* text)
+{
+    auto dt = chrono::duration_cast<chrono::milliseconds>(stopTime - startTime).count();
+    cout << text << " ";
+
+    int hr = dt / (1000 * 60 * 24);
+    dt -= hr * (1000 * 60 * 24);
+
+    if (hr > 0) {
+        cout << hr << " hr ";
+    }
+
+    int min = dt / (1000 * 60);
+    dt -= min * (1000 * 60);
+
+    if (min > 0 || hr > 0) {
+        cout << min << " min ";
+    }
+
+    int sec = dt / 1000;
+    dt -= sec * 1000;
+
+    if (sec > 0 || hr > 0 || min > 0) {
+        cout << sec << " sec ";
+    }
+    if (dt > 0) {
+        cout << dt << " ms";
+    }
+
+    cout << endl;
+}
+
+
 /////////////////////////////////////////////////
 /////// Graphics functions
 /////////////////////////////////////////////////
