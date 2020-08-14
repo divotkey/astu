@@ -5,45 +5,18 @@
  * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
  * 
  *----------------------------------------------------------------------------
- * Meanins of ASTU: Slightly melted butter (Hinduism / Religious Law), 
- * Let it be / Be it so (Sanskrit), City (Greek)
+ * Meanings of ASTU: Slightly melted butter (Hinduism / Religious Law), 
+ * Let it be / Be it so (Sanskrit), City (Ancient Greek)
  *----------------------------------------------------------------------------
  */
 
 #pragma once
 
+#include "AstUtils0.h"
 
-// Hello World
-void SayHello();
-
-// Informational functions
-void SayVersion();
-
-
-// I/O Functions
-int AskInt(const char* text);
-bool AskBool(const char * text);
-
-// Math functions
-double ToRadians(double deg);
-double ToDegrees(double rad);
-double GetRandomDouble();
-
-// Timer Functions
-void StartTimer();
-void StopTimer();
-int GetMilliseconds();
-
-/**
- * Outputs the elapsed time in a nice human readable way.
- * 
- * @param text   preceding text printed before elapsed time
- */
-void SayElapsedTime(const char* text = nullptr);
-
+// TODO move the following functions to API-Level 0 or remove entirely if not needed.
 
 // Graphics Functions
-void CreateImage(int x, int y);
 void WriteImage(const char* filename);
 void ReadImage(const char* filename);
 int GetImageWidth();

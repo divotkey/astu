@@ -11,7 +11,6 @@
 #include <iostream>
 #include <chrono>
 #include <memory>
-#include "AstUtilsConfig.h"
 #include "math/Random.h"
 #include "gfx/Image.h"
 #include "gfx/BmpCodec.h"
@@ -23,13 +22,7 @@
 using namespace std;
 using namespace astu;
 
-// Constants
-const double TO_RADIANS = M_PI / 180.0;
-const double TO_DEGREES = 180.0 / M_PI;
-
 // Globals
-std::chrono::time_point<std::chrono::steady_clock> startTime;
-std::chrono::time_point<std::chrono::steady_clock> stopTime;
 std::unique_ptr<astu::Image> image;
 Color drawColor(1, 1, 1);
 Color clearColor(0, 0, 0);
@@ -39,115 +32,6 @@ std::shared_ptr<Quadtree> quadTree = std::make_shared<Quadtree>(5, 5);
 // std::unique_ptr<IPatternRenderer> patternRenderer = std::make_unique<SimplePatternRenderer>();
 std::unique_ptr<IPatternRenderer> patternRenderer = std::make_unique<AntiAlisaingPatternRenderer>();
 Turtle turtle;
-
-int SizeOfAddressSpace() {
-    return sizeof(void*) * 8;
-}
-
-void SayHello()
-{
-    cout << "Hello AST World :-)" << endl;
-}
-
-void SayVersion() {
-
-    cout << "AST Utilities Version " 
-        << ASTU_VERSION_MAJOR << "." 
-        << ASTU_VERSION_MINOR << "."
-        << ASTU_VERSION_PATCH
-        << " (" << SizeOfAddressSpace() << " bit address space)" 
-        << " [build: " << __DATE__ <<", " << __TIME__ << "]"
-        << endl;
-}
-
-int AskInt(const char* text)
-{
-    int result;
-    cout << text;
-    cin >> result;
-
-    return result;
-}
-
-/////////////////////////////////////////////////
-/////// Math Functions
-/////////////////////////////////////////////////
-
-double ToRadians(double deg)
-{
-    return deg * TO_RADIANS;
-}
-
-double ToDegrees(double rad)
-{
-    return rad * TO_DEGREES;
-}
-
-double GetRandomDouble()
-{
-    return Random::GetInstance().NextDouble();
-}
-
-/////////////////////////////////////////////////
-/////// Timer functions
-/////////////////////////////////////////////////
-
-void StartTimer()
-{
-    startTime = stopTime = std::chrono::steady_clock::now();
-}
-
-void StopTimer()
-{
-    stopTime = chrono::steady_clock::now();
-}
-
-int GetMilliseconds()
-{
-    auto dt = chrono::duration_cast<chrono::milliseconds>(stopTime - startTime).count();
-    return static_cast<int>(dt);
-}
-
-void SayElapsedTime(const char* text)
-{
-    cout << text << " ";
-
-    auto dt = chrono::duration_cast<chrono::milliseconds>(stopTime - startTime).count();
-
-    if (dt == 0) {
-        dt = chrono::duration_cast<chrono::nanoseconds>(stopTime - startTime).count();
-        double dtms = (dt / 1000000.0);
-        cout << dtms << " ms" << endl;
-        return;
-    }
-
-    int hr = dt / (1000 * 60 * 24);
-    dt -= hr * (1000 * 60 * 24);
-
-    if (hr > 0) {
-        cout << hr << " hr ";
-    }
-
-    int min = dt / (1000 * 60);
-    dt -= min * (1000 * 60);
-
-    if (min > 0 || hr > 0) {
-        cout << min << " min ";
-    }
-
-    int sec = dt / 1000;
-    dt -= sec * 1000;
-
-    if (sec > 0 || hr > 0 || min > 0) {
-        cout << sec << " sec ";
-    }
-    if (dt > 0) {
-        cout << dt << " ms";
-    }
-
-    cout << endl;
-}
-
 
 /////////////////////////////////////////////////
 /////// Graphics functions

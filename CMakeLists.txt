@@ -6,6 +6,7 @@ configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 set(CMAKE_CXX_STANDARD 17)
 
 add_library(astu    src/AstUtils.cpp 
+                    src/AstUtils0.cpp
                     src/math/Random.cpp
                     src/gfx/Color.cpp 
                     src/gfx/Image.cpp 
