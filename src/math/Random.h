@@ -12,20 +12,48 @@
 
 namespace astu {
 
-    class Random {
+    /**
+     * This singleton simplifies the creation of random numbers.
+     */
+    class Random final {
     public:
 
+        /**
+         * Returns the one and only instance of this class.
+         *
+         * @return the instance of this class
+         */
         static Random & GetInstance();
 
+        /**
+         * Returns a random number within the range [0, 1).
+         * 
+         * @return the next random number.
+         */
         double NextDouble();
 
     private:
+        /** The one and only instance of this singleton. */
         static std::unique_ptr<Random> theInstance;
+
+        /** The random number generator used to generate pseudo-random numbers. */
         std::mt19937 mt;
+
+        /** The uniform distribution used to create random doubles. */
         std::uniform_real_distribution<double> doubleDist;
 
+
+        /////////////////////////////////////////////////
+        /////// Avoid creation of an instance.
+        /////////////////////////////////////////////////
+
+        // Private constructor.
         Random();
+
+        // Deleted copy-constructor.
 		Random(const Random&) = delete;
+
+        // Deleted assignment operator
 		Random& operator=(const Random&) = delete;
     };
 
