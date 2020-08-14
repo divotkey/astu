@@ -41,7 +41,7 @@ void SayHello()
     cout << "Hello AST World :-)" << endl;
 }
 
-void Say(const char* text)
+void SayText(const char* text)
 {
     if (text) {
         std::cout << text;
@@ -49,10 +49,16 @@ void Say(const char* text)
     std::cout << std::endl;
 }
 
-void Say(int value)
+void SayInt(int value)
 {
     std::cout << value << std::endl;
 }
+
+void SayDouble(double value)
+{
+    std::cout << value << std::endl;
+}
+
 
 void SayVersion() {
 
@@ -115,6 +121,18 @@ int AskInt(const char* text)
 
     return result;
 }
+
+double AskDouble(const char* text)
+{
+    double result;
+    if (text) {
+        cout << text << " ";
+    }
+    cin >> result;
+
+    return result;
+}
+
 
 /////////////////////////////////////////////////
 /////// Math Functions

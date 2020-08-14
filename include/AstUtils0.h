@@ -49,7 +49,7 @@ void SayHello();
  * 
  * int main()
  * {
- *   Say("Hello world");
+ *   SayText("Hello world");
  * 
  *   return 0;
  * }
@@ -72,7 +72,7 @@ void SayHello();
  * ```
  * 
  */
-void Say(const char* text = nullptr);
+void SayText(const char* text = nullptr);
 
 /**
  * Outputs the specified integer value using the standard output stream.
@@ -87,7 +87,7 @@ void Say(const char* text = nullptr);
  * int main()
  * {
  *   int x = 42;
- *   Say(x);
+ *   SayInt(x);
  * 
  *   return 0;
  * }
@@ -110,7 +110,45 @@ void Say(const char* text = nullptr);
  * }
  * ```
  */
-void Say(int value);
+void SayInt(int value);
+
+/**
+ * Outputs the specified double value using the standard output stream.
+ * 
+ * @param value  the double value to be printed
+ * 
+ * **Example**
+ * 
+ * ```
+ * #include <AstUtils.h>
+ * 
+ * int main()
+ * {
+ *   double x = 17.3;
+ *   SayDouble(x);
+ * 
+ *   return 0;
+ * }
+ * ```
+ * 
+ * **Using the C++ Standard Library**
+ * 
+ * The same result can be achieved without ASTU using the 
+ * stream-based input/output functionality of the C++ Standard Library.
+ * 
+ * ```
+ * #include <iostream>
+ * 
+ * int main()
+ * {
+ *   double x = 17.3;
+ *   std::cout << x << std::endl;
+ * 
+ *   return 0;
+ * }
+ * ```
+ */
+void SayDouble(double value);
 
 /**
  * Outputs version information about this library.
@@ -180,7 +218,7 @@ void SayElapsedTime(const char* text = nullptr);
  * {
  *   int x;
  * 
- *   x = AskInt("Please enter a number");
+ *   x = AskInt("Please enter a number:");
  *   Say("You have entered the following number");
  *   Say(x);
  * 
@@ -189,7 +227,7 @@ void SayElapsedTime(const char* text = nullptr);
  * ```
  * Possible output:
  * ```
- * Please enter a number 42
+ * Please enter a number: 42
  * You entered the following number
  * 42
  * ```
@@ -206,7 +244,7 @@ void SayElapsedTime(const char* text = nullptr);
  * {
  *   int x;
  * 
- *   std::cout << "Please have enter a number" << std::endl;
+ *   std::cout << "Please have enter a number: ";
  *   std::cin >> x;
  *   std::cout << "You have entered the following number" << std::endl;
  *   std::cout << x << std::endl;
@@ -238,6 +276,80 @@ void SayElapsedTime(const char* text = nullptr);
  * 
  */
 int AskInt(const char* text = nullptr);
+
+/**
+ * Reads an double value from the standard input stream.
+ * 
+ * @param text   preceding text printed before the use input is collected
+ * @return the double value entered by the user
+ * 
+ * **Example**
+ * ```
+ * #include <AstUtils.h>
+ * 
+ * void main()
+ * {
+ *   double x;
+ * 
+ *   x = AskInt("Please enter a real number:");
+ *   Say("You have entered the following number");
+ *   Say(x);
+ * 
+ *   return 0;
+ * }
+ * ```
+ * Possible output:
+ * ```
+ * Please enter a number: 17.3
+ * You entered the following number
+ * 17.3
+ * ```
+ * 
+ * **Using the C++ Standard Library**
+ * 
+ * The same result can be achieved without ASTU using the 
+ * stream-based input/output functionality of the C++ Standard Library.
+ * 
+ * ```
+ * #include <iostream>
+ * 
+ * int main()
+ * {
+ *   double x;
+ * 
+ *   std::cout << "Please have enter a real number: ";
+ *   std::cin >> x;
+ *   std::cout << "You have entered the following number" << std::endl;
+ *   std::cout << x << std::endl;
+ * 
+ *   return 0;
+ * }
+ * ```
+ * 
+ * Using C++ streams also offers the option to avoid unnecessary line breaks 
+ * and to write code in a more compact form, especially when including the 
+ * namespace form the C++ Standard Library to avoid writing `std`.
+ * 
+ * ```
+ * #include <iostream>
+ * 
+ * using namespace std;
+ * 
+ * int main()
+ * {
+ *   double x;
+ *   
+ *   cout << "Please have enter a real number: ";
+ *   cin >> x;
+ *   cout << "You have entered the number " << x << endl;
+ * 
+ *   return 0;
+ * }
+ * ```
+ * 
+ */
+double AskDouble(const char* text = nullptr);
+
 
 // TODO implement ask bool.
 // bool AskBool(const char * text);
@@ -420,13 +532,19 @@ void CreateImage(int x, int y);
 /**@}*/
 
 /*! \mainpage AST Utilities - API Level 0
- *
  * 
  * AST Utilities **API Level 0** is the simplest and API-Level provided by this 
  * utility library. Level 0 does not require a namespace to be used nor does
  * it introduce classes or objects. It solely defines functions and uses
  * only C strings. API-Level 0 also does not expose any items from the 
  * C++ Standard Library.
+ * 
+ * 
+ * @section hist_sect Version History
+ * This library is continuously updated and extended. The version history
+ * gives an overview of the changes this library has gone through, including
+ * the latest updates. The version history can be found on this page 
+ * [Version History](@ref CHANGES).
  * 
  * @section io_sect Modules
  *
