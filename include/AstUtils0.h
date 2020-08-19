@@ -155,7 +155,7 @@ void SayInt(int value, bool eol = true);
  * }
  * ```
  */
-void SayDouble(double value, bool eol);
+void SayDouble(double value, bool eol = true);
 
 /**
  * Outputs version information about this library.

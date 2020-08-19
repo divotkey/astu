@@ -223,6 +223,9 @@ namespace astu {
         virtual void ReadBody(std::istream& is) override;
 
     private:
+        /** The expected data size of this chunk. */
+        unsigned int const DATA_SIZE = 16;
+
         /** Describes the audio format. */
         AudioFormat audioFormat;
 

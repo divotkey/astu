@@ -144,7 +144,7 @@ namespace astu {
     /////////////////////////////////////////////////
 
     FormatChunk::FormatChunk()
-        : RiffChunk("fmt ", 16)
+        : RiffChunk("fmt ", DATA_SIZE)
         , audioFormat(AudioFormat::PCM)
         , numberOfChannels(1)
         , sampleRate(44100)
@@ -185,6 +185,9 @@ namespace astu {
         blockAlign = Read2ByteUInt(is);
         bitsPerSample = Read2ByteUInt(is);
         ValidateStream(is);
+        if (GetDataSize() > DATA_SIZE) {
+            is.seekg(GetDataSize() - DATA_SIZE, is.cur);
+        }
     }
 
     auto FormatChunk::GetAudioFormat() const -> AudioFormat
