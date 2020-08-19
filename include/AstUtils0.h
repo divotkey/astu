@@ -10,6 +10,10 @@
  * @brief This file defines public functions offered by AST utilities API-Level 0.
  */
 
+/////////////////////////////////////////////////
+/////// I/O Functions
+/////////////////////////////////////////////////
+
 /**
  * @defgroup io_group I/O Functions
  * @brief The functions defined in this group are dedicated to basic input output operations.
@@ -41,6 +45,7 @@ void SayHello();
  * If `text` is a `nullptr` an empty line will be printed.
  * 
  * @param text  a C string holding the text to be printed
+ * @param eol   whether 'end-of-line' should be added
  * 
  * **Example**
  * 
@@ -72,12 +77,13 @@ void SayHello();
  * ```
  * 
  */
-void SayText(const char* text = nullptr);
+void SayText(const char* text = nullptr, bool eol = true);
 
 /**
  * Outputs the specified integer value using the standard output stream.
  * 
- * @param value  the integer value to be printed
+ * @param value the integer value to be printed
+ * @param eol   whether 'end-of-line' should be added
  * 
  * **Example**
  * 
@@ -110,12 +116,13 @@ void SayText(const char* text = nullptr);
  * }
  * ```
  */
-void SayInt(int value);
+void SayInt(int value, bool eol = true);
 
 /**
  * Outputs the specified double value using the standard output stream.
  * 
- * @param value  the double value to be printed
+ * @param value the double value to be printed
+ * @param eol   whether 'end-of-line' should be added
  * 
  * **Example**
  * 
@@ -148,7 +155,7 @@ void SayInt(int value);
  * }
  * ```
  */
-void SayDouble(double value);
+void SayDouble(double value, bool eol);
 
 /**
  * Outputs version information about this library.
@@ -357,6 +364,11 @@ double AskDouble(const char* text = nullptr);
 
 /**@}*/
 
+/////////////////////////////////////////////////
+/////// Math Functions
+/////////////////////////////////////////////////
+
+
 /**
  * @defgroup math_group Mathematics
  * @brief A collection of functions dedicated to mathematical calculations.
@@ -412,6 +424,66 @@ double ToDegrees(double rad);
  * ```
  */
 double GetRandomDouble(double minValue = 0.0, double maxValue = 1.0);
+
+/**
+ * Returns the given double value to the nearest integer.
+ * 
+ * @param value the double value to be rounded
+ * @return the rounded integer value
+ * 
+ * **Example**
+ * 
+ * ```
+ * #include <AstUtils.h>
+ * 
+ * int main()
+ * {
+ *   SayText("The floating point value 17.3 is rounded to");
+ *   SayInt( RoundToInt(17.3) );
+ *   SayText();
+ * 
+ *   SayText("The floating point value 17.8 is rounded to");
+ *   SayInt( RoundToInt(17.8) );
+ *   SayText();
+ * 
+ *   SayText("The floating point value 17.5 is rounded to");
+ *   SayInt( RoundToInt(17.5) );
+ * 
+ *   return 0;
+ * }
+ * ```
+ * 
+ * Output:
+ * ```
+ * The floating point value 17.3 is rounded to
+ * 17
+ * The floating point value 17.8 is rounded to
+ * 18
+ * The floating point value 17.5 is rounded to
+ * 18
+ * ```
+ * **Using plain C++ without the Standard Library or ASTU**
+ *  
+ *The same result can be achieved without ASTU using plain C++.
+ * Rounding a floating-point value to an integer can be done 
+ * by casting the floating-point value to an int data type while 
+ * adding 0.5.
+ * 
+ * ```cpp
+ * double f = 17.7;
+ * int i = static_cast<int>(f + 0.5);
+ * ```
+ * 
+ * The cast will always truncate the floating-point value to an 
+ * integer, ignoring the fractional part number. In case the 
+ * fractional part of the floating-point value is below 0.5, 
+ * adding 0.5 will not change the result. In case the number's 
+ * fractional part is more than 0.5, adding 0.5 will change the 
+ * number's integer part to the next higher value. For example, 
+ * 17.7 + 0.5 results in 18.2, and casting away the fractional 
+ * part results in 18.
+ */
+int RoundToInt(double value);
 
 /**@}*/
 
@@ -493,6 +565,100 @@ int GetMilliseconds();
 
 /**@}*/
 
+/////////////////////////////////////////////////
+/////// Audio Functions
+/////////////////////////////////////////////////
+
+/**
+ * @defgroup audio_group Audio
+ * @brief Functions to import, export and manipulate audio data.
+ * 
+ * @{
+ */
+
+/**
+ * Writes the given raw audio data to an file using the Waveform Audio File format.
+ * The Waveform Audio File format usually has the extension .wav.
+ * 
+ * @param filename      the file name including the path
+ * @param data          the audio data, 32-bit float values per channel
+ * @param size          the number of float values 
+ * @param sampleRate    the number of samples per second
+ * @param channels      the number of channels
+ * @return 0 on success, error code otherwise
+ * 
+ * **Example**
+ * This example generates an audio file containing half a second of silence using
+ * a sample rate of 48000 samples per second and one audio channel.
+ * 
+ * ```
+ * #include <AstUtils.h>
+ * 
+ * #define SAMPLE_RATE 44100
+ * 
+ * int main()
+ * {
+ *   int numSamples = SAMPLE_RATE / 2;
+ *   float* samples = new float[numSamples];
+ *
+ *   for (int i = 0; i < numSamples; ++i) {
+ *     samples[i] = 0.0;
+ *   }
+ * 
+ *   int err = WriteAudio("silence.wav", samples, numSamples, SAMPLE_RATE);
+ * 
+ *   if (err != ErrorCode::NO_ERROR) {
+ *     SayText( GetErrorMessage(err) );
+ *   }
+ * } 
+ * ``` 
+ */
+int WriteAudio(const char * filename, float *data, int size, int sampleRate = 44100, int channels = 1);
+
+/**
+ * Reads an audio file.
+ * 
+ * The pointer for the `size` parameter receives the number of samples.
+ * 
+ * The pointer to `sampelReate` parameter receives the sample rate of the audio file.
+ *  
+ * Accepted file formats:
+ * 
+ * - Waveform Audio File Format (.wav)
+ * 
+ * @param filename      the file name including the path
+ * @param size          receives the number of floating point values (samples)
+ * @param sampleRate    receives the sample rate
+ * @param numChannels   receives the number of channels
+ * @return the raw audio data
+ */
+float *ReadAudio(const char* filename, int* size, int *sampleRate, int *numChannels);
+
+/**
+ * Extracts the an audio channel from given sample data.
+ * 
+ * @param data          the audio samples with interleaved channels
+ * @param size          the total number of samples including all channels
+ * @param numChannels   the number of channel
+ * @param channel       the channel to extract
+ * @param resultSize   receives the number of samples of the extracted channel
+ * @return the extracted samples of the channel
+ */
+float *ExtractChannel(float *data, int size, int numChannels, int channel, int *resultSize = nullptr);
+
+float *InterleaveChannels(float* ch1Data, float* ch2Data, int size, int *resultSize = nullptr);
+
+float *ConvertSampleRate(float *data, int size, int srcRate, int dstRate, int *resultSize = nullptr);
+
+/**@}*/
+
+
+/////////////////////////////////////////////////
+/////// Graphics Functions
+/////////////////////////////////////////////////
+
+/**@}*/
+
 /**
  * @defgroup graphics_group Graphics
  * @brief This module offers functions to graphical operations.
@@ -531,6 +697,74 @@ void CreateImage(int x, int y);
 
 /**@}*/
 
+/////////////////////////////////////////////////
+/////// Error Handling
+/////////////////////////////////////////////////
+
+/**
+ * @defgroup error_group Error Handling
+ * @brief This module is dedicated to error handling.
+ * 
+ * @{
+ */
+
+/**
+ * These error codes are set by library functions in case
+ * the operation could not carried out successfully.
+ */ 
+enum ErrorCode {
+    /** Indicates that no error has occurred. */
+    NO_ERROR = 0x0000,
+
+    /** At least one of the specified parameters is invalid. */
+    INVALID_PARAMETER,
+
+    /** A file could not be opened for reading. */
+    UNABLE_TO_OPEN_FILE_FOR_READING,
+
+    /** A file could not be opened for writing. */
+    UNABLE_TO_OPEN_FILE_FOR_WRITING,
+
+    /** A file could not be read correctly. */
+    UNABLE_TO_READ_FILE,
+
+    /** A file could not be imported correctly. */
+    UNABLE_TO_IMPORT_FILE,
+
+    /** The specified error code is unknown. */
+    UNKNOWN_ERROR_CODE,
+};
+
+/**
+ * Returns the last-error code.
+ * 
+ * @return the last-error code
+ */
+int GetLastError();
+
+/**
+ * Sets the last-error code.
+ * 
+ * @param errorCode the error code
+ */
+void SetLastError(int errorCode);
+
+/**
+ * Returns the error message for the specified error code.
+ * 
+ * @param errorCode the error code of the requested message
+ */
+const char* GetErrorMessage(int errorCode);
+
+/**
+ * Returns the a more detailed error message of the last-error.
+ * 
+ * @return detailed error message or an empty string
+ */
+const char* GetErrorDetails();
+
+/**@}*/
+
 /*! \mainpage AST Utilities - API Level 0
  * 
  * AST Utilities **API Level 0** is the simplest and API-Level provided by this 
@@ -554,5 +788,7 @@ void CreateImage(int x, int y);
  * - @ref io_group
  * - @ref math_group
  * - @ref timer_group
+ * - @ref audio_group
  * - @ref graphics_group
+ * - @ref error_group
  */

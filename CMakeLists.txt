@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(ASTU VERSION 1.0.0)
+project(ASTU VERSION 0.2.0)
 
 configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 set(CMAKE_CXX_STANDARD 17)
@@ -16,6 +16,10 @@ add_library(astu    src/AstUtils.cpp
                     src/gfx/Quadtree.cpp
                     src/gfx/PatternRenderer.cpp
                     src/gfx/Turtle.cpp
+
+                    src/audio/AudioBuffer.cpp
+                    src/audio/WaveCodec.cpp
+
                     src/AstUtils1.cpp)
 
 target_include_directories(

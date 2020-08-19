@@ -14,7 +14,7 @@ namespace astu1 {
      * 
      * @return the last-error message text
      */ 
-    const char* GetLastError();
+    const char* GetLastErrorX();
 
     /**
      * Loads a BMP image from a file.
@@ -60,7 +60,7 @@ namespace astu1 {
      * Exports the image to 32-bit floating-point RGB values.
      * 
      * @param hImg  the handle of the image
-     * @return start address of the newly allocated memory block or nullptr on failure
+     * @return start address of the newly allocated memory block or `nullptr` on failure
      */
     float* ExportRgbFloats(int hImg);
 
@@ -74,7 +74,7 @@ namespace astu1 {
     int ImportRgbFloats(int hImg, float* ptr);
 
     /**
-     * Frees the memory allocated by 32-bit floating poitn RGB values.
+     * Frees the memory allocated by 32-bit floating point RGB values.
      * 
      * @param ptr   start address the memory block
      * @return returns 0 on success or a negative error code on failure

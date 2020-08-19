@@ -5,6 +5,13 @@
 
 - Initial public release.
 
+# Version 0.2.0
+*Date: 2020-08-19*
+
+- Output methods can optionally omit end-of-line from output
+- Added module for error handling.
+- Added module for audio processing (API-Level 0).
+
 # Version 0.1.0
 *Date: 2020-08-14*
 

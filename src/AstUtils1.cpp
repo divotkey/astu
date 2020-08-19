@@ -58,7 +58,7 @@ namespace astu1 {
         return images.find(hImg) != images.end();
     }
 
-    void SetLastError(const std::string & txt)
+    void SetLastErrorX(const std::string & txt)
     {
         lastErrorText = txt;
     }
@@ -102,7 +102,7 @@ namespace astu1 {
     /////// Implementation of ASTU, API Level 1
     /////////////////////////////////////////////////
 
-    const char* GetLastError()
+    const char* GetLastErrorX()
     {
         if (lastErrorText.empty()) {
             return "no error";
@@ -119,7 +119,7 @@ namespace astu1 {
             images[++imageCounter] = bmpDecoder.Decode(filename);
             return imageCounter;
         } catch (std::runtime_error & e) {
-            SetLastError(e.what());
+            SetLastErrorX(e.what());
             return INVALID_HANDLE;
         }
 
@@ -129,14 +129,14 @@ namespace astu1 {
     {
         auto it = images.find(hImg);
         if (it == images.end())  {
-            SetLastError("invalid image handle");
+            SetLastErrorX("invalid image handle");
             return ERR_FAILED;
         }
 
         try {
             bmpEncoder.Encode(*it->second, filename);
         } catch (std::runtime_error & e) {
-            SetLastError(e.what());
+            SetLastErrorX(e.what());
             return ERR_FAILED;
         }
 
@@ -147,7 +147,7 @@ namespace astu1 {
     {
         auto it = images.find(hImg);
         if (it == images.end()) {
-            SetLastError("invalid image handle");
+            SetLastErrorX("invalid image handle");
             return ERR_FAILED;
         }
         images.erase(it);
@@ -158,7 +158,7 @@ namespace astu1 {
     {
         auto it = images.find(hImg);
         if (it == images.end()) {
-            SetLastError("invalid image handle");
+            SetLastErrorX("invalid image handle");
             return ERR_FAILED;
         }
 
@@ -169,7 +169,7 @@ namespace astu1 {
     {
         auto it = images.find(hImg);
         if (it == images.end()) {
-            SetLastError("invalid image handle");
+            SetLastErrorX("invalid image handle");
             return ERR_FAILED;
         }
 
@@ -180,14 +180,14 @@ namespace astu1 {
     {
         auto it = images.find(hImg);
         if (it == images.end()) {
-            SetLastError("invalid image handle");
+            SetLastErrorX("invalid image handle");
             return nullptr;
         }
         astu::Image & image = *it->second;
 
         auto result = AllocateRgbFloatData(image.GetWidth(), image.GetHeight());
         if (!result) {
-            SetLastError("unable to allocate memory for 32-bit RGB float data");
+            SetLastErrorX("unable to allocate memory for 32-bit RGB float data");
             return nullptr;
         }
 
@@ -208,13 +208,13 @@ namespace astu1 {
     {
         auto it1 = rgbFloatDataMap.find(ptr);
         if (it1 == rgbFloatDataMap.end()) {
-            SetLastError("unknown 32-bit RGB float data");
+            SetLastErrorX("unknown 32-bit RGB float data");
             return ERR_FAILED;
         }
 
         auto it2 = images.find(hImg);
         if (it2 == images.end()) {
-            SetLastError("invalid image handle");
+            SetLastErrorX("invalid image handle");
             return ERR_FAILED;
         }
 
@@ -222,7 +222,7 @@ namespace astu1 {
         auto & image = *it2->second;
 
         if (rgbFloat.width != image.GetWidth() || rgbFloat.height != image.GetHeight()) {
-            SetLastError("invalid image size");
+            SetLastErrorX("invalid image size");
             return ERR_FAILED;
         } 
 
@@ -242,7 +242,7 @@ namespace astu1 {
     int DestroyRgbFloats(float* ptr)
     {
         if (!FreeRgbFloatData(ptr)) {
-            SetLastError("unknown 32-bit RGB float data");
+            SetLastErrorX("unknown 32-bit RGB float data");
             return ERR_FAILED;
         }
 
