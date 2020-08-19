@@ -143,8 +143,10 @@ namespace astu {
     /////// FormatChunk
     /////////////////////////////////////////////////
 
+    const unsigned int FormatChunk::kDataSize = 16;
+
     FormatChunk::FormatChunk()
-        : RiffChunk("fmt ", DATA_SIZE)
+        : RiffChunk("fmt ", kDataSize)
         , audioFormat(AudioFormat::PCM)
         , numberOfChannels(1)
         , sampleRate(44100)
@@ -168,6 +170,9 @@ namespace astu {
 
     void FormatChunk::WriteBody(std::ostream& os) const
     {
+        if (GetDataSize() != 16) {
+            std::cout << "...:::FUCK:::..." << std::endl;
+        }
         Write2ByteUInt(os, static_cast<uint16_t>(audioFormat));
         Write2ByteUInt(os, static_cast<uint16_t>(numberOfChannels));
         Write4ByteUInt(os, static_cast<uint32_t>(sampleRate));
@@ -185,8 +190,8 @@ namespace astu {
         blockAlign = Read2ByteUInt(is);
         bitsPerSample = Read2ByteUInt(is);
         ValidateStream(is);
-        if (GetDataSize() > DATA_SIZE) {
-            is.seekg(GetDataSize() - DATA_SIZE, is.cur);
+        if (GetDataSize() > kDataSize) {
+            is.seekg(GetDataSize() - kDataSize, is.cur);
         }
     }
 

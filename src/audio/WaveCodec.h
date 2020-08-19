@@ -224,7 +224,7 @@ namespace astu {
 
     private:
         /** The expected data size of this chunk. */
-        unsigned int const DATA_SIZE = 16;
+        static const unsigned int kDataSize;
 
         /** Describes the audio format. */
         AudioFormat audioFormat;
