@@ -646,12 +646,31 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *numChann
  */
 float *ExtractChannel(float *data, int size, int numChannels, int channel, int *resultSize = nullptr);
 
+/**
+ * Interleaves data of two audio channels to one channel. 
+ * The two provided audio channels must contain the same number of audio samples.
+ *  
+ * @param ch1Data       the audio samples of the first audio channel
+ * @param ch2Data       the audio samples of the second audio channel
+ * @param size          the number of samples of both audio channels
+ * @param resultSize    receives the number of audio samples of the interleaved channels
+ * @return the interleaved audio data
+ */
 float *InterleaveChannels(float* ch1Data, float* ch2Data, int size, int *resultSize = nullptr);
 
+/**
+ * Converts the sample rate of audio data.
+ * 
+ * @param data          the audio samples to convert
+ * @param size          the number of audio samples
+ * @param srcRate       the source sampling rate of the audio samples
+ * @param dstRate       the destination sampling rate
+ * @param resultSize    receives the number of audio samples of converted data
+ * @return the audio data with the new sampling rate
+ */
 float *ConvertSampleRate(float *data, int size, int srcRate, int dstRate, int *resultSize = nullptr);
 
 /**@}*/
-
 
 /////////////////////////////////////////////////
 /////// Graphics Functions
