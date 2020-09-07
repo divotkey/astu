@@ -365,6 +365,29 @@ double AskDouble(const char* text = nullptr);
 /**@}*/
 
 /////////////////////////////////////////////////
+/////// File Functions
+/////////////////////////////////////////////////
+
+
+/**
+ * @defgroup File_group File I/O
+ * @brief A collection of functions dedicated to reading and writing files.
+ * @{
+ */
+
+int OpenFile(const char *filename, bool openForReading = true);
+const char* ReadString();
+double ReadDouble();
+int ReadInt();
+int CloseFile();
+char ReadChar();
+bool SkipLine();
+bool Readable();
+bool CompareString(const char* s1, const char* s2);
+
+/**@}*/
+
+/////////////////////////////////////////////////
 /////// Math Functions
 /////////////////////////////////////////////////
 
@@ -396,7 +419,7 @@ double ToDegrees(double rad);
  * This function will generate a random number using a 
  * pseudo random number generator.
  * 
- * The generated numbers are of type `double` an lie within the interval of
+ * The generated numbers are of type `double` and lie within the interval of
  * [minValue, maxValue).
  * 
  * *Note:* the notation for the interval *[minValue, maxValue)* means
@@ -424,6 +447,23 @@ double ToDegrees(double rad);
  * ```
  */
 double GetRandomDouble(double minValue = 0.0, double maxValue = 1.0);
+
+/**
+ * Returns a random number within the specified range.
+ * This function will generate a random number using a 
+ * pseudo random number generator.
+ * 
+ * The generated numbers are of type `int` and lie within the interval of
+ * [minValue, maxValue).
+ * 
+ * *Note:* the notation for the interval *[minValue, maxValue)* means
+ * that `minValue` is included but `maxValue` is not.
+ * 
+ * @param minValue  the minimum value
+ * @param maxValue  the minimum value
+ * @return the new random number
+ */
+int GetRandomInt(int minValue = 0, int maxValue = 32767);
 
 /**
  * Returns the given double value to the nearest integer.
@@ -484,6 +524,26 @@ double GetRandomDouble(double minValue = 0.0, double maxValue = 1.0);
  * part results in 18.
  */
 int RoundToInt(double value);
+
+/**
+ * Returns the greatest common divisor (gcd) of two numbers.
+ * Both number must be greater or equal to zero.
+ * 
+ * @param a the first number
+ * @param b the second number
+ * @param the gcd of the two numbers
+ */
+int GreatestCommonDivisor(int a, int b);
+
+/**
+ * Returns the lowest common multiple (lcm) of two numbers.
+ * Both number must be greater or equal to zero.
+ * 
+ * @param a the first number
+ * @param b the second number
+ * @param the lcm of the two numbers
+ */
+int LowestCommonMultiple(int a, int b);
 
 /**@}*/
 
@@ -693,8 +753,9 @@ float *ConvertSampleRate(float *data, int size, int srcRate, int dstRate, int *r
  * other functions within this module. Any image which might have 
  * been created or loaded before is deleted by calling this function.
  * 
- * @param w the width of the image
- * @param h the height of the image
+ * @param w the width of the image in pixel
+ * @param h the height of the image in pixel
+ * @return ErrorCode::NO_ERROR on success, the error code otherwise
  * 
  * **Example**
  * 
@@ -712,7 +773,26 @@ float *ConvertSampleRate(float *data, int size, int srcRate, int dstRate, int *r
  * }
  * ```
  */
-void CreateImage(int x, int y);
+int CreateImage(int w, int h);
+
+/**
+ * Clears the image using the current clear color.
+ */
+void ClearImage();
+
+/**
+ * Writes the current image data to a bitmap file.
+ * 
+ * @param filename  the filename of the image including the path
+ * @return ErrorCode::NO_ERROR on success, the error code otherwise
+ */
+int WriteImage(const char* filename);
+
+void SetDrawColor(int r, int g, int b, int a = 255);
+void SetClearColor(int r, int g, int b);
+
+void DrawLine(double x0, double y0, double x1, double y1, double w = 1);
+void DrawCircle(double x, double y, double r);
 
 /**@}*/
 
@@ -750,6 +830,12 @@ enum ErrorCode {
     /** A file could not be imported correctly. */
     UNABLE_TO_IMPORT_FILE,
 
+    /** The operation is not supported. */
+    NOT_SUPPORTED,
+
+    /** Custom error code set by application. */
+    APP_ERROR,
+
     /** The specified error code is unknown. */
     UNKNOWN_ERROR_CODE,
 };
@@ -776,11 +862,29 @@ void SetLastError(int errorCode);
 const char* GetErrorMessage(int errorCode);
 
 /**
+ * Convenient function which returns the error message of the last error.
+ * 
+ * Calling this method is equivalent to 
+ * 
+ * ```
+ * GetErrorMessage(GetLastError());
+ * ```
+ */
+const char* GetLastErrorMessage();
+
+/**
  * Returns the a more detailed error message of the last-error.
  * 
  * @return detailed error message or an empty string
  */
 const char* GetErrorDetails();
+
+/**
+ * Sets detailed error description.
+ * 
+ * @param text  the error description
+ */
+void SetErrorDetails(const char *text);
 
 /**@}*/
 

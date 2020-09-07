@@ -5,7 +5,9 @@
  * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+#include <limits>
 #include "Random.h"
+
 
 namespace astu {
 
@@ -22,6 +24,7 @@ namespace astu {
 
     Random::Random()
         : doubleDist(0, 1)
+        , intDist(0, std::numeric_limits<int>::max())
     {
         std::random_device rd;
         mt.seed(rd());
@@ -30,5 +33,10 @@ namespace astu {
     double Random::NextDouble()
     {
         return doubleDist(mt);
+    }
+
+    int Random::NextInt()
+    {
+        return intDist(mt);
     }
 }

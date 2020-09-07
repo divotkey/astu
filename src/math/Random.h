@@ -32,6 +32,13 @@ namespace astu {
          */
         double NextDouble();
 
+        /**
+         * Returns a random integer number within the range [0, INT_MAX].
+         * 
+         * @return the next random integer number.
+         */
+        int NextInt();
+
     private:
         /** The one and only instance of this singleton. */
         static std::unique_ptr<Random> theInstance;
@@ -41,6 +48,9 @@ namespace astu {
 
         /** The uniform distribution used to create random doubles. */
         std::uniform_real_distribution<double> doubleDist;
+
+        /** The uniform distribution used to create random integers. */
+        std::uniform_int_distribution<int> intDist;
 
 
         /////////////////////////////////////////////////

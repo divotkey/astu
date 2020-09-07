@@ -14,9 +14,14 @@
 #include <fstream>
 #include <chrono>
 #include <limits>
+#include <memory>
 
 #include "audio/WaveCodec.h"
 #include "audio/AudioBuffer.h"
+#include "gfx/Image.h"
+#include "gfx/BmpCodec.h"
+#include "gfx/Quadtree.h"
+#include "gfx/PatternRenderer.h"
 #include "math/Random.h"
 
 #include "AstUtilsConfig.h"
@@ -28,6 +33,7 @@ using namespace std;
 /////////////////////////////////////////////////
 /////// Constants
 /////////////////////////////////////////////////
+
 const double TO_RADIANS = M_PI / 180.0;
 const double TO_DEGREES = 180.0 / M_PI;
 const char* kErrorMessages[] = {
@@ -37,16 +43,32 @@ const char* kErrorMessages[] = {
     "Unable to open file for writing",
     "Unable to read file",
     "Unable to import file, invalid format?",
+    "The operation is not supported",
+    "Application error",
     "Invalid error code",
     };
 
 /////////////////////////////////////////////////
 /////// Globals
 /////////////////////////////////////////////////
+
 std::chrono::time_point<std::chrono::steady_clock> startTime;
 std::chrono::time_point<std::chrono::steady_clock> stopTime;
+
+std::unique_ptr<astu::Image> lvl0Image = std::make_unique<Image>(512, 512);
+std::shared_ptr<UnionPattern> rootPattern = std::make_shared<UnionPattern>();
+std::shared_ptr<Quadtree> quadTree = std::make_shared<Quadtree>(5, 5);
+std::unique_ptr<IPatternRenderer> patternRenderer = std::make_unique<AntiAlisaingPatternRenderer>();
+Color lvl0DrawColor(1, 1, 1);
+Color lvl0ClearColor(0, 0, 0);
+std::ifstream ifs;
+enum FileIoStatus {NoFile, InputFile, OutputFile};
+FileIoStatus fioStatus = NoFile;
+std::string tempString;
+
 int gLastError = ErrorCode::NO_ERROR;
 std::string gErrorDetails;
+
 
 /////////////////////////////////////////////////
 /////// Error functions
@@ -81,6 +103,12 @@ const char* GetErrorDetails()
 {
     return gErrorDetails.c_str();
 }
+
+void SetErrorDetails(const char *text)
+{
+    SetErrorDetails(std::string(text));
+}
+
 
 /////////////////////////////////////////////////
 /////// I/O Functions
@@ -130,8 +158,10 @@ void SayVersion() {
 
 void SayElapsedTime(const char* text)
 {
-    cout << text << " ";
-
+    if (text) {
+        cout << text << " ";
+    }
+    
     auto dt = chrono::duration_cast<chrono::milliseconds>(stopTime - startTime).count();
 
     if (dt == 0) {
@@ -214,9 +244,28 @@ double GetRandomDouble(double minValue, double maxValue)
     }
 }
 
+int GetRandomInt(int minValue, int maxValue)
+{
+    return minValue + static_cast<int>(Random::GetInstance().NextDouble() * (maxValue - minValue));
+}
+
 int RoundToInt(double value)
 {
     return static_cast<int>(value + 0.5);
+}
+
+int GreatestCommonDivisor(int a, int b)
+{
+    if (b == 0) {
+        return a;
+    }
+
+    return GreatestCommonDivisor(b, a % b);
+}
+
+int LowestCommonMultiple(int a, int b)
+{
+    return (a / GreatestCommonDivisor(a, b)) * b;
 }
 
 /////////////////////////////////////////////////
@@ -238,6 +287,7 @@ int GetMilliseconds()
     auto dt = chrono::duration_cast<chrono::milliseconds>(stopTime - startTime).count();
     return static_cast<int>(dt);
 }
+
 
 /////////////////////////////////////////////////
 /////// Audio Functions
@@ -303,6 +353,7 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
     if (!filename || !size || !sampleRate || !channels)
     {
         SetLastError(ErrorCode::INVALID_PARAMETER);
+        *size = 0; *sampleRate = 0; *channels = 0;
         return nullptr;
     }
 
@@ -311,6 +362,7 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
 
     if (!ifs.good()) {
         SetLastError(ErrorCode::UNABLE_TO_OPEN_FILE_FOR_READING);
+        *size = 0; *sampleRate = 0; *channels = 0;
         return nullptr;
     }
 
@@ -346,6 +398,8 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
         SetLastError(ErrorCode::UNABLE_TO_IMPORT_FILE);
         SetErrorDetails(e.what());
         ifs.close();
+
+        *size = 0; *sampleRate = 0; *channels = 0;
         return nullptr;
     }
 
@@ -418,6 +472,7 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
                 + std::to_string(formatChunk.GetAudioFormat()) + ")");
 
             ifs.close();
+            *size = 0; *sampleRate = 0; *channels = 0;
             return nullptr;
         }
 
@@ -428,6 +483,7 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
             + std::to_string(formatChunk.GetAudioFormat()) + ")");
 
         ifs.close();
+        *size = 0; *sampleRate = 0; *channels = 0;
         return nullptr;
     }
 
@@ -497,3 +553,212 @@ float *ConvertSampleRate(float *data, int size, int srcRate, int dstRate, int *r
 
     return result;
 }
+
+/////////////////////////////////////////////////
+/////// File Functions
+/////////////////////////////////////////////////
+
+
+
+int OpenFile(const char *filename, bool openForReading)
+{
+    if (fioStatus != FileIoStatus::NoFile) {
+        SetLastError(ErrorCode::NOT_SUPPORTED);
+        SetErrorDetails("Another file has already been opened.");
+        return GetLastError();
+    }
+
+    if (openForReading) {
+        ifs.open(filename, std::ios::in);
+        if (!ifs.good()) {
+            SetLastError(ErrorCode::UNABLE_TO_OPEN_FILE_FOR_READING);
+            SetErrorDetails(std::string("The file '") 
+                + filename + "' could not be opened for reading.");
+            return GetLastError();
+        }
+        fioStatus = FileIoStatus::InputFile;
+    } else {
+        SetLastError(ErrorCode::NOT_SUPPORTED);
+        SetErrorDetails("Opening files for writing is not supported yet.");
+        return GetLastError();
+    }
+
+    return ErrorCode::NO_ERROR;
+}
+
+
+int CloseFile()
+{
+    switch (fioStatus) {
+    case FileIoStatus::InputFile:
+        ifs.close();
+        return ErrorCode::NO_ERROR;
+
+    case FileIoStatus::OutputFile:
+        SetLastError(ErrorCode::NOT_SUPPORTED);
+        return GetLastError();
+
+    case FileIoStatus::NoFile:
+        SetLastError(ErrorCode::NOT_SUPPORTED);
+        SetErrorDetails("No file is currently open.");
+        return GetLastError();
+    }
+}
+
+bool Readable()
+{
+    return fioStatus == FileIoStatus::InputFile && ifs.good();
+}
+
+int ReadInt()
+{
+    if (fioStatus != FileIoStatus::InputFile) {
+        SetLastError(ErrorCode::NOT_SUPPORTED);
+        SetErrorDetails("No file has been opened for reading.");
+        return 0;
+    }
+
+    int result;
+    ifs >> result;
+
+    return result;
+}
+
+bool SkipLine()
+{
+    if (fioStatus != FileIoStatus::InputFile) {
+        SetLastError(ErrorCode::NOT_SUPPORTED);
+        SetErrorDetails("No file has been opened for reading.");
+        return 0;
+    }
+    
+    std::string line;
+    getline(ifs, line);
+}
+
+
+char ReadChar()
+{
+    if (fioStatus != FileIoStatus::InputFile) {
+        SetLastError(ErrorCode::NOT_SUPPORTED);
+        SetErrorDetails("No file has been opened for reading.");
+        return 0;
+    }
+
+    char result = ifs.get();
+    return result;
+}
+
+double ReadDouble()
+{
+    if (fioStatus != FileIoStatus::InputFile) {
+        SetLastError(ErrorCode::NOT_SUPPORTED);
+        SetErrorDetails("No file has been opened for reading.");
+        return 0;
+    }
+
+    double result;
+    ifs >> result;
+
+    return result;
+}
+
+const char* ReadString()
+{
+    tempString.clear();
+    if (fioStatus != FileIoStatus::InputFile) {
+        SetLastError(ErrorCode::NOT_SUPPORTED);
+        SetErrorDetails("No file has been opened for reading.");
+        tempString.clear();
+        return nullptr;
+    }
+
+    ifs >> tempString;
+
+    return tempString.c_str();
+}
+
+bool CompareString(const char* s1, const char* s2)
+{
+    return std::string(s1) == std::string(s2); 
+}
+
+
+/////////////////////////////////////////////////
+/////// Graphics Functions
+/////////////////////////////////////////////////
+
+int CreateImage(int w, int h)
+{
+    if (w <= 0 || h <= 0) {
+        SetLastError(ErrorCode::INVALID_PARAMETER);
+        SetErrorDetails("Vertical and horizontal resolution of an image must be greater zero.");
+        return GetLastError();
+    }
+
+    if (lvl0Image->GetWidth() != w || lvl0Image->GetHeight() != h) {
+        lvl0Image = std::make_unique<Image>(w, h);
+    }
+
+    ClearImage();
+
+    return ErrorCode::NO_ERROR;
+}
+
+void ClearImage()
+{
+    rootPattern->Clear();
+    rootPattern->Add(std::make_shared<UnicolorPattern>(lvl0ClearColor));
+    rootPattern->Add(quadTree);
+}
+
+void SetDrawColor(int r, int g, int b, int a)
+{
+    lvl0DrawColor.Set(r, g, b, a);
+}
+
+void SetClearColor(int r, int g, int b)
+{
+    lvl0ClearColor.Set(r, g, b);
+}
+
+void DrawLine(double x0, double y0, double x1, double y1, double w)
+{
+    Vector2 v(x1 - x0, y1 - y0);
+
+    double lng = v.Length();
+    if (lng <= 0 || w <= 0) {
+        return;
+    }
+
+    double a = v.Angle(Vector2(1, 0));
+
+    auto rect = std::make_shared<RectanglePattern>(lng, w);
+    rect->Translate((x1 + x0) / 2, (y1 + y0) / 2);
+    rect->Rotate(-a);
+    rect->SetPattern(std::make_shared<UnicolorPattern>(lvl0DrawColor));
+    quadTree->Add(rect);
+}
+
+void DrawCircle(double x, double y, double r) 
+{
+    if (r <= 0) {
+        return;
+    }
+    auto circle = std::make_shared<CirclePattern>(r);
+    circle->Translate(x, y);
+    circle->SetPattern(std::make_shared<UnicolorPattern>(lvl0DrawColor));
+    quadTree->Add(circle);
+}
+
+int WriteImage(const char* filename)
+{
+    quadTree->BuildTree();
+    patternRenderer->Render(*rootPattern, *lvl0Image);
+
+    BmpEncoder bmpEnc;
+    bmpEnc.Encode(*lvl0Image, filename);
+
+    return ErrorCode::NO_ERROR;
+}
+
