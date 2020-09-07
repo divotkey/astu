@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <string>
+#include <stdexcept>
 #include "AudioBuffer.h"
 
 namespace astu {
