@@ -80,7 +80,7 @@ namespace astu1 {
             rgbFloatDataMap[ptr] = fltData;
             return ptr;
         }
-        catch(std::bad_alloc& e) {
+        catch(std::bad_alloc&) {
             return nullptr;
         }
 

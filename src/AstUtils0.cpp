@@ -44,7 +44,8 @@ const char* kErrorMessages[] = {
     "Unable to read file",
     "Unable to import file, invalid format?",
     "The operation is not supported",
-    "Application error",
+    "The current state is invalid for this operation",
+    "Application error",    
     "Invalid error code",
     };
 
@@ -171,21 +172,21 @@ void SayElapsedTime(const char* text)
         return;
     }
 
-    int hr = dt / (1000 * 60 * 24);
+    int hr = static_cast<int>(dt / (1000 * 60 * 24));
     dt -= hr * (1000 * 60 * 24);
 
     if (hr > 0) {
         cout << hr << " hr ";
     }
 
-    int min = dt / (1000 * 60);
+    int min = static_cast<int>(dt / (1000 * 60));
     dt -= min * (1000 * 60);
 
     if (min > 0 || hr > 0) {
         cout << min << " min ";
     }
 
-    int sec = dt / 1000;
+    int sec = static_cast<int>(dt / 1000);
     dt -= sec * 1000;
 
     if (sec > 0 || hr > 0 || min > 0) {
@@ -431,7 +432,7 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
             int maxValue = -std::numeric_limits<int16_t>::min();
 
             const float kToFloat = -1.0f / std::numeric_limits<int16_t>::min();
-            for (unsigned int i = 0; i < *size; ++i) {
+            for (int i = 0; i < *size; ++i) {
                 data[i] = temp[i] * kToFloat;
                 assert(data[i] <= 1.0f || data[i] >= -1.0f);
             }
@@ -446,7 +447,7 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
             data = std::make_unique<float[]>(*size);
             const float kToFloat = 1.0f / 8388608;
 
-            for (unsigned int i = 0; i < *size; ++i) {
+            for (int i = 0; i < *size; ++i) {
                 data[i] = (temp[i * 3] << 8 | temp[i * 3 + 1] << 16 | temp[i * 3 + 2] << 24) / 2147483648.0f;
                 assert(data[i] <= 1.0f || data[i] >= -1.0f);
             }
@@ -461,7 +462,7 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
             data = std::make_unique<float[]>(*size);
 
             const float kToFloat = 2.0f / std::numeric_limits<uint8_t>::max();
-            for (unsigned int i = 0; i < *size; ++i) {
+            for (int i = 0; i < *size; ++i) {
                 data[i] = -1.0f + temp[i] * kToFloat;
                 assert(data[i] <= 1.0f || data[i] >= -1.0f);
             }
@@ -548,7 +549,7 @@ float *ConvertSampleRate(float *data, int size, int srcRate, int dstRate, int *r
     // double x = src.GetDuration();
     // double y = dt * n;
     for (size_t i = 0; i < n; ++i) {
-        result[i] = src.GetSample(i * dt);
+        result[i] = static_cast<float>(src.GetSample(i * dt));
     }
 
     return result;
@@ -602,6 +603,10 @@ int CloseFile()
         SetLastError(ErrorCode::NOT_SUPPORTED);
         SetErrorDetails("No file is currently open.");
         return GetLastError();
+
+    default:
+        SetLastError(ErrorCode::INVALID_STATE);
+        return GetLastError();
     }
 }
 
@@ -624,16 +629,17 @@ int ReadInt()
     return result;
 }
 
-bool SkipLine()
+int SkipLine()
 {
     if (fioStatus != FileIoStatus::InputFile) {
         SetLastError(ErrorCode::NOT_SUPPORTED);
         SetErrorDetails("No file has been opened for reading.");
-        return 0;
+        return GetLastError();
     }
     
     std::string line;
     getline(ifs, line);
+    return ErrorCode::NO_ERROR;
 }
 
 

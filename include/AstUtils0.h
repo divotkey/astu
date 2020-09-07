@@ -381,7 +381,7 @@ double ReadDouble();
 int ReadInt();
 int CloseFile();
 char ReadChar();
-bool SkipLine();
+int SkipLine();
 bool Readable();
 bool CompareString(const char* s1, const char* s2);
 
@@ -832,6 +832,9 @@ enum ErrorCode {
 
     /** The operation is not supported. */
     NOT_SUPPORTED,
+
+    /** The current state is invalid for this operation. */
+    INVALID_STATE,
 
     /** Custom error code set by application. */
     APP_ERROR,

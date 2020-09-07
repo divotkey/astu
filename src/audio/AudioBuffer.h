@@ -65,7 +65,7 @@ namespace astu {
          * @return the number of samples
          */
         unsigned int GetNumSamples() const {
-            return numSamples;
+            return static_cast<unsigned int>(numSamples);
         }
 
 		/**
