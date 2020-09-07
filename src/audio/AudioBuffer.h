@@ -9,9 +9,7 @@
 
 #include <memory>
 
-
 namespace astu {
-
 
     class AudioBuffer {
     public:
@@ -99,12 +97,11 @@ namespace astu {
         /** The number of samples stored in this buffer. */
         size_t numSamples;
 
-        /** Pointer to the sample data. */
-        float* samples;
-
         /** The sample data, owned by this buffer. */
         std::unique_ptr<float[]> mySamples;
 
+        /** Pointer to the sample data. */
+        float* samples;
 
         void validateSampleRate();
     };
