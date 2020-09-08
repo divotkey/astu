@@ -545,6 +545,14 @@ int GreatestCommonDivisor(int a, int b);
  */
 int LowestCommonMultiple(int a, int b);
 
+/**
+ * Randomly rearrange array of integers.
+ * 
+ * @param values    the array of integers to be shuffled
+ * @param numValues the number of integers
+ */
+void Shuffle(int *values, int numValues);
+
 /**@}*/
 
 /**

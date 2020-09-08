@@ -89,6 +89,11 @@ const char* GetErrorMessage(int errorCode)
     return kErrorMessages[errorCode];
 }
 
+const char* GetLastErrorMessage()
+{
+    return GetErrorMessage(GetLastError());
+}
+
 void SetLastError(int errorCode)
 {
     gLastError = errorCode;
@@ -268,6 +273,17 @@ int LowestCommonMultiple(int a, int b)
 {
     return (a / GreatestCommonDivisor(a, b)) * b;
 }
+
+void Shuffle(int *values, int numValues)
+{
+    for (int i = numValues - 1; i > 0; --i) {
+        int n = GetRandomInt(0, i + 1);
+        int tmp = values[i];
+        values[i] = values[n];
+        values[n] = tmp;
+    }           
+}
+
 
 /////////////////////////////////////////////////
 /////// Timer Functions

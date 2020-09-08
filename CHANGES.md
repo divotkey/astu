@@ -8,9 +8,9 @@
 # Version 0.3.0
 *Date: 2020-09-??*
 
-- Added GetRandomInt() function.
 - Improved error module.
-- Fixed some issues.
+- Added additional math functions.
+- Fixed some issues, e.g, compiler warnings and errors on macOS and Windows.
 
 # Version 0.2.0
 *Date: 2020-08-19*
