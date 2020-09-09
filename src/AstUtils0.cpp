@@ -100,6 +100,11 @@ void SetLastError(int errorCode)
     gErrorDetails.clear();
 }
 
+bool HasError()
+{
+    return GetLastError() != ErrorCode::NO_ERROR;
+}
+
 void SetErrorDetails(const std::string& detail)
 {
     gErrorDetails = detail;

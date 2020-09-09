@@ -125,6 +125,12 @@ namespace astu1 {
 
     }
 
+    int CreateImage(int width, int height)
+    {
+        images[++imageCounter] = std::make_unique<astu::Image>(width, height);
+        return imageCounter;
+    }
+
     int StoreImage(int hImg, const char *filename)
     {
         auto it = images.find(hImg);

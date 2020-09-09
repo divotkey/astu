@@ -866,6 +866,19 @@ int GetLastError();
 void SetLastError(int errorCode);
 
 /**
+ * Convenient function to test whether an error has occurred.
+ * 
+ * Calling this method is equivalent to expression
+ * 
+ * ```
+ * GetLastError() != ErrorCode::NO_ERROR
+ * ```
+ * 
+ * @return `true` if an error has occurred
+ */
+bool HasError();
+
+/**
  * Returns the error message for the specified error code.
  * 
  * @param errorCode the error code of the requested message

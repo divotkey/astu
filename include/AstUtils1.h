@@ -33,6 +33,15 @@ namespace astu1 {
     int StoreImage(int hImg, const char *filename);
 
     /**
+     * Creates a new image.
+     * 
+     * @param width the width of the image in pixels
+     * @param height    the height of the image in pixels
+     * @return the handle to the image, or 0 if the operation failed
+     */
+    int CreateImage(int width, int height);
+
+    /**
      * Removes an image from memory and invalidates its handle.
      * 
      * @param hImg  the handle of the image
