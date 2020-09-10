@@ -1,5 +1,5 @@
 # ASTU - AST Utilities
-*A collection of Utilities for Advanced Software Techniques (AST)*
+*A collection of utilities for Advanced Software Techniques (AST)*
 
 This library is intended to be used in combination with the lecture Advanced Software Technique (AST) from the course Media Technology and Design held at the University of Applied Sciences Upper Austria.
 
