@@ -226,8 +226,8 @@ void SayElapsedTime(const char* text = nullptr);
  *   int x;
  * 
  *   x = AskInt("Please enter a number:");
- *   Say("You have entered the following number");
- *   Say(x);
+ *   Say("You have entered the following number ", false);
+ *   SayInt(x);
  * 
  *   return 0;
  * }
@@ -235,8 +235,7 @@ void SayElapsedTime(const char* text = nullptr);
  * Possible output:
  * ```
  * Please enter a number: 42
- * You entered the following number
- * 42
+ * You entered the following number 42
  * ```
  * 
  * **Using the C++ Standard Library**
@@ -253,34 +252,11 @@ void SayElapsedTime(const char* text = nullptr);
  * 
  *   std::cout << "Please have enter a number: ";
  *   std::cin >> x;
- *   std::cout << "You have entered the following number" << std::endl;
- *   std::cout << x << std::endl;
+ *   std::cout << "You have entered the following number " << x << std::endl;
  * 
  *   return 0;
  * }
  * ```
- * 
- * Using C++ streams also offers the option to avoid unnecessary line breaks 
- * and to write code in a more compact form, especially when including the 
- * namespace form the C++ Standard Library to avoid writing `std`.
- * 
- * ```
- * #include <iostream>
- * 
- * using namespace std;
- * 
- * int main()
- * {
- *   int x;
- *   
- *   cout << "Please have enter a number: ";
- *   cin >> x;
- *   cout << "You have entered the number " << x << endl;
- * 
- *   return 0;
- * }
- * ```
- * 
  */
 int AskInt(const char* text = nullptr);
 
@@ -300,7 +276,7 @@ int AskInt(const char* text = nullptr);
  * 
  *   x = AskInt("Please enter a real number:");
  *   Say("You have entered the following number");
- *   Say(x);
+ *   SayDouble(x);
  * 
  *   return 0;
  * }
@@ -353,10 +329,64 @@ int AskInt(const char* text = nullptr);
  *   return 0;
  * }
  * ```
- * 
  */
 double AskDouble(const char* text = nullptr);
 
+/**
+ * Reads an float value from the standard input stream.
+ * 
+ * @param text   preceding text printed before the use input is collected
+ * @return the float value entered by the user
+ */
+float AskFloat(const char* text = nullptr);
+
+/**
+ * Reads a string from the standard input stream.
+ * 
+ * @param text   preceding text printed before the use input is collected
+ * @return the string entered by the user
+ * 
+ * **Example**
+ * ```
+ * #include <AstUtils.h>
+ * 
+ * void main()
+ * {
+ *   const char* name = AskString("Please enter your name:");
+ *   SayText("Your name is ", false);
+ *   SayText(name);
+ * 
+ *   return 0;
+ * }
+ * ```
+ * Possible output:
+ * ```
+ * Please enter a number: Batman
+ * Your name is Batman
+ * ```
+ * 
+ * **Using the C++ Standard Library**
+ * 
+ * The same result can be achieved without ASTU using the 
+ * stream-based input/output functionality of the C++ Standard Library.
+ * 
+ * ```
+ * #include <iostream>
+ * #include <string>
+ * 
+ * int main()
+ * {
+ *   std::string name;
+ * 
+ *   std::cout << "Please have enter your name: ";
+ *   std::getline(std::cin, name);
+ *   std::cout << "Your name is " << name << std::endl;
+ * 
+ *   return 0;
+ * }
+ * ```
+ */
+const char* AskString(const char* text = nullptr);
 
 // TODO implement ask bool.
 // bool AskBool(const char * text);
@@ -413,6 +443,53 @@ double ToRadians(double deg);
  * @return the angle in degrees
  */
 double ToDegrees(double rad);
+
+/**
+ * Returns the smaller of the given values. 
+ * 
+ * **Using plain C++ without the Standard Library or ASTU**
+ *  
+ * The same result can be achieved without ASTU using plain C++
+ * and the `<algorithm>` header.
+ * 
+ * ```cpp
+ * #include <iostream>
+ * #include <algorithm>
+ * 
+ * int main()
+ * {
+ *   int a = 42;
+ *   int b = 17;
+ *   int c = std::min(a, b);
+ *  
+ *   std::cout << "the minimum of " << a << " and " << b " is " << c << std::endl;
+ *   return 0;
+ * }
+ * ```
+ * 
+ * @param a the first value
+ * @param b the second value
+ * @return The smaller of a and b
+ */
+int Minimum(int a, int b);
+
+/**
+ * Returns the smaller of the given values. 
+ * 
+ * The same result can be achieved without ASTU using plain C++
+ * and the `<algorithm>` header by chaining
+ * `std::min()` like this:
+ *  
+ * ```cpp
+ * std::min(a, std::min(a, b))
+ * ```
+ *  
+ * @param a the first value
+ * @param b the second value
+ * @param c the third value
+ * @return the smaller of a, b and c
+ */
+int Minimum(int a, int b, int c);
 
 /**
  * Returns a random number within the specified range.
@@ -812,6 +889,73 @@ void DrawCircle(double x, double y, double r);
  * @defgroup error_group Error Handling
  * @brief This module is dedicated to error handling.
  * 
+ * @section intro_sect Introduction
+ * 
+ * This module offers a error handling concept which does not make use of C++
+ * exceptions and hence can be considered being old-syle. The basic concept 
+ * is that a function returns an error code which is in case of success equal
+ * to zero or the enum constant `NO_ERROR`. However, some functions return
+ * some kind of a result and cannot return an error code at the same time.
+ * The solution is that all functions which can possible fail assign an error
+ * code to a global hidden variable called `last_error`.
+ * Functions which can return an error code in some way do this additionally
+ * to the global error variable. 
+ * 
+ * The application can query this last-error by the use of the function
+ * `GetLastError` and translate the error code to a human 
+ * readable text message using the function `GetErrorMessage`.
+ * 
+ * @subsection usage_sect Example Usage
+ * Here is an example for the basic error handling idiom in case the used
+ * function returns an error code and the error condition
+ * is unrecoverable and the program has to terminate.
+ * 
+ * ```
+ * if ( DoSomethingWhichCanFail() != ErrorCode::NO_ERROR) {
+ * 
+ *   SayText( GetErrorMessage( GetLastError() ) );
+ * 
+ *   // TODO clean up e.g., free memory etc. and exit program
+ * }
+ * ```
+ * 
+ * Using the fact that error codes differ from zero and using the convenient
+ * methods like `GetLastErrorMessage()`, the code can be shortened to following 
+ * version.
+ * 
+ * ```
+ * if ( !DoSomethingWhichCanFail() ) {
+ * 
+ *   SayText( GetLastErrorMessage() );
+ * 
+ *   // TODO clean up e.g., free memory etc. and exit program
+ * }
+ * ```
+ * 
+ * In case the function to be used returns some kind of result, the idiom changes
+ * like this.
+ * 
+ * ```
+ * auto result = ReturnSomethingWhichCanFail();
+ * if ( GetLastError() != ErrorCode::NO_ERROR ) {
+ * 
+ *   SayText( GetLastErrorMessage() );
+ * 
+ *   // TODO clean up e.g., free memory etc. and exit program
+ * }
+ * ```
+ * 
+ * Here is a slightly shorter version using the convenient function `HasError()`.
+ * ```
+ * auto result = ReturnSomethingWhichCanFail();
+ * if ( HasError() ) {
+ * 
+ *   SayText( GetLastErrorMessage() );
+ * 
+ *   // TODO clean up e.g., free memory etc. and exit program
+ * }
+ * ```
+ * 
  * @{
  */
 
@@ -861,6 +1005,10 @@ int GetLastError();
 /**
  * Sets the last-error code.
  * 
+ * This function can be used to set an error code by the application.
+ * Custom error codes should be negative in order to be distinguishable 
+ * from error codes set by the library.
+ * 
  * @param errorCode the error code
  */
 void SetLastError(int errorCode);
@@ -891,7 +1039,7 @@ const char* GetErrorMessage(int errorCode);
  * Calling this method is equivalent to 
  * 
  * ```
- * GetErrorMessage(GetLastError());
+ * GetErrorMessage( GetLastError() );
  * ```
  */
 const char* GetLastErrorMessage();
@@ -899,12 +1047,17 @@ const char* GetLastErrorMessage();
 /**
  * Returns the a more detailed error message of the last-error.
  * 
+ * Note: not all operations offer a detailed error message in case
+ * of a problem and the returned string might be empty.
+ * 
  * @return detailed error message or an empty string
  */
 const char* GetErrorDetails();
 
 /**
  * Sets detailed error description.
+ * 
+ * This function can be used to set a detailed error description by the application.
  * 
  * @param text  the error description
  */

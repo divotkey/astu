@@ -7,8 +7,3 @@ This library is intended to be used in combination with the lecture Advanced Sof
 
 THIS LIBRARY IS PROVIDED AS EDUCATIONAL MATERIAL AND NOT INTENDED
 TO ADDRESS ALL REAL WORLD PROBLEMS AND ISSUES IN DETAIL.
-
-###  Version 1.0.0
-Release Date: 2020-08-10
-
-* Initial version.

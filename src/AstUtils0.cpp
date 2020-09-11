@@ -14,6 +14,7 @@
 #include <fstream>
 #include <chrono>
 #include <limits>
+#include <algorithm>
 #include <memory>
 
 #include "audio/WaveCodec.h"
@@ -66,6 +67,9 @@ std::ifstream ifs;
 enum FileIoStatus {NoFile, InputFile, OutputFile};
 FileIoStatus fioStatus = NoFile;
 std::string tempString;
+
+/** Stores input string read from standard input using AskString function. */
+std::vector<std::unique_ptr<std::string>> inputStrings;
 
 int gLastError = ErrorCode::NO_ERROR;
 std::string gErrorDetails;
@@ -231,6 +235,30 @@ double AskDouble(const char* text)
     return result;
 }
 
+float AskFloat(const char* text)
+{
+    float result;
+    if (text) {
+        cout << text << " ";
+    }
+    cin >> result;
+
+    return result;
+}
+
+const char* AskString(const char* text)
+{
+    if (text) {
+        cout << text << " ";
+    }
+
+    auto result = std::make_unique<std::string>();    
+    std::getline(cin, *result);
+    inputStrings.push_back(std::move(result));
+
+    return inputStrings.back()->c_str();
+}
+
 
 /////////////////////////////////////////////////
 /////// Math Functions
@@ -244,6 +272,16 @@ double ToRadians(double deg)
 double ToDegrees(double rad)
 {
     return rad * TO_DEGREES;
+}
+
+int Minimum(int a, int b)
+{
+    return std::min(a, b);
+}
+
+int Minimum(int a, int b, int c)
+{
+    return std::min(a, std::min(b, c));
 }
 
 double GetRandomDouble(double minValue, double maxValue)
