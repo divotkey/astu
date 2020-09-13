@@ -491,6 +491,9 @@ int Minimum(int a, int b);
  */
 int Minimum(int a, int b, int c);
 
+int Maximum(int a, int b);
+int Maximum(int a, int b, int c);
+
 /**
  * Returns a random number within the specified range.
  * This function will generate a random number using a 

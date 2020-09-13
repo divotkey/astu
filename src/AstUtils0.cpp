@@ -284,6 +284,16 @@ int Minimum(int a, int b, int c)
     return std::min(a, std::min(b, c));
 }
 
+int Maximum(int a, int b)
+{
+    return std::max(a, b);
+}
+
+int Maximum(int a, int b, int c)
+{
+    return std::max(a, std::max(b, c));
+}
+
 double GetRandomDouble(double minValue, double maxValue)
 {
     if (minValue == 0 && maxValue == 1) {
