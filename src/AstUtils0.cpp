@@ -213,6 +213,11 @@ void SayElapsedTime(const char* text)
     cout << endl;
 }
 
+void SkipInputLine()
+{
+    std::getline(cin, tempString);    
+}
+
 int AskInt(const char* text)
 {
     int result;
@@ -220,6 +225,10 @@ int AskInt(const char* text)
         cout << text << " ";
     }
     cin >> result;
+
+    // Skip the rest of the input line
+    // and especially eat 'newline' to make AskString work again.
+    SkipInputLine();
 
     return result;
 }
@@ -232,6 +241,10 @@ double AskDouble(const char* text)
     }
     cin >> result;
 
+    // Skip the rest of the input line
+    // and especially eat 'newline' to make AskString work again.
+    SkipInputLine();
+
     return result;
 }
 
@@ -242,6 +255,10 @@ float AskFloat(const char* text)
         cout << text << " ";
     }
     cin >> result;
+
+    // Skip the rest of the input line
+    // and especially eat 'newline' to make AskString work again.
+    SkipInputLine();
 
     return result;
 }
@@ -258,7 +275,6 @@ const char* AskString(const char* text)
 
     return inputStrings.back()->c_str();
 }
-
 
 /////////////////////////////////////////////////
 /////// Math Functions
@@ -380,7 +396,25 @@ int WriteAudio(const char * filename, float *data, int size, int sampleRate, int
     // Create file output stream.
     std::ofstream ofs(filename, std::ios::out | std::ios::binary);
     if (!ofs) {
-        return ErrorCode::UNABLE_TO_OPEN_FILE_FOR_WRITING;
+        SetLastError(ErrorCode::UNABLE_TO_OPEN_FILE_FOR_WRITING);
+        SetErrorDetails(std::string("The file '") 
+            + filename + "' could not be opened for writing");
+        return GetLastError();
+    }
+
+    if (channels < 0 || channels > std::numeric_limits<uint16_t>::max()) {
+        SetLastError(ErrorCode::INVALID_PARAMETER);
+        SetErrorDetails("The specified number of channels is invalid."
+            + std::string(" The channel parameter was set to ")
+            + std::to_string(channels) + ", the valid range is between 0 and " 
+            + std::to_string(std::numeric_limits<uint16_t>::max()) + ".");
+        return GetLastError();        
+    }
+
+    if (sampleRate < 0) {
+        SetLastError(ErrorCode::INVALID_PARAMETER);
+        SetErrorDetails("The specified sample rate is invalid.");
+        return GetLastError();        
     }
 
     FormatChunk formatChunk;

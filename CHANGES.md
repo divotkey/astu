@@ -8,9 +8,10 @@
 # Version 0.3.0
 *Date: 2020-09-??*
 
+- Fixed bug in ask functions causing `AskString` not to work after calling `AskInt` etc.
 - Improved error module.
 - Added additional math functions.
-- Fixed some issues, e.g, compiler warnings and errors on macOS and Windows.
+- Fixed some issues, e.g, compiler warnings and errors on macOS and Windows. 
 
 # Version 0.2.0
 *Date: 2020-08-19*
