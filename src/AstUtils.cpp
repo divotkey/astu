@@ -11,27 +11,12 @@
 #include <iostream>
 #include <chrono>
 #include <memory>
+#include <string>
 #include "math/Random.h"
-// #include "gfx/Image.h"
-// #include "gfx/BmpCodec.h"
-// #include "gfx/Pattern.h"
-// #include "gfx/PatternRenderer.h"
-// #include "gfx/Quadtree.h"
-// #include "gfx/Turtle.h"
 
 using namespace std;
 using namespace astu;
 
-// Globals
-// std::unique_ptr<astu::Image> image;
-// Color drawColor(1, 1, 1);
-// Color clearColor(0, 0, 0);
-
-// std::shared_ptr<UnionPattern> rootPattern = std::make_shared<UnionPattern>();
-// std::shared_ptr<Quadtree> quadTree = std::make_shared<Quadtree>(5, 5);
-// std::unique_ptr<IPatternRenderer> patternRenderer = std::make_unique<SimplePatternRenderer>();
-// std::unique_ptr<IPatternRenderer> patternRenderer = std::make_unique<AntiAlisaingPatternRenderer>();
-// Turtle turtle;
 
 /////////////////////////////////////////////////
 /////// Graphics functions

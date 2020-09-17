@@ -11,6 +11,18 @@ namespace astu {
     
     class Color {
     public:
+        // Color constants.
+        static const Color Black;
+        static const Color White;
+        static const Color Red;
+        static const Color Green;
+        static const Color Blue;
+
+        static const Color Gray;
+        static const Color Silver;
+        static const Color SlateGray;
+        static const Color LightGray;
+
         /** The red color component. */
         double r;
 

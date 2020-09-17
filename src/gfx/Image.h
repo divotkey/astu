@@ -9,7 +9,7 @@
 
 #include <memory>
 
-#include "gfx/Color.h"
+#include "Color.h"
 
 namespace astu {
 

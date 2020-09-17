@@ -5,8 +5,11 @@ project(ASTU VERSION 0.3.0)
 configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 set(CMAKE_CXX_STANDARD 17)
 
-add_library(astu    src/AstUtils.cpp 
+set(astulib_SOURCES )
+list(APPEND astulib_SOURCES
+                    src/AstUtils.cpp 
                     src/AstUtils0.cpp
+                    src/misc/VersionInfo.cpp
                     src/math/Random.cpp
                     src/gfx/Color.cpp 
                     src/gfx/Image.cpp 
@@ -21,6 +24,20 @@ add_library(astu    src/AstUtils.cpp
                     src/audio/WaveCodec.cpp
 
                     src/AstUtils1.cpp)
+
+set(WITH_SDL false CACHE BOOL "Use SDL")
+
+if(WITH_SDL)
+    list(APPEND astulib_SOURCES 
+        src/sdl/Application.cpp
+        src/sdl/ApplicationImpl.cpp)
+
+endif(WITH_SDL)                 
+
+add_library(astu ${astulib_SOURCES})
+if(WITH_SDL)
+    target_link_libraries(astu SDL2)
+endif(WITH_SDL)                 
 
 target_include_directories(
                         astu PRIVATE "${PROJECT_BINARY_DIR}"

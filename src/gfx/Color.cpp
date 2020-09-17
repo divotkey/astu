@@ -10,6 +10,19 @@
 
 namespace astu {
 
+    const Color Color::Black = CreateFromRgb(0x00, 0x00, 0x00, 0xff);
+    const Color Color::White = CreateFromRgb(0xff, 0xff, 0xff, 0xff);
+    const Color Color::Red = CreateFromRgb(0xff, 0x00, 0x00, 0xff);
+    const Color Color::Green = CreateFromRgb(0x00, 0x80, 0x00, 0xff);
+    const Color Color::Blue = CreateFromRgb(0x00, 0x00, 0xff, 0xff);
+
+    //Gray and black colors
+    const Color Color::Gray = CreateFromRgb(0x80, 0x80, 0x80, 0xff);
+    const Color Color::Silver = CreateFromRgb(0xC0, 0xC0, 0xC0, 0xff);
+    const Color Color::SlateGray = CreateFromRgb(0x70, 0x80, 0x90, 0xff);
+    const Color Color::LightGray = CreateFromRgb(0xd3, 0xd3, 0xd3, 0xff);
+    
+
     Color Color::CreateFromRgb(int red, int green, int blue, int alpha)
     {
         Color result;

@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <memory>
 
+#include "misc/VersionInfo.h"
 #include "audio/WaveCodec.h"
 #include "audio/AudioBuffer.h"
 #include "gfx/Image.h"
@@ -25,7 +26,6 @@
 #include "gfx/PatternRenderer.h"
 #include "math/Random.h"
 
-#include "AstUtilsConfig.h"
 #include "AstUtils0.h"
 
 using namespace astu;
@@ -161,14 +161,7 @@ void SayDouble(double value, bool eol)
 }
 
 void SayVersion() {
-
-    cout << "AST Utilities Version " 
-        << ASTU_VERSION_MAJOR << "." 
-        << ASTU_VERSION_MINOR << "."
-        << ASTU_VERSION_PATCH
-        << " (" << ((sizeof(void*) * 8)) << " bit address space)" 
-        << " [build: " << __DATE__ <<", " << __TIME__ << "]"
-        << endl;
+    cout << GetVersionInfo() << endl;
 }
 
 void SayElapsedTime(const char* text)
