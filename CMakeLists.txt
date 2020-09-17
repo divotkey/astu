@@ -35,13 +35,21 @@ if(WITH_SDL)
 endif(WITH_SDL)                 
 
 add_library(astu ${astulib_SOURCES})
+
+set(astulib_INCLUDES )
+list(APPEND astulib_INCLUDES
+        astu PRIVATE "${PROJECT_BINARY_DIR}"
+        astu PRIVATE "${PROJECT_SOURCE_DIR}/src"
+        astu PUBLIC ${PROJECT_SOURCE_DIR}/include)
+                    
 if(WITH_SDL)
-    target_link_libraries(astu SDL2)
+    IF (WIN32)
+        target_link_libraries(astu $ENV{SDL2_HOME}/lib/x64/SDL2.lib)
+        list(APPEND astulib_INCLUDES astu PRIVATE $ENV{SDL2_HOME})
+    ELSEIF()
+        target_link_libraries(astu SDL2)
+    ENDIF()
 endif(WITH_SDL)                 
 
-target_include_directories(
-                        astu PRIVATE "${PROJECT_BINARY_DIR}"
-                        astu PRIVATE "${PROJECT_SOURCE_DIR}/src"
-                        astu PUBLIC ${PROJECT_SOURCE_DIR}/include
-                        )
+target_include_directories(${astulib_INCLUDES})
 
