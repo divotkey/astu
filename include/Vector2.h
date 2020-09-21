@@ -17,7 +17,17 @@ namespace astu {
         double x;
         double y;
 
-        Vector2(double _x = 0, double _y = 0) : x(_x), y(_y) {}
+        static double Distance(const Vector2 &p1, const Vector2 &p2) {
+            return (p1 - p2).Length();
+        }
+
+        static double DistanceSquared(const Vector2 &p1, const Vector2 &p2) {
+            return (p1 - p2).LengthSquared();
+        }
+
+        Vector2() : x(0), y(0) {}
+
+        Vector2(double _x, double _y) : x(_x), y(_y) {}
 
         Vector2 & Set(double _x, double _y) {
             x = _x;
@@ -125,12 +135,12 @@ namespace astu {
             return *this;
         }
 
-        Vector2 operator/(double s)
+        Vector2 operator/(double s) const
         {
             return Vector2(x / s, y / s);
         }
 
-        Vector2 operator*(double s)
+        Vector2 operator*(double s) const
         {
             return Vector2(x * s, y * s);
         }

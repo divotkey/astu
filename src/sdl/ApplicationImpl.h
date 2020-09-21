@@ -8,8 +8,8 @@
 #pragma once
 
 #include <string>
-#include <SDL2/SDL.h>
 #include <functional>
+#include <SDL2/SDL.h>
 #include "Color.h"
 
 namespace astu {
@@ -43,8 +43,10 @@ namespace astu {
         Color GetDrawColor() const;
         void DrawRectangle(int x, int y, int w, int h, bool filled);
         void DrawLine(int x1, int y1, int x2, int y2);
+        void DrawPixel(int x, int y);
         void Clear();
-        void MoveVertical(int delta, bool clear);
+        void SetTitle(const std::string &title);
+        std::string GetTitle() const;
 
         void Run(std::function<void()> renderCallback);
 
@@ -58,6 +60,8 @@ namespace astu {
         }
 
         void ResetTime(double t);
+
+        double GetFps() const;
 
     private:
         /** The width used to initialize the window. */
@@ -96,6 +100,18 @@ namespace astu {
         /** The absolute time. */
         double time;
 
+        /** The average frames per second. */
+        double fpsSum;
+
+        /** Used to determine when the FPS should be updated. */
+        double fpsUpdate;
+
+        /** The average frames per second. */
+        double fps;
+
+        /** The number of frames since the last FPS update. */
+        unsigned int cntFrames;
+
 
         /**
          * Initializes SDL and prerequisites for the application.
@@ -121,6 +137,11 @@ namespace astu {
          * Updates elapsed time.
          */
         void UpdateTime();
+
+        /**
+         * Updates the FPS counter.
+         */
+        void UpdateFps();
 
     };
 

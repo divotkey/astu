@@ -7,7 +7,23 @@
 
 #pragma once
 
+#include "Color.h"
+#include "Image.h"
+
 namespace astu1 {
+
+    // Import some utility classes from main namespace.
+    using astu::Image;
+    using astu::Color;
+
+    /**
+     * Reads an image file.
+     * 
+     * @param filename the file name of the image including the path
+     */
+    // Image ReadImage(const char *filename);
+
+    // void WriteImage(const char *filename);
 
     /**
      * Retrieves the message text for the last-error.
@@ -64,6 +80,8 @@ namespace astu1 {
      * @return the width of the image or a negative error code on failure
      */ 
     int GetImageHeight(int hImg);
+
+    astu::Color GetPixel(int hImg, int x, int y);
 
     /**
      * Exports the image to 32-bit floating-point RGB values.

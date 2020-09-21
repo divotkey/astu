@@ -20,7 +20,7 @@
 #include "misc/VersionInfo.h"
 #include "audio/WaveCodec.h"
 #include "audio/AudioBuffer.h"
-#include "gfx/Image.h"
+#include "Image.h"
 #include "gfx/BmpCodec.h"
 #include "gfx/Quadtree.h"
 #include "gfx/PatternRenderer.h"
@@ -477,6 +477,7 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
         if (!FindChunk(ifs, formatChunk.GetFourCC())) {
             SetLastError(ErrorCode::UNABLE_TO_IMPORT_FILE);
             SetErrorDetails("Format chunk not found");
+            *size = 0; *sampleRate = 0; *channels = 0;
             ifs.close();
             return nullptr;
         }
@@ -486,6 +487,7 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
         if (!FindChunk(ifs, dataChunk.GetFourCC())) {
             SetLastError(ErrorCode::UNABLE_TO_IMPORT_FILE);
             SetErrorDetails("Data chunk not found");
+            *size = 0; *sampleRate = 0; *channels = 0;
             ifs.close();
             return nullptr;
         }

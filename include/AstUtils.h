@@ -13,6 +13,7 @@
 #pragma once
 
 #include "AstUtils0.h"
+#include "AstUtils1.h"
 
 // TODO move the following functions to API-Level 0 or remove entirely if not needed.
 

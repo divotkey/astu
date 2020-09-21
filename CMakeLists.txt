@@ -22,6 +22,7 @@ list(APPEND astulib_SOURCES
 
                     src/audio/AudioBuffer.cpp
                     src/audio/WaveCodec.cpp
+                    src/audio/AstAudio.cpp
 
                     src/AstUtils1.cpp)
 

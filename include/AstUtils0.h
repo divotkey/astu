@@ -774,7 +774,7 @@ int WriteAudio(const char * filename, float *data, int size, int sampleRate = 44
  * 
  * - Waveform Audio File Format (.wav)
  * 
- * @param filename      the file name including the path
+ * @param filename      the filename including the path
  * @param size          receives the number of floating point values (samples)
  * @param sampleRate    receives the sample rate
  * @param numChannels   receives the number of channels

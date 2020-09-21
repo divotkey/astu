@@ -9,7 +9,7 @@
 
 #include <memory>
 #include <vector>
-#include "math/Vector2.h"
+#include "Vector2.h"
 #include "math/Matrix3.h"
 #include "Color.h"
 #include "BoundingBox.h"

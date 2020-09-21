@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "math/Vector2.h"
+#include "Vector2.h"
 #include "math/Matrix3.h"
 
 namespace astu {

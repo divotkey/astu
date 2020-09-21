@@ -69,12 +69,17 @@ namespace astu {
 
     void Application::DrawRectangle(int x, int y, int w, int h, bool filled)
     {
-        return impl->DrawRectangle(x, y, w, h, filled);
+        impl->DrawRectangle(x, y, w, h, filled);
     }
 
     void Application::DrawLine(int x1, int y1, int x2, int y2)
     {
-        return impl->DrawLine(x1, y1, x2, y2);
+        impl->DrawLine(x1, y1, x2, y2);
+    }
+
+    void Application::DrawPixel(int x, int y)
+    {
+        impl->DrawPixel(x, y); 
     }
 
     void Application::Clear()
@@ -82,9 +87,19 @@ namespace astu {
         impl->Clear();
     }
 
-    void Application::MoveVertical(int delta, bool clear)
+    double Application::GetFps() const
     {
-        impl->MoveVertical(delta, clear);
+        return impl->GetFps();
+    }
+
+    void Application::SetTitle(const std::string & title)
+    {
+        impl->SetTitle(title);
+    }
+
+    std::string Application::GetTitle() const
+    {
+        return impl->GetTitle();
     }
 
     void Application::Run()

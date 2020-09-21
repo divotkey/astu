@@ -8,7 +8,7 @@
 #include <cassert>
 #include <map>
 #include <iostream>
-#include "gfx/Image.h"
+#include "Image.h"
 #include "gfx/BmpCodec.h"
 #include "AstUtils1.h"
 
@@ -20,7 +20,7 @@ namespace astu1 {
     };
 
 
-    /** The global storages for images, associated with handles. */
+    /** The global storage for images, associated with handles. */
     static std::map<int, std::unique_ptr<astu::Image>> images;
 
     /** Used to read BMP files. */
@@ -119,6 +119,7 @@ namespace astu1 {
             images[++imageCounter] = bmpDecoder.Decode(filename);
             return imageCounter;
         } catch (std::runtime_error & e) {
+            std::cerr << e.what() << std::endl;
             SetLastErrorX(e.what());
             return INVALID_HANDLE;
         }
@@ -181,6 +182,18 @@ namespace astu1 {
 
         return it->second->GetHeight();
     }
+
+    astu::Color GetPixel(int hImg, int x, int y)
+    {
+        auto it = images.find(hImg);
+        if (it == images.end()) {
+            SetLastErrorX("invalid image handle");
+            return ERR_FAILED;
+        }
+
+        return it->second->GetPixel(x, y);
+    }
+
 
     float* ExportRgbFloats(int hImg)
     {

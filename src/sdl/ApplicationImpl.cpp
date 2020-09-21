@@ -6,9 +6,12 @@
  */
 
 #include <stdexcept>
+#include <iostream>
 #include "misc/VersionInfo.h"
 #include "AstUtilsConfig.h"
 #include "ApplicationImpl.h"
+
+#define FPS_UPDATE_INTERVAL 1.0
 
 namespace astu {
 
@@ -27,6 +30,7 @@ namespace astu {
         , drawColor(kDefaultDrawColor)
         , deltaTime(0)
         , time(0)
+        , fps(0)
     {
         // Intentionally left empty.
     }
@@ -89,6 +93,11 @@ namespace astu {
         return drawColor;
     }    
 
+    double ApplicationImpl::GetFps() const
+    {
+        return fps;
+    }
+
     void ApplicationImpl::DrawRectangle(int x, int y, int w, int h, bool filled)
     {
         if (!renderer) {
@@ -121,6 +130,15 @@ namespace astu {
         }
     }
 
+    void ApplicationImpl::DrawPixel(int x, int y)    
+    {
+        if (!renderer) {
+            throw std::logic_error("Application not running");
+        }
+
+        SDL_RenderDrawPoint(renderer, x, y);
+    }
+
     void ApplicationImpl::Clear()
     {
         if (!renderer) {
@@ -143,13 +161,17 @@ namespace astu {
             SDL_ALPHA_OPAQUE);
     }
 
-    void ApplicationImpl::MoveVertical(int delta, bool clear)
+    void ApplicationImpl::SetTitle(const std::string &title)
     {
-        if (!renderer) {
-            throw std::logic_error("Application not running");
+        this->title = title;
+        if (window) {
+            SDL_SetWindowTitle(window, title.c_str());
         }
+    }
 
-        throw std::logic_error("Not implemented.");
+    std::string ApplicationImpl::GetTitle() const
+    {
+        return title;
     }
 
     void ApplicationImpl::Run(std::function<void()> renderCallback)
@@ -158,6 +180,7 @@ namespace astu {
         running = true;
         while (running) {
             UpdateTime();
+            UpdateFps();            
             ProcessEvents();
             Render(renderCallback);
         }
@@ -211,6 +234,10 @@ namespace astu {
 
         performToSeconds = 1.0 / SDL_GetPerformanceFrequency();
         performCnt = SDL_GetPerformanceCounter();
+
+        fpsSum = 0;
+        fpsUpdate = FPS_UPDATE_INTERVAL;
+        cntFrames = 0;
     }
 
     void ApplicationImpl::CleanUp()
@@ -238,9 +265,28 @@ namespace astu {
     {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT){
+            switch (event.type) {
+            case SDL_QUIT:
                 running = false;
-            } 
+                break;
+
+            case SDL_DROPTEXT:
+                std::cout << "drop text" << std::endl;
+                break;
+
+            case SDL_DROPBEGIN:
+                std::cout << "drop begin" << std::endl;
+                break;
+
+            case SDL_DROPCOMPLETE:
+                std::cout << "drop complete" << std::endl;
+                break;
+
+            case SDL_DROPFILE:
+                std::cout << "file dropped: '" << event.drop.file << "'" << std::endl;
+                SDL_free(event.drop.file);
+                break;
+            }
         } 
     }    
 
@@ -250,6 +296,19 @@ namespace astu {
         deltaTime = (now - performCnt) * performToSeconds;
         performCnt = now;
         time += deltaTime;
+    }
+
+    void ApplicationImpl::UpdateFps()
+    {
+        ++cntFrames;
+        fpsSum += deltaTime;
+        fpsUpdate -= deltaTime;
+        if (fpsUpdate <= 0) {
+            fps = cntFrames / fpsSum;
+            cntFrames = 0;
+            fpsSum = 0;
+            fpsUpdate = FPS_UPDATE_INTERVAL;
+        }
     }
 
 }

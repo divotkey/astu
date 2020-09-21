@@ -16,21 +16,16 @@ namespace astu {
         , height(h)
     {
         if (w <= 0) {
-            throw std::domain_error("image width must be greater zero, got " 
+            throw std::domain_error("Image width must be greater zero, got " 
                 + std::to_string(w));
         }
 
         if (h <= 0) {
-            throw std::domain_error("image height must be greater zero, got " 
+            throw std::domain_error("Image height must be greater zero, got " 
                 + std::to_string(h));
         }
 
         data = std::make_unique<Color[]>(width * height);
-    }
-
-    Image::~Image()
-    {
-        // Intentionally left empty.
     }
 
     const Color & Image::GetPixel(int x, int y) const
@@ -48,22 +43,22 @@ namespace astu {
     void Image::ValidateCoordinates(int x, int y) const
     {
         if (x >= width) {
-            throw std::domain_error("x coordinate exceeds image width, got " 
+            throw std::domain_error("The x-coordinate exceeds image width, got " 
                 + std::to_string(x));
         }
 
         if (x < 0) {
-            throw std::domain_error("x coordinate must be greater zero, got " 
+            throw std::domain_error("The x-coordinate must be greater zero, got " 
                 + std::to_string(x));
         }
 
         if (y >= height) {
-            throw std::domain_error("y coordinate exceeds image width, got " 
+            throw std::domain_error("The y-coordinate exceeds image width, got " 
                 + std::to_string(y));
         }
 
         if (y < 0) {
-            throw std::domain_error("y coordinate must be greater zero, got " 
+            throw std::domain_error("The y-coordinate must be greater zero, got " 
                 + std::to_string(y));
         }
     }

@@ -8,6 +8,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include "Color.h"
 
 namespace astu {
@@ -98,30 +99,25 @@ namespace astu {
         /**
          * Draws a line with the current draw color.
          * 
-         * @parm x1 the x-coordinate of the start point
-         * @parm y1 the y-coordinate of the start point
-         * @parm x2 the x-coordinate of the end point
-         * @parm y2 the y-coordinate of the end point
+         * @param x1 the x-coordinate of the start point
+         * @param y1 the y-coordinate of the start point
+         * @param x2 the x-coordinate of the end point
+         * @param y2 the y-coordinate of the end point
          */
         void DrawLine(int x1, int y1, int x2, int y2);
+
+        /**
+         * Draws a pixel with the current draw color.
+         * 
+         * @param x the x-coordinate of the start point
+         * @param y the y-coordinate of the start point
+         */
+        void DrawPixel(int x, int y);
 
         /**
          * Clears the canvas using the current clear color.
          */
         void Clear();
-
-        /**
-         * Moves the content of the graphical content vertical.
-         * If entire graphical content will be moved the specified number of
-         * pixels. If the number of pixels is positive, the content will be
-         * moved upwards. If the number of pixels is negative, the content 
-         * will be moved downwards.
-         * 
-         * @param delta the number of pixels to move the content
-         * @param clear determines whether the new empty spaced should be
-         *      cleared using the current background color 
-         */
-        void MoveVertical(int delta, bool clear = false);
 
         /**
          * Starts this application.
@@ -148,6 +144,27 @@ namespace astu {
          * @param t the absolute time in seconds
          */
         void ResetTime(double t = 0);
+
+        /**
+         * Returns the average frames per seconds (FPS).
+         * 
+         * @return the FPS in seconds
+         */
+        double GetFps() const;
+
+        /**
+         * Sets the title of the application window.
+         * 
+         * @param title the title of the window
+         */
+        void SetTitle(const std::string & title);
+
+        /**
+         * Returns the title of the application window.
+         * 
+         * @return the title of the application window
+         */
+        std::string GetTitle() const;
 
     protected:
 
