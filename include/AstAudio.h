@@ -16,9 +16,15 @@
 
 namespace astu {
 
-
     class AudioSamples {
     public:
+
+        /**
+         * Constructor.
+         * 
+         * @param 
+         */
+        AudioSamples(unsigned int sampleRate, unsigned int numChannels);
 
         /**
          * Returns the number of samples.
@@ -57,7 +63,7 @@ namespace astu {
          */
         unsigned int GetSampleRate() const;
 
-        std::vector<float> GetSamples();
+        std::vector<float> & GetSamples();
 
         const std::vector<float> & GetSamples() const;
 
@@ -73,5 +79,6 @@ namespace astu {
     };
 
     std::unique_ptr<AudioSamples> LoadAudio(const std::string & filename);
+    void StoreAudio(const AudioSamples & audio, const std::string & filename);
 
 };
