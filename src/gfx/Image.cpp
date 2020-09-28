@@ -11,6 +11,12 @@
 
 namespace astu {
 
+    // Note: the `ValidateIndex(...)` and `ValidateCoordinates(...)`
+    // are used to generate more detailed exception messages.
+    // An alternative would be to use the `at()` method of 
+    // std::vector, which would generate an out_of_range exception
+    // as well, but with less information.
+
     Image::Image(int w, int h)
         : width(w)
         , height(h)
@@ -25,7 +31,9 @@ namespace astu {
                 + std::to_string(h));
         }
 
-        data = std::make_unique<Color[]>(width * height);
+        // Resize vector of colors to hold the pixels
+        // and initializes the colors using black.
+        data.resize(width * height, Color::Black);
     }
 
     const Color & Image::GetPixel(int x, int y) const
@@ -40,26 +48,62 @@ namespace astu {
         data[y * width + x] = c;
     }
 
+    const Color & Image::GetPixel(size_t idx) const
+    {
+        ValidateIndex(idx);
+        return data[idx];
+    }
+
+    void Image::SetPixel(size_t idx, const Color & c)
+    {
+        ValidateIndex(idx);
+        data[idx] = c;
+    }
+
+    size_t Image::NumberOfPixels() const
+    {
+        return data.size();
+    }
+
+    Color* Image::GetPixels()
+    {
+        return data.data();
+    }
+
+    const Color* Image::GetPixels() const
+    {
+        return data.data();
+    }
+
     void Image::ValidateCoordinates(int x, int y) const
     {
         if (x >= width) {
-            throw std::domain_error("The x-coordinate exceeds image width, got " 
+            throw std::out_of_range("The x-coordinate exceeds image width, got " 
                 + std::to_string(x));
         }
 
         if (x < 0) {
-            throw std::domain_error("The x-coordinate must be greater zero, got " 
+            throw std::out_of_range("The x-coordinate must be greater zero, got " 
                 + std::to_string(x));
         }
 
         if (y >= height) {
-            throw std::domain_error("The y-coordinate exceeds image width, got " 
+            throw std::out_of_range("The y-coordinate exceeds image width, got " 
                 + std::to_string(y));
         }
 
         if (y < 0) {
-            throw std::domain_error("The y-coordinate must be greater zero, got " 
+            throw std::out_of_range("The y-coordinate must be greater zero, got " 
                 + std::to_string(y));
         }
     }
+
+    void Image::ValidateIndex(size_t idx) const
+    {
+        if (idx >= data.size()) {
+            throw std::out_of_range("The pixel index exceeds the number of pixels, got "
+                + std::to_string(idx));
+        }
+    }
+
 }

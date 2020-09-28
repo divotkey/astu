@@ -12,6 +12,8 @@
 - Improved error module.
 - Added additional math functions.
 - Fixed some issues, e.g, compiler warnings and errors on macOS and Windows. 
+- Started to work on full access level functions and classes.
+- Improved Image class.
 
 # Version 0.2.0
 *Date: 2020-08-19*

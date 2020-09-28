@@ -17,6 +17,7 @@ namespace astu {
         static const Color Red;
         static const Color Green;
         static const Color Blue;
+        static const Color Yellow;
 
         static const Color Gray;
         static const Color Silver;
@@ -67,6 +68,47 @@ namespace astu {
          */
         void Set(double red, double green, double blue, double alpha = 1);
 
+        /**
+         * Calculates the Euclidean in RGB color space.
+         * 
+         * @param o the other color
+         * @return the distance to the other color
+         */
+        double DistanceWithoutAlpha(const Color & o) const;
+
+        /**
+         * Calculates the Euclidean squared in RGB color space.
+         * 
+         * @param o the other color
+         * @return the distance to the other color
+         */
+        double DistanceSquaredWithoutAlpha(const Color & o) const;
+
+        /**
+         * Calculates the Euclidean in RGBA color space.
+         * 
+         * @param o the other color
+         * @return the distance to the other color
+         */
+        double Distance(const Color & o) const;
+
+        /**
+         * Calculates the Euclidean squared in RGBA color space.
+         * 
+         * @param o the other color
+         * @return the distance to the other color
+         */
+        double DistanceSquared(const Color & o) const;
+
+        /**
+         * Does a linear interpolation between this and the specified color.
+         * 
+         * @param o the other color
+         * @param t the interpolation position in the inerval [0, 1]
+         * @return  the new interpolated color
+         */
+        Color Lerp(const Color & o, double t) const;
+
         int GetARGB() const;
 
         /**
@@ -78,9 +120,20 @@ namespace astu {
 
         Color operator+(const Color & o) const;
         Color& operator+=(const Color & o);
+        Color operator-(const Color & o) const;
         Color operator*(double s) const;
         Color & operator*=(double s);
         Color operator/(double s) const;
         Color & operator/=(double s);
+
+		bool operator==(const Color& o) const {
+			return r == o.r && g == o.g && b == o.b && a == o.a;
+		}       
+
+        bool operator!=(const Color& o) const {
+            return !(*this == o);
+        }         
+
+        bool operator<(const Color & rhs) const;
     };
 }

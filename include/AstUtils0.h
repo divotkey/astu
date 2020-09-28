@@ -633,6 +633,49 @@ int LowestCommonMultiple(int a, int b);
  */
 void Shuffle(int *values, int numValues);
 
+/**
+ * Tests whether a certain bit is set within an integer.
+ * 
+ * **Using plain C++ without the Standard Library or ASTU**
+ * 
+ * Testing whether a certain bit is set can be achieved by bit shifting
+ * the value 1 (which has the first bit set and all others set to zero)
+ * to the left, according to the bit to test. This new value can now
+ * be processed with a bitwise AND operator (&) and the result
+ * will be something other than zero if the bit is set. The entire
+ * function could be implemented like this:
+ * 
+ * ```
+ * bool IsBitSet(int value, int bit)
+ * {
+ *   return value & (1 << bit);
+ * }
+ * ```
+ * 
+ * @param value the integer value to test
+ * @param bit   the n-th bit to test
+ * @return `true` if the bit is set
+ */
+bool IsBitSet(int value, int bit);
+
+/**
+ * Sets a certain bit within an integer value.
+ * 
+ * @param value the integer value
+ * @param bit   the n-th bit to set
+ * @return the modified value with the bit set
+ */
+int SetBit(int value, int bit);
+
+/**
+ * Clears a certain bit within an integer value.
+ * 
+ * @param value the integer value
+ * @param bit   the n-th bit to clear
+ * @return the modified integer value with the bit cleared
+ */
+int ClearBit(int value, int bit);
+
 /**@}*/
 
 /**

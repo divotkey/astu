@@ -41,6 +41,7 @@ namespace astu {
          *
          * @param image     the image to be encoded
          * @param filename  the filename including the file path
+         * @throws std::runtime_error in case of an I/O error
          */
         void Encode(const Image & image, const char * filename) const;
 

@@ -6,6 +6,7 @@
  */
 
 #include <cassert>
+#include <cmath>
 #include "Color.h"
 
 namespace astu {
@@ -15,6 +16,7 @@ namespace astu {
     const Color Color::Red = CreateFromRgb(0xff, 0x00, 0x00, 0xff);
     const Color Color::Green = CreateFromRgb(0x00, 0x80, 0x00, 0xff);
     const Color Color::Blue = CreateFromRgb(0x00, 0x00, 0xff, 0xff);
+    const Color Color::Yellow = CreateFromRgb(0xff, 0xff, 0x00, 0xff);
 
     //Gray and black colors
     const Color Color::Gray = CreateFromRgb(0x80, 0x80, 0x80, 0xff);
@@ -53,6 +55,26 @@ namespace astu {
         g = green;
         b = blue;
         a = alpha;
+    }
+
+    double Color::DistanceWithoutAlpha(const Color & o) const
+    {
+        return sqrt( DistanceSquaredWithoutAlpha(o) );
+    }
+
+    double Color::DistanceSquaredWithoutAlpha(const Color & o) const
+    {
+        return (r - o.r) * (r - o.r) + (g - o.g) * (g - o.g) + (b - o.b) * (b - o.b);
+    }
+
+    double Color::Distance(const Color & o) const
+    {
+        return sqrt( DistanceSquared(o) );        
+    }
+
+    double Color::DistanceSquared(const Color & o) const
+    {
+        return (r - o.r) * (r - o.r) + (g - o.g) * (g - o.g) + (b - o.b) * (b - o.b) + (a - o.a) * (a - o.a);
     }
 
     int Color::GetARGB() const
@@ -106,6 +128,12 @@ namespace astu {
         return *this;
     }
 
+    Color Color::Lerp(const Color & o, double t) const
+    {
+        return *this + (o - *this) * t;
+    }
+
+
     Color Color::operator+(const Color & o) const
     {
         return Color(r + o.r, g + o.g, b + o.b, a + o.a);
@@ -118,6 +146,11 @@ namespace astu {
         b += o.b;
         a += o.a;
         return *this;
+    }
+
+    Color Color::operator-(const Color & o) const
+    {
+        return Color(r - o.r, g - o.g, b - o.b, a - o.a);
     }
 
     Color Color::operator*(double s) const
@@ -147,4 +180,12 @@ namespace astu {
         a /= s;
         return *this;
     }    
+
+    bool Color::operator<(const Color & rhs) const
+    {
+        double lng1 = sqrt(r * r + g * g + b * b + a * a);
+        double lng2 = sqrt(rhs.r * rhs.r + rhs.g * rhs.g + rhs.b * rhs.b + rhs.a * rhs.a);
+        return lng1 < lng2;
+    }
+
 }

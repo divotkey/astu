@@ -346,6 +346,20 @@ void Shuffle(int *values, int numValues)
     }           
 }
 
+bool IsBitSet(int value, int bit)
+{
+   return value & (1 << bit);
+}
+
+int SetBit(int value, int bit)
+{
+    return value | (1 << bit);
+}
+
+int ClearBit(int value, int bit)
+{
+    return value & ~(1 << bit);
+}
 
 /////////////////////////////////////////////////
 /////// Timer Functions

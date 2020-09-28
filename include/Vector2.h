@@ -14,7 +14,10 @@ namespace astu {
 
     class Vector2 {
     public:
+        /** The x-coordinate of this vector. */
         double x;
+
+        /** The y-coordinate of this vector. */
         double y;
 
         static double Distance(const Vector2 &p1, const Vector2 &p2) {

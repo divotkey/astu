@@ -7,8 +7,7 @@
 
 #pragma once
 
-#include <memory>
-
+#include <vector>
 #include "Color.h"
 
 namespace astu {
@@ -17,7 +16,7 @@ namespace astu {
      * This class represents an image where each individual pixel is
      * represented as instances of the class Color. The Color class
      * represents a pixel as RGBA (red, green, blue and alpha channel)
-     * floating-point component.
+     * floating-point components.
      * 
      * Representing an image this way offers a convenient and straightforward
      * way and maintains high color precision. However, memory consumption and
@@ -55,12 +54,21 @@ namespace astu {
         }
 
         /**
+         * Returns the aspect ratio of this image.
+         * 
+         * @return the aspect ratio
+         */
+        double GetAspectRatio() const {
+            return static_cast<double>(width) / height;
+        }
+
+        /**
          * Returns the color of a pixel.
          * 
          * @param x the x-coordinate of the pixel
          * @param y the y-coordinate of the pixel
          * @return the color at the specified location
-         * @throws std::domain_error in case the coordinates are invalid
+         * @throws std::out_of_range in case the coordinates are invalid
          */
         const Color & GetPixel(int x, int y) const;
 
@@ -69,10 +77,54 @@ namespace astu {
          * 
          * @param x the x-coordinate of the pixel
          * @param y the y-coordinate of the pixel
-         * @param c the color
-         * @throws std::domain_error in case the coordinates are invalid
+         * @param c the new color
+         * @throws std::out_of_range in case the coordinates are invalid
          */
         void SetPixel(int x, int y, const Color & c);
+
+        /**
+         * Returns the color of a pixel.
+         * 
+         * @param idx   the linear index of the pixel
+         * @return the color of the pixel at the specified location
+         * @throws std::out_of_range in case the index is invalid
+         */
+        const Color & GetPixel(size_t idx) const;
+
+        /**
+         * Sets the color of a pixel.
+         * 
+         * @param idx   the linear index of the pixel
+         * @param c     the new color of the pixel at the specified location
+         * @throws std::out_of_range in case the index is invalid
+         */
+        void SetPixel(size_t idx, const Color & c);
+
+        /**
+         * Returns the number of pixels of this image.
+         * 
+         * The number of pixels equals width times height of this image.
+         * 
+         * @return the number of pixels
+         */
+        size_t NumberOfPixels() const;
+
+        /**
+         * This method provides raw access to the pixel colors, use with care.
+         * 
+         * @return pointer to the linear array of pixel colors
+         */
+        Color* GetPixels();
+
+        /**
+         * This method provides raw access to the pixel colors, use with care.
+         * 
+         * This version returns a const pointer to the array and does not allow
+         * the modify the color values.
+         * 
+         * @return pointer to the linear array of pixel colors
+         */
+        const Color* GetPixels() const;
 
     private:
         /** The width of the image in pixel. */
@@ -81,8 +133,8 @@ namespace astu {
         /** The height of the image in pixel. */
         int height;
 
-        /** The image data, stored as linear array of colors. */
-        std::unique_ptr<Color[]> data;
+        /** The image data, stored as linear vector of Color instances. */
+        std::vector<Color> data;
 
         /**
          * Validates pixel coordinates.
@@ -92,9 +144,17 @@ namespace astu {
          * 
          * @param x the x-coordinate to validate
          * @param y the y-coordinate to validate
-         * @throws std::domain_error in case the coordinates are invalid
+         * @throws std::out_of_range in case the coordinates are invalid
          */
         void ValidateCoordinates(int x, int y) const;
+
+        /**
+         * Validates the pixel index.
+         * 
+         * @param idx   the index to validate
+         * @throws std::out_of_range in case the index is invalid
+         */
+        void ValidateIndex(size_t idx) const;
     };
 
 }

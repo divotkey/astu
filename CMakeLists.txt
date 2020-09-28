@@ -11,7 +11,11 @@ list(APPEND astulib_SOURCES
                     src/AstUtils0.cpp
                     src/misc/VersionInfo.cpp
                     src/math/Random.cpp
+
+                    src/gfx/AstGraphics.cpp
+
                     src/gfx/Color.cpp 
+                    src/gfx/Palette.cpp
                     src/gfx/Image.cpp 
                     src/gfx/BmpCodec.cpp
                     src/gfx/Pattern.cpp
@@ -19,6 +23,8 @@ list(APPEND astulib_SOURCES
                     src/gfx/Quadtree.cpp
                     src/gfx/PatternRenderer.cpp
                     src/gfx/Turtle.cpp
+
+                    src/io/AstIO.cpp
 
                     src/audio/AudioBuffer.cpp
                     src/audio/WaveCodec.cpp
