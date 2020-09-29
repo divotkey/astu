@@ -9,27 +9,11 @@
 #include <cmath>
 #include "Color.h"
 
-namespace astu {
-
-    const Color Color::Black = CreateFromRgb(0x00, 0x00, 0x00, 0xff);
-    const Color Color::White = CreateFromRgb(0xff, 0xff, 0xff, 0xff);
-    const Color Color::Red = CreateFromRgb(0xff, 0x00, 0x00, 0xff);
-    const Color Color::Green = CreateFromRgb(0x00, 0x80, 0x00, 0xff);
-    const Color Color::Blue = CreateFromRgb(0x00, 0x00, 0xff, 0xff);
-    const Color Color::Yellow = CreateFromRgb(0xff, 0xff, 0x00, 0xff);
-
-    //Gray and black colors
-    const Color Color::Gray = CreateFromRgb(0x80, 0x80, 0x80, 0xff);
-    const Color Color::Silver = CreateFromRgb(0xC0, 0xC0, 0xC0, 0xff);
-    const Color Color::SlateGray = CreateFromRgb(0x70, 0x80, 0x90, 0xff);
-    const Color Color::LightGray = CreateFromRgb(0xd3, 0xd3, 0xd3, 0xff);
-    
+namespace astu {    
 
     Color Color::CreateFromRgb(int red, int green, int blue, int alpha)
     {
-        Color result;
-        result.Set(red, green, blue, alpha);
-        return result;
+        return Color(red / 255.0, green / 255.0, blue / 255.0, alpha / 255.0);
     }
 
     Color::Color(double red, double green, double blue, double alpha)
@@ -41,13 +25,18 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    void Color::Set(int red, int green, int blue, int alpha)
+    Color::Color(int rgb)
     {
-        r = red / 255.0;
-        g = green / 255.0;
-        b = blue / 255.0;
-        a = alpha / 255.0;
+        *this = CreateFromRgb((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
     }
+
+    // void Color::Set(int red, int green, int blue, int alpha)
+    // {
+    //     r = red / 255.0;
+    //     g = green / 255.0;
+    //     b = blue / 255.0;
+    //     a = alpha / 255.0;
+    // }
 
     void Color::Set(double red, double green, double blue, double alpha)
     {
@@ -153,6 +142,15 @@ namespace astu {
         return Color(r - o.r, g - o.g, b - o.b, a - o.a);
     }
 
+    Color& Color::operator-=(const Color & o)
+    {
+        r -= o.r;
+        g -= o.g;
+        b -= o.b;
+        a -= o.a;
+        return *this;
+    }
+
     Color Color::operator*(double s) const
     {
         return Color(r * s, g * s, b * s, a * s);
@@ -183,9 +181,21 @@ namespace astu {
 
     bool Color::operator<(const Color & rhs) const
     {
+        //XXX this implementation is slow, improvement required.
         double lng1 = sqrt(r * r + g * g + b * b + a * a);
         double lng2 = sqrt(rhs.r * rhs.r + rhs.g * rhs.g + rhs.b * rhs.b + rhs.a * rhs.a);
         return lng1 < lng2;
     }
 
+    bool Color::operator==(const Color& o) const
+    {
+        return r == o.r && g == o.g && b == o.b && a == o.a;
+    }
+
+} // end of namespace
+
+std::ostream& operator<<(std::ostream& os, const astu::Color& c)
+{
+    os << '{' << c.r << ", " << c.g << ", " << c.b << ", " << c.a << '}';
+    return os;
 }

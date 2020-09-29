@@ -22,6 +22,8 @@ namespace astu {
      * way and maintains high color precision. However, memory consumption and
      * performance might suffer. This class is preferably used for image 
      * synthesis and analysis.
+     * 
+     * @ingroup gfx_group
      */
     class Image final {
     public:

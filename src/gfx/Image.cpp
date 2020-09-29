@@ -33,7 +33,7 @@ namespace astu {
 
         // Resize vector of colors to hold the pixels
         // and initializes the colors using black.
-        data.resize(width * height, Color::Black);
+        data.resize(width * height, WebColors::Black);
     }
 
     const Color & Image::GetPixel(int x, int y) const

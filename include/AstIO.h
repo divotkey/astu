@@ -3,11 +3,6 @@
  * A collection of Utilities for Advanced Software Techniques (AST).
  * 
  * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
- * 
- *----------------------------------------------------------------------------
- * Meanings of ASTU: Slightly melted butter (Hinduism / Religious Law), 
- * Let it be / Be it so (Sanskrit), City (Ancient Greek)
- *----------------------------------------------------------------------------
  */
 
 #pragma once
@@ -15,6 +10,11 @@
 #include <string>
 
 namespace astu {
+
+    /**
+     * @file
+     * @brief This file defines public functions offered by the I/O module of AST utilities.
+     */
 
     /**
      * Removes all remaining characters from standard input until new line is detected.

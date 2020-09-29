@@ -26,6 +26,12 @@
 namespace astu {
 
     /**
+     * @defgroup gfx_group Graphics
+     * @brief This module contains classes and functions dedicated to graphics.
+     * @{
+     */
+
+    /**
      * Stores an image as BMP file.
      * 
      * @param image     the the image to be stored
@@ -42,5 +48,7 @@ namespace astu {
      * @throws std::runtime_error in case of an I/O error
      */
     std::unique_ptr<Image> LoadImage(const std::string & filename);
+
+/**@}*/
 
 } // namespace astu

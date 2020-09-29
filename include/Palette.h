@@ -21,7 +21,7 @@ namespace astu {
          * @param start the start color of this palette
          * @param end   the end color of thsi palette
          */
-        Palette(const Color & start = Color::Black, const Color & end = Color::White);
+        Palette(const Color & start = WebColors::Black, const Color & end = WebColors::Black);
 
         /**
          * Sets the start color of this palette.
