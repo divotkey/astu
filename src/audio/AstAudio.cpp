@@ -216,7 +216,7 @@ namespace astu {
         formatChunk.SetSampleRate(static_cast<unsigned int>(audio.GetSampleRate()));
         formatChunk.Update();
 
-        DataChunk dataChunk(audio.NumOfSamples() * sizeof(float));
+        DataChunk dataChunk(audio.NumOfSamples() * static_cast<unsigned int>(sizeof(float)));
 
         WaveChunk waveChunk(formatChunk.GetSize() + dataChunk.GetSize());
         waveChunk.Write(ofs);
