@@ -54,7 +54,9 @@ namespace astu {
 
     Color Palette::GetColor(double t)
     {
-        t = std::clamp(t, 0.0, 1.0);
+        t = (t < 0.0) ? 0.0 : (1.0 < t) ? 1.0 : t;
+
+        // t = std::clamp(t, 0.0, 1.0);
 
         const Entry *e1, *e2;
         FindBoundaries(t, e1, e2);
