@@ -27,7 +27,8 @@ void BaseService::startup()
     if (isRunning()) {
         throw std::logic_error("Service " + GetName() + " already running");
     }
-    onStartup();    
+    onStartup();
+    running = true;
 }
 
 void BaseService::shutdown()
@@ -35,6 +36,7 @@ void BaseService::shutdown()
     // Best practice: ignore shut down calls on not-running services.
     if (isRunning()) {
         onShutdown();        
+        running = false;
     }
 }
 
