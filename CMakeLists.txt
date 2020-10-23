@@ -47,7 +47,7 @@ add_library(astu ${astulib_SOURCES})
 
 set(astulib_INCLUDES )
 list(APPEND astulib_INCLUDES
-        astu PRIVATE "${PROJECT_BINARY_DIR}"
+        astu PRIVATE "${PROJECT_BINARY_DIR}" 
         astu PRIVATE "${PROJECT_SOURCE_DIR}/src"
         astu PUBLIC ${PROJECT_SOURCE_DIR}/include)
                     
