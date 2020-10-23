@@ -1,13 +1,10 @@
 # Version History {#CHANGES}
 
-# Version 1.0.0 
-*Date: 2020-10-01*
-
-- Initial public release.
 
 # Version 0.3.0
-*Date: 2020-09-??*
+*Date: 2020-10-21*
 
+- Initial public release.
 - Fixed bug in ask functions causing `AskString` not to work after calling `AskInt` etc.
 - Improved error module.
 - Added additional math functions.
