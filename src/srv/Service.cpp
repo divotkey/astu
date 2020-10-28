@@ -22,25 +22,25 @@ const std::string & BaseService::GetName() const
     return name;
 }
 
-void BaseService::startup()
+void BaseService::Startup()
 {
-    if (isRunning()) {
+    if (IsRunning()) {
         throw std::logic_error("Service " + GetName() + " already running");
     }
-    onStartup();
+    OnStartup();
     running = true;
 }
 
-void BaseService::shutdown()
+void BaseService::Shutdown()
 {
     // Best practice: ignore shut down calls on not-running services.
-    if (isRunning()) {
-        onShutdown();        
+    if (IsRunning()) {
+        OnShutdown();        
         running = false;
     }
 }
 
-bool BaseService::isRunning() const
+bool BaseService::IsRunning() const
 {
     return running;
 }

@@ -30,7 +30,9 @@ list(APPEND astulib_SOURCES
                     src/audio/WaveCodec.cpp
                     src/audio/AstAudio.cpp
 
+                    src/srv/ServiceManager.cpp
                     src/srv/Service.cpp
+                    src/srv/UpdateService.cpp
 
                     src/AstUtils1.cpp)
 
@@ -39,7 +41,11 @@ set(WITH_SDL false CACHE BOOL "Use SDL")
 if(WITH_SDL)
     list(APPEND astulib_SOURCES 
         src/sdl/Application.cpp
-        src/sdl/ApplicationImpl.cpp)
+        src/sdl/ApplicationImpl.cpp
+        
+        src/sdl/SdlService.cpp
+        src/sdl/SdlEventService.cpp
+        )
 
 endif(WITH_SDL)                 
 
