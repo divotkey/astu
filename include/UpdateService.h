@@ -67,22 +67,30 @@ namespace astu {
         bool HasUpdatable(std::shared_ptr<IUpdatable> updatable);
 
         /***
-         * Updates all registered updatalbes.
+         * Updates all registered updatables.
          */
-        void Update();
+        void UpdateAll();
 
     private:
         /** The list of updatables this service is managin. */
         std::vector<std::shared_ptr<IUpdatable>> updatables;
     };
 
-    class UpdatableBaseService : public IUpdatable {
+    class UpdatableBaseService 
+        : public BaseService
+        , public IUpdatable
+        , public std::enable_shared_from_this<UpdatableBaseService> 
+    {
     public:
 
         /**
          * Constructor.
          */
-        UpdateService();
+        UpdatableBaseService(const std::string & name = DEFAULT_NAME);
+
+        // // Inherited via BaseService/IService
+        virtual void Startup() override;
+        virtual void Shutdown() override;
 
     private:
     };

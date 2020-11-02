@@ -6,6 +6,7 @@
  */
 
 #include <algorithm>
+#include "ServiceManager.h"
 #include "UpdateService.h"
 
 namespace astu {
@@ -42,11 +43,29 @@ namespace astu {
         return std::find(updatables.begin(), updatables.end(), updatable) != updatables.end();       
     }
 
-    void UpdateService::Update()
+    void UpdateService::UpdateAll()
     {
         for (auto & updatable : updatables) {
             updatable->OnUpdate();
         }
+    }
+
+    UpdatableBaseService::UpdatableBaseService(const std::string & name)
+        : BaseService(name)
+    {
+        // Intentionally left empty.        
+    }
+
+    void UpdatableBaseService::Startup() {
+        auto & upsrv = ServiceManager::GetInstance().GetService<UpdateService>();
+        upsrv.AddUpdatable(shared_from_this());
+        BaseService::Startup();
+    }
+
+    void UpdatableBaseService::Shutdown() {
+        BaseService::Shutdown();
+        auto & upsrv = ServiceManager::GetInstance().GetService<UpdateService>();
+        upsrv.RemoveUpdatable(shared_from_this());
     }
 
 }

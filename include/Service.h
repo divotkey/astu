@@ -11,6 +11,9 @@
 
 namespace astu {
 
+    // Forward declaration.
+    class ServiceManager;
+
     /**
      * Interface for services.
      */
@@ -55,13 +58,16 @@ namespace astu {
     class BaseService : public IService {
     public:
 
+        /** Default name for services. */
+        static const std::string & DEFAULT_NAME;
+
         /**
          * Constructor.
          */
-        BaseService(const std::string & name = "NO NAME");
+        BaseService(const std::string & name = DEFAULT_NAME);
 
         // Inherited via IService
-        virtual const std::string & GetName() const override;
+        virtual const std::string & GetName() const final override;
         virtual void Startup() override;
         virtual void Shutdown() override;
         virtual bool IsRunning() const override;
@@ -77,6 +83,11 @@ namespace astu {
          * Called by this base class on shutdown.
          */
         virtual void OnShutdown() {}
+
+
+        ServiceManager & GetSM();
+
+
 
     private:
         /** The name of this service. */
