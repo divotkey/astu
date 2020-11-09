@@ -11,6 +11,9 @@
 
 namespace astu {
 
+    // Forward declaration.
+    class ServiceManager;
+
     /**
      * Interface for services.
      */
@@ -34,7 +37,7 @@ namespace astu {
          * 
          * @throws std::logic_error in case this service is already running
          */
-        virtual void startup() = 0;
+        virtual void Startup() = 0;
 
         /**
          * Stops this service.
@@ -42,41 +45,49 @@ namespace astu {
          * In case this service is currently not running, calling this method
          * has no effect.
          */
-        virtual void shutdown() = 0;
+        virtual void Shutdown() = 0;
 
         /**
          * Returns `true` if this service is running.
          * 
          * @return `true` if this service is running
          */
-        virtual bool isRunning() const = 0;
+        virtual bool IsRunning() const = 0;
     };
 
     class BaseService : public IService {
     public:
 
+        /** Default name for services. */
+        static const std::string & DEFAULT_NAME;
+
         /**
          * Constructor.
          */
-        BaseService(const std::string & name = "NO NAME");
+        BaseService(const std::string & name = DEFAULT_NAME);
 
         // Inherited via IService
-        virtual const std::string & GetName() const override;
-        virtual void startup() override;
-        virtual void shutdown() override;
-        virtual bool isRunning() const override;
+        virtual const std::string & GetName() const final override;
+        virtual void Startup() override;
+        virtual void Shutdown() override;
+        virtual bool IsRunning() const override;
 
     protected:
 
         /**
          * Called by this base class on startup.
          */
-        virtual void onStartup() {}
+        virtual void OnStartup() {}
 
         /**
          * Called by this base class on shutdown.
          */
-        virtual void onShutdown() {}
+        virtual void OnShutdown() {}
+
+
+        ServiceManager & GetSM();
+
+
 
     private:
         /** The name of this service. */

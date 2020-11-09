@@ -10,40 +10,42 @@
 
 namespace astu {
 
-BaseService::BaseService(const std::string & aName)
-    : name(aName)
-    , running(false)
-{
-    // Intentionally left empty
-}
+    const std::string & BaseService::DEFAULT_NAME = "NO NAME";
 
-const std::string & BaseService::GetName() const
-{
-    return name;
-}
-
-void BaseService::startup()
-{
-    if (isRunning()) {
-        throw std::logic_error("Service " + GetName() + " already running");
+    BaseService::BaseService(const std::string & aName)
+        : name(aName)
+        , running(false)
+    {
+        // Intentionally left empty
     }
-    onStartup();
-    running = true;
-}
 
-void BaseService::shutdown()
-{
-    // Best practice: ignore shut down calls on not-running services.
-    if (isRunning()) {
-        onShutdown();        
-        running = false;
+    const std::string & BaseService::GetName() const
+    {
+        return name;
     }
-}
 
-bool BaseService::isRunning() const
-{
-    return running;
-}
+    void BaseService::Startup()
+    {
+        if (IsRunning()) {
+            throw std::logic_error("Service " + GetName() + " already running");
+        }
+        OnStartup();
+        running = true;
+    }
+
+    void BaseService::Shutdown()
+    {
+        // Best practice: ignore shut down calls on not-running services.
+        if (IsRunning()) {
+            OnShutdown();        
+            running = false;
+        }
+    }
+
+    bool BaseService::IsRunning() const
+    {
+        return running;
+    }
 
 
 } // end of namespace
