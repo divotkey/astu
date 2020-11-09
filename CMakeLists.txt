@@ -45,6 +45,7 @@ if(WITH_SDL)
         
         src/sdl/SdlService.cpp
         src/sdl/SdlEventService.cpp
+        src/sdl/SdlVideoService.cpp
         )
 
 endif(WITH_SDL)                 

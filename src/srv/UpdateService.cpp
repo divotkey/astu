@@ -50,8 +50,9 @@ namespace astu {
         }
     }
 
-    UpdatableBaseService::UpdatableBaseService(const std::string & name)
+    UpdatableBaseService::UpdatableBaseService(const std::string & name, int priority)
         : BaseService(name)
+        , updatePriority(priority)
     {
         // Intentionally left empty.        
     }
@@ -66,6 +67,11 @@ namespace astu {
         BaseService::Shutdown();
         auto & upsrv = ServiceManager::GetInstance().GetService<UpdateService>();
         upsrv.RemoveUpdatable(shared_from_this());
+    }
+
+    int UpdatableBaseService::GetUpdatePriority() const
+    {
+        return updatePriority;
     }
 
 }

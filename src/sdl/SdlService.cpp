@@ -29,8 +29,6 @@ namespace astu {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());        
             throw std::runtime_error(SDL_GetError());
         }
-
-
     }
 
     void SdlService::OnShutdown() 

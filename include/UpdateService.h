@@ -32,7 +32,7 @@ namespace astu {
          * 
          * @return the update priority
          */
-        virtual int GetUpdatePriority() = 0;
+        virtual int GetUpdatePriority() const = 0;
 
     };
 
@@ -86,13 +86,18 @@ namespace astu {
         /**
          * Constructor.
          */
-        UpdatableBaseService(const std::string & name = DEFAULT_NAME);
+        UpdatableBaseService(const std::string & name = DEFAULT_NAME, int priority = 0);
 
         // // Inherited via BaseService/IService
         virtual void Startup() override;
         virtual void Shutdown() override;
 
+        // Inherited via IUpdatable.
+        virtual int GetUpdatePriority() const override;
+
     private:
+        /** The update priority of this updatable. */
+        int updatePriority;
     };
 
 } 
