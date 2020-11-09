@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <stdexcept>
 #include <vector>
 #include <memory>
 #include "Service.h"
@@ -72,7 +73,7 @@ namespace astu {
         {
             auto srv = FindService<T>();
             if (srv == nullptr) {
-                throw std::runtime_error("Service not found");
+                throw std::logic_error("Service not found");
             }
 
             return *srv;
