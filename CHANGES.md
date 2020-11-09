@@ -1,5 +1,9 @@
 # Version History {#CHANGES}
 
+# Version 0.4.0
+*Date: 2020-11-??*
+
+- Started to add service-based support for game development.
 
 # Version 0.3.0
 *Date: 2020-10-21*
