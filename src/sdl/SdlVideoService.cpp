@@ -48,7 +48,7 @@ namespace astu {
 
     void SdlVideoService::CleanUp()
     {
-       if (window) {
+        if (window) {
             SDL_DestroyWindow(window);
             window = nullptr;
         }
@@ -85,7 +85,7 @@ namespace astu {
     void SdlVideoService::SetTitle(const std::string & title) 
     {
         winTitle = title;
-        if (window) {
+        if (IsRunning()) {
             SDL_SetWindowTitle(window, title.c_str());
         }
     }
