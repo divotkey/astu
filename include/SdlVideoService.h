@@ -29,6 +29,16 @@ namespace astu {
          */
         virtual ~SdlVideoService() {}
 
+        /**
+         * Returns a pointer to the SDL window structure.
+         * 
+         * This method is mostly used by other SDL services.
+         * 
+         * @return SDL_Window the SDL window or `nullptr` if this 
+         *  service has not been started
+         */
+        SDL_Window* GetSdlWindow();
+
         // Inherited via IWindowManager
         virtual void SetSize(int width, int height) override;
         virtual int GetWidth() const override;

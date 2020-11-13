@@ -6,6 +6,7 @@
  */
 
 #include <stdexcept>
+#include "ServiceManager.h"
 #include "Service.h"
 
 namespace astu {
@@ -46,6 +47,12 @@ namespace astu {
     {
         return running;
     }
+
+    ServiceManager & BaseService::GetSM()
+    {
+        return ServiceManager::GetInstance();
+    }
+
 
 
 } // end of namespace

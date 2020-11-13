@@ -84,10 +84,19 @@ namespace astu {
          */
         virtual void OnShutdown() {}
 
-
+        /**
+         * Returns the service manager.
+         * 
+         * This method is right now just a convenience method 
+         * to get access tot the service manager. However future
+         * version of this service facility might make use of 
+         * multiple different service manages instead of using
+         * a singleton. In this case this method becomes a
+         * requirement.
+         * 
+         * @return the service manager
+         */
         ServiceManager & GetSM();
-
-
 
     private:
         /** The name of this service. */

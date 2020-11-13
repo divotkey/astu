@@ -95,4 +95,9 @@ namespace astu {
         return winTitle;
     }
 
+    SDL_Window* SdlVideoService::GetSdlWindow()
+    {
+        return window;
+    }
+
 } // end of namespace
