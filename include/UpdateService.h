@@ -88,7 +88,7 @@ namespace astu {
          */
         UpdatableBaseService(const std::string & name = DEFAULT_NAME, int priority = 0);
 
-        // // Inherited via BaseService/IService
+        // Inherited via BaseService/IService
         virtual void Startup() override;
         virtual void Shutdown() override;
 

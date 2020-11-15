@@ -6,12 +6,22 @@
  */
 
 #include <cassert>
+#include <algorithm>
+#include <stdexcept>
 #include <SDL2/SDL.h>
 #include "ServiceManager.h"
 #include "SdlVideoService.h"
 #include "SdlRenderService.h"
 
 namespace astu {
+
+    /////////////////////////////////////////////////
+    /////// SdlRenderService
+    /////////////////////////////////////////////////
+
+    bool compare(std::shared_ptr<ISdlRenderLayer> & l1, std::shared_ptr<ISdlRenderLayer> & l2) {
+        return l1->GetRenderPriority() < l2->GetRenderPriority();
+    }
 
     SdlRenderService::SdlRenderService()
         : renderer(nullptr)
@@ -35,12 +45,19 @@ namespace astu {
         }
 
         LogRendererInfo();
+
+        // Fire resize event.
+        auto & wm = GetSM().GetService<IWindowManager>();
+        for (auto & layer : layers) {
+            layer->OnResize(wm.GetWidth(), wm.GetHeight());
+        }
+
     }
 
     void SdlRenderService::OnShutdown()
     {
         SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Shutting down SDL Renderer service");
-       if (renderer) {
+        if (renderer) {
             SDL_DestroyRenderer(renderer);
             renderer = nullptr;
         }
@@ -48,6 +65,10 @@ namespace astu {
 
     void SdlRenderService::SdlRenderService::OnUpdate()
     {
+        for (auto & layer : layers) {
+            layer->OnRender(renderer);
+        }
+        
         SDL_RenderPresent(renderer);
     }
 
@@ -70,6 +91,68 @@ namespace astu {
             "Maximum texture size %d x %d", 
             info.max_texture_width, 
             info.max_texture_height);
+    }
+
+    void SdlRenderService::AddLayer(std::shared_ptr<ISdlRenderLayer> layer)
+    {
+        if (HasLayer(layer)) {
+            throw std::logic_error("Render layer already added");
+        }
+
+        layers.push_back(layer);
+        std::sort(layers.begin(), layers.end(), compare);
+
+        if (IsRunning()) {
+            auto & wm = GetSM().GetService<IWindowManager>();
+            layer->OnResize(wm.GetWidth(), wm.GetHeight());
+        }
+    }
+
+    void SdlRenderService::RemoveLayer(std::shared_ptr<ISdlRenderLayer> layer)
+    {
+        layers.erase(
+            std::remove(layers.begin(), layers.end(), layer), 
+            layers.end()
+        );        
+    }
+
+    bool SdlRenderService::HasLayer(std::shared_ptr<ISdlRenderLayer> layer)
+    {
+        return std::find(layers.begin(), layers.end(), layer) != layers.end();
+    }
+
+    /////////////////////////////////////////////////
+    /////// BaseSdlRenderLayer
+    /////////////////////////////////////////////////
+
+    BaseSdlRenderLayer::BaseSdlRenderLayer(int _renderPriority, const std::string & name)
+        : BaseService(name)
+        , renderPriority(_renderPriority)
+    {
+        // Intentionally left empty.
+    }
+
+    void BaseSdlRenderLayer::Startup()
+    {
+        GetSM().GetService<SdlRenderService>().AddLayer(shared_from_this());
+        BaseService::Startup();        
+    }
+
+    void BaseSdlRenderLayer::Shutdown()
+    {
+        BaseService::Shutdown();
+        GetSM().GetService<SdlRenderService>().RemoveLayer(shared_from_this());
+    }
+
+    void BaseSdlRenderLayer::OnResize(int width, int height)
+    {
+        targetWidth = width;
+        targetHeight = height;        
+    }
+
+    int BaseSdlRenderLayer::GetRenderPriority() const
+    {
+        return renderPriority;
     }
 
 } // end of namespace

@@ -58,15 +58,13 @@ namespace astu {
     }
 
     void UpdatableBaseService::Startup() {
-        auto & upsrv = ServiceManager::GetInstance().GetService<UpdateService>();
-        upsrv.AddUpdatable(shared_from_this());
+        GetSM().GetService<UpdateService>().AddUpdatable(shared_from_this());
         BaseService::Startup();
     }
 
     void UpdatableBaseService::Shutdown() {
         BaseService::Shutdown();
-        auto & upsrv = ServiceManager::GetInstance().GetService<UpdateService>();
-        upsrv.RemoveUpdatable(shared_from_this());
+        GetSM().GetService<UpdateService>().RemoveUpdatable(shared_from_this());
     }
 
     int UpdatableBaseService::GetUpdatePriority() const
