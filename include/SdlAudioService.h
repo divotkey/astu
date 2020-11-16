@@ -7,30 +7,22 @@
 
 #pragma once
 
-#include <string>
-#include "UpdateService.h"
-#include "ILineRenderer.h"
-
-// Forward declaration.
-// struct SDL_Window;
+#include "Service.h"
 
 namespace astu {
 
-    class SdlLineRenderer : public UpdatableBaseService, public ILineRenderer {
+    class SdlAudioService : public BaseService {
     public:
 
         /**
          * Constructor.
          */
-        SdlLineRenderer();
+        SdlAudioService();
 
         /**
          * Virtual destructor.
          */
-        virtual ~SdlLineRenderer() {}
-
-        // Inherited via ILineRenderer
-        virtual void DrawLine(const Vector2 & p1, const Vector2 & p2) override;
+        virtual ~SdlAudioService() {}
 
     protected:
 
@@ -39,7 +31,18 @@ namespace astu {
         virtual void OnShutdown() override;
 
     private:
-    
+
+
+        /**
+         * Logs some additional information about audio driver and device.
+         */
+        void LogAudioInfo();
+
+
+        /**
+         * Releases recources. 
+         */
+        void CleanUp();
     };
 
-} 
+}

@@ -25,13 +25,14 @@ namespace astu {
 
     SdlRenderService::SdlRenderService()
         : renderer(nullptr)
+        , backgroundColor(WebColors::Black)
     {
         // Intentionally left empty.
     }
 
     void SdlRenderService::OnStartup() 
     {
-        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Starting up SDL Renderer service");
+        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Starting up SDL render service");
 
         renderer = SDL_CreateRenderer(
             GetSM().GetService<SdlVideoService>().GetSdlWindow(), 
@@ -40,7 +41,7 @@ namespace astu {
             );
 
         if (!renderer) {
-            SDL_LogError(SDL_LOG_CATEGORY_RENDER, "Couldn't create SDL Renderer: %s", SDL_GetError());        
+            SDL_LogError(SDL_LOG_CATEGORY_RENDER, "Couldn't create SDL render: %s", SDL_GetError());        
             throw std::runtime_error(SDL_GetError());
         }
 
@@ -56,7 +57,7 @@ namespace astu {
 
     void SdlRenderService::OnShutdown()
     {
-        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Shutting down SDL Renderer service");
+        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Shutting down SDL render service");
         if (renderer) {
             SDL_DestroyRenderer(renderer);
             renderer = nullptr;
@@ -65,6 +66,14 @@ namespace astu {
 
     void SdlRenderService::SdlRenderService::OnUpdate()
     {
+        SDL_SetRenderDrawColor(
+            renderer, 
+            static_cast<uint8_t>(backgroundColor.r * 255), 
+            static_cast<uint8_t>(backgroundColor.g * 255), 
+            static_cast<uint8_t>(backgroundColor.b * 255), 
+            SDL_ALPHA_OPAQUE);
+        SDL_RenderClear(renderer);
+
         for (auto & layer : layers) {
             layer->OnRender(renderer);
         }

@@ -23,10 +23,10 @@ namespace astu {
 
     void SdlVideoService::OnStartup() 
     {
-        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Starting up SDL Video service");
+        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Starting up SDL video service");
 
         if (SDL_InitSubSystem(SDL_INIT_VIDEO) != 0) {
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL Video subsystem: %s", SDL_GetError());        
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL video subsystem: %s", SDL_GetError());        
             throw std::runtime_error(SDL_GetError());
         }
 
@@ -40,7 +40,7 @@ namespace astu {
         );
 
         if (!window) {
-            SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't create SDL Window: %s", SDL_GetError());        
+            SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't create SDL window: %s", SDL_GetError());        
             CleanUp();
             throw std::runtime_error(SDL_GetError());
         }
@@ -59,7 +59,7 @@ namespace astu {
 
     void SdlVideoService::OnShutdown()
     {
-        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Shutting down SDL Video service");
+        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Shutting down SDL video service");
         CleanUp();
     }
 

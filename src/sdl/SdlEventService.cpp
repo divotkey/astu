@@ -19,7 +19,7 @@ namespace astu {
 
     void SdlEventService::OnStartup() 
     {
-        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Starting up SDL Event service");
+        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Starting up SDL event service");
 
         if (SDL_InitSubSystem(SDL_INIT_EVENTS) != 0) {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL events subsystem: %s", SDL_GetError());        
@@ -31,7 +31,7 @@ namespace astu {
 
     void SdlEventService::OnShutdown() 
     {
-        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Shutting down SDL Event service");
+        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Shutting down SDL event service");
         SDL_QuitSubSystem(SDL_INIT_EVENTS);
     }
 

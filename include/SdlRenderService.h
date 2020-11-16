@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <vector>
+#include "Color.h"
 #include "UpdateService.h"
 
 // Forward declaration.
@@ -105,6 +106,9 @@ namespace astu {
 
         /** The render layers. */
         std::vector<std::shared_ptr<ISdlRenderLayer>> layers;
+
+        /** The backtround color. */
+        Color backgroundColor;
 
         /**
          * Logs some additional information about the used renderer.

@@ -46,7 +46,6 @@ namespace astu {
         virtual void SetTitle(const std::string & title) override;
         virtual const std::string & GetTitle() const override;
 
-
     protected:
 
         // Inherited via Base Service
@@ -67,6 +66,9 @@ namespace astu {
         std::string winTitle;
 
 
+        /**
+         * Releases recources. 
+         */
         void CleanUp();
     };
 

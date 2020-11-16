@@ -15,7 +15,6 @@
 
 namespace astu {
 
-
     const Color ApplicationImpl::kDefaultBackgroundColor = Color::CreateFromRgb(0x77, 0x88, 0x99, 0xff);
 
     const Color ApplicationImpl::kDefaultDrawColor = Color::CreateFromRgb(0xD3, 0xD3, 0xD3, 0xff);
