@@ -60,11 +60,14 @@ list(APPEND astulib_INCLUDES
         astu PRIVATE "${PROJECT_BINARY_DIR}" 
         astu PRIVATE "${PROJECT_SOURCE_DIR}/src"
         astu PUBLIC ${PROJECT_SOURCE_DIR}/include)
-                    
+      
 if(WITH_SDL)
     IF (WIN32)
         target_link_libraries(astu $ENV{SDL2_HOME}/lib/x64/SDL2.lib)
         list(APPEND astulib_INCLUDES astu PRIVATE $ENV{SDL2_HOME})
+    ELSEIF(APPLE)
+        #list(APPEND astulib_INCLUDES astu PRIVATE /Library/Frameworks/SDL2.framework/Headers)
+        target_link_libraries(astu /Library/Frameworks/SDL2.framework/Versions/A/SDL2)
     ELSE()
         target_link_libraries(astu SDL2)
     ENDIF()
