@@ -6,6 +6,7 @@
  */
 
 #include <stdexcept>
+#include <iostream>
 #include <SDL2/SDL.h>
 #include "SdlEventService.h"
 
@@ -42,6 +43,10 @@ namespace astu {
             switch (event.type) {
             case SDL_QUIT:
                 quit = true;
+                break;
+
+            case SDL_MOUSEBUTTONDOWN:
+                std::cout << "mouse button down" << std::endl;
                 break;
 
             case SDL_DROPTEXT:

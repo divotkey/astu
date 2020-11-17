@@ -33,6 +33,9 @@ list(APPEND astulib_SOURCES
                     src/srv/ServiceManager.cpp
                     src/srv/Service.cpp
                     src/srv/UpdateService.cpp
+                    src/srv/StateService.cpp
+                    src/srv/EntityService.cpp
+                    src/srv/IteratingEntitySystem.cpp
 
                     src/AstUtils1.cpp)
 

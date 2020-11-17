@@ -23,8 +23,9 @@ namespace astu {
         return l1->GetRenderPriority() < l2->GetRenderPriority();
     }
 
-    SdlRenderService::SdlRenderService()
-        : renderer(nullptr)
+    SdlRenderService::SdlRenderService(int priority)
+        : UpdatableBaseService("SDL Render", priority)
+        , renderer(nullptr)
         , backgroundColor(WebColors::Black)
     {
         // Intentionally left empty.

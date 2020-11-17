@@ -6,6 +6,7 @@
  */
 
 #include <algorithm>
+#include "Service.h"
 #include "ServiceManager.h"
 
 namespace astu {

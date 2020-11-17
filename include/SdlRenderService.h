@@ -63,8 +63,10 @@ namespace astu {
 
         /**
          * Constructor.
+         * 
+         * @param priority    the priority used to update this service
          */
-        SdlRenderService();
+        SdlRenderService(int priority = 0);
 
         /**
          * Virtual destructor.

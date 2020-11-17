@@ -10,9 +10,11 @@
 #include <stdexcept>
 #include <vector>
 #include <memory>
-#include "Service.h"
 
 namespace astu {
+
+    // Forward declaration.
+    class IService;
 
     /**
      * Service manager used to administer essential game-wide services.

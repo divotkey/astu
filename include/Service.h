@@ -8,11 +8,9 @@
 #pragma once
 
 #include <string>
+#include "ServiceManager.h"
 
 namespace astu {
-
-    // Forward declaration.
-    class ServiceManager;
 
     /**
      * Interface for services.

@@ -17,7 +17,6 @@ namespace astu {
     class SdlTimeService : public UpdatableBaseService, public ITimeService {
     public:
 
-
         /**
          * Constructor.
          * 
@@ -35,7 +34,7 @@ namespace astu {
 
     protected:
 
-        // Inherited via Base Service
+        // Inherited via UpdatableBaseService
         virtual void OnStartup() override;
         virtual void OnShutdown() override;
         virtual void OnUpdate() override;
