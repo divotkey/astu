@@ -85,6 +85,9 @@ namespace astu {
 
         /**
          * Constructor.
+         * 
+         * @param name      the name of this service
+         * @param priority  the update priority of this service
          */
         UpdatableBaseService(const std::string & name = DEFAULT_NAME, int priority = 0);
 
