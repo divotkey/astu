@@ -7,7 +7,9 @@
 
 #pragma once
 
+#include "Mouse.h"
 #include "UpdateService.h"
+#include "Events.h"
 
 namespace astu {
 
@@ -48,6 +50,12 @@ namespace astu {
     private:
         /** Determines whether a quit-signal has beed detected. */
         bool quit;
+
+        /** Used to transfer mouse events to mouse states. */
+        Mouse mouse;
+
+        /** Used to transmit mouse button events. */
+        std::shared_ptr<MouseButtonEventService> mouseButtonSrv;
     };
 
 } 

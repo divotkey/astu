@@ -27,6 +27,8 @@ namespace astu {
             throw std::runtime_error(SDL_GetError());
         }
 
+        mouseButtonSrv = GetSM().FindService<MouseButtonEventService>();
+
         quit = false;
     }
 
@@ -46,7 +48,17 @@ namespace astu {
                 break;
 
             case SDL_MOUSEBUTTONDOWN:
-                std::cout << "mouse button down" << std::endl;
+                mouse.SetButton(event.button.button, true);
+                if(mouseButtonSrv) {
+                    mouseButtonSrv->FireSignal(MouseButtonEvent(event.button.button, true));
+                }
+                break;
+
+            case SDL_MOUSEBUTTONUP:
+                mouse.SetButton(event.button.button, false);
+                if(mouseButtonSrv) {
+                    mouseButtonSrv->FireSignal(MouseButtonEvent(event.button.button, false));
+                }
                 break;
 
             case SDL_DROPTEXT:
