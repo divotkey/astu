@@ -101,6 +101,7 @@ namespace astu {
     {
         auto & sm = GetSM();
 
+        // FIXME
         for (auto & srv : services) {
             sm.RemoveService(srv);
         }

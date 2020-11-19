@@ -13,6 +13,8 @@ namespace astu {
 
     class MouseButtonEvent {
     public:
+        enum BUTTON {LEFT = 1, MIDDLE = 2, RIGHT = 3};
+
         MouseButtonEvent(int _button = 0, bool _pressed = false)
             : button(_button), pressed(_pressed) {}
 
