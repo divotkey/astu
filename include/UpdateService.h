@@ -10,6 +10,7 @@
 #include <vector>
 #include <memory>
 #include "Service.h"
+#include "ListenerManager.h"
 
 namespace astu {
 
@@ -72,8 +73,8 @@ namespace astu {
         void UpdateAll();
 
     private:
-        /** The list of updatables this service is managin. */
-        std::vector<std::shared_ptr<IUpdatable>> updatables;
+        /** Used to organize updatables. */
+        SortingListenerManager<IUpdatable> lstMngr;
     };
 
     class UpdatableBaseService 

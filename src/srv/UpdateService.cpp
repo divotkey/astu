@@ -11,9 +11,9 @@
 
 namespace astu {
 
-    bool compare(std::shared_ptr<IUpdatable> & u1, std::shared_ptr<IUpdatable> & u2) {
-        return u1->GetUpdatePriority() < u2->GetUpdatePriority();
-    }
+    /////////////////////////////////////////////////
+    /////// UpdateService
+    /////////////////////////////////////////////////
 
     UpdateService::UpdateService()
         : BaseService("UpdateService")
@@ -23,32 +23,29 @@ namespace astu {
 
     void UpdateService::AddUpdatable(std::shared_ptr<IUpdatable> updatable)
     {
-        if (!HasUpdatable(updatable)) {
-            updatables.push_back(updatable);
-        }
-
-        std::sort(updatables.begin(), updatables.end(), compare);
+        lstMngr.AddListener(updatable, updatable->GetUpdatePriority());
     }
 
     void UpdateService::RemoveUpdatable(std::shared_ptr<IUpdatable> updatable)
     {
-        updatables.erase(
-                std::remove(updatables.begin(), updatables.end(), updatable), 
-                updatables.end()
-            );        
+        lstMngr.RemoveListener(updatable);
     }
 
     bool UpdateService::HasUpdatable(std::shared_ptr<IUpdatable> updatable)
     {
-        return std::find(updatables.begin(), updatables.end(), updatable) != updatables.end();       
+        return lstMngr.HasListener(updatable);
     }
 
     void UpdateService::UpdateAll()
     {
-        for (auto & updatable : updatables) {
-            updatable->OnUpdate();
-        }
+        lstMngr.VisitListeners([](IUpdatable & updatable) { 
+            updatable.OnUpdate(); 
+        });
     }
+
+    /////////////////////////////////////////////////
+    /////// UpdatableBaseService
+    /////////////////////////////////////////////////
 
     UpdatableBaseService::UpdatableBaseService(const std::string & name, int priority)
         : BaseService(name)
