@@ -21,7 +21,7 @@ namespace astu {
         }
 
         if (button >= buttons.size()) {
-            buttons.resize(button);
+            buttons.resize(button + 1);
         }
         buttons[button] = pressed;
     }
