@@ -122,7 +122,7 @@ namespace astu {
 
         // Inherited via UpdatableBaseService
 
-        virtual void OnShutdown() {
+        virtual void OnShutdown() override {
             // Clear pending signals and try to free memory used by queues.
             for (auto & queue : signalQueues) {
                 queue.clear();

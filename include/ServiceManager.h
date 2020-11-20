@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <vector>
 #include <memory>
+#include <string>
 
 namespace astu {
 
