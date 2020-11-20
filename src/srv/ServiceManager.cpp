@@ -27,7 +27,8 @@ namespace astu {
     void ServiceManager::AddService(std::shared_ptr<IService> service)
     {
         if (HasService(service)) {
-            throw std::logic_error("Service '" + service->GetName() + "' has already been added");
+            throw std::logic_error("Service '" + service->GetName() 
+                + "' has already been added");
         }
 
         services.push_back(service);

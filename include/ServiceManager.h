@@ -75,7 +75,8 @@ namespace astu {
         {
             auto srv = FindService<T>();
             if (srv == nullptr) {
-                throw std::logic_error("Service not found");
+                throw std::logic_error(std::string("Service not found, type is '") 
+                    + typeid(T).name() + "'");
             }
 
             return *srv;
