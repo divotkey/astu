@@ -9,16 +9,19 @@
 
 namespace astu {
 
-    IteratingEntitySystem::IteratingEntitySystem(const EntityFamily & itFamily, int priority)
-        : BaseService("Iterating Entity")
+    IteratingEntitySystem::IteratingEntitySystem(const EntityFamily & itFamily, int priority, const std::string & name)
+        : BaseService(name)
         , updatePriority(priority)
         , iterateFamily(itFamily)
     {
         // Intentioniall left empty.
     }
 
-    void IteratingEntitySystem::OnStartup() 
+    void IteratingEntitySystem::Startup() 
     {
+        // Don't forget to call startup on base service!
+        BaseService::Startup();
+
         // Register as updatable. 
         GetSM().GetService<UpdateService>().AddUpdatable(shared_from_this());
 
@@ -34,13 +37,16 @@ namespace astu {
         }
     }
 
-    void IteratingEntitySystem::OnShutdown() 
+    void IteratingEntitySystem::Shutdown() 
     {
         // Cleanup
         timeService = nullptr;
         entityView = nullptr;
         GetSM().GetService<EntityService>().RemoveEntityListener(iterateFamily, shared_from_this());
         GetSM().GetService<UpdateService>().RemoveUpdatable(shared_from_this());
+
+        // Don't forget to call shutdown on base service!
+        BaseService::Shutdown();
     }
 
     void IteratingEntitySystem::OnUpdate()

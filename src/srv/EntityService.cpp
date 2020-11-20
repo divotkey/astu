@@ -8,6 +8,7 @@
 #include <string>
 #include <stdexcept>
 #include <algorithm>
+#include <iostream>
 #include "EntityService.h"
 
 namespace astu
@@ -18,7 +19,9 @@ namespace astu
 
     void Entity::AddComponent(std::shared_ptr<EntityComponent> cmp)
     {
+
         auto type = std::type_index(typeid(cmp.get()));
+        // std::cout << "type = " << type.name() << std::endl;
 
         if (compMap.find(type) != compMap.end())
         {

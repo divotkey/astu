@@ -27,8 +27,12 @@ namespace astu {
          * 
          * @param iterateFamily the family of entities this service is processing
          * @param priority      the priority used to update this service
+         * @param name          the name of this service
          */
-        IteratingEntitySystem(const EntityFamily & iterateFamily, int priority);
+        IteratingEntitySystem(
+            const EntityFamily & iterateFamily, 
+            int priority = 0, 
+            const std::string & name = "Iterating Entity System");
 
         /**
          * Virtual destructor.
@@ -51,11 +55,11 @@ namespace astu {
          * 
          * @param entity    the current entity to process
          */
-        virtual void ProcessEntity(Entity & e) = 0;
+        virtual void ProcessEntity(astu::Entity & e) = 0;
 
         // Inherited via Base Service
-        virtual void OnStartup() override;
-        virtual void OnShutdown() override;
+        virtual void Startup() override;
+        virtual void Shutdown() override;
 
         // Inherited via IUpdatable
         virtual void OnUpdate() override;
