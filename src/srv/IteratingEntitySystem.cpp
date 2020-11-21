@@ -19,9 +19,6 @@ namespace astu {
 
     void IteratingEntitySystem::Startup() 
     {
-        // Don't forget to call startup on base service!
-        BaseService::Startup();
-
         // Register as updatable. 
         GetSM().GetService<UpdateService>().AddUpdatable(shared_from_this());
 
@@ -35,18 +32,21 @@ namespace astu {
         if (!timeService) {
             throw std::logic_error("Iterating entity system service requires time service");
         }
+
+        // Don't forget to call startup on base service!
+        BaseService::Startup();
     }
 
     void IteratingEntitySystem::Shutdown() 
     {
+        // Don't forget to call shutdown on base service!
+        BaseService::Shutdown();
+
         // Cleanup
         timeService = nullptr;
         entityView = nullptr;
         GetSM().GetService<EntityService>().RemoveEntityListener(iterateFamily, shared_from_this());
         GetSM().GetService<UpdateService>().RemoveUpdatable(shared_from_this());
-
-        // Don't forget to call shutdown on base service!
-        BaseService::Shutdown();
     }
 
     void IteratingEntitySystem::OnUpdate()
@@ -54,6 +54,11 @@ namespace astu {
         for (auto & entity : *entityView) {
             ProcessEntity(*entity);
         }
+    }
+
+    int IteratingEntitySystem::GetUpdatePriority() const
+    {
+        return updatePriority;
     }
 
 } // end of namespace

@@ -14,7 +14,9 @@
 #include <memory>
 #include <vector>
 #include <set>
+
 #include "UpdateService.h"
+#include "CommandQueue.h"
 
 namespace astu {
 
@@ -29,9 +31,16 @@ namespace astu {
     public:
 
         /**
+         * Constructor.
+         */
+        EntityComponent() = default;
+
+        /**
          * Virtual destructor.
          */
         virtual ~EntityComponent() {}
+
+        friend class Entity;
     };
 
 
@@ -311,6 +320,11 @@ namespace astu {
         }
 
         /**
+         * Removes all entities.
+         */
+        void RemoveAll();
+
+        /**
          * Returns a view to a certain family of entities.
          * 
          * Any caller of this method can keep the returned pointer to the entity view.
@@ -354,27 +368,8 @@ namespace astu {
 
         using ListenerList = std::vector<std::weak_ptr<IEntityListener>>;
 
-    	/**
-		 * Internal class used to implement the command software design pattern.
-         * 
-		 * The internal commands are used to postpone adding and deleting of
-		 * entities until the next game loop cycle.
-		 */        
-        
-        class Command {
-        public:
-            /** Enumartion of possible command types. */
-            enum Type { ADD_ENTITY, REMOVE_ENTITY, REMOVE_ALL };
-
-            /** The type of this command. */
-            Type type;
-
-            /** Optional data of this command. */
-            std::shared_ptr<Entity> entity;
-        };
-
-        /** The pending commands. */
-        std::vector<Command> commands;
+        /** Pending commdands. */
+        CommandQueue commands;
 
 		/** The entities administreed by this service. */
 		std::vector<std::shared_ptr<Entity>> entities;        
@@ -391,7 +386,8 @@ namespace astu {
         void AddEntityInternally(std::shared_ptr<Entity> entity);
         void RemoveEntityInternally(std::shared_ptr<Entity> entity);
         void RemoveFromView(EntityView & view, std::shared_ptr<Entity> entity);
-
+        void RemoveAllInternally();
+        
         void FireEntityAdded(ListenerList & listeners, std::shared_ptr<Entity> entity);
         void FireEntityRemoved(ListenerList & listeners, std::shared_ptr<Entity> entity);
     };

@@ -20,7 +20,7 @@ namespace astu
     void Entity::AddComponent(std::shared_ptr<EntityComponent> cmp)
     {
 
-        auto type = std::type_index(typeid(cmp.get()));
+        auto type = std::type_index(typeid(*cmp.get()));
         // std::cout << "type = " << type.name() << std::endl;
 
         if (compMap.find(type) != compMap.end())
@@ -96,21 +96,28 @@ namespace astu
 
     void EntityService::AddEntity(std::shared_ptr<Entity> entity)
     {
-        Command cmd;
-        cmd.type = Command::ADD_ENTITY;
-        cmd.entity = entity;
+        // Command cmd;
+        // cmd.type = Command::ADD_ENTITY;
+        // cmd.entity = entity;
 
-        commands.push_back(cmd);
+        // commands.push_back(cmd);
+        commands.Add([this, entity](){ AddEntityInternally(entity); });
     }
 
     void EntityService::RemoveEntity(std::shared_ptr<Entity> entity)
     {
-        Command cmd;
-        cmd.type = Command::REMOVE_ENTITY;
-        cmd.entity = entity;
+        // Command cmd;
+        // cmd.type = Command::REMOVE_ENTITY;
+        // cmd.entity = entity;
 
-        commands.push_back(cmd);
+        // commands.push_back(cmd);
+        commands.Add([this, entity](){ RemoveEntityInternally(entity); });
     }
+
+    void EntityService::RemoveAll()
+    {
+        commands.Add([this](){ RemoveAllInternally(); });
+    }    
 
     void EntityService::OnStartup()
     {
@@ -119,10 +126,12 @@ namespace astu
 
     void EntityService::OnShutdown()
     {
+        RemoveAllInternally();
     }
 
     void EntityService::OnUpdate()
     {
+        commands.Execute();
     }
 
     void EntityService::AddEntityInternally(std::shared_ptr<Entity> entity)
@@ -171,6 +180,13 @@ namespace astu
     void EntityService::RemoveFromView(EntityView & view, std::shared_ptr<Entity> entity)
     {
 		view.erase(std::remove(view.begin(), view.end(), entity), view.end());
+    }
+
+    void EntityService::RemoveAllInternally()
+    {
+		while (!entities.empty()) {
+			RemoveEntityInternally(entities.back());
+		}
     }
 
     bool EntityService::HasEntityListener(const EntityFamily & family, std::shared_ptr<IEntityListener> listener) const

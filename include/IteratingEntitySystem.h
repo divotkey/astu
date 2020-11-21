@@ -18,7 +18,7 @@ namespace astu {
         : public BaseService
         , public IUpdatable
         , public IEntityListener 
-        , private std::enable_shared_from_this<IteratingEntitySystem>        
+        , public std::enable_shared_from_this<IteratingEntitySystem>        
     {
     public:
 
@@ -62,7 +62,8 @@ namespace astu {
         virtual void Shutdown() override;
 
         // Inherited via IUpdatable
-        virtual void OnUpdate() override;
+        virtual void OnUpdate() override;       
+        virtual int GetUpdatePriority() const final override;        
 
         // Inherited via IEntityListener
         virtual void OnEntityAdded(std::shared_ptr<Entity> entity) override {};
