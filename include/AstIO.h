@@ -9,12 +9,13 @@
 
 #include <string>
 
+/**
+ * @file
+ * @brief This file defines public functions offered by the I/O module of AST utilities.
+ */
+
 namespace astu {
 
-    /**
-     * @file
-     * @brief This file defines public functions offered by the I/O module of AST utilities.
-     */
 
     /**
      * Removes all remaining characters from standard input until new line is detected.

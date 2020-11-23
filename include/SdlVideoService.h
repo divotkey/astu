@@ -16,6 +16,14 @@ struct SDL_Window;
 
 namespace astu {
 
+    /**
+     * Initializes and opens the SDL-based main application window.
+     * 
+     * This service initializes the video submodule of SDL and maintains
+     * the main application window.
+     * 
+     * @ingroup sdl_group
+     */
     class SdlVideoService : public BaseService, public IWindowManager {
     public:
 

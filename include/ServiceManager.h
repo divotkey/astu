@@ -18,8 +18,11 @@ namespace astu {
     class IService;
 
     /**
-     * Service manager used to administer essential game-wide services.
+     * Service manager is used administer essential application-wide services.
+     * 
      * This implementation realizes the service manager as a singleton.
+     * 
+     * @ingroup srv_group
      */
     class ServiceManager {
     public:
@@ -71,6 +74,28 @@ namespace astu {
          */
         bool IsRunning() const;
 
+        /**
+         * Returns a service of a certain type.
+         * 
+         * **Example**
+         * 
+         * ```
+         * // Fetch reference to the one and only service manager.
+         * auto & sm = ServiceManager::GetInstance();
+         * 
+         * // Fetch reference to a service whith implements a certain interface,
+         * // in this case the ITimeManager interface.
+         * auto & timeSrv = sm.GetService<ITimeManager>();
+         * 
+         * // Use the time service.
+         * double dt = timeSrv.GetElapsedTime();
+         * ```
+         * 
+         * 
+         * @tparam T    the type of service to look for
+         * @return the requested service
+         * @throws std::logic_error in case the service could not be found
+         */
         template <typename T> 
         T & GetService()
         {
@@ -83,6 +108,32 @@ namespace astu {
             return *srv;
         }
 
+        /**
+         * Searches for a service of a certain type.
+         * 
+         * **Example**
+         * 
+         * ```
+         * // Fetch reference to the one and only service manager.
+         * auto & sm = ServiceManager::GetInstance();
+         * 
+         * // Get (smart) pointer to a service whith implements a certain interface,
+         * // in this case the ITimeManager interface.
+         * auto pTimeSrv = sm.FindService<ITimeManager>();
+         * 
+         * // Verify that the requested service actually exists
+         * if (pTimeSrv == nullptr) {
+         *   ReportError("ITimeService required");
+         *   return;
+         * }
+         * 
+         * // Use the time service.
+         * double dt = timeSrv->GetElapsedTime();
+         * ```
+         * 
+         * @tparam T    the type of service to look for
+         * @return the requested service of `nullptr` if no appropriate service could be found
+         */
         template <typename T> 
         std::shared_ptr<T> FindService()
         {
@@ -125,7 +176,6 @@ namespace astu {
          * Prevents creating explicit copies of this singleton.
          */
         ServiceManager& operator=(const ServiceManager&) = delete;
-
     };
 
-}
+} // end of namespace

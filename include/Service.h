@@ -14,6 +14,8 @@ namespace astu {
 
     /**
      * Interface for services.
+     * 
+     * @ingroup srv_group
      */
     class IService {
     public:
@@ -53,6 +55,15 @@ namespace astu {
         virtual bool IsRunning() const = 0;
     };
 
+    /**
+     * Implmenents basic functionality of a service.
+     * 
+     * This base class can be used to create services with basic
+     * functionlality e.g, having a name and keeping track
+     * if its currently running or not.
+     * 
+     * @ingroup srv_group
+     */
     class BaseService : public IService {
     public:
 
@@ -74,11 +85,19 @@ namespace astu {
 
         /**
          * Called by this base class on startup.
+         * 
+         * Derived classes should override this method rather than
+         * `Startup()`. The `Startup()` method is maintaining 
+         * the running-state of this service.
          */
         virtual void OnStartup() {}
 
         /**
          * Called by this base class on shutdown.
+         * 
+         * Derived classes should override this method rather than
+         * `Shutdown()`. The `Shutdown()` method is maintaining 
+         * the running-state of this service.
          */
         virtual void OnShutdown() {}
 
@@ -87,7 +106,7 @@ namespace astu {
          * 
          * This method is right now just a convenience method 
          * to get access tot the service manager. However future
-         * version of this service facility might make use of 
+         * version of this service module might make use of 
          * multiple different service manages instead of using
          * a singleton. In this case this method becomes a
          * requirement.
@@ -102,7 +121,6 @@ namespace astu {
         
         /** Whether this service is currently running. */
         bool running;
-
     };
 
     } // end of namespace

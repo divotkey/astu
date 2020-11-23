@@ -11,6 +11,13 @@
 
 namespace astu {
 
+    /**
+     * This event represents a mouse button event.
+     * 
+     * This event is supposed to be used in combination with the SignalService.
+     * 
+     * @ingroup input_group
+     */
     class MouseButtonEvent {
     public:
         enum BUTTON {LEFT = 1, MIDDLE = 2, RIGHT = 3};
@@ -22,6 +29,18 @@ namespace astu {
         bool pressed;
     };
 
+    /** 
+     * Type definition for signal services used to transmit mouse button events.
+     *
+     * @ingroup input_group
+     */
     using MouseButtonEventService = SignalService<MouseButtonEvent>;
+
+    /** 
+     * Type definition for signal listeners which receive mouse button events.
+     *
+     * @ingroup input_group
+     */
     using MouseButtonListener = ISignalListener<MouseButtonEvent>;
-};
+
+} // end of namespace

@@ -10,6 +10,11 @@
  *----------------------------------------------------------------------------
  */
 
+/**
+ * @file
+ * @brief This file defines public functions offered by the graphics module of AST utilities.
+ */
+
 #pragma once
 
 #include <string>
@@ -17,11 +22,6 @@
 #include "Color.h"
 #include "Palette.h"
 #include "Image.h"
-
-/**
- * @file
- * @brief This file defines public functions offered by the graphics module of AST utilities.
- */
 
 namespace astu {
 

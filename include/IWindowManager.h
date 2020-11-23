@@ -9,6 +9,11 @@
 
 namespace astu {
 
+    /**
+     * Interface for an services which manages application windows.
+     * 
+     * @ingroup srv_group
+     */
     class IWindowManager {
     public:
 
@@ -54,4 +59,4 @@ namespace astu {
         virtual const std::string & GetTitle() const = 0;
     };
     
-}
+} // end of namespace

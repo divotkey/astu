@@ -15,6 +15,43 @@
 
 namespace astu {
 
+    /**
+     * A template signal listeners of a certain type.
+     * 
+     * **Example**
+     * 
+     * This example shows a signal listener which is listening to `int` values.
+     * 
+     * 
+     * Header file: *MyListener.h*
+     * ```
+     * #pragma once
+     * 
+     * #include <SignalService.h>
+     * 
+     * class MyListener : public astu::ISignalListener<int> {
+     * public:
+     * 
+     *   // Inheritred via ISignalListener
+     *   virtual void OnSignal(const int & signal) override;    
+     * };
+     * ```
+     *
+     * Implementation file: *MyListener.cpp*
+     * 
+     * ```
+     * #include <iostream>
+     * #include "MyListener.h"
+     * 
+     * MyListener::void OnSignal(const int & signal)
+     * {
+     *   std::cout << "received signal " << signal << std::endl;
+     * }    
+     * ```
+     * 
+     * @tparam T    the type of signal this listeners is receiving
+     * @ingroup srv_group
+     */
     template <typename T> 
     class ISignalListener  {
     public:
@@ -33,6 +70,12 @@ namespace astu {
     };
 
 
+    /**
+     * A template-based service which is used to transmit objects 
+     * called "signals" to registered listeners.
+     * 
+     * @ingroup srv_group
+     */
     template <typename T>
     class SignalService final : public UpdatableBaseService
     {

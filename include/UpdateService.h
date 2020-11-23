@@ -14,6 +14,11 @@
 
 namespace astu {
 
+    /**
+     * Interface for anything which is updatable and should be managed by the `UpdateService`.
+     * 
+     * @ingroup srv_group
+     */
     class IUpdatable {
     public:
 
@@ -23,13 +28,14 @@ namespace astu {
         virtual ~IUpdatable() {}
 
         /**
-         * Call when this updatable gets updated.
+         * Called when this updatable gets updated.
          */
         virtual void OnUpdate() = 0;
 
         /**
          * Returns the update priority.
-         * Lower priorities get updated before higher priorities.
+         *  
+         * Updatables with lower priorities get updated before updatables with higher priorities.
          * 
          * @return the update priority
          */
@@ -37,6 +43,15 @@ namespace astu {
 
     };
 
+    /**
+     * This service manages and updates `Updatables`.
+     * 
+     * To update the `Updatables`, this service's method
+     * `UpdateAll` must be called within the simulation 
+     * respectively game loop.
+     * 
+     * @ingroup srv_group
+     */
     class UpdateService : public BaseService {
     public:
 
@@ -77,6 +92,11 @@ namespace astu {
         SortingListenerManager<IUpdatable> lstMngr;
     };
 
+    /**
+     * Base class for services whitch require an update.
+     * 
+     * @ingroup srv_group
+     */
     class UpdatableBaseService 
         : public BaseService
         , public IUpdatable

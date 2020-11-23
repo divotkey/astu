@@ -15,11 +15,21 @@
 
 namespace astu {
 
+    /**
+     * The state service manages a set of states.
+     * 
+     * Each of these states contains a list of services that are added to the
+     * active services when the state is activated. As soon as the state is
+     * changed, the services of the current state are removed and those of
+     * the new state are added accordingly.
+     * 
+     * @ingroup srv_group
+     */
     class StateService : public BaseService {
     public:
 
         /**
-         * Constructor.         * 
+         * Constructor.
          */
         StateService();
 

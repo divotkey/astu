@@ -14,6 +14,11 @@
 namespace astu {
 
 
+    /**
+     * Uses the SDL high performance timer to measure elapsed time.
+     * 
+     * @ingroup sdl_group 
+     */
     class SdlTimeService : public UpdatableBaseService, public ITimeService {
     public:
 

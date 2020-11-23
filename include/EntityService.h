@@ -26,6 +26,8 @@ namespace astu {
 
     /**
      * Base class for all entity components.
+     * 
+     * @ingroup ecs_group
      */
     class EntityComponent {
     public:
@@ -39,8 +41,6 @@ namespace astu {
          * Virtual destructor.
          */
         virtual ~EntityComponent() {}
-
-        friend class Entity;
     };
 
 
@@ -50,6 +50,8 @@ namespace astu {
 
     /**
      * An entity is a container for compoments. 
+     * 
+     * @ingroup ecs_group
      */
     class Entity final : public std::enable_shared_from_this<Entity> {
     public:
@@ -174,6 +176,11 @@ namespace astu {
     /////// EntityFamily
     /////////////////////////////////////////////////
 
+    /**
+     * Describes entities which share a certain set of entity components.
+     * 
+     * @ingroup ecs_group
+     */
     class EntityFamily {
     public:
 
@@ -256,6 +263,8 @@ namespace astu {
 	/**
 	 * Interface for entity listeners which get informed when entities get
 	 * added or removed.
+     * 
+     * @ingroup ecs_group
 	 */
     class IEntityListener {
     public:
@@ -286,6 +295,11 @@ namespace astu {
     /////// EntityService
     /////////////////////////////////////////////////
 
+    /**
+     * The core service of the ECS, manages entities and entity listeners.
+     * 
+     * @ingroup ecs_group
+     */
     class EntityService : public UpdatableBaseService {
     public:
 

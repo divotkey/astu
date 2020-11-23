@@ -11,6 +11,11 @@
 
 namespace astu {
 
+    /**
+     * Provides core functionality for SDL.
+     * 
+     * @ingroup sdl_group
+     */
     class SdlService : public BaseService {
     public:
 

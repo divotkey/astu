@@ -13,6 +13,14 @@
 
 namespace astu {
 
+    /**
+     * Initializes the SDL event submodule. 
+     * 
+     * This service processes the SDL event queue and distributes the events through
+     * the various abstractions layers (input, window-handling, etc.).
+     *
+     * @ingroup sdl_group
+     */
     class SdlEventService : public UpdatableBaseService {
     public:
 

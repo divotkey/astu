@@ -1,9 +1,11 @@
 # Version History {#CHANGES}
 
 # Version 0.4.0
-*Date: 2020-11-??*
+*Date: 2020-11-23*
 
-- Add service facility for game development.
+- Added service facility for simulations and games.
+- Added Entity Component System (ECS) to be used for simulations and games.
+- Added template for mathematical vectors in three dimensional space.
 
 # Version 0.3.0
 *Date: 2020-10-21*

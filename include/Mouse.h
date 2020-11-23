@@ -12,7 +12,11 @@
 namespace astu {
 
     /**
+     * Provides access to mouse input.
+     * 
      * This class is realized using the Monostate design pattern.
+     * 
+     * @ingroup input_group
      */
     class Mouse {
     public:

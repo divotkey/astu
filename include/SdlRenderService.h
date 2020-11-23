@@ -17,6 +17,13 @@ struct SDL_Renderer;
 
 namespace astu {
 
+    /**
+     * Interface for SDL-based renderer layers.
+     * 
+     * This inteface for render layers is using the hardware accelerated 2D render-mechanism of SDL. 
+     * 
+     * @ingroup sdl_group
+     */
     class ISdlRenderLayer {
     public:
         /**
@@ -57,6 +64,8 @@ namespace astu {
      * 
      * This service has a depencendy to SdlVideoService because
      * creating an SDL renderer requires access to the SDL window.
+     * 
+     * @ingroup sdl_group
      */
     class SdlRenderService : public UpdatableBaseService {
     public:
@@ -120,6 +129,8 @@ namespace astu {
 
     /**
      * Base class for services which implement the ISdlRenderLayer interface.
+     * 
+     * @ingroup sdl_group
      */
     class BaseSdlRenderLayer 
         : public BaseService

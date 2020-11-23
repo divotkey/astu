@@ -9,6 +9,11 @@
 
 namespace astu {
 
+    /**
+     * Interface for an services which keepts track of time.
+     * 
+     * @ingroup srv_group
+     */
     class ITimeService {
     public:
 
