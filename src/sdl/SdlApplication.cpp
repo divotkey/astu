@@ -162,6 +162,8 @@ int ClearCanvas()
         static_cast<uint8_t>(astu::drawColor[2]),
         static_cast<uint8_t>(SDL_ALPHA_OPAQUE)
         );
+
+    return NO_ERROR;
 }
 
 void RenderApp()
@@ -219,6 +221,8 @@ int SetBackgroundColor(int r, int g, int b)
     astu::bgColor[0] = static_cast<uint8_t>(r);
     astu::bgColor[1] = static_cast<uint8_t>(g);
     astu::bgColor[2] = static_cast<uint8_t>(b);
+
+    return NO_ERROR;
 }
 
 int RenderPoint(double x, double y)    
@@ -229,7 +233,7 @@ int RenderPoint(double x, double y)
         return GetLastError();
     }
 
-    SDL_RenderDrawPoint(astu::renderer, x, y);
+    SDL_RenderDrawPoint(astu::renderer, static_cast<int>(x + 0.5), static_cast<int>(y + 0.5));
     return NO_ERROR;
 }
 
@@ -241,7 +245,13 @@ int RenderLine(double x1, double y1, double x2, double y2)
         return GetLastError();
     }
 
-    if (SDL_RenderDrawLine(astu::renderer, x1, y1, x2, y2)) {
+    if (SDL_RenderDrawLine( 
+        astu::renderer,
+        static_cast<int>(x1 + 0.5), 
+        static_cast<int>(y1 + 0.5), 
+        static_cast<int>(x2 + 0.5), 
+        static_cast<int>(y2 + 0.5)))
+    {
         SDL_LogError(SDL_LOG_CATEGORY_RENDER, "Couldn't render line: %s", SDL_GetError());        
         SetLastError(SDL_ERROR);
         SetErrorDetails(SDL_GetError());
