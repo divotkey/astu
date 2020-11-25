@@ -1,6 +1,6 @@
 /*
  * ASTU - AST Utilities
- * A collection of Utilities for Advanced Software Techniques (AST).
+ * A collection of Utilities for Applied Software Techniques (AST).
  * 
  * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
@@ -46,6 +46,7 @@ const char* kErrorMessages[] = {
     "Unable to import file, invalid format?",
     "The operation is not supported",
     "The current state is invalid for this operation",
+    "Simple Direct Layer (SDL) error",
     "Application error",    
     "Invalid error code",
     };

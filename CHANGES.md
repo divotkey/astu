@@ -6,6 +6,7 @@
 - Added service facility for simulations and games.
 - Added Entity Component System (ECS) to be used for simulations and games.
 - Added template for mathematical vectors in three dimensional space.
+- Started to add basic support for SDL-based application on API-Level 0.
 
 # Version 0.3.0
 *Date: 2020-10-21*

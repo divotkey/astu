@@ -1,6 +1,6 @@
 /*
  * ASTU - AST Utilities
- * A collection of Utilities for Advanced Software Techniques (AST).
+ * A collection of Utilities for Applied Software Techniques (AST).
  * 
  * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
@@ -9,6 +9,8 @@
  * @file
  * @brief This file defines public functions offered by AST utilities API-Level 0.
  */
+
+#include "SdlApplication.h"
 
 /////////////////////////////////////////////////
 /////// I/O Functions
@@ -1034,6 +1036,9 @@ enum ErrorCode {
     /** The current state is invalid for this operation. */
     INVALID_STATE,
 
+    /** An error specifc to Simple Direct Layer. */
+    SDL_ERROR,
+
     /** Custom error code set by application. */
     APP_ERROR,
 
@@ -1111,6 +1116,28 @@ void SetErrorDetails(const char *text);
 
 /**@}*/
 
+
+/////////////////////////////////////////////////
+/////// SDL Application
+/////////////////////////////////////////////////
+
+/**
+ * @defgroup sdl_group SDL Application
+ * @brief Functions to write (simple) SDL-based applications.
+ * 
+ * Simple DirectMedia Layer (SDL) is a cross-platform development library 
+ * providing low level access to audio, keyboard, mouse, joystick, and
+ * graphics hardware.
+ * The developer versions of the SDL library must be installed separately,
+ * although the procedure differs for the different operating systems. 
+ * The developer versions of the SDL library are available here:
+ * https://www.libsdl.org/
+ * @{
+ */
+
+/**@}*/
+
+
 /*! \mainpage AST Utilities - API Level 0
  * 
  * AST Utilities **API Level 0** is the simplest and API-Level provided by this 
@@ -1136,5 +1163,6 @@ void SetErrorDetails(const char *text);
  * - @ref timer_group
  * - @ref audio_group
  * - @ref graphics_group
+ * - @ref sdl_group
  * - @ref error_group
  */

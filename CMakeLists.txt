@@ -44,6 +44,7 @@ set(WITH_SDL false CACHE BOOL "Use SDL")
 
 if(WITH_SDL)
     list(APPEND astulib_SOURCES 
+        src/sdl/SdlApplication.cpp
         src/sdl/Application.cpp
         src/sdl/ApplicationImpl.cpp
         
@@ -54,7 +55,8 @@ if(WITH_SDL)
         src/sdl/SdlAudioService.cpp
         src/sdl/SdlTimeService.cpp
         )
-
+else(WITH_SDL)
+    list(APPEND astulib_SOURCES src/sdl/SdlApplicationDummy.cpp)
 endif(WITH_SDL)                 
 
 add_library(astu ${astulib_SOURCES})
