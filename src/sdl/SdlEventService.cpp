@@ -47,6 +47,10 @@ namespace astu {
                 quit = true;
                 break;
 
+            case SDL_MOUSEMOTION:
+                mouse.SetCursor(event.motion.x, event.motion.y);
+                break;
+
             case SDL_MOUSEBUTTONDOWN:
                 mouse.SetButton(event.button.button, true);
                 if(mouseButtonSrv) {

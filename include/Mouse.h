@@ -37,9 +37,38 @@ namespace astu {
          */
         bool IsPressed(int button) const;
 
+        /**
+         * Sets the position of the mouse cursor.
+         * 
+         * @param x the x-coorindate of the mouse cursor
+         * @param y the y-coorindate of the mouse cursor
+         */
+        void SetCursor(int x, int y);
+
+        /**
+         * Returns the x-coordinate of the mouse cursor.
+         * 
+         * @return the x-coordinate
+         */
+        int GetCursorX() const;
+
+        /**
+         * Returns the y-coordinate of the mouse cursor.
+         * 
+         * @return the y-coordinate
+         */
+        int GetCursorY() const;
+
+
     private:
         /** Represents the state of the mouse buttons. */
         static std::vector<bool> buttons;
+
+        /** The x-coordinate of the mouse position. */
+        static int cursorX;
+
+        /** The y-coordinate of the mouse position. */
+        static int cursorY;
     };
 
 } // end of namespace
