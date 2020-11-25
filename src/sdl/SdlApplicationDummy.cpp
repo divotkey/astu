@@ -11,7 +11,7 @@
 int SetNoSDLSupportError()
 {
     SetLastError(SDL_ERROR);
-    SetErrorDetails("SDL support not activated");
+    SetErrorDetails("SDL support not activated. Run cmake command in build folder: cmake -DWITH_SDL=true ../");
     return GetLastError();
 }
 
