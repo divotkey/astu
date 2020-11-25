@@ -1132,6 +1132,35 @@ void SetErrorDetails(const char *text);
  * although the procedure differs for the different operating systems. 
  * The developer versions of the SDL library are available here:
  * https://www.libsdl.org/
+ * 
+ * @section sdl_example_sect Minimal SDL-based Application
+ * 
+ * ```
+ * #include <iostream>
+ * #include <AstUtils.h>
+ * 
+ * void ReportError()
+ * {
+ *     std::cout << "An error has occurred: " << GetLastErrorMessage() << std::endl;
+ *     std::cout << GetErrorDetails() << std::endl;
+ * }
+ * 
+ * int main()
+ * {
+ *     if (InitApp(640, 480) != NO_ERROR) {
+ *         ReportError();
+ *         return -1;
+ *     }
+ * 
+ *     while(!IsAppTerminated()) {
+ *         ClearCanvas();
+ *         UpdateApp();
+ *     }
+ * 
+ *     QuitApp();
+ * } 
+ * ```
+ * 
  * @{
  */
 
