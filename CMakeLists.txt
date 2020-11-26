@@ -43,6 +43,7 @@ list(APPEND astulib_SOURCES
 set(WITH_JACK false CACHE BOOL "Use JACK2")
 if (WITH_JACK)
     list(APPEND astulib_SOURCES 
+        src/audio/JackErrorUtil.cpp
         src/audio/JackClient.cpp
         )
 endif(WITH_JACK) 
@@ -88,7 +89,7 @@ endif(WITH_SDL)
 
 if(WITH_JACK)
     IF (WIN32)
-        target_include_directories(EchoJack PRIVATE $ENV{JACK2_HOME}/include)
+        target_include_directories(astu PRIVATE $ENV{JACK2_HOME}/include)
         target_link_libraries(astu $ENV{JACK2_HOME}/lib/libjack64.lib)
     ELSE()
         target_link_libraries(astu jack)    

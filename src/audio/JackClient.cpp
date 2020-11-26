@@ -8,8 +8,8 @@
 #include <iostream>
 #include <mutex> 
 #include <jack/jack.h>
-#include <AstUtils0.h>
 #include <cstring>
+#include "JackErrorUtil.h"
 #include "JackClient.h"
 
 namespace astu {
@@ -52,6 +52,8 @@ int OnSampleRate(jack_nframes_t nframes, void *arg)
     astu::mtx.lock();
     astu::sampleRate = static_cast<unsigned int>(nframes);
     astu::mtx.unlock();
+
+    return 0;
 }
 
 unsigned int GetSampleRate()
@@ -74,10 +76,8 @@ bool IsJackClientTerminated()
 
 int SetJackProcessFunction(ProcessFunc func)
 {
-    if (IsJackClientTerminated()) {
-        SetLastError(JACK_ERROR);
-        SetErrorDetails("Process function must not be set while running");            
-        return GetLastError();
+    if (!IsJackClientTerminated()) {
+        return astu::SetJackError("Process function must not be set while running");
     }
 
     astu::processFunc = func;
@@ -92,15 +92,14 @@ int InitJackClient(const char clientName[])
 
     astu::client = jack_client_open(clientName, options, &status, astu::serverName);
     if (astu::client == nullptr) {
-        SetLastError(JACK_ERROR);
+        int err;
         if (status && JackServerFailed) {
-            SetErrorDetails("Unable to connect to JACK server");            
+            err = astu::SetJackError("Unable to connect to JACK server");
         } else {
-            std::string txt = std::string("Client open failed: ") + std::to_string(status);
-            SetErrorDetails(txt.c_str());            
+            err = astu::SetJackError(std::string("Client open failed: ") + std::to_string(status));
         }
         QuitJackClient();
-        return GetLastError();
+        return err;
     }
 
     jack_set_process_callback(astu::client, OnJackProcess, 0);
@@ -113,10 +112,8 @@ int InitJackClient(const char clientName[])
         JackPortIsOutput, 0);    
 
     if(!astu::outputPort) {
-        SetLastError(JACK_ERROR);
-        SetErrorDetails("No more output ports available");            
         QuitJackClient();
-        return GetLastError();
+        return astu::SetJackError("No more output ports available");
     }
 
     astu::inputPort = jack_port_register (
@@ -125,21 +122,17 @@ int InitJackClient(const char clientName[])
         JackPortIsInput, 0);
 
     if(!astu::inputPort) {
-        SetLastError(JACK_ERROR);
-        SetErrorDetails("No more input ports available");            
         QuitJackClient();
-        return GetLastError();
+        return astu::SetJackError("No more intput ports available");
     }
 
 	if (jack_activate(astu::client)) {
-        SetLastError(JACK_ERROR);
-        SetErrorDetails("Unable to activate JACK client");            
         QuitJackClient();
-        return GetLastError();
+        return astu::SetJackError("Unable to activate JACK client");
 	}
     astu::jackClientRunning = true;
 
-    return NO_ERROR;
+    return 0;
 }
 
 void QuitJackClient()
