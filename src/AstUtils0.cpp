@@ -47,6 +47,7 @@ const char* kErrorMessages[] = {
     "The operation is not supported",
     "The current state is invalid for this operation",
     "Simple Direct Layer (SDL) error",
+    "JACK Audio Connection Kit error",
     "Application error",    
     "Invalid error code",
     };

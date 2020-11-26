@@ -1039,6 +1039,9 @@ enum ErrorCode {
     /** An error specifc to Simple Direct Layer. */
     SDL_ERROR,
 
+    /** An error specifc to Simple Direct Layer. */
+    JACK_ERROR,
+
     /** Custom error code set by application. */
     APP_ERROR,
 
