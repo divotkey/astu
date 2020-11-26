@@ -5,9 +5,12 @@
  * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+#include <array>
 #include <SDL2/SDL.h>
 #include "AstUtils0.h"
 #include "SdlApplication.h"
+
+#define FPS_UPDATE_INTERVAL 1.0
 
 /////////////////////////////////////////////////
 /////// Globals.
@@ -41,9 +44,37 @@ namespace astu {
 
     /** The background color of the application window. */
     uint8_t drawColor[4] = {255, 255, 255, 255};
+
+    /** The current x-coordinate of the mouse cursor. */
+    int cursorX = 0;
+
+    /** The current x-coordinate of the mouse cursor. */
+    int cursorY = 0;
+
+    /** The states of the mouse buttons. */
+    std::array<bool, 5> buttons = {false, false, false, false, false};
+
+    struct FpsStats {
+
+        FpsStats() : fpsSum(0), fpsUpdate(0), fps(0), cntFrames(0) {}
+
+        /** The average frames per second. */
+        double fpsSum;
+
+        /** Used to determine when the FPS should be updated. */
+        double fpsUpdate;
+
+        /** The average frames per second. */
+        double fps;
+
+        /** The number of frames since the last FPS update. */
+        unsigned int cntFrames;
+    } ;
+
+    FpsStats fpsStats;
 }
 
-int InitApp(int width, int height, const char title[])
+int InitApp(int width, int height, const char title[], bool vsync)
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());        
@@ -65,23 +96,36 @@ int InitApp(int width, int height, const char title[])
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't create SDL Window: %s", SDL_GetError());        
         SetLastError(SDL_ERROR);
         SetErrorDetails(SDL_GetError());
+        QuitApp();
         return GetLastError();
+    }
+
+    int flags = SDL_RendererFlags::SDL_RENDERER_ACCELERATED;
+    if (vsync) {
+        flags |= SDL_RendererFlags::SDL_RENDERER_PRESENTVSYNC;
     }
 
     astu::renderer = SDL_CreateRenderer(
         astu::window, 
-        -1, 
-        SDL_RendererFlags::SDL_RENDERER_ACCELERATED | SDL_RendererFlags::SDL_RENDERER_PRESENTVSYNC
+        -1,
+        flags
         );
 
     if (!astu::renderer) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't create SDL Renderer: %s", SDL_GetError());        
-        QuitApp();
         SetLastError(SDL_ERROR);
         SetErrorDetails(SDL_GetError());
         QuitApp();
         return GetLastError();
     }
+
+    if (SDL_SetRenderDrawBlendMode(astu::renderer, SDL_BLENDMODE_BLEND)) {
+        SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't set blend mode for SDL Renderer: %s", SDL_GetError());        
+        SetLastError(SDL_ERROR);
+        SetErrorDetails(SDL_GetError());
+        QuitApp();
+        return GetLastError();
+    }            
 
     astu::terminated = false;
     astu::performToSeconds = 1.0 / SDL_GetPerformanceFrequency();
@@ -89,7 +133,6 @@ int InitApp(int width, int height, const char title[])
 
     return NO_ERROR;
 }
-
 
 void QuitApp()
 {
@@ -107,9 +150,46 @@ void QuitApp()
     astu::terminated = true;
 }
 
+int SetWindowTitle(const char title[])
+{
+    if (!astu::window) {
+        SetLastError(SDL_ERROR);
+        SetErrorDetails("Application not initialized");
+        return GetLastError();
+    }
+
+    SDL_SetWindowTitle(astu::window, title);
+
+    return NO_ERROR;
+}
+
 bool IsAppTerminated()
 {
     return astu::terminated;
+}
+
+int TranslateButton(int sdlIdx) {
+    switch (sdlIdx) {
+    case SDL_BUTTON_LEFT:
+        return 0;
+    case SDL_BUTTON_MIDDLE:
+        return 1;
+    case SDL_BUTTON_RIGHT:
+        return 2;
+    case SDL_BUTTON_X1:
+        return 3;
+    case SDL_BUTTON_X2:
+        return 4;
+    }
+
+    return -1;
+}
+
+int SetButtonState(int sdlIdx, bool pressed) {
+    int idx = TranslateButton(sdlIdx);
+    if (idx >= 0 && idx <= astu::buttons.size()) {
+        astu::buttons[idx] = pressed;
+    }
 }
 
 void ProcessEvents()
@@ -119,6 +199,19 @@ void ProcessEvents()
         switch (event.type) {
         case SDL_QUIT:
             astu::terminated = true;
+            break;
+
+        case SDL_MOUSEMOTION:
+            astu::cursorX = event.motion.x;
+            astu::cursorY = event.motion.y;
+            break;
+            
+        case SDL_MOUSEBUTTONDOWN:
+            SetButtonState(event.button.button, true);
+            break;
+
+        case SDL_MOUSEBUTTONUP:
+            SetButtonState(event.button.button, false);
             break;
 
         case SDL_DROPTEXT:
@@ -160,7 +253,7 @@ int ClearCanvas()
         static_cast<uint8_t>(astu::drawColor[0]), 
         static_cast<uint8_t>(astu::drawColor[1]), 
         static_cast<uint8_t>(astu::drawColor[2]),
-        static_cast<uint8_t>(SDL_ALPHA_OPAQUE)
+        static_cast<uint8_t>(astu::drawColor[3])
         );
 
     return NO_ERROR;
@@ -179,11 +272,25 @@ void UpdateTime()
     astu::time += astu::deltaTime;
 }
 
+void UpdateFps()
+{
+    ++astu::fpsStats.cntFrames;
+    astu::fpsStats.fpsSum += astu::deltaTime;
+    astu::fpsStats.fpsUpdate -= astu::deltaTime;
+    if (astu::fpsStats.fpsUpdate <= 0) {
+        astu::fpsStats.fps = astu::fpsStats.cntFrames / astu::fpsStats.fpsSum;
+        astu::fpsStats.cntFrames = 0;
+        astu::fpsStats.fpsSum = 0;
+        astu::fpsStats.fpsUpdate = FPS_UPDATE_INTERVAL;
+    }
+}
+
 void UpdateApp()
 {
     ProcessEvents();
     RenderApp();
     UpdateTime();
+    UpdateFps();
 }
 
 int SetRenderColor(int r, int g, int b, int a) 
@@ -197,7 +304,7 @@ int SetRenderColor(int r, int g, int b, int a)
     astu::drawColor[0] = static_cast<uint8_t>(r);
     astu::drawColor[1] = static_cast<uint8_t>(g);
     astu::drawColor[2] = static_cast<uint8_t>(b);
-    astu::drawColor[3] = static_cast<uint8_t>(b);
+    astu::drawColor[3] = static_cast<uint8_t>(a);
 
     SDL_SetRenderDrawColor(
         astu::renderer, 
@@ -264,4 +371,28 @@ int RenderLine(double x1, double y1, double x2, double y2)
 double GetDeltaTime()
 {
     return astu::deltaTime;
+}
+
+double GetFps()
+{
+    return astu::fpsStats.fps;
+}
+
+int GetCursorX()
+{
+    return astu::cursorX;
+}
+
+int GetCursorY()
+{
+    return astu::cursorY;
+}
+
+bool IsMouseButtonPressed(int button)
+{
+    if (button >= 0 && button < astu::buttons.size()) {
+        return astu::buttons[button];
+    }
+
+    return false;
 }

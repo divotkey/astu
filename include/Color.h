@@ -99,6 +99,17 @@ namespace astu {
         Color(int rgb);
 
         /**
+         * Sets the alpha channel of this color.
+         * 
+         * @param a the alpha channel
+         * @return a reference to this color for method chaining
+         */
+        Color & SetAlpha(double a) {
+            this->a = a;
+            return *this;
+        }
+
+        /**
          * Assigns a color using RGBA values within the range [0, 1].
          * 
          * @param red   the red color component

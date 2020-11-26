@@ -15,7 +15,7 @@ int SetNoSDLSupportError()
     return GetLastError();
 }
 
-int InitApp(int width, int height, const char title[])
+int InitApp(int width, int height, const char title[], bool vsync)
 {
     return SetNoSDLSupportError();
 }
@@ -23,6 +23,11 @@ int InitApp(int width, int height, const char title[])
 void QuitApp()
 {
     // Intentionally left empty.
+}
+
+int SetWindowTitle(const char title[])
+{
+    return SetNoSDLSupportError();
 }
 
 bool IsAppTerminated()
@@ -62,4 +67,24 @@ int RenderLine(double x1, double y1, double x2, double y2)
 double GetDeltaTime()
 {
     return 0;
+}
+
+double GetFps()
+{
+    return 0;
+}
+
+int GetCursorX()
+{
+    return 0;
+}
+
+int GetCursorY()
+{
+    return 0;
+}
+
+bool IsMouseButtonPressed(int button)
+{
+    return false; 
 }

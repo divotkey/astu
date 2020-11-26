@@ -18,9 +18,10 @@
  * This function opens the main appplication window and carries out
  * some internal initializaiton procedures and acquire required resources.
  * 
- * @param width the width of the main window in pixels
- * @param height the width of the main window in pixels
- * @param title the title of the application window
+ * @param width     the width of the main window in pixels
+ * @param height    the width of the main window in pixels
+ * @param title     the title of the application window
+ * @param vsync     whether to use vertical synchronization or not
  * @return an error code in case the application could not be initialized, zero
  *  otherwise
  * 
@@ -36,7 +37,7 @@
  * 
  * @ingroup sdl_group
  */
-int InitApp(int width, int height, const char title[] = "ASTU/SDL Application");
+int InitApp(int width, int height, const char title[] = "ASTU/SDL Application", bool vsync = true);
 
 /**
  * Terminates the application.
@@ -48,6 +49,16 @@ int InitApp(int width, int height, const char title[] = "ASTU/SDL Application");
  * @ingroup sdl_group
  */
 void QuitApp();
+
+/**
+ * Sets the title of the application window.
+ * 
+ * @param title the window title
+ * @return an error code in case the title could not be set, zero otherwise
+ * 
+ * @ingroup sdl_group
+ */
+int SetWindowTitle(const char title[]);
 
 /**
  * Updates the application.
@@ -155,6 +166,28 @@ int SetRenderColor(int r, int g, int b, int a = 255);
 int SetBackgroundColor(int r, int g, int b);
 
 /**
+ * Returns the x-coordinate of the mouse cursor.
+ * 
+ * @return the x-coordinate of the mouse cursor
+ */
+int GetCursorX();
+
+/**
+ * Returns the y-coordinate of the mouse cursor.
+ * 
+ * @return the y-coordinate of the mouse cursor
+ */
+int GetCursorY();
+
+/**
+ * Tests whether a certain mouse button is currently pressed.
+ * 
+ * @param button    the index of the button to be queried
+ * @return `true` if the mouse button is pressed
+ */
+bool IsMouseButtonPressed(int button);
+
+/**
  * Returns the epalsed time since the last update.
  * 
  * This method returns the elapsed time since the last call to
@@ -165,3 +198,10 @@ int SetBackgroundColor(int r, int g, int b);
  * @ingroup sdl_group
  */
 double GetDeltaTime();
+
+/**
+ * Returns the average frames per seconds (FPS).
+ * 
+ * @return the frames per seconds
+ */
+double GetFps();
