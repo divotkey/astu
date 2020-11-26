@@ -20,11 +20,11 @@ namespace astu {
     void IteratingEntitySystem::Startup() 
     {
         // Register as updatable. 
-        GetSM().GetService<UpdateService>().AddUpdatable(shared_from_this());
+        GetSM().GetService<UpdateService>().AddUpdatable(shared_as<IteratingEntitySystem>());
 
         // Get view to entites.
         auto & es = GetSM().GetService<EntityService>();
-        es.AddEntityListener(iterateFamily, shared_from_this());
+        es.AddEntityListener(iterateFamily, shared_as<IteratingEntitySystem>());
         entityView = es.GetEntityView(iterateFamily);
 
         // Get pointer to time service.
@@ -45,8 +45,8 @@ namespace astu {
         // Cleanup
         timeService = nullptr;
         entityView = nullptr;
-        GetSM().GetService<EntityService>().RemoveEntityListener(iterateFamily, shared_from_this());
-        GetSM().GetService<UpdateService>().RemoveUpdatable(shared_from_this());
+        GetSM().GetService<EntityService>().RemoveEntityListener(iterateFamily, shared_as<IteratingEntitySystem>());
+        GetSM().GetService<UpdateService>().RemoveUpdatable(shared_as<IteratingEntitySystem>());
     }
 
     void IteratingEntitySystem::OnUpdate()

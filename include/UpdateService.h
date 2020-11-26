@@ -100,7 +100,6 @@ namespace astu {
     class UpdatableBaseService 
         : public BaseService
         , public IUpdatable
-        , public std::enable_shared_from_this<UpdatableBaseService> 
     {
     public:
 

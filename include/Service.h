@@ -8,6 +8,8 @@
 #pragma once
 
 #include <string>
+#include <memory>
+#include <stdexcept>
 #include "ServiceManager.h"
 
 namespace astu {
@@ -17,7 +19,7 @@ namespace astu {
      * 
      * @ingroup srv_group
      */
-    class IService {
+    class IService : public std::enable_shared_from_this<IService> {
     public:
 
         /**
@@ -53,6 +55,16 @@ namespace astu {
          * @return `true` if this service is running
          */
         virtual bool IsRunning() const = 0;
+
+        template<typename T>
+        std::shared_ptr<T> shared_as()
+        {
+            auto result = std::dynamic_pointer_cast<T>(shared_from_this());
+            if (result == nullptr) {
+                throw std::logic_error("Cannot cast to this type");
+            }
+            return result;
+        }
     };
 
     /**

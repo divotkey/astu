@@ -38,7 +38,7 @@ namespace astu {
         renderer = SDL_CreateRenderer(
             GetSM().GetService<SdlVideoService>().GetSdlWindow(), 
             -1, 
-            SDL_RENDERER_ACCELERATED  | SDL_RENDERER_PRESENTVSYNC
+            SDL_RENDERER_ACCELERATED  | SDL_RENDERER_PRESENTVSYNC 
             );
 
         if (!renderer) {
@@ -144,14 +144,14 @@ namespace astu {
 
     void BaseSdlRenderLayer::Startup()
     {
-        GetSM().GetService<SdlRenderService>().AddLayer(shared_from_this());
+        GetSM().GetService<SdlRenderService>().AddLayer(shared_as<BaseSdlRenderLayer>());
         BaseService::Startup();        
     }
 
     void BaseSdlRenderLayer::Shutdown()
     {
         BaseService::Shutdown();
-        GetSM().GetService<SdlRenderService>().RemoveLayer(shared_from_this());
+        GetSM().GetService<SdlRenderService>().RemoveLayer(shared_as<BaseSdlRenderLayer>());
     }
 
     void BaseSdlRenderLayer::OnResize(int width, int height)

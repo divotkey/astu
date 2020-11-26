@@ -135,7 +135,6 @@ namespace astu {
     class BaseSdlRenderLayer 
         : public BaseService
         , public ISdlRenderLayer
-        , public std::enable_shared_from_this<BaseSdlRenderLayer> 
     {
     public:
 
