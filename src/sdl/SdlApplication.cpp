@@ -185,7 +185,7 @@ int TranslateButton(int sdlIdx) {
     return -1;
 }
 
-int SetButtonState(int sdlIdx, bool pressed) {
+void SetButtonState(int sdlIdx, bool pressed) {
     int idx = TranslateButton(sdlIdx);
     if (idx >= 0 && idx <= astu::buttons.size()) {
         astu::buttons[idx] = pressed;
