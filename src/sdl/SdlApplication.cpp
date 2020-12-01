@@ -403,10 +403,10 @@ int RenderRectangle(double x, double y, double w, double h, bool filled)
     }
 
     SDL_Rect rect;
-    rect.x = x - w / 2;
-    rect.y = y - h / 2;
-    rect.w = w;
-    rect.h = h;
+    rect.x = static_cast<int>(x - w / 2);
+    rect.y = static_cast<int>(y - h / 2);
+    rect.w = static_cast<int>(w);
+    rect.h = static_cast<int>(h);
 
     if (filled) {
         if (SDL_RenderFillRect(astu::renderer, &rect)) {
