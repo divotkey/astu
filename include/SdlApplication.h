@@ -125,6 +125,19 @@ int RenderLine(double x1, double y1, double x2, double y2);
 int RenderPoint(double x, double y);
 
 /**
+ * Renders a rectangle using the current render color.
+ * 
+ * @param x         the x-coordinate of the center of the rectangle
+ * @param y         the y-coordinate of the center of the rectangle
+ * @param w         the width of the rectangle
+ * @param h         the height of the rectangle
+ * @param filled    whether the rectangle shoudl be rendered filled
+ * 
+ * @ingroup sdl_group
+ */
+int RenderRectangle(double x, double y, double w, double h, bool filled = false);
+
+/**
  * Sets the render color for subsequent render calls.
  * 
  * @param r the red component of the render color [0, 255]
@@ -166,6 +179,24 @@ int SetRenderColor(int r, int g, int b, int a = 255);
 int SetBackgroundColor(int r, int g, int b);
 
 /**
+ * Returns the width of the application window.
+ * 
+ * @return the width of the application window
+ * 
+ * @ingroup sdl_group
+ */
+int GetWindowWidth();
+
+/**
+ * Returns the height of the application window.
+ * 
+ * @return the height of the application window
+ * 
+ * @ingroup sdl_group
+ */
+int GetWindowHeight();
+
+/**
  * Returns the x-coordinate of the mouse cursor.
  * 
  * @return the x-coordinate of the mouse cursor
@@ -198,6 +229,25 @@ bool IsMouseButtonPressed(int button);
  * @ingroup sdl_group
  */
 double GetDeltaTime();
+
+/**
+ * Returns the absolute running time since the application has been started.
+ * 
+ * **Note:** The returned time represents the summed up delta times and is no
+ * extremely accurate over a long period.
+ * 
+ * @return the absolute time seconds
+ * 
+ * @ingroup sdl_group
+ */
+double GetAbsoluteTime();
+
+/**
+ * Resets the absolute time to zero.
+ * 
+ * @ingroup sdl_group
+ */
+void ResetAbsoluteTime();
 
 /**
  * Returns the average frames per seconds (FPS).

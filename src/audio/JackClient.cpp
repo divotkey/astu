@@ -81,7 +81,7 @@ int SetJackProcessFunction(ProcessFunc func)
     }
 
     astu::processFunc = func;
-    return NO_ERROR;
+    return 0;
 }
 
 

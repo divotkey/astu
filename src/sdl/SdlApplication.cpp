@@ -150,6 +150,32 @@ void QuitApp()
     astu::terminated = true;
 }
 
+int GetWindowWidth()
+{
+    if (!astu::window) {
+        return 0;
+    }
+
+    int width;
+    int height;
+
+    SDL_GetWindowSize(astu::window, &width, &height);
+    return width;
+}
+
+int GetWindowHeight()
+{
+    if (!astu::window) {
+        return 0;
+    }
+
+    int width;
+    int height;
+
+    SDL_GetWindowSize(astu::window, &width, &height);
+    return height;
+}
+
 int SetWindowTitle(const char title[])
 {
     if (!astu::window) {
@@ -368,9 +394,52 @@ int RenderLine(double x1, double y1, double x2, double y2)
     return NO_ERROR;
 }
 
+int RenderRectangle(double x, double y, double w, double h, bool filled)
+{
+    if (!astu::renderer) {
+        SetLastError(SDL_ERROR);
+        SetErrorDetails("Application not initialized");
+        return GetLastError();
+    }
+
+    SDL_Rect rect;
+    rect.x = x - w / 2;
+    rect.y = y - h / 2;
+    rect.w = w;
+    rect.h = h;
+
+    if (filled) {
+        if (SDL_RenderFillRect(astu::renderer, &rect)) {
+            SDL_LogError(SDL_LOG_CATEGORY_RENDER, "Couldn't render rectangle: %s", SDL_GetError());        
+            SetLastError(SDL_ERROR);
+            SetErrorDetails(SDL_GetError());
+            return GetLastError();
+        }
+    } else {
+        if (SDL_RenderDrawRect(astu::renderer, &rect)) {
+            SDL_LogError(SDL_LOG_CATEGORY_RENDER, "Couldn't render rectangle: %s", SDL_GetError());        
+            SetLastError(SDL_ERROR);
+            SetErrorDetails(SDL_GetError());
+            return GetLastError();
+        }
+    }
+
+    return NO_ERROR;
+}
+
 double GetDeltaTime()
 {
     return astu::deltaTime;
+}
+
+double GetAbsoluteTime()
+{
+    return astu::time;
+}
+
+void ResetAbsoluteTime()
+{
+    astu::time = 0;
 }
 
 double GetFps()
