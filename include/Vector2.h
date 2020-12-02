@@ -20,42 +20,154 @@ namespace astu {
         /** The y-coordinate of this vector. */
         double y;
 
-        static double Distance(const Vector2 &p1, const Vector2 &p2) {
-            return (p1 - p2).Length();
+        /**
+         * Returns the length of a two dimensional vector.
+         * 
+         * This method uses a square root function and computationally
+         * expensive. If possible try to use `LengthSquared` instead.
+         * 
+         * @param vx    the x-coordinate of the vector
+         * @param vy    the y-coordinate of the vector
+         * @return the length of the vector
+         */
+        static double Length(double vx, double vy) {
+            return std::sqrt(LengthSquared(vx, vy));
         }
 
-        static double DistanceSquared(const Vector2 &p1, const Vector2 &p2) {
-            return (p1 - p2).LengthSquared();
+        /**
+         * Returns the length of a two-dimensional vector.
+         * 
+         * @param vx    the x-coordinate of the vector
+         * @param vy    the y-coordinate of the vector
+         * @return the length of the vector squared
+         */
+        static double LengthSquared(double vx, double vy) {
+            return vx * vx + vy * vy;
         }
 
-        Vector2() : x(0), y(0) {}
+        /**
+         * Constructor.
+         * 
+         * @param x the x-coordinate of the vector
+         * @param y the y-coordinate of the vector
+         */
+        Vector2(double x = 0, double y = 0)
+            : x(x), y(y)
+        {
+            // Intentionally left empty.
+        }
 
-        Vector2(double _x, double _y) : x(_x), y(_y) {}
-
-        Vector2 & Set(double _x, double _y) {
-            x = _x;
-            y = _y;
+        /**
+         * Sets the x and y components of this vector.
+         *
+         * @param x the x-coordinate of the vector
+         * @param y the y-coordinate of the vector
+         * @return reference to this vector for method chaining
+         */
+        Vector2 & Set(double x, double y) {
+            this->x = x;
+            this->y = y;
             return *this;
         }
 
+        /**
+         * Sets the x component of this vector.
+         *
+         * @param x the x-coordinate of the vector
+         * @return reference to this vector for method chaining
+         */
+        Vector2 & SetX(double x) {
+            this->x = x;
+            return *this;
+        }
+
+        /**
+         * Sets the y component of this vector.
+         *
+         * @param y the y-coordinate of the vector
+         * @return reference to this vector for method chaining
+         */
+        Vector2 & SetY(double y) {
+            this->y = y;
+            return *this;
+        }
+
+        /**
+         * Sets this vector to zero length.
+         * 
+         * @return reference to this vector for method chaining
+         */
         Vector2 & SetZero() {
             x = 0; y = 0;
             return *this;
         }
 
-        double LengthSquared() const {
-            return x * x + y * y;
-        }
-
+        /**
+         * Returns the length of this vector.#
+         * 
+         * This method uses a square root function and computationally
+         * expensive. If possible try to use `LengthSquared` instead.
+         *
+         * @return the length of this vector
+         */
         double Length() const {
             return std::sqrt(x * x + y * y);
         }
 
+        /**
+         * Sets the length of this vector to a certain length.
+         * 
+         * In case the current length of this vector is zero, the result
+         * will be undefined.
+         *
+         * @param l	the new length of this vector
+         * @return reference to this vector for method chaining
+         */
+        Vector2 & SetLength(double l) {
+            return *this *= l / Length();
+        }
+
+        /**
+         * Returns the length of this vector squared.
+         *
+         * @return the length of this vector squared
+         */
+        double LengthSquared() const {
+            return x * x + y * y;
+        }
+
+        /**
+         * Normalizes this vector.
+         * 
+         * This method does not test if this vector has zero length. 
+         *
+         * @return reference to this vector for method chaining
+         */
         Vector2 & Normalize() {
             double len = Length();
             x /= len;
             y /= len;
             return *this;			
+        }
+
+        /**
+         * Returns the distance between this vector and the other vector.
+         *
+         * @param o the other vector
+         * @return the distance between the two points
+         */
+        double Distance(const Vector2 & o) const {
+            return Length(x - o.x, y - o.y);
+        }        
+
+        /**
+         * Returns the squared distance between this vector and the other vector.
+         *
+         * @param o the other vector
+         * @return the distance squared
+         */
+        double DistanceSquared(const Vector2 & o) const {
+            return LengthSquared(x - o.x, y - o.y);
         }
 
         Vector2 & Rotate(double phi)
