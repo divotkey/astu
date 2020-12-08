@@ -10,6 +10,7 @@
  * @brief This file defines public functions offered by AST utilities API-Level 0.
  */
 
+#include "Vector2.h"
 #include "SdlApplication.h"
 
 /////////////////////////////////////////////////
@@ -495,6 +496,8 @@ int Minimum(int a, int b, int c);
 
 int Maximum(int a, int b);
 int Maximum(int a, int b, int c);
+
+using Vector2d = astu::Vector2<double>;
 
 /**
  * Returns a random number within the specified range.

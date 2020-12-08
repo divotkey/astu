@@ -844,14 +844,14 @@ void SetClearColor(int r, int g, int b)
 
 void DrawLine(double x0, double y0, double x1, double y1, double w)
 {
-    Vector2 v(x1 - x0, y1 - y0);
+    Vector2<double> v(x1 - x0, y1 - y0);
 
     double lng = v.Length();
     if (lng <= 0 || w <= 0) {
         return;
     }
 
-    double a = v.Angle(Vector2(1, 0));
+    double a = v.Angle(Vector2<double>(1, 0));
 
     auto rect = std::make_shared<RectanglePattern>(lng, w);
     rect->Translate((x1 + x0) / 2, (y1 + y0) / 2);

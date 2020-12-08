@@ -40,7 +40,7 @@ namespace astu {
         double dy = 1.0;
         double startY = dy / 2.0;
 
-        Vector2 p(0, startY);
+        Vector2<double> p(0, startY);
         Color c1 = Color(0, 0, 0);
         Color c2 = Color(1, 1, 1);
         for (int j = 0; j < result.GetHeight(); ++j) {
@@ -65,7 +65,7 @@ namespace astu {
         double dy = 1.0;
         double startY = dy / 2.0;
 
-        Vector2 p(0, startY);
+        Vector2<double> p(0, startY);
         Color c1 = Color(0, 0, 0);
         Color c2 = Color(1, 1, 1);
         for (int j = 0; j < result.GetHeight(); ++j) {
@@ -78,7 +78,7 @@ namespace astu {
         }
     }
 
-    Color AntiAlisaingPatternRenderer::CalcColor(const Vector2 & p, const Pattern & pattern)
+    Color AntiAlisaingPatternRenderer::CalcColor(const Vector2<double> & p, const Pattern & pattern)
     {
         const double dx = (KERNEL_RADIUS * 2) / KERNEL_SIZE;
         double startX = p.x - KERNEL_RADIUS;
@@ -89,7 +89,7 @@ namespace astu {
         const Color c2 = Color(0, 0, 0);
 
         Color c;
-        Vector2 aa(0, startY);
+        Vector2<double> aa(0, startY);
         double *k = kernel;
         for (int j = 0; j < KERNEL_SIZE; ++j) {
             aa.x = startX;

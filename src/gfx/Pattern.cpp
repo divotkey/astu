@@ -39,7 +39,7 @@ namespace astu {
         dirty = true;
     }
 
-    bool Pattern::GetColor(const Vector2 &p, Color & c) const
+    bool Pattern::GetColor(const Vector2<double> &p, Color & c) const
     {
         return GetColorTransformed(transform.TransformPoint(p), c);
     }
@@ -70,7 +70,7 @@ namespace astu {
         radiusSquared = r * r;
     }
 
-    bool CirclePattern::GetColorTransformed(const Vector2 &pt, Color & c) const
+    bool CirclePattern::GetColorTransformed(const Vector2<double> &pt, Color & c) const
     {
         if (pt.LengthSquared() > radiusSquared) {
             return false;
@@ -113,7 +113,7 @@ namespace astu {
         vRadius = height / 2;
     }
 
-    bool RectanglePattern::GetColorTransformed(const Vector2 &pt, Color & c) const
+    bool RectanglePattern::GetColorTransformed(const Vector2<double> &pt, Color & c) const
     {
         if (pt.x > hRadius || pt.x < -hRadius) {
             return false;
@@ -155,7 +155,7 @@ namespace astu {
     /////// Union Pattern
     /////////////////////////////////////////////////
 
-    bool UnionPattern::GetColorTransformed(const Vector2 &pt, Color & c) const
+    bool UnionPattern::GetColorTransformed(const Vector2<double> &pt, Color & c) const
     {
         bool hasColor = false;
         for (auto pattern : children) {

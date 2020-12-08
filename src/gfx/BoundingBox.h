@@ -58,12 +58,12 @@ namespace astu {
             return vRadius;
         }
 
-        void SetCenter(const Vector2 & c);
+        void SetCenter(const Vector2<double> & c);
 
-        void MoveCenter(const Vector2 & tx);
+        void MoveCenter(const Vector2<double> & tx);
         void MoveCenter(double dx, double dy);
 
-        const Vector2 & GetCenter() const {
+        const Vector2<double> & GetCenter() const {
             return center;
         }
 
@@ -83,20 +83,20 @@ namespace astu {
             return center.y - vRadius;
         }
 
-        Vector2 GetUpperLeft() const {
-            return Vector2(GetLeftBound(), GetUpperBound());
+        Vector2<double> GetUpperLeft() const {
+            return Vector2<double>(GetLeftBound(), GetUpperBound());
         }
 
-        Vector2 GetUpperRight() const {
-            return Vector2(GetRightBound(), GetUpperBound());
+        Vector2<double> GetUpperRight() const {
+            return Vector2<double>(GetRightBound(), GetUpperBound());
         }
 
-        Vector2 GetLowerLeft() const {
-            return Vector2(GetLeftBound(), GetLowerBound());
+        Vector2<double> GetLowerLeft() const {
+            return Vector2<double>(GetLeftBound(), GetLowerBound());
         }
 
-        Vector2 GetLowerRight() const {
-            return Vector2(GetRightBound(), GetLowerBound());
+        Vector2<double> GetLowerRight() const {
+            return Vector2<double>(GetRightBound(), GetLowerBound());
         }
 
         bool IsInfinite() const {
@@ -107,10 +107,10 @@ namespace astu {
             return !IsInfinite() && (width == 0) && (height == 0);
         }
 
-        bool IsInside(const Vector2 & p) const;
+        bool IsInside(const Vector2<double> & p) const;
         bool IsInside(const BoundingBox & box) const;
 
-        void AddPoint(const Vector2 & p);
+        void AddPoint(const Vector2<double> & p);
         void Merge(const BoundingBox & o);
 
         void Transform(const Matrix3 & tx);
@@ -118,7 +118,7 @@ namespace astu {
 
     private:
         /** The center of this bounding box. */
-        Vector2 center;
+        Vector2<double> center;
 
         /** The width of thsi bounding box. */
         double width;

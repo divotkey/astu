@@ -9,7 +9,7 @@
 
 namespace astu {
 
-    const Vector2 Turtle::REF_DIRECTION(0, -1);
+    const Vector2<double> Turtle::REF_DIRECTION(0, -1);
 
     Turtle::Turtle()
     {
@@ -25,7 +25,7 @@ namespace astu {
         SetPenWidth(2);
     }
 
-    const Vector2 & Turtle::GetPosition() const
+    const Vector2<double> & Turtle::GetPosition() const
     {
         return position;
     }
@@ -47,7 +47,7 @@ namespace astu {
 
     void Turtle::Forward(double distance)
     {
-        Vector2 dir(REF_DIRECTION);
+        Vector2<double> dir(REF_DIRECTION);
         dir.Rotate(angle);
         position += dir * distance;
     }

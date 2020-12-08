@@ -40,7 +40,7 @@ namespace astu {
         infinite = false;
     }
 
-    // BoundingBox::BoundingBox(const Vector2 & c, double hr, double vr)
+    // BoundingBox::BoundingBox(const Vector2<double> & c, double hr, double vr)
     //     : infinite(false)
     // {
     //     if (hr < 0) {
@@ -78,7 +78,7 @@ namespace astu {
         vRadius = h / 2;
     }
 
-    void BoundingBox::SetCenter(const Vector2 & c)
+    void BoundingBox::SetCenter(const Vector2<double> & c)
     {
         center = c;
     }
@@ -89,12 +89,12 @@ namespace astu {
         center.y += dy;
     }
 
-    void BoundingBox::MoveCenter(const Vector2 & tx)
+    void BoundingBox::MoveCenter(const Vector2<double> & tx)
     {
         center += tx;        
     }
 
-    void BoundingBox::AddPoint(const Vector2 & p)
+    void BoundingBox::AddPoint(const Vector2<double> & p)
     {
         if (IsInfinite()) {
             return;
@@ -120,10 +120,10 @@ namespace astu {
             return;
         }
 
-		Vector2 p1 = tx.TransformPoint(GetUpperLeft());
-		Vector2 p2 = tx.TransformPoint(GetUpperRight());
-		Vector2 p3 = tx.TransformPoint(GetLowerLeft());
-		Vector2 p4 = tx.TransformPoint(GetLowerRight());
+		Vector2<double> p1 = tx.TransformPoint(GetUpperLeft());
+		Vector2<double> p2 = tx.TransformPoint(GetUpperRight());
+		Vector2<double> p3 = tx.TransformPoint(GetLowerLeft());
+		Vector2<double> p4 = tx.TransformPoint(GetLowerRight());
 
         center = tx.TransformPoint(center);
         hRadius = vRadius = 0;
@@ -145,7 +145,7 @@ namespace astu {
         AddPoint(o.GetLowerRight());
     }
 
-    bool BoundingBox::IsInside(const Vector2 & p) const
+    bool BoundingBox::IsInside(const Vector2<double> & p) const
     {
 		if (p.x > GetRightBound() || p.x < GetLeftBound()) {
 			return false;

@@ -114,7 +114,7 @@ namespace astu {
         return localBox;
     }
 
-    bool Quadtree::GetColorTransformed(const Vector2 &pt, Color & c) const
+    bool Quadtree::GetColorTransformed(const Vector2<double> &pt, Color & c) const
     {
         if (!localBox.IsInside(pt)) {
             return false;
@@ -142,7 +142,7 @@ namespace astu {
         return GetLocalColorTransformed(pt, c);
     }
 
-    bool Quadtree::GetLocalColorTransformed(const Vector2 &pt, Color & c) const
+    bool Quadtree::GetLocalColorTransformed(const Vector2<double> &pt, Color & c) const
     {
         bool hasColor = false;
         for (auto pattern : children) {
@@ -168,7 +168,7 @@ namespace astu {
         result->localBox.SetWidth(localBox.GetHRadius());
         result->localBox.SetHeight(localBox.GetVRadius());
         result->localBox.MoveCenter(dx, dy);
-        result->localBox.SetCenter(localBox.GetCenter() + Vector2(dx, dy));
+        result->localBox.SetCenter(localBox.GetCenter() + Vector2<double>(dx, dy));
         return result;
     }
 

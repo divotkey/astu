@@ -7,11 +7,12 @@
 
 #pragma once
 
+#include "Vector2.h"
+
 namespace astu {
 
     class Pattern;
     class Image;
-    class Vector2;
 
     class IPatternRenderer {
     public:
@@ -29,7 +30,7 @@ namespace astu {
         virtual void Render(const Pattern & pattern, Image & result) override;        
 
     private:
-        Color CalcColor(const Vector2 & p, const Pattern & shape);
+        Color CalcColor(const Vector2<double> & p, const Pattern & shape);
     };
 
     class StochasticAntiAlisaingPatternRenderer : public IPatternRenderer {
@@ -37,7 +38,7 @@ namespace astu {
         virtual void Render(const Pattern & pattern, Image & result) override;        
 
     private:
-        Color CalcColor(const Vector2 & p, const Pattern & shape);
+        Color CalcColor(const Vector2<double> & p, const Pattern & shape);
     };
 
 }

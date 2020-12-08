@@ -12,13 +12,17 @@
 
 namespace astu {
 
+    /**
+	 * A two dimensional vector. 
+	 */
+    template <typename T>
     class Vector2 {
     public:
         /** The x-coordinate of this vector. */
-        double x;
+        T x;
 
         /** The y-coordinate of this vector. */
-        double y;
+        T y;
 
         /**
          * Returns the length of a two dimensional vector.
@@ -30,7 +34,7 @@ namespace astu {
          * @param vy    the y-coordinate of the vector
          * @return the length of the vector
          */
-        static double Length(double vx, double vy) {
+        static T Length(T vx, T vy) {
             return std::sqrt(LengthSquared(vx, vy));
         }
 
@@ -41,7 +45,7 @@ namespace astu {
          * @param vy    the y-coordinate of the vector
          * @return the length of the vector squared
          */
-        static double LengthSquared(double vx, double vy) {
+        static T LengthSquared(T vx, T vy) {
             return vx * vx + vy * vy;
         }
 
@@ -51,7 +55,7 @@ namespace astu {
          * @param x the x-coordinate of the vector
          * @param y the y-coordinate of the vector
          */
-        Vector2(double x = 0, double y = 0)
+        Vector2(T x = 0, T y = 0)
             : x(x), y(y)
         {
             // Intentionally left empty.
@@ -64,7 +68,7 @@ namespace astu {
          * @param y the y-coordinate of the vector
          * @return reference to this vector for method chaining
          */
-        Vector2 & Set(double x, double y) {
+        Vector2 & Set(T x, T y) {
             this->x = x;
             this->y = y;
             return *this;
@@ -76,7 +80,7 @@ namespace astu {
          * @param x the x-coordinate of the vector
          * @return reference to this vector for method chaining
          */
-        Vector2 & SetX(double x) {
+        Vector2 & SetX(T x) {
             this->x = x;
             return *this;
         }
@@ -87,7 +91,7 @@ namespace astu {
          * @param y the y-coordinate of the vector
          * @return reference to this vector for method chaining
          */
-        Vector2 & SetY(double y) {
+        Vector2 & SetY(T y) {
             this->y = y;
             return *this;
         }
@@ -110,7 +114,7 @@ namespace astu {
          *
          * @return the length of this vector
          */
-        double Length() const {
+        T Length() const {
             return std::sqrt(x * x + y * y);
         }
 
@@ -123,7 +127,7 @@ namespace astu {
          * @param l	the new length of this vector
          * @return reference to this vector for method chaining
          */
-        Vector2 & SetLength(double l) {
+        Vector2 & SetLength(T l) {
             return *this *= l / Length();
         }
 
@@ -132,7 +136,7 @@ namespace astu {
          *
          * @return the length of this vector squared
          */
-        double LengthSquared() const {
+        T LengthSquared() const {
             return x * x + y * y;
         }
 
@@ -144,7 +148,7 @@ namespace astu {
          * @return reference to this vector for method chaining
          */
         Vector2 & Normalize() {
-            double len = Length();
+            T len = Length();
             x /= len;
             y /= len;
             return *this;			
@@ -156,7 +160,7 @@ namespace astu {
          * @param o the other vector
          * @return the distance between the two points
          */
-        double Distance(const Vector2 & o) const {
+        T Distance(const Vector2<T> & o) const {
             return Length(x - o.x, y - o.y);
         }        
 
@@ -166,126 +170,128 @@ namespace astu {
          * @param o the other vector
          * @return the distance squared
          */
-        double DistanceSquared(const Vector2 & o) const {
+        T DistanceSquared(const Vector2<T> & o) const {
             return LengthSquared(x - o.x, y - o.y);
         }
 
-        Vector2 & Rotate(double phi)
+        Vector2 & Rotate(T phi)
         {
-            double cosa = cos(phi);
-            double sina = sin(phi);
+            T cosa = std::cos(phi);
+            T sina = std::sin(phi);
 
-            double xt = x * cosa - y * sina;
+            T xt = x * cosa - y * sina;
             y = y * cosa + x * sina;
             x = xt;
 
             return *this;
         }        
 
-        double Dot(const Vector2 & o) const
+        T Dot(const Vector2<T> & o) const
         {
             return x * o.x + y * o.y;
         }
 
-        double Dot(double vx, double vy) const
+        T Dot(T vx, T vy) const
         {
             return x * vx + y * vy;
         }
 
-        double Cross(double vx, double vy) const
+        T Cross(T vx, T vy) const
         {
             return x * vy - y * vx;
         }
 
-		double Cross(const Vector2& o) const
+		T Cross(const Vector2<T> &o) const
 		{
 			return x * o.y - y * o.x;
 		}
 
-        double Angle(const Vector2& ref) const
+        T Angle(const Vector2<T> &ref) const
         {
             return std::atan2(Cross(ref), Dot(ref));
         }
 
-        const Vector2 operator+(const Vector2 & right) const
+        Vector2<T> operator+(const Vector2<T> &right) const
         {
             return Vector2(x + right.x, y + right.y);
         }        
 
-        Vector2 & operator+=(const Vector2 & right)
+        Vector2<T> & operator+=(const Vector2<T> &right)
         {
             x += right.x;
             y += right.y;
             return *this;
         }
 
-        const Vector2 operator-(const Vector2 & right) const
+        const Vector2<T> operator-(const Vector2<T> & right) const
         {
             return Vector2(x - right.x, y - right.y);
         }
 
-        Vector2 & operator-=(const Vector2 & right)
+        Vector2<T> & operator-=(const Vector2<T> & right)
         {
             x -= right.x;
             y -= right.y;
             return *this;
         }
 
-		const Vector2 operator*(const Vector2 & right) const
+		const Vector2<T> operator*(const Vector2<T> & right) const
 		{
     		return Vector2(x * right.x, y * right.y);
 		}       
 
-		Vector2 & operator*=(const Vector2 & right)
+		Vector2<T> & operator*=(const Vector2<T> & right)
 		{
 			x *= right.x;
 			y *= right.y;
 			return *this;
 		}   
 
-        Vector2 & operator/=(double s)
+        Vector2<T> & operator/=(T s)
         {
             x /= s;
             y /= s;
             return *this;
         }
 
-        Vector2 operator/(double s) const
+        Vector2<T> operator/(T s) const
         {
             return Vector2(x / s, y / s);
         }
 
-        Vector2 operator*(double s) const
+        Vector2<T> operator*(T s) const
         {
             return Vector2(x * s, y * s);
         }
 
-        Vector2 & operator*=(double s)
+        Vector2<T> & operator*=(T s)
         {
             x *= s;
             y *= s;
             return *this;
         }
 
-        const Vector2 operator-() const {
+        const Vector2<T> operator-() const {
             return Vector2(-x, -y);
         }        
 
-		bool operator==(const Vector2& o) const {
+		bool operator==(const Vector2<T> &o) const {
 			return x == o.x && y == o.y;
 		}       
 
-        bool operator!=(const Vector2& o) const {
+        bool operator!=(const Vector2<T> &o) const {
             return !(*this == o);
         }         
     };
 
-	inline std::ostream& operator<<(std::ostream& os, const Vector2& vec) {
+    template<typename T>
+	inline std::ostream& operator<<(std::ostream& os, const Vector2<T> &vec) {
 		os << '{' << vec.x << ", " << vec.y << '}';
 		return os;
 	}    
 
-	inline const Vector2 operator*(double s, const Vector2 & v) {
+    template<typename T>
+	inline const Vector2<T> operator*(T s, const Vector2<T> & v) {
 		return v * s;
 	}    
 }

@@ -58,7 +58,7 @@ namespace astu {
 			return *this;
 		}
 
-		Matrix3& SetToTranslate(const Vector2& v) {
+		Matrix3& SetToTranslate(const Vector2<double>& v) {
 			return SetToTranslate(v.x, v.y);
 		}        
 
@@ -68,7 +68,7 @@ namespace astu {
 			return *this;
 		}        
 
-		Matrix3& Translate(const Vector2 & v) {
+		Matrix3& Translate(const Vector2<double> & v) {
 			return Translate(v.x, v.y);
 		}        
 
@@ -79,7 +79,7 @@ namespace astu {
 			return *this;
 		}
 
-		Matrix3& SetToScale(const Vector2 & v) {
+		Matrix3& SetToScale(const Vector2<double> & v) {
 			return SetToScale(v.x, v.y);
 		}        
 
@@ -89,7 +89,7 @@ namespace astu {
 			return *this;
 		}
 
-		Matrix3 & Scale(const Vector2 & v) {
+		Matrix3 & Scale(const Vector2<double> & v) {
 			return Scale(v.x, v.y);
 		}
 
@@ -114,25 +114,25 @@ namespace astu {
             return *this;
         }        
 
-		Vector2 transformPoint(double x, double y) const {
-			return Vector2(
+		Vector2<double> transformPoint(double x, double y) const {
+			return Vector2<double>(
 				m[0] * x + m[3] * y + m[6],
 				m[1] * x + m[4] * y + m[7]
 			);
 		}
 
-		Vector2 TransformPoint(const Vector2& p) const {
+		Vector2<double> TransformPoint(const Vector2<double>& p) const {
             return transformPoint(p.x, p.y);
 		}
 
-		Vector2 TransformVector(double x, double y) const {
-			return Vector2(
+		Vector2<double> TransformVector(double x, double y) const {
+			return Vector2<double>(
 				m[0] * x + m[3] * y,
 				m[1] * x + m[4] * y
 			);
 		}        
 
-		Vector2 TransformVector(const Vector2 & v) const {
+		Vector2<double> TransformVector(const Vector2<double> & v) const {
 			return TransformVector(v.x, v.y);
 		}        
 

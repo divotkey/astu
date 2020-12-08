@@ -192,7 +192,7 @@ namespace astu {
          * @param o the other vector
          * @return the dot product between the two vectors.
          */
-        T Dot(const Vector3 & o) const {
+        T Dot(const Vector3<T> & o) const {
             return x * o.x + y * o.y + z * o.z;
         } 
 
