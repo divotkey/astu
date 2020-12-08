@@ -1,5 +1,11 @@
 # Version History {#CHANGES}
 
+#Version 0.5.0
+*Date: 2020-12-09*
+
+- Added convenient function `SayError()` for easy error output.
+- Refactored `Vector2` class to be a template class.
+
 # Version 0.4.0
 *Date: 2020-11-25*
 

@@ -343,6 +343,11 @@ int SetRenderColor(int r, int g, int b, int a)
     return NO_ERROR;
 }
 
+int SetRenderColor(int rgba)
+{
+    return SetRenderColor((rgba & 0xff0000) >> 16, (rgba & 0xff00) >> 8, rgba & 0xff, (rgba & 0xff000000) >> 24);   
+}
+
 int SetBackgroundColor(int r, int g, int b)
 {
     if (!astu::renderer) {
@@ -356,6 +361,11 @@ int SetBackgroundColor(int r, int g, int b)
     astu::bgColor[2] = static_cast<uint8_t>(b);
 
     return NO_ERROR;
+}
+
+int SetBackgroundColor(int rgb)
+{
+    return SetBackgroundColor((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
 }
 
 int RenderPoint(double x, double y)    

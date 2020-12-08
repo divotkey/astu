@@ -164,6 +164,29 @@ int RenderRectangle(double x, double y, double w, double h, bool filled = false)
 int SetRenderColor(int r, int g, int b, int a = 255);
 
 /**
+ * Sets the render color for subsequent render calls.
+ *  * 
+ * This function can be used to set the background color using the usual
+ * hex-triplet notation which is a six-digit, three-byte hexadecimal
+ * number used int HTML, CSS, SVG etc.
+ * 
+ * 
+ * **Example Usage**
+ * 
+ * ```
+ * // Set render color to orange, full opaque.
+ * SetRenderColor(0xFFFFA500);
+ * 
+ * // Set render color to yellow, 50% transparent.
+ * SetRenderColor(0x80ffff00);
+ * 
+ * // Set render color to white, full opaque.
+ * SetRenderColor(0xffffffff);
+ * ```
+ */
+int SetRenderColor(int argb);
+
+/**
  * Sets the background color of the application window.
  * 
  * The background color does not have an alpha channel and cannot
@@ -177,6 +200,18 @@ int SetRenderColor(int r, int g, int b, int a = 255);
  * @ingroup sdl_group
  */
 int SetBackgroundColor(int r, int g, int b);
+
+/**
+ * Sets the background color of the application window.
+ * 
+ * The background color does not have an alpha channel and cannot
+ * be transparent.
+ * 
+ * This function can be used to set the background color using the usual
+ * hex-triplet notation which is a six-digit, three-byte hexadecimal
+ * number used int HTML, CSS, SVG etc.
+ */
+int SetBackgroundColor(int rgb);
 
 /**
  * Returns the width of the application window.

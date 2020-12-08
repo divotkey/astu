@@ -136,6 +136,12 @@ void SayHello()
     cout << "Hello AST World :-)" << endl;
 }
 
+void SayError()
+{
+    std::cout << "An error has occurred: " << GetLastErrorMessage() << std::endl;
+    std::cout << GetErrorDetails() << std::endl;
+}
+
 void SayText(const char* text, bool eol)
 {
     if (text) {

@@ -43,6 +43,31 @@
  */ 
 void SayHello();
 
+    // std::cout << "An error has occurred: " << GetLastErrorMessage() << std::endl;
+    // std::cout << GetErrorDetails() << std::endl;
+
+
+/**
+ * Outputs the last error message including error details.
+ * 
+ * This is only a convenience function for error output. The same
+ * result  could also be achieved with the method for error retrieval
+ * and the Standard C++ library. An implementation of this function
+ * could look like this:
+ * 
+ * ```
+ * #include <iostream>
+ * #include <AstUtils.h>
+ * 
+ * void SayError()
+ * {
+ *   std::cout << "An error has occurred: " << GetLastErrorMessage() << std::endl;
+ *   std::cout << GetErrorDetails() << std::endl;
+ * }
+ * ```
+ */
+void SayError();
+
 /**
  * Outputs the specified text using the standard output stream.
  * If `text` is a `nullptr` an empty line will be printed.
