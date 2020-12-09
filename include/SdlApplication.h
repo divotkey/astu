@@ -165,26 +165,27 @@ int SetRenderColor(int r, int g, int b, int a = 255);
 
 /**
  * Sets the render color for subsequent render calls.
- *  * 
+ *  
  * This function can be used to set the background color using the usual
- * hex-triplet notation which is a six-digit, three-byte hexadecimal
+ * hex-quadruplet notation which is a eight-digit, four-byte hexadecimal
  * number used int HTML, CSS, SVG etc.
- * 
  * 
  * **Example Usage**
  * 
  * ```
  * // Set render color to orange, full opaque.
- * SetRenderColor(0xFFFFA500);
+ * SetRenderColor(0xFFA500FF);
  * 
  * // Set render color to yellow, 50% transparent.
- * SetRenderColor(0x80ffff00);
+ * SetRenderColor(0xFFFF0080);
  * 
  * // Set render color to white, full opaque.
- * SetRenderColor(0xffffffff);
+ * SetRenderColor(0xFFFFFFFF);
  * ```
+ * 
+ * @ingroup sdl_group
  */
-int SetRenderColor(int argb);
+int SetRenderColor(int rgba);
 
 /**
  * Sets the background color of the application window.
@@ -210,6 +211,8 @@ int SetBackgroundColor(int r, int g, int b);
  * This function can be used to set the background color using the usual
  * hex-triplet notation which is a six-digit, three-byte hexadecimal
  * number used int HTML, CSS, SVG etc.
+ * 
+ * @ingroup sdl_group
  */
 int SetBackgroundColor(int rgb);
 
@@ -254,7 +257,7 @@ int GetCursorY();
 bool IsMouseButtonPressed(int button);
 
 /**
- * Returns the epalsed time since the last update.
+ * Returns the elapsed time since the last update.
  * 
  * This method returns the elapsed time since the last call to
  * UpdateApp. 

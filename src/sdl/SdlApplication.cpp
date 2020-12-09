@@ -345,7 +345,7 @@ int SetRenderColor(int r, int g, int b, int a)
 
 int SetRenderColor(int rgba)
 {
-    return SetRenderColor((rgba & 0xff0000) >> 16, (rgba & 0xff00) >> 8, rgba & 0xff, (rgba & 0xff000000) >> 24);   
+    return SetRenderColor((rgba & 0xff000000) >> 24, (rgba & 0xff0000) >> 16, (rgba & 0xff00) >> 8, rgba & 0xff);   
 }
 
 int SetBackgroundColor(int r, int g, int b)
