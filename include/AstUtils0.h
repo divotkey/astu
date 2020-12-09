@@ -449,7 +449,6 @@ bool CompareString(const char* s1, const char* s2);
 /////// Math Functions
 /////////////////////////////////////////////////
 
-
 /**
  * @defgroup math_group Mathematics
  * @brief A collection of functions dedicated to mathematical calculations.
@@ -522,6 +521,9 @@ int Minimum(int a, int b, int c);
 int Maximum(int a, int b);
 int Maximum(int a, int b, int c);
 
+/**
+ * Convenient type alias for astu::Vector2 template using double as data type.
+ */
 using Vector2d = astu::Vector2<double>;
 
 /**

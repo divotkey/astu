@@ -14,6 +14,8 @@ namespace astu {
 
     /**
 	 * A two dimensional vector. 
+     * 
+     * @ingroup math_group
 	 */
     template <typename T>
     class Vector2 {
@@ -174,6 +176,12 @@ namespace astu {
             return LengthSquared(x - o.x, y - o.y);
         }
 
+        /**
+         * Rotates this vector in-place.
+         * 
+         * @param phi   the angle in radians
+         * @return reference to this vector for method chaining
+         */
         Vector2 & Rotate(T phi)
         {
             T cosa = std::cos(phi);
@@ -186,36 +194,80 @@ namespace astu {
             return *this;
         }        
 
+        /**
+         * Calculates the dot product.
+         * 
+         * @param o the the other vector
+         * @return the dot product between the two vectors
+         */
         T Dot(const Vector2<T> & o) const
         {
             return x * o.x + y * o.y;
         }
 
+        /**
+         * Calculates the dot product.
+         * 
+         * @param vx    the x-coordinate the the other vector
+         * @param vy    the y-coordinate the the other vector
+         * @return the dot product between the two vectors
+         */
         T Dot(T vx, T vy) const
         {
             return x * vx + y * vy;
         }
 
+        /**
+         * Calculates the dot product.
+         * 
+         * @param vx    the x-coordinate the the other vector
+         * @param vy    the y-coordinate the the other vector
+         * @return the cross product of the two vectors
+         */
         T Cross(T vx, T vy) const
         {
             return x * vy - y * vx;
         }
 
+        /**
+         * Calculates the dot product.
+         * 
+         * @param o the the other vector
+         * @return the cross product of the two vectors
+         */
 		T Cross(const Vector2<T> &o) const
 		{
 			return x * o.y - y * o.x;
 		}
 
+        /**
+         * Calculates the angle between this vector and a reference vector.
+         * 
+         * @param ref   the reference vector
+         * @return the angle in radians
+         */
         T Angle(const Vector2<T> &ref) const
         {
             return std::atan2(Cross(ref), Dot(ref));
         }
 
+        /**
+         * Binary addition operator for two vectors.
+         *
+         * @param right the right hand-side vector
+         * @return a new vector representing the result of the operation
+         */
         Vector2<T> operator+(const Vector2<T> &right) const
         {
             return Vector2(x + right.x, y + right.y);
         }        
 
+        /**
+         * Compound assignment and addition operator for two vectors.
+         *
+         * @param right     the right hand-side vector
+         * @return a reference to this vector
+         */
         Vector2<T> & operator+=(const Vector2<T> &right)
         {
             x += right.x;
@@ -223,11 +275,23 @@ namespace astu {
             return *this;
         }
 
+        /**
+         * Binary subtraction operator for two vectors.
+         *
+         * @param right the right hand-side vector
+         * @return a new vector representing the result of the operation
+         */
         const Vector2<T> operator-(const Vector2<T> & right) const
         {
             return Vector2(x - right.x, y - right.y);
         }
 
+        /**
+         * Compound assignment and subtraction operator for two vectors.
+         *
+         * @param right     the right hand-side vector
+         * @return a reference to this vector
+         */
         Vector2<T> & operator-=(const Vector2<T> & right)
         {
             x -= right.x;
@@ -235,18 +299,24 @@ namespace astu {
             return *this;
         }
 
-		const Vector2<T> operator*(const Vector2<T> & right) const
-		{
-    		return Vector2(x * right.x, y * right.y);
-		}       
+		// const Vector2<T> operator*(const Vector2<T> & right) const
+		// {
+    	// 	return Vector2(x * right.x, y * right.y);
+		// }       
 
-		Vector2<T> & operator*=(const Vector2<T> & right)
-		{
-			x *= right.x;
-			y *= right.y;
-			return *this;
-		}   
+		// Vector2<T> & operator*=(const Vector2<T> & right)
+		// {
+		// 	x *= right.x;
+		// 	y *= right.y;
+		// 	return *this;
+		// }   
 
+        /**
+         * Compound assignment and division operator with a scalar value.
+         *
+         * @param s the right-hand side scalar value
+         * @return a reference to this vector
+         */
         Vector2<T> & operator/=(T s)
         {
             x /= s;
@@ -254,16 +324,34 @@ namespace astu {
             return *this;
         }
 
+        /**
+         * Binary division operator with a scalar value
+         *
+         * @param s the right-hand side scalar value
+         * @return a new vector representing the result of the operation
+         */
         Vector2<T> operator/(T s) const
         {
             return Vector2(x / s, y / s);
         }
 
+        /**
+         * Binary multiplication operator with a scalar value
+         *
+         * @param s the right-hand side scalar value
+         * @return a new vector representing the result of the operation
+         */
         Vector2<T> operator*(T s) const
         {
             return Vector2(x * s, y * s);
         }
 
+        /**
+         * Compound assignment and multiplication operator with a scalar value.
+         *
+         * @param s the right-hand side scalar value
+         * @return a reference to this vector
+         */
         Vector2<T> & operator*=(T s)
         {
             x *= s;
@@ -271,16 +359,35 @@ namespace astu {
             return *this;
         }
 
+        /**
+         * Unary minus operation.
+         * This operation changes the sign of all components of this vector.
+         * The resulting vector will point into the opposite direction.
+         *
+         * @return a new vector representing the result of the operation
+         */
         const Vector2<T> operator-() const {
             return Vector2(-x, -y);
         }        
 
-		bool operator==(const Vector2<T> &o) const {
-			return x == o.x && y == o.y;
+        /**
+         * Binary equality operator comparing two vectors.
+         *
+         * @param right the right hand side vector
+         * @return `true` if the specified vector is equal to this vector
+         */
+		bool operator==(const Vector2<T> &right) const {
+			return x == right.x && y == right.y;
 		}       
 
-        bool operator!=(const Vector2<T> &o) const {
-            return !(*this == o);
+        /**
+         * Binary non-equality operator comparing two vectors.
+         *
+         * @param right the right hand side vector
+         * @return `true` if the specified vector is not equal to this vector
+         */
+        bool operator!=(const Vector2<T> &right) const {
+            return !(*this == right);
         }         
     };
 
