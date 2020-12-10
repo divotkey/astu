@@ -299,17 +299,33 @@ namespace astu {
             return *this;
         }
 
-		// const Vector2<T> operator*(const Vector2<T> & right) const
-		// {
-    	// 	return Vector2(x * right.x, y * right.y);
-		// }       
+        /**
+         * Binary multiplication operator for two vectors.
+         * 
+		 * This operator does a component-wise multiplication of the two vectors.
+         *
+         * @param right the right hand-side vector
+         * @return a new vector representing the result of the operation
+         */
+		const Vector2<T> operator*(const Vector2<T> & right) const
+		{
+    		return Vector2(x * right.x, y * right.y);
+		}       
 
-		// Vector2<T> & operator*=(const Vector2<T> & right)
-		// {
-		// 	x *= right.x;
-		// 	y *= right.y;
-		// 	return *this;
-		// }   
+        /**
+         * Compound multiplication and subtraction operator for two vectors.
+         * 
+		 * This operator does a component-wise multiplication of the two vectors.
+         *
+         * @param right the right hand-side vector
+         * @return a reference to this vector
+         */
+		Vector2<T> & operator*=(const Vector2<T> & right)
+		{
+			x *= right.x;
+			y *= right.y;
+			return *this;
+		}   
 
         /**
          * Compound assignment and division operator with a scalar value.

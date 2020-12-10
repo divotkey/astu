@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(ASTU VERSION 0.4.0)
+project(ASTU VERSION 0.5.2)
 
 configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 set(CMAKE_CXX_STANDARD 17)

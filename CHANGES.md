@@ -1,5 +1,11 @@
 # Version History {#CHANGES}
 
+# Version 0.5.2
+*Date: 2020-12-10*
+
+- Extended `Vector2` template with multiplication operator between two vectors.
+- Fixed missing issue regarding outdated version information.
+
 # Version 0.5.1
 *Date: 2020-12-09*
 
