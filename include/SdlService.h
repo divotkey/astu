@@ -21,8 +21,11 @@ namespace astu {
 
         /**
          * Constructor.
+         * 
+         * @param debug     fosters debugging, enables debug log messages, etc.
+         * @param verbose   enables verbose log messages, only effective, when debug is true
          */
-        SdlService(bool debug = false);
+        SdlService(bool debug = false, bool verbose = false);
 
     protected:
 
@@ -33,6 +36,9 @@ namespace astu {
     private:
         /** Enabmes debug logging messages etc. */
         bool debugMode;
+
+        /** Defines whether log messages should be verbose. */
+        bool verboseLogging;
     };
 
 } 

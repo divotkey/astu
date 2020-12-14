@@ -47,6 +47,22 @@ namespace astu {
          */
         SDL_Window* GetSdlWindow();
 
+
+        /**
+         * Returns whether Vulkan support has been enabled.
+         * 
+         * @return `true` if support for Vulkan has been enabled
+         */
+        bool IsVulkanSupportEnabled() const;
+
+        /**
+         * Enables or disables Vulkan support.
+         * 
+         * @param b set to `true` to enable Vulkan
+         * @throws std::logic_error in case this service is already running
+         */
+        void EnableVulkanSupport(bool b);
+
         // Inherited via IWindowManager
         virtual void SetSize(int width, int height) override;
         virtual int GetWidth() const override;
@@ -72,6 +88,9 @@ namespace astu {
 
         /** The window title. */
         std::string winTitle;
+
+        /** Whether to enable support for Vulkan. */
+        bool vulkanSupport;
 
 
         /**

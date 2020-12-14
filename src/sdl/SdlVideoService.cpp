@@ -17,8 +17,23 @@ namespace astu {
         , winWidth(1366)
         , winHeight(768)
         , winTitle("ASTU Window")
+        , vulkanSupport(false)
     {
         // Intentionally left empty.
+    }
+
+    bool SdlVideoService::IsVulkanSupportEnabled() const
+    {
+        return vulkanSupport;
+    }
+
+    void SdlVideoService::EnableVulkanSupport(bool b)
+    {
+        if (IsRunning()) {
+            throw std::logic_error("Vulkan support cannot be enabled/disabled while Video service is running.");
+        }
+
+        vulkanSupport = b;
     }
 
     void SdlVideoService::OnStartup() 
@@ -30,13 +45,18 @@ namespace astu {
             throw std::runtime_error(SDL_GetError());
         }
 
+        uint32_t flags = SDL_WINDOW_SHOWN;
+        if (vulkanSupport) {
+            flags |= SDL_WINDOW_VULKAN;
+        }
+
         window = SDL_CreateWindow(
             winTitle.c_str(),
             SDL_WINDOWPOS_UNDEFINED, 
             SDL_WINDOWPOS_UNDEFINED,
             winWidth,
             winHeight,
-            SDL_WINDOW_SHOWN
+            flags
         );
 
         if (!window) {
