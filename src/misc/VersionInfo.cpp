@@ -16,4 +16,16 @@ namespace astu {
             + " (" + std::to_string((sizeof(void*) * 8)) + " bit address space)";
     }
 
+    int GetMajorVersion() {
+        return ASTU_VERSION_MAJOR;
+    }
+
+    int GetMinorVersion() {
+        return ASTU_VERSION_MINOR;
+    }
+
+    int GetPatchVersion() {
+        return ASTU_VERSION_PATCH;
+    }
+
 }

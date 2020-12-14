@@ -17,7 +17,7 @@
 #include <algorithm>
 #include <memory>
 
-#include "misc/VersionInfo.h"
+#include "VersionInfo.h"
 #include "audio/WaveCodec.h"
 #include "audio/AudioBuffer.h"
 #include "Image.h"
