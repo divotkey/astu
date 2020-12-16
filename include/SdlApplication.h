@@ -253,6 +253,8 @@ int GetCursorY();
  * 
  * @param button    the index of the button to be queried
  * @return `true` if the mouse button is pressed
+ * 
+ * @ingroup sdl_group
  */
 bool IsMouseButtonPressed(int button);
 

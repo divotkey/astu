@@ -71,7 +71,7 @@ namespace astu {
          * 
          * This constructor also functions as automatic conversion constructor
          * which allows C++ to automatically convert integers to objects of class
-         * Color. This makes it particularilly easy to use the WebColor constants 
+         * Color. This makes it particularly easy to use the WebColor constants 
          * to initialize colors:
          * 
          * ```
@@ -120,7 +120,20 @@ namespace astu {
         void Set(double red, double green, double blue, double alpha = 1);
 
         /**
-         * Calculates the Euclidean in RGB color space.
+		 * Converts this color to an RGBA integer.
+		 *
+		 * @return the RGBA integer representing this color
+		 */
+        int ToRgba() const {
+			return
+				  (static_cast<int>(r * 255) << 24)
+				| (static_cast<int>(g * 255) << 16)
+				| (static_cast<int>(b * 255) << 8)
+				| (static_cast<int>(a * 255));
+        }
+
+        /**
+         * Calculates the Euclidean distance in RGB color space.
          * 
          * @param o the other color
          * @return the distance to the other color
