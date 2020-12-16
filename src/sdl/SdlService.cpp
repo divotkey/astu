@@ -11,9 +11,10 @@
 
 namespace astu {
 
-    SdlService::SdlService(bool debug)
+    SdlService::SdlService(bool debug, bool verbose)
         : BaseService("SDL")
         , debugMode(debug)
+        , verboseLogging(verbose)
     {
         // Intentioniall left empty.
     }
@@ -21,7 +22,11 @@ namespace astu {
     void SdlService::OnStartup() 
     {
         if (debugMode) {
-            SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
+            if (verboseLogging) {
+                SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
+            } else {
+                SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
+            }
         }
         SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Starting up SDL core service");
 
