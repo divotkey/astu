@@ -65,6 +65,14 @@ namespace astu {
                 }
                 break;
 
+            case SDL_KEYDOWN:
+                keyboard.SetKey(event.key.keysym.scancode, true);
+                break;
+
+            case SDL_KEYUP:
+                keyboard.SetKey(event.key.keysym.scancode, false);
+                break;
+
             case SDL_DROPTEXT:
                 // std::cout << "drop text" << std::endl;
                 break;
