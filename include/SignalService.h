@@ -169,8 +169,6 @@ namespace astu {
             // Clear pending signals and try to free memory used by queues.
             for (auto & queue : signalQueues) {
                 queue.clear();
-                queue.resize(0);
-                queue.shrink_to_fit();
             }
         }
 
