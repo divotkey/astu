@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
 #include <cassert>
@@ -32,7 +32,7 @@ struct BitmapFileHeader {
 	uint32_t bfOffBits;			// file offset to pixel array
 };
 
-// Bitmap File Header Version 3
+// Bitmap Info Header Version 3
 struct BitmapInfoHeader {
 	uint32_t biSize;			// number of bytes required by the structure
 	int32_t biWidth;			// width of the bitmap, in pixels
@@ -192,7 +192,9 @@ namespace astu {
 		}
 
 		if (ih.biSize != sizeof(BitmapInfoHeader)) {
-			throw std::runtime_error("unsupported BMP format");
+			throw std::runtime_error("unsupported BMP format (size of bitmap info header mismatch, expected " 
+				+ std::to_string(sizeof(BitmapInfoHeader)) 
+				+ " but got " + std::to_string(ih.biSize) + ")");
 		}
 
 		is.read(reinterpret_cast<char*>(&ih.biWidth), sizeof(BitmapInfoHeader) - sizeof(ih.biSize));

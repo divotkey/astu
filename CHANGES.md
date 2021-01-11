@@ -1,5 +1,15 @@
 # Version History {#CHANGES}
 
+# Version 0.6.0
+*Date: 2021-01-12*
+
+- Removed some warnings emitted by MS compilers.
+- Fixed missing `#pragma once` in AstUtils0.h
+- Added `RotateDeg` method to `Vector2` class.
+- Added class ' `ColorHsv` to cover HSV color space as well.
+- Better encapsulation of internal functions for SDL applications (API-Level 0).
+- Added `RenderRegularPolygon` function for SDL application (API-Level 0).
+
 # Version 0.5.3
 *Date: 2020-12-16*
 - Extended `Color` class.

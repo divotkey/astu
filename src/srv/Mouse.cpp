@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
 #include <string>
@@ -22,7 +22,7 @@ namespace astu {
                 + std::to_string(button));
         }
 
-        if (button >= buttons.size()) {
+        if (button >= static_cast<int>(buttons.size())) {
             buttons.resize(button + 1);
         }
         buttons[button] = pressed;
@@ -30,7 +30,7 @@ namespace astu {
 
     bool Mouse::IsPressed(int button) const
     {
-        if (button < 0 || button >= buttons.size()) {
+        if (button < 0 || static_cast<int>(button >= buttons.size())) {
             return false;
         }
 

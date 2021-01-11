@@ -2,8 +2,10 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
+
+#pragma once
 
 /**
  * @file
@@ -42,10 +44,6 @@
  * ```
  */ 
 void SayHello();
-
-    // std::cout << "An error has occurred: " << GetLastErrorMessage() << std::endl;
-    // std::cout << GetErrorDetails() << std::endl;
-
 
 /**
  * Outputs the last error message including error details.
@@ -576,6 +574,13 @@ double GetRandomDouble(double minValue = 0.0, double maxValue = 1.0);
  * @return the new random number
  */
 int GetRandomInt(int minValue = 0, int maxValue = 32767);
+
+/**
+ * Sets the seed of the random value generator.
+ * 
+ * @param value the seed value
+ */
+void SetRandomSeed(unsigned int value);
 
 /**
  * Returns the given double value to the nearest integer.
@@ -1191,6 +1196,7 @@ void SetErrorDetails(const char *text);
  *     }
  * 
  *     QuitApp();
+ *     return 0;
  * } 
  * ```
  * 

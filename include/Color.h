@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
 #pragma once
@@ -12,7 +12,7 @@
 namespace astu {
     
     /**
-     * Represents a color value.
+     * Represents a color value in RGB color space.
      * 
      * A color is described using four color channels: red, green, blue and
      * alpha. The alpha channel represents transparency. The color channels
@@ -21,7 +21,7 @@ namespace astu {
      * 
      * @ingroup gfx_group
      */
-    class Color {
+    class Color final{
     public:
         /** The red color component. */
         double r;

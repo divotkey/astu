@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
 #define _USE_MATH_DEFINES
@@ -14,6 +14,11 @@
 #include <string>
 #include "math/Random.h"
 
+#include "gfx/Turtle.h"
+#include "Image.h"
+#include "SimpleGraphics.h"
+
+
 using namespace std;
 using namespace astu;
 
@@ -22,20 +27,20 @@ using namespace astu;
 /////// Graphics functions
 /////////////////////////////////////////////////
 
-// void ValidateImage()
-// {
-//     if (!image) {
-//         throw std::logic_error("image not created");
-//     }
-// }
+void ValidateImage()
+{
+    if (!image) {
+        throw std::logic_error("image not created");
+    }
+}
 
-// void CreateImage(int x, int y)
-// {
-//     image = std::make_unique<Image>(x, y);
-//     ClearImage();
-//     turtle.Reset();
-//     TurtleCenter();
-// }
+void CreateImage(int x, int y)
+{
+    image = std::make_unique<Image>(x, y);
+    ClearImage();
+    turtle::turtle.Reset();
+    TurtleCenter();
+}
 
 // void ClearImage()
 // {

@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
 #include <limits>
@@ -39,4 +39,10 @@ namespace astu {
     {
         return intDist(mt);
     }
+
+    void Random::SetSeed(unsigned int value)
+    {
+        mt.seed(static_cast<uint_fast32_t>(value));
+    }
+
 }

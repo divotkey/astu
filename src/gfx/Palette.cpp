@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
 #include <cassert>
@@ -86,9 +86,14 @@ namespace astu {
         }
 
         // Must a must be exactly the first element.
-        // According to precondition, wie must have at least two elements.
-        e1 = &entries[0];
-        e2 = &entries[1];
+        // According to precondition, we must have at least two elements.
+        if (t == 0) {
+            e1 = &entries[0];
+            e2 = &entries[1];
+        } else {
+            e1 = &entries[entries.size() - 2];
+            e2 = &entries[entries.size() - 1];
+        }
     }
 
     Palette::Entry::Entry(const Color & c, double p)

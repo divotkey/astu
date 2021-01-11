@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
 #include <cassert>
@@ -30,7 +30,7 @@ namespace astu {
 
     void Quadtree::BuildTree()
     {
-        if (children.size() < maxElems || depth >= maxDepth) {
+        if (static_cast<int>(children.size()) < maxElems || depth >= maxDepth) {
             leaf = true;
             return;
         }
@@ -83,7 +83,7 @@ namespace astu {
         upperRight->BuildTree();
         lowerLeft->BuildTree();
         lowerRight->BuildTree();
-        children.clear();
+        // children.clear();
     }
 
     void Quadtree::OnPatternAdded(Pattern & pattern)

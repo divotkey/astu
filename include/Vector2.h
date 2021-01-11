@@ -2,11 +2,14 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
- 
+
+// 
 #include <cmath>
 #include <iostream>
+
+#include "MathUtils.h"
 
 #pragma once
 
@@ -61,6 +64,18 @@ namespace astu {
             : x(x), y(y)
         {
             // Intentionally left empty.
+        }
+
+        /**
+         * Sets thsi vector to the coordinates of another vector.
+         *
+         * @param o the other vector which coordinates to use
+         * @return reference to this vector for method chaining
+         */
+        Vector2 & Set(const Vector2<T> & o) {
+            this->x = o.x;
+            this->y = o.y;
+            return *this;
         }
 
         /**
@@ -193,6 +208,17 @@ namespace astu {
 
             return *this;
         }        
+
+        /**
+         * Rotates this vector in-place.
+         * 
+         * @param phi   the angle in degrees
+         * @return reference to this vector for method chaining
+         */
+        Vector2 & RotateDeg(T phi)
+        {
+            return Rotate(ToRadians<T>(phi));
+        }
 
         /**
          * Calculates the dot product.

@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
 #pragma once
@@ -38,6 +38,8 @@ namespace astu {
          * @return the next random integer number.
          */
         int NextInt();
+
+        void SetSeed(unsigned int value);
 
     private:
         /** The one and only instance of this singleton. */

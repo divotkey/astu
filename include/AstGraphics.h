@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  * 
  *----------------------------------------------------------------------------
  * Meanings of ASTU: Slightly melted butter (Hinduism / Religious Law), 
@@ -17,11 +17,18 @@
 
 #pragma once
 
+// Standard C++ Library includes
 #include <string>
 #include <memory>
+
+// ASTU Library includes
 #include "Color.h"
+#include "ColorHsv.h"
+#include "Vector2.h"
 #include "Palette.h"
 #include "Image.h"
+#include "ImageRenderer.h"
+#include "Turtle.h"
 
 namespace astu {
 

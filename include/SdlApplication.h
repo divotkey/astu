@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
 /**
@@ -131,11 +131,26 @@ int RenderPoint(double x, double y);
  * @param y         the y-coordinate of the center of the rectangle
  * @param w         the width of the rectangle
  * @param h         the height of the rectangle
- * @param filled    whether the rectangle shoudl be rendered filled
+ * @param filled    whether the rectangle should be rendered filled
+ * @return an error code in case the rectangle could not be rendered, zero otherwise
  * 
  * @ingroup sdl_group
  */
 int RenderRectangle(double x, double y, double w, double h, bool filled = false);
+
+/**
+ * Renders a regular polygon (n-gon).
+ * 
+ * @param x      the x-coordinate of the center of the n-gon
+ * @param y      the y-coordinate of the center of the n-gon
+ * @param r      the radius of the n-gon
+ * @param n      the number of vertices (and edges)
+ * @param angle  the rotation angle of the n-gon in radians
+ * @return an error code in case the polygon could not be rendered, zero otherwise
+ * 
+ * @ingroup sdl_group
+ */
+int RenderRegularPolygon(double x, double y, double r, unsigned int n, double angle = 0);
 
 /**
  * Sets the render color for subsequent render calls.
@@ -238,6 +253,7 @@ int GetWindowHeight();
  * Returns the x-coordinate of the mouse cursor.
  * 
  * @return the x-coordinate of the mouse cursor
+ * @ingroup sdl_group
  */
 int GetCursorX();
 
@@ -245,6 +261,7 @@ int GetCursorX();
  * Returns the y-coordinate of the mouse cursor.
  * 
  * @return the y-coordinate of the mouse cursor
+ * @ingroup sdl_group
  */
 int GetCursorY();
 

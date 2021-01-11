@@ -1,13 +1,12 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(ASTU VERSION 0.5.3)
+project(ASTU VERSION 0.6.0)
 
 configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 set(CMAKE_CXX_STANDARD 17)
 
 set(astulib_SOURCES )
 list(APPEND astulib_SOURCES
-                    src/AstUtils.cpp 
                     src/AstUtils0.cpp
                     src/misc/VersionInfo.cpp
                     src/math/Random.cpp
@@ -23,6 +22,7 @@ list(APPEND astulib_SOURCES
                     src/gfx/Quadtree.cpp
                     src/gfx/PatternRenderer.cpp
                     src/gfx/Turtle.cpp
+                    src/gfx/ImageRenderer.cpp
 
                     src/io/AstIO.cpp
 

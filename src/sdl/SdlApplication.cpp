@@ -2,11 +2,19 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Standard C++ Library includes
+#define _USE_MATH_DEFINES
+#include <cmath>
+
+// SDL includes
 #include <array>
 #include <SDL2/SDL.h>
+
+// Libary-Local includes
+#include "Vector2.h"
 #include "AstUtils0.h"
 #include "SdlApplication.h"
 
@@ -72,7 +80,98 @@ namespace astu {
     } ;
 
     FpsStats fpsStats;
-}
+
+
+    void RenderApp()
+    {
+        SDL_RenderPresent(astu::renderer);   
+    }
+
+    void UpdateTime() 
+    {
+        uint64_t now = SDL_GetPerformanceCounter();
+        astu::deltaTime = (now - astu::performCnt) * astu::performToSeconds;
+        astu::performCnt = now;
+        astu::time += astu::deltaTime;
+    }
+
+    void UpdateFps()
+    {
+        ++astu::fpsStats.cntFrames;
+        astu::fpsStats.fpsSum += astu::deltaTime;
+        astu::fpsStats.fpsUpdate -= astu::deltaTime;
+        if (astu::fpsStats.fpsUpdate <= 0) {
+            astu::fpsStats.fps = astu::fpsStats.cntFrames / astu::fpsStats.fpsSum;
+            astu::fpsStats.cntFrames = 0;
+            astu::fpsStats.fpsSum = 0;
+            astu::fpsStats.fpsUpdate = FPS_UPDATE_INTERVAL;
+        }
+    }    
+
+    int TranslateButton(int sdlIdx) {
+        switch (sdlIdx) {
+        case SDL_BUTTON_LEFT:
+            return 0;
+        case SDL_BUTTON_MIDDLE:
+            return 1;
+        case SDL_BUTTON_RIGHT:
+            return 2;
+        case SDL_BUTTON_X1:
+            return 3;
+        case SDL_BUTTON_X2:
+            return 4;
+        }
+
+        return -1;
+    }
+
+    void SetButtonState(int sdlIdx, bool pressed) {
+        int idx = TranslateButton(sdlIdx);
+        if (idx >= 0 && idx <= static_cast<int>(astu::buttons.size())) {
+            astu::buttons[idx] = pressed;
+        }
+    }
+
+    void ProcessEvents()
+    {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+            case SDL_QUIT:
+                astu::terminated = true;
+                break;
+
+            case SDL_MOUSEMOTION:
+                astu::cursorX = event.motion.x;
+                astu::cursorY = event.motion.y;
+                break;
+                
+            case SDL_MOUSEBUTTONDOWN:
+                SetButtonState(event.button.button, true);
+                break;
+
+            case SDL_MOUSEBUTTONUP:
+                SetButtonState(event.button.button, false);
+                break;
+
+            case SDL_DROPTEXT:
+                break;
+
+            case SDL_DROPBEGIN:
+                break;
+
+            case SDL_DROPCOMPLETE:
+                break;
+
+            case SDL_DROPFILE:
+                SDL_free(event.drop.file);
+                break;
+            }
+        }    
+    }
+
+
+} // end of namespace
 
 int InitApp(int width, int height, const char title[], bool vsync)
 {
@@ -194,68 +293,6 @@ bool IsAppTerminated()
     return astu::terminated;
 }
 
-int TranslateButton(int sdlIdx) {
-    switch (sdlIdx) {
-    case SDL_BUTTON_LEFT:
-        return 0;
-    case SDL_BUTTON_MIDDLE:
-        return 1;
-    case SDL_BUTTON_RIGHT:
-        return 2;
-    case SDL_BUTTON_X1:
-        return 3;
-    case SDL_BUTTON_X2:
-        return 4;
-    }
-
-    return -1;
-}
-
-void SetButtonState(int sdlIdx, bool pressed) {
-    int idx = TranslateButton(sdlIdx);
-    if (idx >= 0 && idx <= astu::buttons.size()) {
-        astu::buttons[idx] = pressed;
-    }
-}
-
-void ProcessEvents()
-{
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        switch (event.type) {
-        case SDL_QUIT:
-            astu::terminated = true;
-            break;
-
-        case SDL_MOUSEMOTION:
-            astu::cursorX = event.motion.x;
-            astu::cursorY = event.motion.y;
-            break;
-            
-        case SDL_MOUSEBUTTONDOWN:
-            SetButtonState(event.button.button, true);
-            break;
-
-        case SDL_MOUSEBUTTONUP:
-            SetButtonState(event.button.button, false);
-            break;
-
-        case SDL_DROPTEXT:
-            break;
-
-        case SDL_DROPBEGIN:
-            break;
-
-        case SDL_DROPCOMPLETE:
-            break;
-
-        case SDL_DROPFILE:
-            SDL_free(event.drop.file);
-            break;
-        }
-    }    
-}
-
 int ClearCanvas()
 {
     if (!astu::renderer) {
@@ -285,38 +322,12 @@ int ClearCanvas()
     return NO_ERROR;
 }
 
-void RenderApp()
-{
-    SDL_RenderPresent(astu::renderer);   
-}
-
-void UpdateTime() 
-{
-    uint64_t now = SDL_GetPerformanceCounter();
-    astu::deltaTime = (now - astu::performCnt) * astu::performToSeconds;
-    astu::performCnt = now;
-    astu::time += astu::deltaTime;
-}
-
-void UpdateFps()
-{
-    ++astu::fpsStats.cntFrames;
-    astu::fpsStats.fpsSum += astu::deltaTime;
-    astu::fpsStats.fpsUpdate -= astu::deltaTime;
-    if (astu::fpsStats.fpsUpdate <= 0) {
-        astu::fpsStats.fps = astu::fpsStats.cntFrames / astu::fpsStats.fpsSum;
-        astu::fpsStats.cntFrames = 0;
-        astu::fpsStats.fpsSum = 0;
-        astu::fpsStats.fpsUpdate = FPS_UPDATE_INTERVAL;
-    }
-}
-
 void UpdateApp()
 {
-    ProcessEvents();
-    RenderApp();
-    UpdateTime();
-    UpdateFps();
+    astu::ProcessEvents();
+    astu::RenderApp();
+    astu::UpdateTime();
+    astu::UpdateFps();
 }
 
 int SetRenderColor(int r, int g, int b, int a) 
@@ -437,6 +448,38 @@ int RenderRectangle(double x, double y, double w, double h, bool filled)
     return NO_ERROR;
 }
 
+int RenderRegularPolygon(double x, double y, double r, unsigned int n, double angle)
+{
+    if (r <= 0) {
+        SetLastError(INVALID_PARAMETER);
+        SetErrorDetails("Radius for n-gon must be greater zero");
+        return GetLastError();
+    }
+
+    if (n <= 2) {
+        SetLastError(INVALID_PARAMETER);
+        SetErrorDetails("Number of vertices for n-gon must be greater 2");
+        return GetLastError();
+    }
+
+    double da = (2.0 * M_PI) / n;
+
+    astu::Vector2<double> p0(r, 0);
+    p0.Rotate(-angle);
+    for (unsigned int i = 1; i <= n; ++i) {
+        astu::Vector2<double> p1(p0);
+        p1.Rotate(-da);
+
+        auto res = RenderLine(x + p0.x, y + p0.y, x + p1.x, y + p1.y);
+        if (res != NO_ERROR) {
+            return res;
+        }
+        p0 = p1;
+    }
+
+    return NO_ERROR;
+}
+
 double GetDeltaTime()
 {
     return astu::deltaTime;
@@ -469,7 +512,7 @@ int GetCursorY()
 
 bool IsMouseButtonPressed(int button)
 {
-    if (button >= 0 && button < astu::buttons.size()) {
+    if (button >= 0 && button < static_cast<int>(astu::buttons.size())) {
         return astu::buttons[button];
     }
 

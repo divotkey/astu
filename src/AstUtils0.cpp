@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
 #define _USE_MATH_DEFINES
@@ -62,13 +62,15 @@ std::chrono::time_point<std::chrono::steady_clock> stopTime;
 std::unique_ptr<astu::Image> lvl0Image = std::make_unique<Image>(512, 512);
 std::shared_ptr<UnionPattern> rootPattern = std::make_shared<UnionPattern>();
 std::shared_ptr<Quadtree> quadTree = std::make_shared<Quadtree>(5, 5);
-std::unique_ptr<IPatternRenderer> patternRenderer = std::make_unique<AntiAlisaingPatternRenderer>();
+std::unique_ptr<IPatternRenderer> patternRenderer;
 Color lvl0DrawColor(1, 1, 1);
 Color lvl0ClearColor(0, 0, 0);
 std::ifstream ifs;
 enum FileIoStatus {NoFile, InputFile, OutputFile};
 FileIoStatus fioStatus = NoFile;
 std::string tempString;
+
+
 
 /** Stores input string read from standard input using AskString function. */
 std::vector<std::unique_ptr<std::string>> inputStrings;
@@ -324,6 +326,12 @@ int GetRandomInt(int minValue, int maxValue)
 {
     return minValue + static_cast<int>(Random::GetInstance().NextDouble() * (maxValue - minValue));
 }
+
+void SetRandomSeed(unsigned int value)
+{
+    Random::GetInstance().SetSeed(value);
+}
+
 
 int RoundToInt(double value)
 {
@@ -879,6 +887,11 @@ void DrawCircle(double x, double y, double r)
 
 int WriteImage(const char* filename)
 {
+    if (!patternRenderer) {
+        // lazy initialization, required because not all static members might 
+        // been initialized.
+        patternRenderer = std::make_unique<AntiAlisaingPatternRenderer>();      
+    }
     quadTree->BuildTree();
     patternRenderer->Render(*rootPattern, *lvl0Image);
 
