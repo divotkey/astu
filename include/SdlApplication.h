@@ -235,7 +235,6 @@ int SetBackgroundColor(int rgb);
  * Returns the width of the application window.
  * 
  * @return the width of the application window
- * 
  * @ingroup sdl_group
  */
 int GetWindowWidth();
@@ -261,6 +260,7 @@ int GetCursorX();
  * Returns the y-coordinate of the mouse cursor.
  * 
  * @return the y-coordinate of the mouse cursor
+ * 
  * @ingroup sdl_group
  */
 int GetCursorY();
@@ -310,5 +310,18 @@ void ResetAbsoluteTime();
  * Returns the average frames per seconds (FPS).
  * 
  * @return the frames per seconds
+ * 
+ * @ingroup sdl_group
  */
 double GetFps();
+
+/**
+ * Returns the average frames per second (FPS) as string.
+ * 
+ * @param text      preceding text added FPS value
+ * @param precision decimal precision for FPS
+ * @return the frames per second as string
+ * 
+ * @ingroup sdl_group
+ */
+const char* GetFpsString(const char* text = nullptr, int precision = 3);

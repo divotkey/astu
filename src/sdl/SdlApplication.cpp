@@ -8,6 +8,8 @@
 // Standard C++ Library includes
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <sstream>
+#include <string>
 
 // SDL includes
 #include <array>
@@ -42,7 +44,7 @@ namespace astu {
     uint64_t performCnt;
 
     /** The elapsed time since the last update. */
-    double deltaTime;
+    double deltaTime = 1.0 / 60.0;
 
     /** The absolute time. */
     double time;
@@ -64,7 +66,7 @@ namespace astu {
 
     struct FpsStats {
 
-        FpsStats() : fpsSum(0), fpsUpdate(0), fps(0), cntFrames(0) {}
+        FpsStats() : fpsSum(0), fpsUpdate(FPS_UPDATE_INTERVAL), fps(60), cntFrames(0) {}
 
         /** The average frames per second. */
         double fpsSum;
@@ -80,6 +82,12 @@ namespace astu {
     } ;
 
     FpsStats fpsStats;
+
+    /** Used to generate fps string. */
+    std::ostringstream fpsStringStream;
+
+    /** Stores the string output of the GetFpsString() method. */
+    std::string fpsString;
 
 
     void RenderApp()
@@ -498,6 +506,19 @@ void ResetAbsoluteTime()
 double GetFps()
 {
     return astu::fpsStats.fps;
+}
+
+const char* GetFpsString(const char* text, int precision)
+{   
+    astu::fpsStringStream.str("");
+    if (text) {
+        astu::fpsStringStream << text << " ";
+    }
+
+    astu::fpsStringStream.precision(precision);
+    astu::fpsStringStream << GetFps();
+    astu::fpsString = astu::fpsStringStream.str();
+    return astu::fpsString.c_str();
 }
 
 int GetCursorX()
