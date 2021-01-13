@@ -27,6 +27,69 @@ namespace astu {
     class Quadtree;
     class IPatternRenderer;
 
+    /**
+     * This class can be used to render geometric primitives in an resolution independent way.
+     * The output of the rendering will be an Image.
+     * 
+     * **Example Usage**
+     * 
+     * ```
+     * #include <stdexcept>
+     * #include <iostream>
+     * #include <AstGraphics.h>
+     * 
+     * using namespace std;
+     * using namespace astu;
+     * 
+     * int main()
+     * {
+     *   const int kWidth = 512;
+     *   const int kHeight = 512;
+     * 
+     *   ImageRenderer renderer;
+     * 
+     *   // Create some graphical elements.
+     *   renderer.SetDrawColor(Color(1.0, 0.8, 0.5, 0.5));
+     *   renderer.DrawRectangle(kWidth / 2.0, kHeight / 2.0, kHeight, 50);
+     * 
+     *   renderer.SetDrawColor(WebColors::Red);
+     *   renderer.DrawCircle(kWidth / 2.0, kHeight / 2.0, 100.0);
+     * 
+     *   renderer.SetDrawColor(Color(1.0, 0.8, 0.5, 0.5));
+     *   renderer.DrawRectangle(kWidth / 2.0, kHeight / 2.0, 50, kWidth);
+     * 
+     *   renderer.SetDrawColor(WebColors::Green);
+     *   renderer.DrawRectangle(kWidth / 4.0, kHeight / 4.0, 50, 50, 45);
+     * 
+     *   // Background can be defined at any time.
+     *   renderer.SetBackgroundColor(WebColors::White);
+     *
+     * 
+     *   // Render Image 
+     *   Image image(kWidth, kHeight);
+     *   renderer.SetRenderQuality(RenderQuality::Good);
+     *   std::cout << "Rendering image" << std::endl;
+     *   renderer.Render(image);
+     * 
+     *   // Store image to file, might cause an exception in case
+     *   // of an I/O error.
+     *   try {
+     *     StoreImage(image, "output.bmp");
+     *   } catch (std::runtime_error & e) {
+     *     std::cout << "Error storing image: " << e.what() << std::endl;
+     *     return -1;
+     *   }
+     * 
+     *   return 0;
+     * }     
+     * ```     
+     * 
+     * This code will generate this image:
+     * 
+     * \image html rendered_image.png
+     * 
+     * @ingroup gfx_group
+     */
     class ImageRenderer final {
     public:
 
@@ -41,40 +104,95 @@ namespace astu {
         ~ImageRenderer();
 
 
+        /**
+         * Clear the output rendering.
+         */
         void Clear();
+
+        /**
+         * Sets the current draw color.
+         * 
+         * Subsequent rendering calls will be using the current draw color.
+         * 
+         * @param c the color
+         */
         void SetDrawColor(const Color & c);
+
+
+        /**
+         * Sets the background color.
+         * 
+         * 
+         * The background color can be set anytime, even after rendering
+         * of graphical elements.
+         * 
+         * @param c the background color
+         */
         void SetBackgroundColor(const Color & c);
 
-        void DrawCircle(double x, double y, double r);
+        /**
+         * Draws a filled circle.
+         * 
+         * @param cx    the x-coordinate of the center of the circle
+         * @param cy    the y-coordinate of the center of the circle
+         * @param r     the radius of the circle
+         */
+        void DrawCircle(double cx, double cy, double r);
 
+        /**
+         * Draws a filled circle.
+         * 
+         * @param c the center of the circle
+         * @param r the radius of the circle
+         */
+        void DrawCircle(const Vector2<double> &c, double r)
+        {
+            DrawCircle(c.x, c.y, r);
+        }
 
+        /**
+         * Draws a line.
+         * 
+         * @param p0    the start point of the line
+         * @param p1    the end point of the line
+         * @param w     the width of the line
+         */
         void DrawLine(const Vector2<double> &p0, const Vector2<double> & p1, double w = 1) {
             DrawLine(p0.x, p0.y, p1.x, p1.y, w);
         }
 
+        /**
+         * Draws a line.
+         * 
+         * @param x0    the x-coordinate of the start point of the line
+         * @param y0    the y-coordinate of the start point of the line
+         * @param x1    the x-coordinate of the end point of the line
+         * @param y1    the y-coordinate of the end point of the line
+         * @param w     the width of the line
+         */
         void DrawLine(double x0, double y0, double x1, double y1, double w = 1);
 
         /**
-         * Draws a rectangle with the current draw color.
+         * Draws a filled rectangle.
          * 
          * @param cx    the the x-coordinate of the rectangle's center
          * @param cy    the the y-coordinate of the rectangle's center
-         * @param x     the width of the rectangle
+         * @param w     the width of the rectangle
          * @param h     the height of the rectangle
-         * @param phi   the rotation angle in degrees
+         * @param angleDeg  the rotation angle in degrees
          */
-        void DrawRectangle(double cx, double cy, double w, double h, double phi = 0);
+        void DrawRectangle(double cx, double cy, double w, double h, double angleDeg = 0);
 
         /**
          * Draws a rectangle with the current draw color.
          * 
-         * @param center    the center of the rectangl
-         * @param x     the width of the rectangle
-         * @param h     the height of the rectangle
-         * @param phi   the rotation angle in degrees
+         * @param center    the center of the rectangle
+         * @param w         the width of the rectangle
+         * @param h         the height of the rectangle
+         * @param angleDeg  the rotation angle in degrees
          */
-        void DrawRectangle(const Vector2<double> & center, double w, double h, double phi = 0) {
-            DrawRectangle(center.x, center.y, w, h, phi);
+        void DrawRectangle(const Vector2<double> & center, double w, double h, double angleDeg = 0) {
+            DrawRectangle(center.x, center.y, w, h, angleDeg);
         }
 
         /**

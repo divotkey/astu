@@ -266,7 +266,7 @@ int GetCursorX();
 int GetCursorY();
 
 /**
- * Tests whether a certain mouse button is currently pressed.
+ * Tests whether a mouse button is currently pressed.
  * 
  * @param button    the index of the button to be queried
  * @return `true` if the mouse button is pressed
@@ -274,6 +274,16 @@ int GetCursorY();
  * @ingroup sdl_group
  */
 bool IsMouseButtonPressed(int button);
+
+/**
+ * Tests whether a mouse button has been clicked.
+ * 
+ * @param button    the index of the button to be queried
+ * @return `true` if the mouse button has been clicked
+ * 
+ * @ingroup sdl_group
+ */
+bool IsMouseButtonClicked(int button);
 
 /**
  * Returns the elapsed time since the last update.

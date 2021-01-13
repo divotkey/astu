@@ -1,7 +1,7 @@
 # Version History {#CHANGES}
 
 # Version 0.6.0
-*Date: 2021-01-12*
+*Date: 2021-01-13*
 
 - Removed some warnings emitted by MS compilers.
 - Fixed missing `#pragma once` in AstUtils0.h

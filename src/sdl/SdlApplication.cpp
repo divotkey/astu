@@ -8,6 +8,7 @@
 // Standard C++ Library includes
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <algorithm>
 #include <sstream>
 #include <string>
 
@@ -21,6 +22,8 @@
 #include "SdlApplication.h"
 
 #define FPS_UPDATE_INTERVAL 1.0
+#define NUM_MOUSE_BUTTONS   5
+#define MAX_DELTA_TIME      (1.0 / 15.0)
 
 /////////////////////////////////////////////////
 /////// Globals.
@@ -61,8 +64,11 @@ namespace astu {
     /** The current x-coordinate of the mouse cursor. */
     int cursorY = 0;
 
-    /** The states of the mouse buttons. */
-    std::array<bool, 5> buttons = {false, false, false, false, false};
+    /** The pressed states of the mouse buttons. */
+    std::array<bool, NUM_MOUSE_BUTTONS> buttons = {false, false, false, false, false};
+
+    /** The clicked states of the mouse buttons. */
+    std::array<bool, NUM_MOUSE_BUTTONS> buttonsClicked =  {false, false, false, false, false};
 
     struct FpsStats {
 
@@ -100,7 +106,7 @@ namespace astu {
         uint64_t now = SDL_GetPerformanceCounter();
         astu::deltaTime = (now - astu::performCnt) * astu::performToSeconds;
         astu::performCnt = now;
-        astu::time += astu::deltaTime;
+        astu::time += GetDeltaTime();
     }
 
     void UpdateFps()
@@ -128,20 +134,37 @@ namespace astu {
             return 3;
         case SDL_BUTTON_X2:
             return 4;
-        }
 
-        return -1;
+        default:
+            return -1;
+        }
     }
 
     void SetButtonState(int sdlIdx, bool pressed) {
         int idx = TranslateButton(sdlIdx);
         if (idx >= 0 && idx <= static_cast<int>(astu::buttons.size())) {
-            astu::buttons[idx] = pressed;
+            buttons[idx] = pressed;
+        }
+    }
+
+    void SetButtonClickedState(int sdlIdx, bool pressed) {
+        int idx = TranslateButton(sdlIdx);
+        if (idx >= 0 && idx <= static_cast<int>(astu::buttons.size())) {
+            buttonsClicked[idx] = pressed;
+        }
+    }
+
+    void ClearButtonClickedState()
+    {
+        for (auto & button : buttonsClicked) {
+            button = false;
         }
     }
 
     void ProcessEvents()
     {
+        ClearButtonClickedState();
+
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -156,6 +179,7 @@ namespace astu {
                 
             case SDL_MOUSEBUTTONDOWN:
                 SetButtonState(event.button.button, true);
+                SetButtonClickedState(event.button.button, true);
                 break;
 
             case SDL_MOUSEBUTTONUP:
@@ -490,7 +514,7 @@ int RenderRegularPolygon(double x, double y, double r, unsigned int n, double an
 
 double GetDeltaTime()
 {
-    return astu::deltaTime;
+    return (std::min)(MAX_DELTA_TIME, astu::deltaTime);
 }
 
 double GetAbsoluteTime()
@@ -535,6 +559,15 @@ bool IsMouseButtonPressed(int button)
 {
     if (button >= 0 && button < static_cast<int>(astu::buttons.size())) {
         return astu::buttons[button];
+    }
+
+    return false;
+}
+
+bool IsMouseButtonClicked(int button)
+{
+    if (button >= 0 && button < static_cast<int>(astu::buttons.size())) {
+        return astu::buttonsClicked[button];
     }
 
     return false;
