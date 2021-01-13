@@ -179,9 +179,9 @@ namespace astu {
         Color c;
         Vector2<double> aa(0, startY);
         const double *k = kernel;
-        for (int j = 0; j < kKernelSize; ++j) {
+        for (unsigned int j = 0; j < kKernelSize; ++j) {
             aa.x = startX;
-            for (int i = 0; i < kKernelSize; ++i) {
+            for (unsigned int i = 0; i < kKernelSize; ++i) {
                 aa.x += dx;
                 Color localColor;
                 if (pattern.GetColor(aa, localColor)) {

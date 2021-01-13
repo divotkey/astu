@@ -6,8 +6,10 @@
  */
 
 #include <cassert>
-
 #include <fstream>
+#include <string>
+#include <stdexcept>
+
 #include "Color.h"
 #include "Image.h"
 #include "BmpCodec.h"
