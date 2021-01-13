@@ -68,6 +68,8 @@ namespace astu {
             this->h = h;
             this->s = s;
             this->v = v;
+            
+            return *this;
         }
 
         /**
