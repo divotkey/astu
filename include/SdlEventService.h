@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Mouse.h"
+#include "Keyboard.h"
 #include "UpdateService.h"
 #include "Events.h"
 
@@ -61,6 +62,9 @@ namespace astu {
 
         /** Used to transfer mouse events to mouse states. */
         Mouse mouse;
+
+        /** Used to transfer keyboard events to keyboard states. */
+        Keyboard keyboard;
 
         /** Used to transmit mouse button events. */
         std::shared_ptr<MouseButtonEventService> mouseButtonSrv;

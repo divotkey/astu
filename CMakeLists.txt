@@ -37,6 +37,7 @@ list(APPEND astulib_SOURCES
                     src/srv/EntityService.cpp
                     src/srv/IteratingEntitySystem.cpp
                     src/srv/Mouse.cpp
+                    src/srv/Keyboard.cpp
 
                     src/AstUtils1.cpp)
 
