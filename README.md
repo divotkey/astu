@@ -5,7 +5,7 @@ This library is intended to be used in combination with the lecture Applied Soft
 
 ## API Documentation
 
-The API documentation for ASTU is generated using [Doxygen](https://www.doxygen.nl/index.html) and annotated C++ source code. The latest generated API Documentation can befound here https://divotkey.github.io/astudoc/level0/html/index.html.
+The API documentation for ASTU is generated using [Doxygen](https://www.doxygen.nl/index.html) and annotated C++ source code. The latest generated API Documentation for API-Level 0 can befound here https://divotkey.github.io/astudoc/level0/html/index.html. The documentaion for the Full-API can be found here https://divotkey.github.io/astudoc/html/index.html.
 
 ## Disclaimer
 
