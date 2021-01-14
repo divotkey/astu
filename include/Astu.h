@@ -17,9 +17,9 @@
  * AST Utilities offer a set of class and functions
  * 
  * This library is intended to be used in combination with the lecture
- * **Applied Software Technique (AST)** from the bachelor programm
+ * **Applied Software Technique (AST)** from the bachelor program
  * Media Technology and Design held as well as the lecture
- * **Game Archiecture** from the master programm Interactive Media 
+ * **Game Archiecture** from the master program Interactive Media 
  * at the University of Applied Sciences Upper Austria.
  * 
  * @section hist_sect Version History

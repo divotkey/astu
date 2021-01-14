@@ -1214,7 +1214,6 @@ void SetErrorDetails(const char *text);
  * only C strings. API-Level 0 also does not expose any items from the 
  * C++ Standard Library.
  * 
- * 
  * @section hist_sect Version History
  * This library is continuously updated and extended. The version history
  * gives an overview of the changes this library has gone through, including
