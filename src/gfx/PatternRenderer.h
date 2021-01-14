@@ -70,6 +70,8 @@ namespace astu {
         /** A 5x5 kernel used for 'beautiful' anti-aliasing. */
         static const double kKernel7x7[];
 
+        /** A 9x9 kernel used for 'insane' anti-aliasing. */
+        static const double kKernel9x9[];
 
         /** The radius used for oversampling. */
         const double kKernelRadius;

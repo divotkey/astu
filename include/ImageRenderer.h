@@ -95,8 +95,10 @@ namespace astu {
 
         /**
          * Constructor.
+         * 
+         * @param the maximum recursion depth of the scene quad tree
          */
-        ImageRenderer();
+        ImageRenderer(unsigned int maxDepth = 10);
 
         /**
          * Destructor.
@@ -212,6 +214,25 @@ namespace astu {
         }
 
         /**
+         * Returns the maximum recursionvdepth of the scene quadtree.
+         * 
+         * @return depth of scene quadtree
+         */
+        unsigned int GetQuadtreeDepth() const {
+            return quadtreeDepth;
+        }
+
+        /**
+         * Sets the maximum recursion depth of the scene quadtree.
+         * 
+         * Note: changing the depth will only have on effect after Clear() 
+         * has been called.
+         * 
+         * @param depth the depth of the scene quadtree.
+         */
+        void SetQuadtreeDepth(unsigned int);
+
+        /**
          * Renders the image.
          * 
          * @param img   image used to store the resulting rendering
@@ -239,6 +260,9 @@ namespace astu {
 
         /** Used to render the image. */
         std::unique_ptr<IPatternRenderer> renderer;
+
+        /** The maximum recursion depth for the scene quadtree. */
+        unsigned int  quadtreeDepth;
     };
 
 } // end of namespace

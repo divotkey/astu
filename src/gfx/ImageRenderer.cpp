@@ -10,6 +10,8 @@
  *----------------------------------------------------------------------------
  */
 
+#include <stdexcept>
+
 #include "gfx/PatternRenderer.h"
 #include "gfx/Quadtree.h"
 #include "gfx/Pattern.h"
@@ -20,8 +22,9 @@
 
 namespace astu {
 
-    ImageRenderer::ImageRenderer()
+    ImageRenderer::ImageRenderer(unsigned int maxDepth)
         : root(std::make_unique<UnionPattern>())
+        , quadtreeDepth(maxDepth)
     {
         SetRenderQuality(RenderQuality::Good);
         SetDrawColor(WebColors::Black);
@@ -62,14 +65,6 @@ namespace astu {
         case RenderQuality::Insane:
             renderer = std::make_unique<AntiAlisaingPatternRenderer>(AntialiasingLevel::Insane);
             break;
-
-        // case Quality::VeryGood:
-        //     renderer = std::make_unique<StochasticAntiAlisaingPatternRenderer>();
-        //     break;
-
-        // case Quality::Insane:
-        //     renderer = std::make_unique<StochasticAntiAlisaingPatternRenderer>();
-        //     break;
         }
     }
 
@@ -90,7 +85,7 @@ namespace astu {
     {
         root->Clear();
         root->Add(background = std::make_shared<UnicolorPattern>(backgroundColor));
-        root->Add(quadtree = std::make_shared<Quadtree>(5, 10));
+        root->Add(quadtree = std::make_shared<Quadtree>(5, static_cast<int>(quadtreeDepth)));
     }
 
     void ImageRenderer::DrawCircle(double x, double y, double r)
@@ -126,6 +121,14 @@ namespace astu {
         rect->Rotate(ToRadians(phi));
         rect->SetPattern(std::make_shared<UnicolorPattern>(drawColor));
         quadtree->Add(rect);
+    }
+
+    void ImageRenderer::SetQuadtreeDepth(unsigned int depth)
+    {
+        if (depth < 1) {
+            throw std::domain_error("Invalid depth for scene quadtree " + std::to_string(depth));
+        }
+        quadtreeDepth = depth;
     }
 
 

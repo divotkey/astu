@@ -1,6 +1,12 @@
 
 # Version History {#CHANGES}
 
+# Version 0.6.1
+*Date: 2021-01-14*
+
+- Added option to specify the maximum recursion depth the the scene quadtree in `ImageRenderer` class.
+
+
 # Version 0.6.0
 *Date: 2021-01-13*
 
