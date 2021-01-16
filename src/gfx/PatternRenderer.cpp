@@ -52,6 +52,98 @@ namespace astu {
     /////// AntiAlisaingPatternRenderer
     /////////////////////////////////////////////////
 
+    const double* AntiAlisaingPatternRenderer::GetKernel(AntialiasingLevel level)
+    {
+        // size 3x3, sigma = 0.8
+        static const double kernel3x3[] = {
+            0.06292,	0.124998,	0.06292,
+            0.124998,	0.248326,	0.124998,
+            0.06292,	0.124998,	0.06292,
+        };
+
+        // size 5x5, sigma = 1.15
+        static const double kernel5x5[] = {
+            0.007004,	0.020338,	0.029004,	0.020338,	0.007004,
+            0.020338,	0.05906,	0.084226,	0.05906,	0.020338,
+            0.029004,	0.084226,	0.120116,	0.084226,	0.029004,
+            0.020338,	0.05906,	0.084226,	0.05906,	0.020338,
+            0.007004,	0.020338,	0.029004,	0.020338,	0.007004,
+        };
+
+        // size 7x7, sigma = 1.3
+        static const double kernel7x7[] = {
+            0.000569,	0.002332,	0.00543,	0.00719,	0.00543,	0.002332,	0.000569,
+            0.002332,	0.009553,	0.022245,	0.02948,	0.022245,	0.009553,	0.002332,
+            0.00543,	0.022245,	0.051799,	0.068647,	0.051799,	0.022245,	0.00543,
+            0.007196,	0.02948,	0.068647,	0.090973,	0.068647,	0.02948,	0.007196,
+            0.00543,	0.022245,	0.051799,	0.068647,	0.051799,	0.022245,	0.00543,
+            0.002332,	0.009553,	0.022245,	0.02948,	0.022245,	0.009553,	0.002332,
+            0.000569,	0.002332,	0.00543,	0.00719,	0.00543,	0.002332,	0.000569,
+        };
+
+        // size 9x9, sigma = 1.5
+        static const double kernel9x9[] = {
+            0.000072,	0.000323,	0.000944,	0.001794,	0.002222,	0.001794,	0.000944,	0.000323,	0.000072,
+            0.000323,	0.00145,	0.004233,	0.008048,	0.00997,	0.008048,	0.004233,	0.00145,	0.000323,
+            0.000944,	0.004233,	0.012358,	0.023496,	0.029106,	0.023496,	0.012358,	0.004233,	0.000944,
+            0.001794,	0.008048,	0.023496,	0.044672,	0.055338,	0.044672,	0.023496,	0.008048,	0.001794,
+            0.002222,	0.00997,	0.029106,	0.055338,	0.068552,	0.055338,	0.029106,	0.00997,	0.002222,
+            0.001794,	0.008048,	0.023496,	0.044672,	0.055338,	0.044672,	0.023496,	0.008048,	0.001794,
+            0.000944,	0.004233,	0.012358,	0.023496,	0.029106,	0.023496,	0.012358,	0.004233,	0.000944,
+            0.000323,	0.00145,	0.004233,	0.008048,	0.00997,	0.008048,	0.004233,	0.00145,	0.000323,
+            0.000072,	0.000323,	0.000944,	0.001794,	0.002222,	0.001794,	0.000944,	0.000323,	0.000072,
+        };
+
+        switch (level) {
+            case AntialiasingLevel::Simple:
+                return kernel3x3;
+
+            case AntialiasingLevel::Good:
+                return kernel5x5;
+
+            case AntialiasingLevel::Beautiful:
+                return kernel7x7;
+
+            case AntialiasingLevel::Insane:
+                return kernel9x9;
+        }
+    }
+
+    double AntiAlisaingPatternRenderer::GetKernelRadius(AntialiasingLevel level)
+    {
+        switch (level) {
+            case AntialiasingLevel::Simple:
+                return 0.8;
+
+            case AntialiasingLevel::Good:
+                return 1.15;
+
+            case AntialiasingLevel::Beautiful:
+                return 1.3;
+
+            case AntialiasingLevel::Insane:
+                return 1.5;
+        }
+    }
+
+    unsigned int AntiAlisaingPatternRenderer::GetKernelSize(AntialiasingLevel level)
+    {
+        switch (level) {
+            case AntialiasingLevel::Simple:
+                return 3;
+
+            case AntialiasingLevel::Good:
+                return 5;
+
+            case AntialiasingLevel::Beautiful:
+                return 7;
+
+            case AntialiasingLevel::Insane:
+                return 9;
+        }
+    }
+
+
     // size 3x3, radius = 1.0
     // const double AntiAlisaingPatternRenderer::kKernel3x3[] = {
     //     0.024879,	0.107973,	0.024879,
@@ -60,11 +152,11 @@ namespace astu {
     // };
 
     // size 3x3, radius = 0.8
-    const double AntiAlisaingPatternRenderer::kKernel3x3[] = {
-        0.06292,	0.124998,	0.06292,
-        0.124998,	0.248326,	0.124998,
-        0.06292,	0.124998,	0.06292,
-    };
+    // const double AntiAlisaingPatternRenderer::kKernel3x3[] = {
+    //     0.06292,	0.124998,	0.06292,
+    //     0.124998,	0.248326,	0.124998,
+    //     0.06292,	0.124998,	0.06292,
+    // };
 
     // size 5x5, radius = 1.0
     // const double AntiAlisaingPatternRenderer::kKernel5x5[] = {
@@ -76,13 +168,13 @@ namespace astu {
     // };
 
     // size 5x5, radius = 1.15
-    const double AntiAlisaingPatternRenderer::kKernel5x5[] = {
-        0.007004,	0.020338,	0.029004,	0.020338,	0.007004,
-        0.020338,	0.05906,	0.084226,	0.05906,	0.020338,
-        0.029004,	0.084226,	0.120116,	0.084226,	0.029004,
-        0.020338,	0.05906,	0.084226,	0.05906,	0.020338,
-        0.007004,	0.020338,	0.029004,	0.020338,	0.007004,
-    };
+    // const double AntiAlisaingPatternRenderer::kKernel5x5[] = {
+    //     0.007004,	0.020338,	0.029004,	0.020338,	0.007004,
+    //     0.020338,	0.05906,	0.084226,	0.05906,	0.020338,
+    //     0.029004,	0.084226,	0.120116,	0.084226,	0.029004,
+    //     0.020338,	0.05906,	0.084226,	0.05906,	0.020338,
+    //     0.007004,	0.020338,	0.029004,	0.020338,	0.007004,
+    // };
 
     // size 7x7, radius = 1.5
     // const double AntiAlisaingPatternRenderer::kKernel7x7[] = {
@@ -107,15 +199,15 @@ namespace astu {
     // };
 
     // size 7x7, radius = 1.3
-    const double AntiAlisaingPatternRenderer::kKernel7x7[] = {
-        0.000569,	0.002332,	0.00543,	0.00719,	0.00543,	0.002332,	0.000569,
-        0.002332,	0.009553,	0.022245,	0.02948,	0.022245,	0.009553,	0.002332,
-        0.00543,	0.022245,	0.051799,	0.068647,	0.051799,	0.022245,	0.00543,
-        0.007196,	0.02948,	0.068647,	0.090973,	0.068647,	0.02948,	0.007196,
-        0.00543,	0.022245,	0.051799,	0.068647,	0.051799,	0.022245,	0.00543,
-        0.002332,	0.009553,	0.022245,	0.02948,	0.022245,	0.009553,	0.002332,
-        0.000569,	0.002332,	0.00543,	0.00719,	0.00543,	0.002332,	0.000569,
-    };
+    // const double AntiAlisaingPatternRenderer::kKernel7x7[] = {
+    //     0.000569,	0.002332,	0.00543,	0.00719,	0.00543,	0.002332,	0.000569,
+    //     0.002332,	0.009553,	0.022245,	0.02948,	0.022245,	0.009553,	0.002332,
+    //     0.00543,	0.022245,	0.051799,	0.068647,	0.051799,	0.022245,	0.00543,
+    //     0.007196,	0.02948,	0.068647,	0.090973,	0.068647,	0.02948,	0.007196,
+    //     0.00543,	0.022245,	0.051799,	0.068647,	0.051799,	0.022245,	0.00543,
+    //     0.002332,	0.009553,	0.022245,	0.02948,	0.022245,	0.009553,	0.002332,
+    //     0.000569,	0.002332,	0.00543,	0.00719,	0.00543,	0.002332,	0.000569,
+    // };
 
     // // size 7x7, radius = 1.2
     // const double AntiAlisaingPatternRenderer::kKernel7x7[] = {
@@ -140,43 +232,43 @@ namespace astu {
     // };
 
     // size 9x9, radius = 1.5
-    const double AntiAlisaingPatternRenderer::kKernel9x9[] = {
-        0.000072,	0.000323,	0.000944,	0.001794,	0.002222,	0.001794,	0.000944,	0.000323,	0.000072,
-        0.000323,	0.00145,	0.004233,	0.008048,	0.00997,	0.008048,	0.004233,	0.00145,	0.000323,
-        0.000944,	0.004233,	0.012358,	0.023496,	0.029106,	0.023496,	0.012358,	0.004233,	0.000944,
-        0.001794,	0.008048,	0.023496,	0.044672,	0.055338,	0.044672,	0.023496,	0.008048,	0.001794,
-        0.002222,	0.00997,	0.029106,	0.055338,	0.068552,	0.055338,	0.029106,	0.00997,	0.002222,
-        0.001794,	0.008048,	0.023496,	0.044672,	0.055338,	0.044672,	0.023496,	0.008048,	0.001794,
-        0.000944,	0.004233,	0.012358,	0.023496,	0.029106,	0.023496,	0.012358,	0.004233,	0.000944,
-        0.000323,	0.00145,	0.004233,	0.008048,	0.00997,	0.008048,	0.004233,	0.00145,	0.000323,
-        0.000072,	0.000323,	0.000944,	0.001794,	0.002222,	0.001794,	0.000944,	0.000323,	0.000072,
-    };
+    // const double AntiAlisaingPatternRenderer::kKernel9x9[] = {
+    //     0.000072,	0.000323,	0.000944,	0.001794,	0.002222,	0.001794,	0.000944,	0.000323,	0.000072,
+    //     0.000323,	0.00145,	0.004233,	0.008048,	0.00997,	0.008048,	0.004233,	0.00145,	0.000323,
+    //     0.000944,	0.004233,	0.012358,	0.023496,	0.029106,	0.023496,	0.012358,	0.004233,	0.000944,
+    //     0.001794,	0.008048,	0.023496,	0.044672,	0.055338,	0.044672,	0.023496,	0.008048,	0.001794,
+    //     0.002222,	0.00997,	0.029106,	0.055338,	0.068552,	0.055338,	0.029106,	0.00997,	0.002222,
+    //     0.001794,	0.008048,	0.023496,	0.044672,	0.055338,	0.044672,	0.023496,	0.008048,	0.001794,
+    //     0.000944,	0.004233,	0.012358,	0.023496,	0.029106,	0.023496,	0.012358,	0.004233,	0.000944,
+    //     0.000323,	0.00145,	0.004233,	0.008048,	0.00997,	0.008048,	0.004233,	0.00145,	0.000323,
+    //     0.000072,	0.000323,	0.000944,	0.001794,	0.002222,	0.001794,	0.000944,	0.000323,	0.000072,
+    // };
 
-    const map<AntialiasingLevel, const double *> AntiAlisaingPatternRenderer::kLevelToKernel = {
-            {AntialiasingLevel::Simple, kKernel3x3},
-            {AntialiasingLevel::Good, kKernel5x5},
-            {AntialiasingLevel::Beautiful, kKernel7x7},
-            {AntialiasingLevel::Insane, kKernel9x9},
-        };
+    // const map<AntialiasingLevel, const double *> AntiAlisaingPatternRenderer::kLevelToKernel = {
+    //         {AntialiasingLevel::Simple, kKernel3x3},
+    //         {AntialiasingLevel::Good, kKernel5x5},
+    //         {AntialiasingLevel::Beautiful, kKernel7x7},
+    //         {AntialiasingLevel::Insane, kKernel9x9},
+    //     };
 
-    const map<AntialiasingLevel, unsigned int> AntiAlisaingPatternRenderer::kLevelToSize = {
-            {AntialiasingLevel::Simple, 3},
-            {AntialiasingLevel::Good, 5},
-            {AntialiasingLevel::Beautiful, 7},
-            {AntialiasingLevel::Insane, 9}
-        };
+    // const map<AntialiasingLevel, unsigned int> AntiAlisaingPatternRenderer::kLevelToSize = {
+    //         {AntialiasingLevel::Simple, 3},
+    //         {AntialiasingLevel::Good, 5},
+    //         {AntialiasingLevel::Beautiful, 7},
+    //         {AntialiasingLevel::Insane, 9}
+    //     };
 
-    const map<AntialiasingLevel, double> AntiAlisaingPatternRenderer::kLevelToRadius = {
-            {AntialiasingLevel::Simple, 0.8},
-            {AntialiasingLevel::Good, 1.15},
-            {AntialiasingLevel::Beautiful, 1.3},
-            {AntialiasingLevel::Insane, 1.5}
-        };
+    // const map<AntialiasingLevel, double> AntiAlisaingPatternRenderer::kLevelToRadius = {
+    //         {AntialiasingLevel::Simple, 0.8},
+    //         {AntialiasingLevel::Good, 1.15},
+    //         {AntialiasingLevel::Beautiful, 1.3},
+    //         {AntialiasingLevel::Insane, 1.5}
+    //     };
 
     AntiAlisaingPatternRenderer::AntiAlisaingPatternRenderer(AntialiasingLevel aaLevel)
-        : kKernelRadius(kLevelToRadius.at(aaLevel))
-        , kKernelSize(kLevelToSize.at(aaLevel))
-        , kernel(kLevelToKernel.at(aaLevel))
+        : kKernelRadius(GetKernelRadius(aaLevel))
+        , kKernelSize(GetKernelSize(aaLevel))
+        , kernel(GetKernel(aaLevel))
     {
         // Intentionally left empty.
     }

@@ -40,14 +40,13 @@ namespace astu {
     public:
 
         /** Used to map aa levels to kernels. */
-        static const std::map<AntialiasingLevel, const double *> kLevelToKernel;
+        // static const std::map<AntialiasingLevel, const double *> kLevelToKernel;
 
         /** Used to map aa levels to kernel sizes. */
-        static const std::map<AntialiasingLevel, unsigned int> kLevelToSize;
+        // static const std::map<AntialiasingLevel, unsigned int> kLevelToSize;
 
         /** Used to map aa levels to kernel sizes. */
-        static const std::map<AntialiasingLevel, double> kLevelToRadius;
-
+        // static const std::map<AntialiasingLevel, double> kLevelToRadius;
 
         /**
          * Constructor.
@@ -82,7 +81,12 @@ namespace astu {
         /** The kernel data. */
         double const * const kernel;
 
-        static unsigned int QualityToRadius(AntialiasingLevel level);
+        static const double* GetKernel(AntialiasingLevel level);
+        static unsigned int GetKernelSize(AntialiasingLevel level);
+        static double GetKernelRadius(AntialiasingLevel level);
+
+        // static unsigned int QualityToRadius(AntialiasingLevel level);
+
 
 
         Color CalcColor(const Vector2<double> & p, const Pattern & shape);
