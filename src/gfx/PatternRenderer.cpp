@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <stdexcept>
 
 #include "Color.h"
 #include "Image.h"
@@ -106,6 +107,9 @@ namespace astu {
 
             case AntialiasingLevel::Insane:
                 return kernel9x9;
+
+            default:
+                throw std::logic_error("Unknown anti-aliasing level");
         }
     }
 
@@ -123,6 +127,9 @@ namespace astu {
 
             case AntialiasingLevel::Insane:
                 return 1.5;
+
+            default:
+                throw std::logic_error("Unknown anti-aliasing level");
         }
     }
 
@@ -140,6 +147,9 @@ namespace astu {
 
             case AntialiasingLevel::Insane:
                 return 9;
+
+            default:
+                throw std::logic_error("Unknown anti-aliasing level");
         }
     }
 
