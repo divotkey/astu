@@ -11,6 +11,7 @@
  */
 
 #include <stdexcept>
+#include <string>
 
 #include "gfx/PatternRenderer.h"
 #include "gfx/Quadtree.h"
@@ -126,7 +127,8 @@ namespace astu {
     void ImageRenderer::SetQuadtreeDepth(unsigned int depth)
     {
         if (depth < 1) {
-            throw std::domain_error("Invalid depth for scene quadtree " + std::to_string(depth));
+            throw std::domain_error(std::string("Invalid depth for scene quadtree ") 
+                + std::to_string(depth));
         }
         quadtreeDepth = depth;
     }
