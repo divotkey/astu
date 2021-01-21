@@ -10,7 +10,7 @@
 #include <memory>
 #include <vector>
 #include "Vector2.h"
-#include "math/Matrix3.h"
+#include "Matrix3.h"
 #include "Color.h"
 #include "BoundingBox.h"
 
@@ -40,7 +40,7 @@ namespace astu {
     private:
         mutable bool dirty;
         mutable BoundingBox boundingBox;
-        Matrix3 transform;
+        Matrix3d transform;
     };
 
     class UnicolorPattern : public Pattern {

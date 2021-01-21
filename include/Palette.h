@@ -12,6 +12,11 @@
 
 namespace astu {
     
+    /**
+     * A Palette represents a set of colors used to create color transitions.
+     * 
+     * @ingroup gfx_group
+     */
     class Palette {
     public:
 
@@ -21,14 +26,15 @@ namespace astu {
          * @param start the start color of this palette
          * @param end   the end color of thsi palette
          */
-        Palette(const Color & start = WebColors::Black, const Color & end = WebColors::Black);
+        Palette(const Color & start = WebColors::Black, const Color & end = WebColors::White);
 
         /**
          * Sets the start color of this palette.
          * 
          * @param c the start color
+         * @returns a reference to this palette for method chaining
          */
-        void SetStartColor(const Color & c);
+        Palette& SetStartColor(const Color & c);
 
         /**
          * Returns the start color of this palette.
@@ -41,8 +47,9 @@ namespace astu {
          * Sets the end color of this palette.
          * 
          * @param c the start color
+         * @returns a reference to this palette for method chaining
          */
-        void SetEndColor(const Color & c);
+        Palette& SetEndColor(const Color & c);
 
         /**
          * Returns the end color of this palette.
@@ -58,9 +65,50 @@ namespace astu {
          * @param p the position within the palette [0, 1]
          * @throws std::out_of_range in case the position is out of range
          */
-        void AddColor(const Color & c, double p);
+        Palette& AddColor(const Color & c, double p);
 
-        Color GetColor(double pos);
+        /**
+         * Extracts a color from this palette.
+         * 
+         * The specified position gets clamped to the range [0, 1].
+         * 
+         * @param pos   the the position within this palette [0, 1]
+         * @return the requested color
+         */
+        Color GetColor(double pos) const;
+
+        /**
+         * Returns the number of colors in this palette.
+         * 
+         * @return number of color including start end end color
+         */
+        size_t NumColors() const {
+            return size();
+        }
+
+        /**
+         * Returns the number of colors in this palette.
+         * 
+         * @return number of color including start end end color
+         */
+        size_t size() const;
+
+        /**
+         * Returns the color with the specified index.
+         * 
+         * @param idx   the index of the color to retrieve
+         * @return the requested color
+         * @throws std::out_of_range in case the index is invalid
+         */
+        const Color & at(size_t idx) const;
+
+		/**
+		 * Subscript operator for this palette.
+         * 		 *
+		 * @param idx	index of the color to be retrieved
+		 * @return the requested color
+		 */
+		const Color & operator[](size_t idx) const;
 
     private:
 

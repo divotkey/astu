@@ -30,8 +30,9 @@
  * 
  * @section io_sect Modules
  *
- * AST-Utilities contains these modules:
- * 
+ * AST-Utilities currently consists of the following modules:.
+ *  
+ * - @ref math_group
  * - @ref gfx_group
  *  
  */

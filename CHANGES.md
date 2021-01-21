@@ -1,11 +1,18 @@
 
 # Version History {#CHANGES}
 
+# Version 0.6.3
+*Date: 2021-01-20*
+
+- Changed Matrix3 class to be a template and moved it to public include folder.
+- Improved `Palette` class.
+- Extended and improved `ImageRenderer` class.
+- The documentation of the Full API has been updated and slightly extended.
+
 # Version 0.6.1
 *Date: 2021-01-14*
 
 - Added option to specify the maximum recursion depth the the scene quadtree in `ImageRenderer` class.
-
 
 # Version 0.6.0
 *Date: 2021-01-13*

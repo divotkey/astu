@@ -114,7 +114,7 @@ namespace astu {
         center.Set(left + hRadius, bottom + vRadius);
     }
 
-    void BoundingBox::Transform(const Matrix3 & tx)
+    void BoundingBox::Transform(const Matrix3d & tx)
     {
         if (IsInfinite()) {
             return;

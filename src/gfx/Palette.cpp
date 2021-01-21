@@ -18,10 +18,11 @@ namespace astu {
         AddColor(end, 1);
     }
 
-    void Palette::SetStartColor(const Color & c)
+    Palette& Palette::SetStartColor(const Color & c)
     {
         assert(entries.size() >= 1);
         entries[0].color = c;
+        return *this;
     }
 
     Color Palette::GetStartColor() const
@@ -30,10 +31,11 @@ namespace astu {
         return entries[0].color;
     }
 
-    void Palette::SetEndColor(const Color & c)
+    Palette& Palette::SetEndColor(const Color & c)
     {
         assert(!entries.empty());
         entries.back().color = c;
+        return *this;
     }
 
     Color Palette::GetEndColor() const
@@ -42,17 +44,19 @@ namespace astu {
         return entries.back().color;
     }
 
-    void Palette::AddColor(const Color & c, double p)
+    Palette& Palette::AddColor(const Color & c, double p)
     {
         if (p < 0 || p > 1) {
-            throw std::out_of_range("The position of a color within a color palette must lie in the inverval [0, 1].");
+            throw std::out_of_range("The position of a color within a color palette must lie in the interval [0, 1].");
         }
 
         entries.push_back(Entry(c, p));
 		std::sort(entries.begin(), entries.end());
+
+        return *this;
     }
 
-    Color Palette::GetColor(double t)
+    Color Palette::GetColor(double t) const
     {
         t = (t < 0.0) ? 0.0 : (1.0 < t) ? 1.0 : t;
 
@@ -66,6 +70,23 @@ namespace astu {
         t /= e2->pos - e1->pos;
         return e1->color.Lerp(e2->color, t);
     }
+
+    size_t Palette::size() const
+    {
+        return entries.size();
+    }
+
+    const Color & Palette::at(size_t idx) const
+    {
+        return entries.at(idx).color;
+    }
+
+    const Color & Palette::operator[](size_t idx) const
+    {
+        assert(idx < entries.size());
+        return entries[idx].color;
+    }
+
 
     void Palette::FindBoundaries(double t, const Entry *&e1, const Entry *&e2) const
     {

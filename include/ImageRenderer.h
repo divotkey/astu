@@ -105,7 +105,6 @@ namespace astu {
          */
         ~ImageRenderer();
 
-
         /**
          * Clear the output rendering.
          */
@@ -118,8 +117,14 @@ namespace astu {
          * 
          * @param c the color
          */
-        void SetDrawColor(const Color & c);
+        void SetDrawColor(const Color & c) noexcept;
 
+        /**
+         * Returns the background color
+         * 
+         * @return the current background color
+         */
+        const Color & GetDrawColor() const noexcept;
 
         /**
          * Sets the background color.
@@ -130,7 +135,14 @@ namespace astu {
          * 
          * @param c the background color
          */
-        void SetBackgroundColor(const Color & c);
+        void SetBackgroundColor(const Color & c) noexcept;
+
+        /**
+         * Returns the background color
+         * 
+         * @return the current background color
+         */
+        const Color & GetBackgroundColor() const noexcept;
 
         /**
          * Draws a filled circle.
@@ -214,7 +226,7 @@ namespace astu {
         }
 
         /**
-         * Returns the maximum recursionvdepth of the scene quadtree.
+         * Returns the maximum recursion depth of the scene quadtree.
          * 
          * @return depth of scene quadtree
          */

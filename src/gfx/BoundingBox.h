@@ -8,7 +8,7 @@
 #pragma once
 
 #include "Vector2.h"
-#include "math/Matrix3.h"
+#include "Matrix3.h"
 
 namespace astu {
 
@@ -113,7 +113,7 @@ namespace astu {
         void AddPoint(const Vector2<double> & p);
         void Merge(const BoundingBox & o);
 
-        void Transform(const Matrix3 & tx);
+        void Transform(const Matrix3d & tx);
 
 
     private:

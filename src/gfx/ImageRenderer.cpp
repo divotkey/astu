@@ -69,17 +69,27 @@ namespace astu {
         }
     }
 
-    void ImageRenderer::SetDrawColor(const Color & c)
+    void ImageRenderer::SetDrawColor(const Color & c) noexcept
     {
         drawColor = c;
     }
 
-    void ImageRenderer::SetBackgroundColor(const Color & c)
+    const Color & ImageRenderer::GetDrawColor() const noexcept
+    {
+        return drawColor;
+    }
+
+    void ImageRenderer::SetBackgroundColor(const Color & c) noexcept
     {
         backgroundColor = c;
         if (background) {
             background->SetColor(c);
         }
+    }
+
+    const Color & ImageRenderer::GetBackgroundColor() const noexcept
+    {
+        return backgroundColor;
     }
 
     void ImageRenderer::Clear()

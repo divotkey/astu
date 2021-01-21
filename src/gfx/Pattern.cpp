@@ -48,7 +48,7 @@ namespace astu {
     {
         if (dirty) {
             boundingBox = GetLocalBoundingBox();
-            Matrix3 invTx = transform;
+            Matrix3d invTx = transform;
             invTx.Invert();
             boundingBox.Transform(invTx);
             dirty = false;
