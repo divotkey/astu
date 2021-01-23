@@ -66,6 +66,14 @@ namespace astu {
         return (r - o.r) * (r - o.r) + (g - o.g) * (g - o.g) + (b - o.b) * (b - o.b) + (a - o.a) * (a - o.a);
     }
 
+    Color & Color::MultiplyWithoutAlpha(double s) noexcept
+    {
+        r *= s;
+        g *= s;
+        b *= s;
+        return *this;
+    }
+
     int Color::GetARGB() const
     {
         return  ((int)(a * 255) << 24)
@@ -74,7 +82,7 @@ namespace astu {
 				| ((int)(b * 255));
     }
 
-    void Color::Saturate()
+    Color & Color::Saturate() noexcept
     {
         if (r > 1) {
             r = 1;
@@ -99,6 +107,8 @@ namespace astu {
         } else if (a < 0) {
             a = 0;
         }
+
+        return *this;
     }
 
     Color & Color::Blend(const Color & o)

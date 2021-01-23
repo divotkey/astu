@@ -165,6 +165,14 @@ namespace astu {
         double DistanceSquared(const Color & o) const;
 
         /**
+         * Multiplies all color except alpha channel with a scalar.
+         * 
+         * @param s the scalar value
+         * @return a reference to this color used for method chaining
+         */
+        Color & MultiplyWithoutAlpha(double s) noexcept;
+
+        /**
          * Does a linear interpolation between this and the specified color.
          * 
          * @param o the other color
@@ -182,8 +190,10 @@ namespace astu {
 
         /**
          * Clamps all color components within the range of 0 to 1.
+         * 
+         * @return a reference to this color used for method chaining
          */
-        void Saturate();
+        Color & Saturate() noexcept;
 
         /**
          * Blends this color with another color respecting the alpha channel.
@@ -192,7 +202,7 @@ namespace astu {
          * untouched, which is the most common usage of this method.
          * 
          * @param o the other color to blend with this color
-         * @return a reference to this color used for method chaining etc.
+         * @return a reference to this color used for method chaining
          */
         Color & Blend(const Color & o);
 

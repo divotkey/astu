@@ -12,7 +12,7 @@
 
 /**
  * @file
- * @brief This file defines public functions offered by the graphics module of AST utilities.
+ * @brief This file defines public functions, templates and classes, offered by the graphics module of AST-Utilities.
  */
 
 #pragma once
