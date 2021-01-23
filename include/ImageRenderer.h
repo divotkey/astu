@@ -10,7 +10,7 @@
  *----------------------------------------------------------------------------
  */
 
-// Standard C++ Library includes
+// C++ Standard Library includes
 #include <memory>
 
 // ASTU Library includes

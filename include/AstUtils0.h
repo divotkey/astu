@@ -50,7 +50,7 @@ void SayHello();
  * 
  * This is only a convenience function for error output. The same
  * result  could also be achieved with the method for error retrieval
- * and the Standard C++ library. An implementation of this function
+ * and the C++ Standard library. An implementation of this function
  * could look like this:
  * 
  * ```

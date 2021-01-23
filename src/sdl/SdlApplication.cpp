@@ -5,7 +5,7 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-// Standard C++ Library includes
+// C++ Standard Library includes
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <algorithm>
