@@ -5,11 +5,13 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// C++ Standard Library includes
 #include <cassert>
 #include <fstream>
 #include <string>
 #include <stdexcept>
 
+// Local includes
 #include "Color.h"
 #include "Image.h"
 #include "BmpCodec.h"
