@@ -10,6 +10,8 @@
  *----------------------------------------------------------------------------
  */
 
+#pragma once
+
 // C++ Standard Library includes
 #include <memory>
 

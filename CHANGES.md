@@ -1,6 +1,11 @@
 
 # Version History {#CHANGES}
 
+# Version 0.6.4
+*Date: 2021-01-20*
+
+- Fixed missing `#pragma once` in ImageRenderer.h
+
 # Version 0.6.3
 *Date: 2021-01-20*
 
