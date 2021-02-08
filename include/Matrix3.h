@@ -259,7 +259,7 @@ namespace astu {
 		 * @param p	the point to transform
 		 * @return the transformed point
 		 */
-		Vector2<T> transformPoint(T x, T y) const {
+		Vector2<T> TransformPoint(T x, T y) const {
 			return Vector2<T>(
 				m[0] * x + m[3] * y + m[6],
 				m[1] * x + m[4] * y + m[7]
@@ -278,7 +278,7 @@ namespace astu {
 		 * @return the transformed point
 		 */
 		Vector2<T> TransformPoint(const Vector2<T>& p) const {
-            return transformPoint(p.x, p.y);
+            return TransformPoint(p.x, p.y);
 		}
 
 		/**
