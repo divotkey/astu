@@ -791,6 +791,33 @@ void StopTimer();
  * ``` */
 int GetMilliseconds();
 
+
+/**
+ * Returns the elapsed microseconds.
+ * This function returns the microseconds elapsed between the two 
+ * consecutive calls to StartTimer() and StopTimer().
+ * 
+ * @sa SayElapsedTime()
+ * 
+ * **Example**
+ * 
+ * ```
+ * #include <iostream>
+ * #include <AstUtils.h>
+ * 
+ * int main()
+ * {
+ *   StartTimer();
+ *   CalculateSomething();
+ *   StopTimer();
+ * 
+ *   std::cout << "Required time " << GetMicroseconds() << " us" << std::endl;
+ * 
+ *   return 0;
+ * }
+ * ``` */
+int GetMicroseconds();
+
 /**@}*/
 
 /////////////////////////////////////////////////
