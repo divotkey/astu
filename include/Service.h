@@ -91,7 +91,7 @@ namespace astu {
         virtual const std::string & GetName() const final override;
         virtual void Startup() override;
         virtual void Shutdown() override;
-        virtual bool IsRunning() const override;
+        virtual bool IsRunning() const final override;
 
     protected:
 

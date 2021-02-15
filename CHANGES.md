@@ -1,6 +1,11 @@
 
 # Version History {#CHANGES}
 
+# Version 0.7.0
+*Date: 2021-02-??*
+
+- Added `GetMicroseconds()` in addition to `GetMilliseconds()`.
+
 # Version 0.6.4
 *Date: 2021-02-02*
 

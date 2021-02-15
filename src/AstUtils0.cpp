@@ -396,6 +396,12 @@ int GetMilliseconds()
     return static_cast<int>(dt);
 }
 
+int GetMicroseconds()
+{
+    auto dt = chrono::duration_cast<chrono::microseconds>(stopTime - startTime).count();
+    return static_cast<int>(dt);
+}
+
 
 /////////////////////////////////////////////////
 /////// Audio Functions
