@@ -173,6 +173,11 @@ void SayVersion() {
     cout << GetVersionInfo() << endl;
 }
 
+void SayCopyright()
+{
+    cout << GetCoyprightInfo() << endl;
+}
+
 void SayElapsedTime(const char* text)
 {
     if (text) {

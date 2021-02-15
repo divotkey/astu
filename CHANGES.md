@@ -2,9 +2,10 @@
 # Version History {#CHANGES}
 
 # Version 0.7.0
-*Date: 2021-02-??*
+*Date: 2021-03-01*
 
 - Added `GetMicroseconds()` in addition to `GetMilliseconds()`.
+- Added functions to query copyright information.
 
 # Version 0.6.4
 *Date: 2021-02-02*
