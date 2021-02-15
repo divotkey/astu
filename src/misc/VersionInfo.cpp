@@ -10,6 +10,9 @@
 
 namespace astu {
 
+    const std::string kCopyrightHolder  = "AST Utilities Development Team";
+    const std::string kCopyrightYear    = "2020, 2012";
+
     std::string GetVersionInfo()
     {
         return std::string("AST Utilities Version ") + ASTU_VERSION_STRING 
@@ -28,4 +31,18 @@ namespace astu {
         return ASTU_VERSION_PATCH;
     }
 
+    const std::string & GetCopyrightHolder()
+    {
+        return kCopyrightHolder;
+    }
+
+    const std::string & GetCopyrightYear()
+    {
+        return kCopyrightYear;
+    }
+
+    std::string GetCopyrightInfo()
+    {
+        return "Copyright " + GetCopyrightYear() + " " + GetCopyrightHolder() + ". All rights reserved.";
+    }
 }

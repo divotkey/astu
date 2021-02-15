@@ -39,5 +39,25 @@ namespace astu {
      */
     int GetPatchVersion();
 
+    /**
+     * Returns the copyright holder of AST-Utilities.
+     * 
+     * @return the copyright holder
+     */
+    const std::string & GetCopyrightHolder();
+
+    /**
+     * Returns the copyright year of AST-Utilities.
+     * 
+     * @return the copyright year
+     */
+    const std::string & GetCopyrightYear();
+
+    /**
+     * Returns copyright information as string.
+     * 
+     * @return copyright information
+     */
+    std::string GetCopyrightInfo();
 
 }

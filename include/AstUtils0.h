@@ -207,6 +207,29 @@ void SayDouble(double value, bool eol = true);
 void SayVersion();
 
 /**
+ * Outputs copyright information about this library.
+ * 
+ * **Example**
+ * 
+ * ```
+ * #include <AstUtils.h>
+ * 
+ * int main()
+ * {
+ *   SayCopyright();
+ * 
+ *   return 0;
+ * }
+ * ```
+ * 
+ * Possible output:
+ * ```
+ * AST Utilities Version 1.0.0 (64 bit address space) [build: Aug 13 2020, 16:04:50]
+ * ```
+ */
+void SayCopyright();
+
+/**
  * Outputs the elapsed time in a nice human readable way.
  * 
  * @param text   preceding text printed before elapsed time
