@@ -29,6 +29,7 @@ namespace astu {
 
         /**
          * Encodes the specified image to the given output stream.
+         * 
          * This method will not close the given output stream.
          *
          * @param image the image to be encoded
@@ -83,6 +84,7 @@ namespace astu {
 
         /**
          * Decodes an BMP file from an input stream.
+         * 
          * This method will not close the given input stream.
          *
          * @param is    the input stream
