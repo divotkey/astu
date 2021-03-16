@@ -82,6 +82,14 @@ namespace astu {
 				| ((int)(b * 255));
     }
 
+    int Color::GetABGR() const
+    {
+        return  ((int)(a * 255) << 24)
+				| ((int)(b * 255) << 16)
+				| ((int)(g * 255) << 8)
+				| ((int)(r * 255));
+    }
+
     Color & Color::Saturate() noexcept
     {
         if (r > 1) {

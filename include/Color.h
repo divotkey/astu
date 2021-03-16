@@ -189,6 +189,13 @@ namespace astu {
         int GetARGB() const;
 
         /**
+         * Converts this color to an integer value.
+         * 
+         * @return the integer representation of this color
+         */
+        int GetABGR() const;
+
+        /**
          * Clamps all color components within the range of 0 to 1.
          * 
          * @return a reference to this color used for method chaining
@@ -356,7 +363,35 @@ namespace astu {
         Fuchsia = 0xFF00FF,
 
         /** Color constant for the color *Purple* (0x800080). */
-        Purple = 0x800080
+        Purple = 0x800080,
+
+
+        /////// Red colors ///////
+
+        /** Color constant for the color *Dark Red* (0x8B0000). */
+        DarkRed = 0x8B0000,
+
+        /////// Orange colors ///////
+
+        /** Color constant for the color *Orange Red* (0xFF4500). */
+        OrangeRed = 0xFF4500,
+
+        /** Color constant for the color *Orange* (0xFFA500). */
+        Orange = 0xFFA500,
+
+        /////// Yellow colors ///////
+        /** Color constant for the color *Gold* (0xFFD700). */
+        Gold = 0xFFD700,
+
+        /////// Purple, violet, and magenta colors ///////
+
+        /** Color constant for the color *Indigo* (0x4B0082). */
+        Indigo = 0x4B0082,
+
+        /////// Gray and black colors ///////
+        /** Color constant for the color *DarkSlateGray* (0x2F4F4F). */
+        DarkSlateGray = 0x2F4F4F,
+
     };
 
     /**
