@@ -34,5 +34,6 @@
  *  
  * - @ref math_group
  * - @ref gfx_group
- *  
+ * - @ref srv_group
+ * - @ref sdl_group
  */

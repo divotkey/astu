@@ -1,6 +1,12 @@
 
 # Version History {#CHANGES}
 
+# Version 0.8.0
+*Date: 2021-04-07*
+
+- Added interface `ILineRenderer` and to graphics module.
+- Added SDL-based implementations of `ILineRenderer` interface.
+
 # Version 0.7.0
 *Date: 2021-03-01*
 

@@ -28,7 +28,6 @@ namespace astu {
      * @{
      */
 
-
     /**@}*/
 
 } // end of namespace

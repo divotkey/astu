@@ -63,6 +63,7 @@ if(WITH_SDL)
         src/sdl/SdlRenderService.cpp
         src/sdl/SdlAudioService.cpp
         src/sdl/SdlTimeService.cpp
+        src/sdl/SdlLineRenderer.cpp
         )
 else(WITH_SDL)
     list(APPEND astulib_SOURCES src/sdl/SdlApplicationDummy.cpp)
