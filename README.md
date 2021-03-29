@@ -1,7 +1,7 @@
 # ASTU - AST Utilities
 *A collection of utilities for Applied Software Techniques (AST)*
 
-This library is intended to be used in combination with the lecture Applied Software Technique (AST) from the course Media Technology and Design held at the University of Applied Sciences Upper Austria.
+This library is intended to be used in combination with the lectures **Applied Software Technique** (AST), **Interaction and Game Programming** and **Game Architecture** from the course Media Technology and Design (bachelor program) and Interactive Media (master program) at the University of Applied Sciences Upper Austria.
 
 ## API Documentation
 
@@ -10,4 +10,4 @@ The API documentation for ASTU is generated using [Doxygen](https://www.doxygen.
 ## Disclaimer
 
 THIS LIBRARY IS PROVIDED AS EDUCATIONAL MATERIAL AND NOT INTENDED
-TO ADDRESS ALL REAL WORLD PROBLEMS AND ISSUES IN DETAIL.
+TO ADDRESS ALL REAL-WORLD PROBLEMS AND ISSUES IN DETAIL.
