@@ -14,13 +14,11 @@
 /*! \mainpage AST Utilities (Full-API)
  * 
  * A collection of utilities for Applied Software Techniques (AST).
- * AST Utilities offer a set of class and functions
- * 
- * This library is intended to be used in combination with the lecture
- * **Applied Software Technique (AST)** from the bachelor program
- * Media Technology and Design held as well as the lecture
- * **Game Archiecture** from the master program Interactive Media 
- * at the University of Applied Sciences Upper Austria.
+ * This library is intended to be used in combination with the lectures 
+ * **Applied Software Technique**, **Interaction and Game Programming**
+ * and **Game Architecture** from the course Media Technology and Design
+ * (bachelor program) and Interactive Media (master program) at the University
+ * of Applied Sciences Upper Austria.
  * 
  * @section hist_sect Version History
  * This library is continuously updated and extended. The version history

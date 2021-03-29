@@ -6,6 +6,7 @@
 
 - Added interface `ILineRenderer` and to graphics module.
 - Added SDL-based implementations of `ILineRenderer` interface.
+- Added parameter to `SayVersion` and `SayCopyright` to add an empty line after the output.
 
 # Version 0.7.0
 *Date: 2021-03-01*

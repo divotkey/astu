@@ -186,6 +186,8 @@ void SayDouble(double value, bool eol = true);
 /**
  * Outputs version information about this library.
  * 
+ * @param newline   whether an empty line should be added after the output
+ * 
  * **Example**
  * 
  * ```
@@ -204,10 +206,12 @@ void SayDouble(double value, bool eol = true);
  * AST Utilities Version 1.0.0 (64 bit address space) [build: Aug 13 2020, 16:04:50]
  * ```
  */
-void SayVersion();
+void SayVersion(bool newline = false);
 
 /**
  * Outputs copyright information about this library.
+ * 
+ * @param newline   whether an empty line should be added after the output
  * 
  * **Example**
  * 
@@ -227,7 +231,7 @@ void SayVersion();
  * AST Utilities Version 1.0.0 (64 bit address space) [build: Aug 13 2020, 16:04:50]
  * ```
  */
-void SayCopyright();
+void SayCopyright(bool newline = false);
 
 /**
  * Outputs the elapsed time in a nice human readable way.

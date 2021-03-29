@@ -169,13 +169,19 @@ void SayDouble(double value, bool eol)
     }
 }
 
-void SayVersion() {
+void SayVersion(bool newline) {
     cout << GetVersionInfo() << endl;
+    if (newline) {
+        cout << endl;
+    }
 }
 
-void SayCopyright()
+void SayCopyright(bool newline)
 {
     cout << GetCopyrightInfo() << endl;
+    if (newline) {
+        cout << endl;
+    }
 }
 
 void SayElapsedTime(const char* text)
