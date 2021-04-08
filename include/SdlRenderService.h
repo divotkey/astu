@@ -161,7 +161,7 @@ namespace astu {
         virtual void OnResize(int width, int height) override;
 
         /**
-         * Returns the width of the render taret.
+         * Returns the width of the render target.
          * 
          * @return the width in pixels
          */
@@ -170,7 +170,7 @@ namespace astu {
         }
 
         /**
-         * Returns the height of the render taret.
+         * Returns the height of the render target.
          * 
          * @return the height in pixels
          */
