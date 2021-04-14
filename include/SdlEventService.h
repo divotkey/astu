@@ -68,6 +68,9 @@ namespace astu {
 
         /** Used to transmit mouse button events. */
         std::shared_ptr<MouseButtonEventService> mouseButtonSrv;
+
+        /** Used to transmit keystroke events. */
+        std::shared_ptr<KeystrokeEventService> keystrokeSrv;
     };
 
 } 

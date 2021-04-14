@@ -280,6 +280,19 @@ namespace astu {
         }
 
         /**
+         * Sets this vector to perpendicular version of itself.
+         * 
+         * @return reference to this vector for method chaining
+         */
+        Vector2<T> & Perpendicularize()
+        {
+            T tmp = x;
+            x = -y;
+            y = x;
+            return *this;
+        }
+
+        /**
          * Binary addition operator for two vectors.
          *
          * @param right the right hand-side vector

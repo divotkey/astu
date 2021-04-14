@@ -28,12 +28,14 @@ namespace astu {
         }
 
         mouseButtonSrv = GetSM().FindService<MouseButtonEventService>();
-
+        keystrokeSrv = GetSM().FindService<KeystrokeEventService>();
         quit = false;
     }
 
     void SdlEventService::OnShutdown() 
     {
+        keystrokeSrv = nullptr;
+        mouseButtonSrv = nullptr;
         SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Shutting down SDL event service");
         SDL_QuitSubSystem(SDL_INIT_EVENTS);
     }
@@ -54,23 +56,29 @@ namespace astu {
             case SDL_MOUSEBUTTONDOWN:
                 mouse.SetButton(event.button.button, true);
                 if(mouseButtonSrv) {
-                    mouseButtonSrv->FireSignal(MouseButtonEvent(event.button.button, true));
+                    mouseButtonSrv->FireSignal(MouseButtonEvent(event.button.button, true, event.button.x, event.button.y));
                 }
                 break;
 
             case SDL_MOUSEBUTTONUP:
                 mouse.SetButton(event.button.button, false);
                 if(mouseButtonSrv) {
-                    mouseButtonSrv->FireSignal(MouseButtonEvent(event.button.button, false));
+                    mouseButtonSrv->FireSignal(MouseButtonEvent(event.button.button, false, event.button.x, event.button.y));
                 }
                 break;
 
             case SDL_KEYDOWN:
                 keyboard.SetKey(event.key.keysym.scancode, true);
+                if (keystrokeSrv) {
+                    keystrokeSrv->FireSignal( KeystrokeEvent(event.key.keysym.scancode, true) );
+                }
                 break;
 
             case SDL_KEYUP:
                 keyboard.SetKey(event.key.keysym.scancode, false);
+                if (keystrokeSrv) {
+                    keystrokeSrv->FireSignal( KeystrokeEvent(event.key.keysym.scancode, false) );
+                }
                 break;
 
             case SDL_DROPTEXT:

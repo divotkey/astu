@@ -11,8 +11,6 @@
 
 namespace astu {
 
-
-
     /**
      * Provides access to keyboard input.
      * 

@@ -22,11 +22,20 @@ namespace astu {
     public:
         enum BUTTON {LEFT = 1, MIDDLE = 2, RIGHT = 3};
 
-        MouseButtonEvent(int _button = 0, bool _pressed = false)
-            : button(_button), pressed(_pressed) {}
+        MouseButtonEvent(int button = 0, bool pressed = false, int x = 0, int y = 0)
+            : button(button), pressed(pressed), x(x), y(y) {}
 
+        /** The button which has been pressed or released. */
         int button;
+
+        /** Whether the button has been pressed or released. */
         bool pressed;
+
+        /** The x-coordinate of the mouse cursor. */
+        int x;
+
+        /** The y-coordinate of the mouse cursor. */
+        int y;
     };
 
     /** 
@@ -42,5 +51,40 @@ namespace astu {
      * @ingroup input_group
      */
     using MouseButtonListener = ISignalListener<MouseButtonEvent>;
+
+    /**
+     * This event represents a keystroke event.
+     * 
+     * This event is supposed to be used in combination with the SignalService.
+     * 
+     * @ingroup input_group
+     */
+    class KeystrokeEvent {
+    public:
+
+        KeystrokeEvent(int keycode = 0, bool pressed = false)
+            : keycode(keycode), pressed(pressed) {}
+
+        /** The keycode of the event. */
+        int keycode;
+
+        /** Whether the key has been pressed or released. */
+        bool pressed;
+    };
+
+    /** 
+     * Type definition for signal services used to transmit keystroke events.
+     *
+     * @ingroup input_group
+     */
+    using KeystrokeEventService = SignalService<KeystrokeEvent>;
+
+    /** 
+     * Type definition for signal listeners which receive keystroke events.
+     *
+     * @ingroup input_group
+     */
+    using KeystrokeListener = ISignalListener<KeystrokeEvent>;
+
 
 } // end of namespace
