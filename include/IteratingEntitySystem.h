@@ -41,12 +41,21 @@ namespace astu {
     protected:
 
         /**
-         * Returns the slapsed time since the last update.
+         * Returns the elapsed time since the last update.
          * 
          * @return the delta time in seconds
          */
         double GetDeltaTime() const {
             return timeService->GetElapsedTime();
+        }
+
+        /**
+         * Returns the entities this system is processing.
+         * 
+         * @return the view to the entities of this system
+         */
+        const EntityView & GetEntityView() const {
+            return *entityView;
         }
 
         /**
@@ -69,11 +78,11 @@ namespace astu {
         virtual void OnEntityRemoved(std::shared_ptr<Entity> entity) override {};
 
     private:
-        /** The updatae priority of this updatable. */
+        /** The update priority of this updatable. */
         int updatePriority;
 
         /** The family of entities this system is processing. */
-        EntityFamily    iterateFamily;
+        EntityFamily iterateFamily;
 
         /** The view to the entities to be processed. */
         std::shared_ptr<EntityView> entityView;

@@ -14,7 +14,7 @@ namespace astu {
         , updatePriority(priority)
         , iterateFamily(itFamily)
     {
-        // Intentioniall left empty.
+        // Intentionally left empty.
     }
 
     void IteratingEntitySystem::Startup() 
@@ -33,7 +33,7 @@ namespace astu {
             throw std::logic_error("Iterating entity system service requires time service");
         }
 
-        // Don't forget to call startup on base service!
+        // Don't forget to call Startup on base service!
         BaseService::Startup();
     }
 
