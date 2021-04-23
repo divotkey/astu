@@ -96,7 +96,7 @@ namespace astu {
 		/**
 		 * Returns the component of a specific type.
 		 *
-		 * This method is mainly used by the template method `getComponent`,
+		 * This method is mainly used by the template method `GetComponent`,
          * which is much more convenient to use because no type cast is
          * required.
 		 *
@@ -106,7 +106,7 @@ namespace astu {
 		 *
 		 * **Usage example:**
 		 * ```cpp
-		 * auto & pose = static_cast<Pose2D &>( entity.getComponent( std::type_index( typeid(Pose2D) ) ) );
+		 * auto & pose = static_cast<Pose2D &>( entity.GetComponent( std::type_index( typeid(Pose2D) ) ) );
 		 * ```
 		 *
 		 * @param type the component type
@@ -128,14 +128,14 @@ namespace astu {
 		const EntityComponent& GetComponent(const std::type_index & type) const;
 
 		/**
-		 * Retrieves the component a specifi type from this entity.
+		 * Retrieves the component a specific type from this entity.
 		 *
 		 * This template method offers a convenient way to retrieve a component by
 		 * specifying the type of the component to retrieve as template parameter.
 		 *
 		 * **Usage example:**
 		 * ```cpp
-		 * auto & pose = entity.getComponent<Pose2D>();
+		 * auto & pose = entity.GetComponent<Pose2D>();
 		 * ```
 		 *
 		 * @tparam T	the type of the component to retrieve
@@ -144,6 +144,25 @@ namespace astu {
 		 */
 		template<typename T> T& GetComponent() {
 			return static_cast<T&>( GetComponent( typeid(T) ) );
+		}
+
+		/**
+		 * Retrieves the component a specific type from this entity.
+		 *
+		 * This template method offers a convenient way to retrieve a component by
+		 * specifying the type of the component to retrieve as template parameter.
+		 *
+		 * **Usage example:**
+		 * ```cpp
+		 * const auto & pose = entity.GetComponent<Pose2D>();
+		 * ```
+		 *
+		 * @tparam T	the type of the component to retrieve
+		 * @return the requested component
+		 * @throws std::logic_error in case the requested component does not exist
+		 */
+        template<typename T> const T& GetComponent() const {
+			return static_cast<const T&>( GetComponent( typeid(T) ) );
 		}
 
 		/**

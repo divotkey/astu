@@ -28,9 +28,9 @@ namespace astu {
     public:
 
         /**
-         * Returns the one and only instnace of the service manager.
+         * Returns the one and only instance of the service manager.
          * 
-         * @return the one and only service managanger
+         * @return the one and only service manager
          */
         static ServiceManager & GetInstance();
 
@@ -166,7 +166,7 @@ namespace astu {
         /**
          * Copy-constructor (deleted).
          * 
-         * Prevents creating implicit copies of this sinleton.
+         * Prevents creating implicit copies of this singleton.
          */ 
         ServiceManager(const ServiceManager& o) = delete;
 

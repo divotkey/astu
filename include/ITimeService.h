@@ -10,7 +10,7 @@
 namespace astu {
 
     /**
-     * Interface for an services which keepts track of time.
+     * Interface for services which keeps track of time.
      * 
      * @ingroup srv_group
      */
@@ -29,5 +29,7 @@ namespace astu {
          */
         virtual double GetElapsedTime() const = 0;
     };
+
+    
 
 } 

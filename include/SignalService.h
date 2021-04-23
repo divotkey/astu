@@ -7,9 +7,12 @@
 
 #pragma once
 
+// C++ Standard Library includes
 #include <array>
 #include <vector>
 #include <utility>
+
+// Local includes
 #include "ListenerManager.h"
 #include "UpdateService.h"
 
@@ -118,6 +121,10 @@ namespace astu {
             listenerManager.VisitListeners([signal](ISignalListener<T> & listener) {
                 listener.OnSignal(signal);
             });
+
+            rawListenerManager.VisitListeners([signal](ISignalListener<T> & listener) {
+                listener.OnSignal(signal);
+            });
         }
 
         /**
@@ -130,12 +137,30 @@ namespace astu {
         }
 
         /**
+         * Adds a signal listener to this service.
+         * 
+         * @param pListener the raw pointer to the listener to add
+         */
+        void AddListener(ISignalListener<T> * pListener) {
+            rawListenerManager.AddListener(pListener);
+        }
+
+        /**
          * Removes a signal listener from this service.
          * 
          * @param listener  the listener to remove
          */
         void RemoveListener(const std::shared_ptr<ISignalListener<T>> & listener) {
             listenerManager.RemoveListener(listener);        
+        }
+
+        /**
+         * Removes a signal listener from this service.
+         * 
+         * @param pListener the raw pointer to the listener to remove
+         */
+        void RemoveListener(ISignalListener<T> * pListener) {
+            rawListenerManager.RemoveListener(pListener);        
         }
 
         /**
@@ -147,6 +172,15 @@ namespace astu {
             return listenerManager.HasListener(listener);
         }
 
+        /**
+         * Tests whether a signal listener has already been added.
+         * 
+         * @param pListener  the raw pointer to the listener to test
+         */
+        bool HasListener(const ISignalListener<T> * pListener) const {
+            return rawListenerManager.HasListener(pListener);
+        }
+
     private:
         using SignalQueue = std::vector<T>;
 
@@ -156,11 +190,14 @@ namespace astu {
         /** The signal queue where to add new signals. */
         SignalQueue * addQueue;
 
-        /** The signal queu eused to transmitt signal. */
+        /** The signal queue used to transmit signals. */
         SignalQueue * sendQueue;
 
-        /** Used to manager signal listeners. */
+        /** Used to manage signal listeners. */
         ListenerManager<ISignalListener<T>> listenerManager;
+
+        /** Used to manage signal listeners, stored by raw pointers. */
+        RawListenerManager<ISignalListener<T>> rawListenerManager;
 
 
         // Inherited via UpdatableBaseService
@@ -181,6 +218,5 @@ namespace astu {
             sendQueue->clear();            
         }
     };
-
 
 } // end of namespace

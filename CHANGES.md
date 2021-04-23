@@ -1,6 +1,14 @@
 
 # Version History {#CHANGES}
 
+# Version 0.9.0
+*Date: 2021-04-28*
+
+- Renamed `MouseButtonListener` alias to `IMouseButtonListener`.
+- Renamed `KeystrokeListener` alias to `IKeystrokeListener`.
+- Added ServiceEvents.
+- Improved configuration of service features by inheritance (experimental).
+
 # Version 0.8.0
 *Date: 2021-04-07*
 

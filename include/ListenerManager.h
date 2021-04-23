@@ -16,6 +16,10 @@
 
 namespace astu {
 
+    /////////////////////////////////////////////////
+    /////// ListenerManager
+    /////////////////////////////////////////////////
+
     template<typename T>
     class ListenerManager {
     public:
@@ -28,7 +32,7 @@ namespace astu {
         }
 
         /**
-         * Virtaul destructor.
+         * Virtual destructor.
          */
         virtual ~ListenerManager() {}
 
@@ -149,6 +153,9 @@ namespace astu {
         }
     };
 
+    /////////////////////////////////////////////////
+    /////// SortingListenerManager
+    /////////////////////////////////////////////////
 
     template<typename T>
     class SortingListenerManager {
@@ -162,7 +169,7 @@ namespace astu {
         }
 
         /**
-         * Virtaul destructor.
+         * Virtual destructor.
          */
         virtual ~SortingListenerManager() {}
 
@@ -288,6 +295,143 @@ namespace astu {
         void RemoveListenerInternal(const std::shared_ptr<T> & listener) {
             listeners.erase(
                 std::remove(listeners.begin(), listeners.end(), listener), 
+                listeners.end()
+            );
+        }
+    };
+
+    /////////////////////////////////////////////////
+    /////// RawListenerManager
+    /////////////////////////////////////////////////
+
+    template<typename T>
+    class RawListenerManager {
+    public:
+
+        /**
+         * Constructor.
+         */
+        RawListenerManager() : firing(false) {
+            // Intentionally left empty.            
+        }
+
+        /**
+         * Virtual destructor.
+         */
+        virtual ~RawListenerManager() {}
+
+        /**
+         * Adds a listener to this manager.
+         * 
+         * @param pListener  the listener to add
+         */
+        void AddListener(T* pListener) {
+            if (!pListener) {
+                throw std::logic_error("Listener must not be null");
+            }
+            
+            if (firing) {
+                commandQueue.Add([this, pListener](){ 
+                    AddListenerInternal(pListener); 
+                });
+            } else {
+                AddListenerInternal(pListener);
+            }
+        }
+
+        /**
+         * Removes a listener from this manager.
+         * 
+         * @param listener  the listener to remove
+         */
+        void RemoveListener(T* pListener) {
+            if (firing) {
+                commandQueue.Add([this, pListener](){ 
+                    RemoveListenerInternal(pListener); 
+                });
+
+                auto it = std::find(listeners.begin(), listeners.end(), pListener);
+                if (it != listeners.end()) {
+                    it->removed = true;
+                }
+
+            } else {
+                RemoveListenerInternal(pListener);
+            }
+        }
+
+        /**
+         * Tests whether a listener has already been added.
+         * 
+         * @param listener  the listener to test
+         */
+        bool HasListener(const T* pListener) const {
+            auto it = std::find(listeners.begin(), listeners.end(), pListener);
+            return it != listeners.end() && !it->removed;
+        }
+
+        /**
+         * Calls a given function for all listeners.
+         * 
+         * The function must take a reference to a listener
+         * as parameter.
+         * 
+         * @param func  the function to call
+         */
+        void VisitListeners(std::function<void (T &)> func) {
+            firing = true;
+            for (auto & deco : listeners) {
+                if (!deco.removed) {
+                    func(*deco.listener);
+                }
+            }
+            firing = false;
+            commandQueue.Execute();
+        }
+
+    private:
+
+        /**
+         * Inner class used to decorate the listeneres with 'removed' flag.
+         */
+        class Decorator {
+        public:
+            Decorator(T * pListener) 
+                : listener(pListener), removed(false) {}
+
+			// Required for find and erase/remove idiom
+			bool operator==(const T* rhs) const {
+				return listener == rhs;
+			}
+
+            /** The listener. */
+            T * listener;
+
+            /** Indicates whether this listener has been removed. */
+            bool removed;
+        };
+
+        /** Indicates whether events are currently fired. */
+        bool firing;
+
+        /** The managed listeners. */
+        std::vector<Decorator> listeners;
+
+        /** Pending commands. */
+        CommandQueue commandQueue;
+
+
+        void AddListenerInternal(T * pListener) {
+            if (HasListener(pListener)) {
+                throw std::logic_error("Listener already added");                
+            }
+
+            listeners.push_back(Decorator(pListener));
+        }
+
+        void RemoveListenerInternal(T * pListener) {
+            listeners.erase(
+                std::remove(listeners.begin(), listeners.end(), pListener), 
                 listeners.end()
             );
         }

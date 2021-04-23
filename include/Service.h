@@ -7,9 +7,12 @@
 
 #pragma once
 
+// C++ Standard Library includes
 #include <string>
 #include <memory>
+#include <vector>
 #include <stdexcept>
+#include <functional>
 #include "ServiceManager.h"
 
 namespace astu {
@@ -68,10 +71,10 @@ namespace astu {
     };
 
     /**
-     * Implmenents basic functionality of a service.
+     * Implements basic functionality of a service.
      * 
      * This base class can be used to create services with basic
-     * functionlality e.g, having a name and keeping track
+     * functionality e.g, having a name and keeping track
      * if its currently running or not.
      * 
      * @ingroup srv_group
@@ -86,6 +89,11 @@ namespace astu {
          * Constructor.
          */
         BaseService(const std::string & name = DEFAULT_NAME);
+
+        void AddStartupHook(std::function<void (void)> func);
+
+        void AddShutdownHook(std::function<void (void)> func);
+
 
         // Inherited via IService
         virtual const std::string & GetName() const final override;
@@ -133,6 +141,12 @@ namespace astu {
         
         /** Whether this service is currently running. */
         bool running;
+
+        /** Startup hooks. */
+        std::vector<std::function<void (void)>> startupHooks;
+
+        /** Shutdown hooks. */
+        std::vector<std::function<void (void)>> shutdownHooks;
     };
 
     } // end of namespace

@@ -5,9 +5,14 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// C++ Standard Library includes
 #include <algorithm>
+
+// Local includes
 #include "Service.h"
 #include "ServiceManager.h"
+
+using namespace std;
 
 namespace astu {
 
@@ -24,10 +29,10 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    void ServiceManager::AddService(std::shared_ptr<IService> service)
+    void ServiceManager::AddService(shared_ptr<IService> service)
     {
         if (HasService(service)) {
-            throw std::logic_error("Service '" + service->GetName() 
+            throw logic_error("Service '" + service->GetName() 
                 + "' has already been added");
         }
 
@@ -39,9 +44,9 @@ namespace astu {
         }
     }
 
-    void ServiceManager::RemoveService(std::shared_ptr<IService> service)
+    void ServiceManager::RemoveService(shared_ptr<IService> service)
     {
-        auto it = std::find(services.begin(), services.end(), service);
+        auto it = find(services.begin(), services.end(), service);
         if (it == services.end()) {
             // Silently ignore the fact that the service could not be found.
             return;
@@ -54,15 +59,15 @@ namespace astu {
         services.erase(it);
     }
 
-    bool ServiceManager::HasService(std::shared_ptr<IService> service) const
+    bool ServiceManager::HasService(shared_ptr<IService> service) const
     {
-        return std::find(services.begin(), services.end(), service) != services.end();
+        return find(services.begin(), services.end(), service) != services.end();
     }
 
     void ServiceManager::StartupAll()
     {
         if (IsRunning()) {
-            throw std::logic_error("Services already started");
+            throw logic_error("Services already started");
         }
 
         // Start up service according to the order they have been added.
@@ -92,6 +97,5 @@ namespace astu {
     {
         return running;
     }
-
 
 } // end of namespace

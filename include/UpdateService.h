@@ -75,10 +75,10 @@ namespace astu {
         void RemoveUpdatable(std::shared_ptr<IUpdatable> updatable);
 
         /**
-         * Tests whether a specific updatablel has already been added.
+         * Tests whether a specific updatable has already been added.
          * 
          * @param updatable the updatable to be tested
-         * @return `true` if the updatale has already beed added
+         * @return `true` if the updatable has already been added
          */
         bool HasUpdatable(std::shared_ptr<IUpdatable> updatable);
 
@@ -93,7 +93,7 @@ namespace astu {
     };
 
     /**
-     * Base class for services whitch require an update.
+     * Base class for services which require an update.
      * 
      * @ingroup srv_group
      */
