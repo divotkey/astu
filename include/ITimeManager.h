@@ -48,13 +48,11 @@ namespace astu {
     public:
 
         TimeClient() {
-            ServiceManager::GetInstance().GetService<ServiceEventService>()
-                .AddListener(this);
+            ASTU_SERVICE(ServiceEventService).AddListener(this);
         }
 
         virtual ~TimeClient() {
-            ServiceManager::GetInstance().GetService<ServiceEventService>()
-                .RemoveListener(this);
+            ASTU_SERVICE(ServiceEventService).RemoveListener(this);
         }
 
         double GetElapsedTime() const {

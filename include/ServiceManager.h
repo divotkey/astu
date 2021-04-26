@@ -12,8 +12,17 @@
 #include <memory>
 #include <string>
 
-#define ASTU_FIND_SERVICE(a) astu::ServiceManager::GetInstance().FindService<a>()
+#define ASTU_SERVICE_MANAGER() astu::ServiceManager::GetInstance()
 #define ASTU_SERVICE(a) (*astu::ServiceManager::GetInstance().FindService<a>())
+#define ASTU_GET_SERVICE(a) astu::ServiceManager::GetInstance().FindService<a>()
+#define ASTU_HAS_SERVICE(a) (astu::ServiceManager::GetInstance().FindService<a>(nullptr) != nullptr)
+#define ASTU_GET_SERVICE_OR_DEFAULT(a, b) astu::ServiceManager::GetInstance().FindService<a>(b)
+#define ASTU_GET_SERVICE_OR_NULL(a) astu::ServiceManager::GetInstance().FindService<a>(nullptr)
+#define ASTU_STARTUP_SERVICES() astu::ServiceManager::GetInstance().StartupAll()
+#define ASTU_SHUTDOWN_SERVICES() astu::ServiceManager::GetInstance().ShutdownAll()
+#define ASTU_ADD_SERVICE(a) astu::ServiceManager::GetInstance().AddService(a)
+#define ASTU_CREATE_AND_ADD_SERVICE(a) astu::ServiceManager::GetInstance().AddService( std::make_shared<a>() )
+
 
 namespace astu {
 
@@ -78,39 +87,6 @@ namespace astu {
         bool IsRunning() const;
 
         /**
-         * Returns a service of a certain type.
-         * 
-         * **Example**
-         * 
-         * ```
-         * // Fetch reference to the one and only service manager.
-         * auto & sm = ServiceManager::GetInstance();
-         * 
-         * // Fetch reference to a service which implements a certain interface,
-         * // in this case the ITimeManager interface.
-         * ITimeManager &timeSrv = sm.GetService<ITimeManager>();
-         * 
-         * // Use the time service.
-         * double dt = timeSrv.GetElapsedTime();
-         * ```
-         * 
-         * @tparam T    the type of service to look for
-         * @return the requested service
-         * @throws std::logic_error in case the service could not be found
-         */
-        template <typename T> 
-        T & GetService()
-        {
-            auto srv = FindService<T>();
-            if (srv == nullptr) {
-                throw std::logic_error(std::string("Service not found, type is '") 
-                    + typeid(T).name() + "'");
-            }
-
-            return *srv;
-        }
-
-        /**
          * Searches for a service of a certain type.
          * 
          * **Example**
@@ -148,31 +124,12 @@ namespace astu {
         /**
          * Searches for a service of a certain type.
          * 
-         * **Example**
-         * 
-         * ```
-         * // Fetch reference to the one and only service manager.
-         * auto & sm = ServiceManager::GetInstance();
-         * 
-         * // Get (smart) pointer to a service which implements a certain interface,
-         * // in this case the ITimeManager interface.
-         * ITimeManager *pTimeSrv = sm.FindService<ITimeManager>();
-         * 
-         * // Verify that the requested service actually exists
-         * if (pTimeSrv == nullptr) {
-         *   ReportError("ITimeManager required");
-         *   return;
-         * }
-         * 
-         * // Use the time service.
-         * double dt = timeSrv->GetElapsedTime();
-         * ```
-         * 
-         * @tparam T    the type of service to look for
-         * @return the requested service of `nullptr` if no appropriate service could be found
+         * @tparam T                the type of service to look for
+         * @param defaultResult     the default value if no appropriate service could be found
+         * @return the requested service or the specified default value
          */
         template <typename T> 
-        std::shared_ptr<T> FindServiceOrNull()
+        std::shared_ptr<T> FindService(std::shared_ptr<T> defaultResult)
         {
             for (auto srv : services) {
                 auto castedService = std::dynamic_pointer_cast<T>(srv);
@@ -181,9 +138,8 @@ namespace astu {
                 }
             }
 
-            return nullptr;
+            return defaultResult;
         }        
-
 
     private:
         /** The one and only instance of a service manager. */

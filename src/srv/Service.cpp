@@ -44,7 +44,7 @@ namespace astu {
 
         OnStartup();
         running = true;
-        auto srvEvents = GetSM().FindServiceOrNull<SignalService<ServiceEvent>>();
+        auto srvEvents = ASTU_GET_SERVICE_OR_NULL(SignalService<ServiceEvent>);
         if (srvEvents) {
             srvEvents->FireSignal(ServiceEvent(ServiceEvent::Started, *this));
         }
@@ -64,7 +64,8 @@ namespace astu {
 
             running = false;
 
-            auto srvEvents = GetSM().FindService<SignalService<ServiceEvent>>();
+
+            auto srvEvents = ASTU_GET_SERVICE_OR_NULL(SignalService<ServiceEvent>);
             if (srvEvents) {
                 srvEvents->FireSignal(ServiceEvent(ServiceEvent::Stopped, *this));
             }

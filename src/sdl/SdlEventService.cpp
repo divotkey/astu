@@ -27,8 +27,9 @@ namespace astu {
             throw std::runtime_error(SDL_GetError());
         }
 
-        mouseButtonSrv = GetSM().FindService<MouseButtonEventService>();
-        keystrokeSrv = GetSM().FindService<KeystrokeEventService>();
+
+        mouseButtonSrv = ASTU_GET_SERVICE_OR_NULL(MouseButtonEventService);
+        keystrokeSrv = ASTU_GET_SERVICE_OR_NULL(KeystrokeEventService);
         quit = false;
     }
 

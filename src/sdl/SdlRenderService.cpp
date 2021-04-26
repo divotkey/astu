@@ -36,7 +36,7 @@ namespace astu {
         SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Starting up SDL render service");
 
         renderer = SDL_CreateRenderer(
-            GetSM().GetService<SdlVideoService>().GetSdlWindow(), 
+            ASTU_SERVICE(SdlVideoService).GetSdlWindow(),
             -1, 
             SDL_RENDERER_ACCELERATED  | SDL_RENDERER_PRESENTVSYNC 
             );
@@ -49,7 +49,7 @@ namespace astu {
         LogRendererInfo();
 
         // Fire resize event.
-        auto & wm = GetSM().GetService<IWindowManager>();
+        auto & wm = ASTU_SERVICE(IWindowManager);
         for (auto & layer : layers) {
             layer->OnResize(wm.GetWidth(), wm.GetHeight());
         }
@@ -113,7 +113,7 @@ namespace astu {
         std::sort(layers.begin(), layers.end(), compare);
 
         if (IsRunning()) {
-            auto & wm = GetSM().GetService<IWindowManager>();
+            auto & wm = ASTU_SERVICE(IWindowManager);
             layer->OnResize(wm.GetWidth(), wm.GetHeight());
         }
     }
@@ -144,14 +144,14 @@ namespace astu {
 
     void BaseSdlRenderLayer::Startup()
     {
-        GetSM().GetService<SdlRenderService>().AddLayer(shared_as<BaseSdlRenderLayer>());
+        ASTU_SERVICE(SdlRenderService).AddLayer( shared_as<BaseSdlRenderLayer>() );
         BaseService::Startup();        
     }
 
     void BaseSdlRenderLayer::Shutdown()
     {
         BaseService::Shutdown();
-        GetSM().GetService<SdlRenderService>().RemoveLayer(shared_as<BaseSdlRenderLayer>());
+        ASTU_SERVICE(SdlRenderService).RemoveLayer( shared_as<BaseSdlRenderLayer>() );
     }
 
     void BaseSdlRenderLayer::OnResize(int width, int height)

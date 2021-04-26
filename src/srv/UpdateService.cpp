@@ -55,13 +55,13 @@ namespace astu {
     }
 
     void UpdatableBaseService::Startup() {
-        GetSM().GetService<UpdateService>().AddUpdatable(shared_as<IUpdatable>());
+        ASTU_SERVICE(UpdateService).AddUpdatable( shared_as<IUpdatable>() );
         BaseService::Startup();
     }
 
     void UpdatableBaseService::Shutdown() {
         BaseService::Shutdown();
-        GetSM().GetService<UpdateService>().RemoveUpdatable(shared_as<IUpdatable>());
+        ASTU_SERVICE(UpdateService).RemoveUpdatable( shared_as<IUpdatable>() );
     }
 
     int UpdatableBaseService::GetUpdatePriority() const

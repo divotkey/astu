@@ -12,13 +12,11 @@ namespace astu {
         Updatable(int updatePriority = 0)
             : updatePriority(updatePriority)
         {
-            ServiceManager::GetInstance().GetService<ServiceEventService>()
-                .AddListener(this);
+            ASTU_SERVICE(ServiceEventService).AddListener(this);
         }
 
         virtual ~Updatable() {
-            ServiceManager::GetInstance().GetService<ServiceEventService>()
-                .RemoveListener(this);
+            ASTU_SERVICE(ServiceEventService).RemoveListener(this);
         }
 
     public:
@@ -35,14 +33,14 @@ namespace astu {
 
             if (dynamic_cast<Updatable*>(&event.service) == this) {
 
-                auto & updateSrv = ServiceManager::GetInstance().GetService<UpdateService>();
+                auto & updateSrv = ASTU_SERVICE(UpdateService);
                 switch (event.type) {
                 case ServiceEvent::Started:
-                    updateSrv.AddUpdatable(event.service.shared_as<IUpdatable>());
+                    updateSrv.AddUpdatable( event.service.shared_as<IUpdatable>() );
                     break;
 
                 case ServiceEvent::Stopped:
-                    updateSrv.RemoveUpdatable(event.service.shared_as<IUpdatable>());
+                    updateSrv.RemoveUpdatable( event.service.shared_as<IUpdatable>() );
                     break;
                 }
             }
