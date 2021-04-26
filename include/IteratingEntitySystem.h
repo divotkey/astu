@@ -8,7 +8,7 @@
 #pragma once
 
 #include <memory>
-#include "ITimeService.h"
+#include "ITimeManager.h"
 #include "UpdateService.h"
 #include "EntityService.h"
 
@@ -88,7 +88,7 @@ namespace astu {
         std::shared_ptr<EntityView> entityView;
 
         /** The time service used to offer elapsed delta time. */
-        std::shared_ptr<ITimeService> timeService;
+        std::shared_ptr<ITimeManager> timeService;
     };
 
 } // end of namespace

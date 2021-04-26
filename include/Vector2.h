@@ -458,4 +458,15 @@ namespace astu {
 	inline const Vector2<T> operator*(T s, const Vector2<T> & v) {
 		return v * s;
 	}    
-}
+
+    /**
+     * Convenient type alias for astu::Vector2 template using double as data type.
+     */
+    using Vector2d = astu::Vector2<double>;    
+
+    /**
+     * Convenient type alias for astu::Vector2 template using float as data type.
+     */
+    using Vector2f = astu::Vector2<float>;    
+
+} // end of namespace

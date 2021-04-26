@@ -123,4 +123,4 @@ namespace astu {
         int updatePriority;
     };
 
-} 
+} // end of namespace 

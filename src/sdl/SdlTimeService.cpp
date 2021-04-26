@@ -43,5 +43,9 @@ namespace astu {
         return deltaTime;
     }
 
+    double SdlTimeService::GetAbsoluteTime() const
+    {
+        return time;
+    }
 
 } // end of namespace

@@ -6,7 +6,9 @@
 
 - Renamed `MouseButtonListener` alias to `IMouseButtonListener`.
 - Renamed `KeystrokeListener` alias to `IKeystrokeListener`.
+- Renamed `ITimeService` to `ITimeManager`.
 - Added ServiceEvents.
+- Improved API of `ServiceManager`.
 - Improved configuration of service features by inheritance (experimental).
 
 # Version 0.8.0

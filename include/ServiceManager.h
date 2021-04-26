@@ -12,6 +12,9 @@
 #include <memory>
 #include <string>
 
+#define ASTU_FIND_SERVICE(a) astu::ServiceManager::GetInstance().FindService<a>()
+#define ASTU_SERVICE(a) (*astu::ServiceManager::GetInstance().FindService<a>())
+
 namespace astu {
 
     // Forward declaration.
@@ -83,14 +86,13 @@ namespace astu {
          * // Fetch reference to the one and only service manager.
          * auto & sm = ServiceManager::GetInstance();
          * 
-         * // Fetch reference to a service whith implements a certain interface,
+         * // Fetch reference to a service which implements a certain interface,
          * // in this case the ITimeManager interface.
-         * auto & timeSrv = sm.GetService<ITimeManager>();
+         * ITimeManager &timeSrv = sm.GetService<ITimeManager>();
          * 
          * // Use the time service.
          * double dt = timeSrv.GetElapsedTime();
          * ```
-         * 
          * 
          * @tparam T    the type of service to look for
          * @return the requested service
@@ -117,13 +119,48 @@ namespace astu {
          * // Fetch reference to the one and only service manager.
          * auto & sm = ServiceManager::GetInstance();
          * 
-         * // Get (smart) pointer to a service whith implements a certain interface,
+         * // Get (smart) pointer to a service which implements a certain interface,
          * // in this case the ITimeManager interface.
-         * auto pTimeSrv = sm.FindService<ITimeManager>();
+         * ITimeManager *pTimeSrv = sm.FindService<ITimeManager>();
+         * 
+         * // Use the time service.
+         * double dt = timeSrv->GetElapsedTime();
+         * ```
+         * 
+         * @tparam T    the type of service to look for
+         * @return the requested service 
+         * @throws std::logic_error in case the service could not be found
+         */
+        template <typename T> 
+        std::shared_ptr<T> FindService()
+        {
+            for (auto srv : services) {
+                auto castedService = std::dynamic_pointer_cast<T>(srv);
+                if (castedService != nullptr) {
+                    return castedService;
+                }
+            }
+
+            throw std::logic_error(std::string("No service of type '") 
+                + typeid(T).name() + "' found");
+        }
+
+        /**
+         * Searches for a service of a certain type.
+         * 
+         * **Example**
+         * 
+         * ```
+         * // Fetch reference to the one and only service manager.
+         * auto & sm = ServiceManager::GetInstance();
+         * 
+         * // Get (smart) pointer to a service which implements a certain interface,
+         * // in this case the ITimeManager interface.
+         * ITimeManager *pTimeSrv = sm.FindService<ITimeManager>();
          * 
          * // Verify that the requested service actually exists
          * if (pTimeSrv == nullptr) {
-         *   ReportError("ITimeService required");
+         *   ReportError("ITimeManager required");
          *   return;
          * }
          * 
@@ -135,18 +172,18 @@ namespace astu {
          * @return the requested service of `nullptr` if no appropriate service could be found
          */
         template <typename T> 
-        std::shared_ptr<T> FindService()
+        std::shared_ptr<T> FindServiceOrNull()
         {
             for (auto srv : services) {
                 auto castedService = std::dynamic_pointer_cast<T>(srv);
                 if (castedService != nullptr) {
                     return castedService;
                 }
-
             }
 
             return nullptr;
-        }
+        }        
+
 
     private:
         /** The one and only instance of a service manager. */

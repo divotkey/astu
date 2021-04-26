@@ -36,18 +36,18 @@ namespace astu {
             throw std::logic_error("Service " + GetName() + " already running");
         }
 
+        // START OF EXPERIMENTAL CODE
         for (auto & hook : startupHooks) {
             hook();
         }
+        // END OF EXPERIMENTAL CODE
 
         OnStartup();
         running = true;
-        auto srvEvents = GetSM().FindService<SignalService<ServiceEvent>>();
+        auto srvEvents = GetSM().FindServiceOrNull<SignalService<ServiceEvent>>();
         if (srvEvents) {
             srvEvents->FireSignal(ServiceEvent(ServiceEvent::Started, *this));
         }
-
-        // GetSM().FireServiceStarted(*this);
     }
 
     void BaseService::Shutdown()
@@ -56,9 +56,11 @@ namespace astu {
         if (IsRunning()) {
             OnShutdown();
 
+            // START OF EXPERIMENTAL CODE
             for (auto & hook : shutdownHooks) {
                 hook();
             }
+            // END OF EXPERIMENTAL CODE
 
             running = false;
 
@@ -66,9 +68,7 @@ namespace astu {
             if (srvEvents) {
                 srvEvents->FireSignal(ServiceEvent(ServiceEvent::Stopped, *this));
             }
-            // GetSM().FireServiceStopped(*this);
         }
-
     }
 
     bool BaseService::IsRunning() const

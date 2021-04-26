@@ -64,7 +64,8 @@ namespace astu {
         {
             auto result = std::dynamic_pointer_cast<T>(shared_from_this());
             if (result == nullptr) {
-                throw std::logic_error("Cannot cast to this type");
+                throw std::logic_error(std::string("Unable to cast this service to type ") 
+                    + typeid(T).name());
             }
             return result;
         }
@@ -90,10 +91,9 @@ namespace astu {
          */
         BaseService(const std::string & name = DEFAULT_NAME);
 
+        // Experimental
         void AddStartupHook(std::function<void (void)> func);
-
         void AddShutdownHook(std::function<void (void)> func);
-
 
         // Inherited via IService
         virtual const std::string & GetName() const final override;

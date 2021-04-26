@@ -9,7 +9,7 @@
 
 #include <cstdint>
 #include "UpdateService.h"
-#include "ITimeService.h"
+#include "ITimeManager.h"
 
 namespace astu {
 
@@ -19,7 +19,7 @@ namespace astu {
      * 
      * @ingroup sdl_group 
      */
-    class SdlTimeService : public UpdatableBaseService, public ITimeService {
+    class SdlTimeService : public UpdatableBaseService, public ITimeManager {
     public:
 
         /**
@@ -34,8 +34,9 @@ namespace astu {
          */
         ~SdlTimeService() {}
 
-        // Inherited via ITimeService
+        // Inherited via ITimeManager
         virtual double GetElapsedTime() const override;
+        virtual double GetAbsoluteTime() const override;
 
     protected:
 

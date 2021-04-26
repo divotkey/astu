@@ -28,7 +28,7 @@ namespace astu {
         entityView = es.GetEntityView(iterateFamily);
 
         // Get pointer to time service.
-        timeService = GetSM().FindService<ITimeService>();
+        timeService = GetSM().FindService<ITimeManager>();
         if (!timeService) {
             throw std::logic_error("Iterating entity system service requires time service");
         }

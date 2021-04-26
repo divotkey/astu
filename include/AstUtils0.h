@@ -546,10 +546,6 @@ int Minimum(int a, int b, int c);
 int Maximum(int a, int b);
 int Maximum(int a, int b, int c);
 
-/**
- * Convenient type alias for astu::Vector2 template using double as data type.
- */
-using Vector2d = astu::Vector2<double>;
 
 /**
  * Returns a random number within the specified range.
