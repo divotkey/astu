@@ -12,6 +12,7 @@
 
 // Local includes
 #include "SignalService.h"
+#include "Service.h"
 #include "Events.h"
 
 namespace astu {
@@ -44,15 +45,17 @@ namespace astu {
         virtual double GetAbsoluteTime() const = 0;
     };
 
-    class TimeClient : private IServiceListener {
+    class TimeClient : virtual Service {
     public:
 
         TimeClient() {
-            ASTU_SERVICE(ServiceEventService).AddListener(this);
+            AddStartupHook([this]() { timeSrv = ASTU_GET_SERVICE(ITimeManager); });
+            AddShutdownHook([this]() { timeSrv = nullptr; });
         }
 
+    protected:
+
         virtual ~TimeClient() {
-            ASTU_SERVICE(ServiceEventService).RemoveListener(this);
         }
 
         double GetElapsedTime() const {
@@ -65,26 +68,6 @@ namespace astu {
 
     private:
         std::shared_ptr<ITimeManager> timeSrv;
-
-        // Inherited via IServiceListener
-        virtual void OnSignal(const ServiceEvent & event) override {
-
-            if (dynamic_cast<TimeClient*>(&event.service) == this) {
-
-                switch (event.type) {
-                case ServiceEvent::Started:
-                    timeSrv = ServiceManager::GetInstance().FindService<ITimeManager>();
-                    if (!timeSrv) {
-                        throw std::logic_error("Time service not present");
-                    }
-                    break;
-
-                case ServiceEvent::Stopped:
-                    timeSrv = nullptr;
-                    break;
-                }
-            }
-        }
     };
 
-} 
+} // end of namespace

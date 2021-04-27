@@ -7,6 +7,7 @@
 
 #pragma once
 
+// C++ Standard Library includes
 #include <typeindex>
 #include <typeinfo>
 #include <unordered_map>
@@ -15,6 +16,7 @@
 #include <vector>
 #include <set>
 
+// Local includes.
 #include "UpdateService.h"
 #include "CommandQueue.h"
 
@@ -319,7 +321,7 @@ namespace astu {
      * 
      * @ingroup ecs_group
      */
-    class EntityService : public UpdatableBaseService {
+    class EntityService final : public virtual Service, private Updatable {
     public:
 
         /**
@@ -401,7 +403,7 @@ namespace astu {
 
         using ListenerList = std::vector<std::weak_ptr<IEntityListener>>;
 
-        /** Pending commdands. */
+        /** Pending commands. */
         CommandQueue commands;
 
 		/** The entities administreed by this service. */

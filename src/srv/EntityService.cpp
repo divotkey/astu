@@ -69,7 +69,8 @@ namespace astu
     /////////////////////////////////////////////////
 
     EntityService::EntityService(int updatePriority)
-        : UpdatableBaseService("Entity", updatePriority)
+        : Service("Entity Service")
+        , Updatable(updatePriority)
     {
         // Intentionally left empty.
     }
@@ -99,21 +100,11 @@ namespace astu
 
     void EntityService::AddEntity(std::shared_ptr<Entity> entity)
     {
-        // Command cmd;
-        // cmd.type = Command::ADD_ENTITY;
-        // cmd.entity = entity;
-
-        // commands.push_back(cmd);
         commands.Add([this, entity](){ AddEntityInternally(entity); });
     }
 
     void EntityService::RemoveEntity(std::shared_ptr<Entity> entity)
     {
-        // Command cmd;
-        // cmd.type = Command::REMOVE_ENTITY;
-        // cmd.entity = entity;
-
-        // commands.push_back(cmd);
         commands.Add([this, entity](){ RemoveEntityInternally(entity); });
     }
 

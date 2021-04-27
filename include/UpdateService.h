@@ -7,15 +7,17 @@
 
 #pragma once
 
+// C++ Standard Library includes
 #include <vector>
-#include <memory>
-#include "Service.h"
+
+// Local includes.
 #include "ListenerManager.h"
+#include "Service.h"
 
 namespace astu {
 
     /**
-     * Interface for anything which is updatable and should be managed by the `UpdateService`.
+     * Interface for items that can be updated.
      * 
      * @ingroup srv_group
      */
@@ -28,23 +30,14 @@ namespace astu {
         virtual ~IUpdatable() {}
 
         /**
-         * Called when this updatable gets updated.
+         * Called when an update is due.
          */
         virtual void OnUpdate() = 0;
-
-        /**
-         * Returns the update priority.
-         *  
-         * Updatables with lower priorities get updated before updatables with higher priorities.
-         * 
-         * @return the update priority
-         */
-        virtual int GetUpdatePriority() const = 0;
-
     };
 
     /**
-     * This service manages and updates `Updatables`.
+     * The update service updates registered `Updatables` and maintains the update
+     * priority.
      * 
      * To update the `Updatables`, this service's method
      * `UpdateAll` must be called within the simulation 
@@ -52,7 +45,7 @@ namespace astu {
      * 
      * @ingroup srv_group
      */
-    class UpdateService : public BaseService {
+    class UpdateService : public Service {
     public:
 
         /**
@@ -64,15 +57,16 @@ namespace astu {
          * Adds an updatable.
          * 
          * @param updatable the updatable to be added
+         * @param priority  the update priority to be used
          */        
-        void AddUpdatable(std::shared_ptr<IUpdatable> updatable);
+        void AddUpdatable(IUpdatable & updatable, int priority = 0);
 
         /**
          * Removes an updatable.
          * 
          * @param updatable the updatable to be removed
          */
-        void RemoveUpdatable(std::shared_ptr<IUpdatable> updatable);
+        void RemoveUpdatable(IUpdatable & updatable);
 
         /**
          * Tests whether a specific updatable has already been added.
@@ -80,47 +74,43 @@ namespace astu {
          * @param updatable the updatable to be tested
          * @return `true` if the updatable has already been added
          */
-        bool HasUpdatable(std::shared_ptr<IUpdatable> updatable);
+        bool HasUpdatable(IUpdatable & updatable) const;
 
-        /***
+        /**
+         * Returns the update priority of an updatable.
+         * 
+         * @param updatable which updater priority should be returned
+         * @throws std::logic_error in case the updatable is unknown
+         */
+        int GetUpdatePriority(IUpdatable & updatable) const;
+
+        /**
          * Updates all registered updatables.
          */
         void UpdateAll();
 
     private:
         /** Used to organize updatables. */
-        SortingListenerManager<IUpdatable> lstMngr;
+        SortingRawListenerManager<IUpdatable> lstMngr;
     };
 
     /**
-     * Base class for services which require an update.
-     * 
-     * @ingroup srv_group
+     * Inherit from this class to get updated as a service.
      */
-    class UpdatableBaseService 
-        : public BaseService
-        , public IUpdatable
-    {
+    class Updatable : public virtual Service, private IUpdatable {
     public:
 
         /**
          * Constructor.
          * 
-         * @param name      the name of this service
-         * @param priority  the update priority of this service
+         * @param priority  the update priority
          */
-        UpdatableBaseService(const std::string & name = DEFAULT_NAME, int priority = 0);
+        Updatable(int priority = 0);
 
-        // Inherited via BaseService/IService
-        virtual void Startup() override;
-        virtual void Shutdown() override;
+    protected:
 
-        // Inherited via IUpdatable.
-        virtual int GetUpdatePriority() const override;
+        // Inherited via IUpdatable
+        virtual void OnUpdate() override;
+    }; 
 
-    private:
-        /** The update priority of this updatable. */
-        int updatePriority;
-    };
-
-} // end of namespace 
+} // end of namespace

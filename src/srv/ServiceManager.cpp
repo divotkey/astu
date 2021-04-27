@@ -29,7 +29,7 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    void ServiceManager::AddService(shared_ptr<IService> service)
+    void ServiceManager::AddService(shared_ptr<Service> service)
     {
         if (HasService(service)) {
             throw logic_error("Service '" + service->GetName() 
@@ -44,7 +44,7 @@ namespace astu {
         }
     }
 
-    void ServiceManager::RemoveService(shared_ptr<IService> service)
+    void ServiceManager::RemoveService(shared_ptr<Service> service)
     {
         auto it = find(services.begin(), services.end(), service);
         if (it == services.end()) {
@@ -59,7 +59,7 @@ namespace astu {
         services.erase(it);
     }
 
-    bool ServiceManager::HasService(shared_ptr<IService> service) const
+    bool ServiceManager::HasService(shared_ptr<Service> service) const
     {
         return find(services.begin(), services.end(), service) != services.end();
     }
@@ -72,7 +72,7 @@ namespace astu {
 
         // Start up service according to the order they have been added.
         for (auto it = services.begin(); it != services.end(); ++it) {
-            IService & service = **it;
+            Service & service = **it;
             service.Startup();
         }        
         running = true;
@@ -87,7 +87,7 @@ namespace astu {
 
         // Shut down service in reverse order.
         for (auto it = services.rbegin(); it != services.rend(); ++it) {
-            IService & service = **it;
+            Service & service = **it;
             service.Shutdown();
         }        
         running = false;

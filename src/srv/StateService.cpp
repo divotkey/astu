@@ -13,7 +13,7 @@
 namespace astu {
 
     StateService::StateService()
-        : BaseService("State")
+        : Service("State Service")
     {
         // Intentionally left empty.
     }
@@ -28,20 +28,20 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    void StateService::AddService(const std::string & state, std::shared_ptr<IService> srv)
+    void StateService::AddService(const std::string & state, std::shared_ptr<Service> srv)
     {
         if (srv == nullptr) {
             throw std::logic_error("Unable to add service to state, pointer to service is null");
         }
 
         if (HasService(state, srv)) {
-            throw std::logic_error("Unable to add service to state, service allready added");
+            throw std::logic_error("Unable to add service to state, service already added");
         }
 
         GetOrCreateState(state).push_back(srv);
     }
 
-    bool StateService::HasService(const std::string & state, std::shared_ptr<IService> srv) const
+    bool StateService::HasService(const std::string & state, std::shared_ptr<Service> srv) const
     {
         auto it = stateMap.find(state);
         if (it == stateMap.end()) {
@@ -99,7 +99,7 @@ namespace astu {
 
     void StateService::RemoveServices(State & services)
     {
-        auto & sm = GetSM();
+        auto & sm = ASTU_SERVICE_MANAGER();
 
         // Remove services in reverse order.
         for(auto it = services.rbegin(); it != services.rend(); ++it) {
@@ -109,7 +109,7 @@ namespace astu {
 
     void StateService::AddServices(State & services)
     {
-        auto & sm = GetSM();
+        auto & sm = ASTU_SERVICE_MANAGER();
 
         for (auto & srv : services) {
             sm.AddService(srv);

@@ -7,10 +7,13 @@
 
 #pragma once
 
+// C++ Standard Library includes
 #include <memory>
 #include <vector>
 #include <string>
 #include <map>
+
+// Local includes
 #include "Service.h"
 
 namespace astu {
@@ -25,7 +28,7 @@ namespace astu {
      * 
      * @ingroup srv_group
      */
-    class StateService : public BaseService {
+    class StateService final : public Service {
     public:
 
         /**
@@ -45,9 +48,9 @@ namespace astu {
          * 
          * @param state the name of the state
          * @param srv   the service to add
-         * @throws std::logic_error in case the service has already beed added
+         * @throws std::logic_error in case the service has already been added
          */
-        void AddService(const std::string & state, std::shared_ptr<IService> srv);
+        void AddService(const std::string & state, std::shared_ptr<Service> srv);
 
         /**
          * Tests whether a service has already been added to a state.
@@ -56,7 +59,7 @@ namespace astu {
          * @param srv   the service to add
          * @return `true` if the service has already been added
          */
-        bool HasService(const std::string & state, std::shared_ptr<IService> srv) const;
+        bool HasService(const std::string & state, std::shared_ptr<Service> srv) const;
 
         /**
          * Tests whether a state exists.
@@ -91,12 +94,12 @@ namespace astu {
 
     protected:
 
-        // Inherited via Base Service
+        // Inherited via Service
         virtual void OnStartup() override;
         virtual void OnShutdown() override;
 
     private:
-        using State = std::vector<std::shared_ptr<IService>>;
+        using State = std::vector<std::shared_ptr<Service>>;
 
         /** Associates names to states. */
         std::map<std::string, State> stateMap;

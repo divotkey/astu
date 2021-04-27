@@ -5,35 +5,40 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-#include <algorithm>
-#include "ServiceManager.h"
+// Local includes.
 #include "UpdateService.h"
 
 namespace astu {
 
-    /////////////////////////////////////////////////
-    /////// UpdateService
-    /////////////////////////////////////////////////
-
     UpdateService::UpdateService()
-        : BaseService("UpdateService")
+        : Service("Update Service")
     {
-        // Intentionally left empty.
+        // Intentionally left empty.        
     }
 
-    void UpdateService::AddUpdatable(std::shared_ptr<IUpdatable> updatable)
+    void UpdateService::AddUpdatable(IUpdatable & updatable, int priority)
     {
-        lstMngr.AddListener(updatable, updatable->GetUpdatePriority());
+        lstMngr.AddListener(&updatable, priority);
     }
 
-    void UpdateService::RemoveUpdatable(std::shared_ptr<IUpdatable> updatable)
+    void UpdateService::RemoveUpdatable(IUpdatable & updatable)
     {
-        lstMngr.RemoveListener(updatable);
+        lstMngr.RemoveListener(&updatable);
     }
 
-    bool UpdateService::HasUpdatable(std::shared_ptr<IUpdatable> updatable)
+    bool UpdateService::HasUpdatable(IUpdatable & updatable) const 
     {
-        return lstMngr.HasListener(updatable);
+        return lstMngr.HasListener(&updatable);
+    }
+
+    int UpdateService::GetUpdatePriority(IUpdatable & updatable) const
+    {
+        if (!lstMngr.HasListener(&updatable) ) {
+            throw std::logic_error(
+                "Unable to retrieve update priority, specified updatable is unknown");
+        }
+
+        return lstMngr.GetListenerPriority(&updatable);
     }
 
     void UpdateService::UpdateAll()
@@ -43,30 +48,11 @@ namespace astu {
         });
     }
 
-    /////////////////////////////////////////////////
-    /////// UpdatableBaseService
-    /////////////////////////////////////////////////
-
-    UpdatableBaseService::UpdatableBaseService(const std::string & name, int priority)
-        : BaseService(name)
-        , updatePriority(priority)
+    Updatable::Updatable(int priority)
     {
-        // Intentionally left empty.        
+        AddStartupHook([this, priority]() { ASTU_SERVICE(UpdateService).AddUpdatable(*this, priority); } );
+        AddShutdownHook([this]() { ASTU_SERVICE(UpdateService).RemoveUpdatable(*this); } );
     }
 
-    void UpdatableBaseService::Startup() {
-        ASTU_SERVICE(UpdateService).AddUpdatable( shared_as<IUpdatable>() );
-        BaseService::Startup();
-    }
 
-    void UpdatableBaseService::Shutdown() {
-        BaseService::Shutdown();
-        ASTU_SERVICE(UpdateService).RemoveUpdatable( shared_as<IUpdatable>() );
-    }
-
-    int UpdatableBaseService::GetUpdatePriority() const
-    {
-        return updatePriority;
-    }
-
-}
+} // end of namespace

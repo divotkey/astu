@@ -7,11 +7,13 @@
 
 #pragma once
 
+// C++ Standard Library includes
 #include <stdexcept>
 #include <vector>
 #include <memory>
 #include <string>
 
+// Useful macros
 #define ASTU_SERVICE_MANAGER() astu::ServiceManager::GetInstance()
 #define ASTU_SERVICE(a) (*astu::ServiceManager::GetInstance().FindService<a>())
 #define ASTU_GET_SERVICE(a) astu::ServiceManager::GetInstance().FindService<a>()
@@ -23,11 +25,10 @@
 #define ASTU_ADD_SERVICE(a) astu::ServiceManager::GetInstance().AddService(a)
 #define ASTU_CREATE_AND_ADD_SERVICE(a) astu::ServiceManager::GetInstance().AddService( std::make_shared<a>() )
 
-
 namespace astu {
 
     // Forward declaration.
-    class IService;
+    class Service;
 
     /**
      * Service manager is used administer essential application-wide services.
@@ -52,14 +53,14 @@ namespace astu {
          * @param service   the service to add
          * @throws std::logic_error in case the service has already been added.
          */
-        void AddService(std::shared_ptr<IService> service);
+        void AddService(std::shared_ptr<Service> service);
 
         /**
          * Removes the specified service.
          * 
          * @param service the service to remove
          */
-        void RemoveService(std::shared_ptr<IService> service);
+        void RemoveService(std::shared_ptr<Service> service);
 
         /**
          * Tests whether the specified services has already been added.
@@ -67,10 +68,10 @@ namespace astu {
          * @param service   the service to test
          * @return `true` in case the service has already been added
          */
-        bool HasService(std::shared_ptr<IService> service) const;
+        bool HasService(std::shared_ptr<Service> service) const;
 
         /**
-         * Starts up all servides.
+         * Starts up all services.
          */
         void StartupAll();
 
@@ -146,7 +147,7 @@ namespace astu {
         static ServiceManager * theOneAndOnly;
 
         /** The services administered by this manager. */
-        std::vector<std::shared_ptr<IService>> services;
+        std::vector<std::shared_ptr<Service>> services;
 
         /** Indicates that the services are already running. */
         bool running;

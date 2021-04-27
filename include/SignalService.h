@@ -15,6 +15,7 @@
 // Local includes
 #include "ListenerManager.h"
 #include "UpdateService.h"
+#include "Service.h"
 
 namespace astu {
 
@@ -80,7 +81,7 @@ namespace astu {
      * @ingroup srv_group
      */
     template <typename T>
-    class SignalService final : public UpdatableBaseService
+    class SignalService final : public virtual Service, private Updatable
     {
     public:
 
@@ -91,7 +92,8 @@ namespace astu {
          * @param priority  the update priority of this service
          */
         SignalService(const std::string & name = DEFAULT_NAME, int priority = 0)
-            : UpdatableBaseService(name, priority)
+            : Service(name)
+            , Updatable(priority)
             , addQueue(&signalQueues[0])
             , sendQueue(&signalQueues[1])
         {
@@ -99,12 +101,12 @@ namespace astu {
         }
 
         /**
-         * Enqueues a signal for delayed tranmission.
+         * Enqueues a signal for delayed transmission.
          * 
          * The specified signal will be queued and transmitted
          * during the next update cycle.
          *
-         * @param signal the signal to transmit to the registered listeners
+         * @param signal    the signal to transmit to the registered listeners
          */
         void QueueSignal(const T & signal) {
             addQueue->push_back(signal);
@@ -139,10 +141,10 @@ namespace astu {
         /**
          * Adds a signal listener to this service.
          * 
-         * @param pListener the raw pointer to the listener to add
+         * @param listener  the the listener to add
          */
-        void AddListener(ISignalListener<T> * pListener) {
-            rawListenerManager.AddListener(pListener);
+        void AddListener(ISignalListener<T> & listener) {
+            rawListenerManager.AddListener(&listener);
         }
 
         /**
@@ -157,10 +159,10 @@ namespace astu {
         /**
          * Removes a signal listener from this service.
          * 
-         * @param pListener the raw pointer to the listener to remove
+         * @param listener  the listener to remove
          */
-        void RemoveListener(ISignalListener<T> * pListener) {
-            rawListenerManager.RemoveListener(pListener);        
+        void RemoveListener(ISignalListener<T> & listener) {
+            rawListenerManager.RemoveListener(&listener);        
         }
 
         /**
@@ -175,10 +177,10 @@ namespace astu {
         /**
          * Tests whether a signal listener has already been added.
          * 
-         * @param pListener  the raw pointer to the listener to test
+         * @param listener  the listener to test
          */
-        bool HasListener(const ISignalListener<T> * pListener) const {
-            return rawListenerManager.HasListener(pListener);
+        bool HasListener(const ISignalListener<T> & listener) const {
+            return rawListenerManager.HasListener(&listener);
         }
 
     private:
@@ -200,15 +202,18 @@ namespace astu {
         RawListenerManager<ISignalListener<T>> rawListenerManager;
 
 
-        // Inherited via UpdatableBaseService
-
+        // Inherited via Service
         virtual void OnShutdown() override {
             // Clear pending signals and try to free memory used by queues.
             for (auto & queue : signalQueues) {
                 queue.clear();
             }
+
+            listenerManager.RemoveAllListeners();
+            rawListenerManager.RemoveAllListeners();
         }
 
+        // Inherited via Updatable
         virtual void OnUpdate() override {
             std::swap(addQueue, sendQueue);
 
