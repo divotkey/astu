@@ -7,7 +7,10 @@
 
 #pragma once
 
+// C++ Standard Library includes
 #include <cstdint>
+
+// Local includes
 #include "UpdateService.h"
 #include "ITimeManager.h"
 
@@ -19,7 +22,7 @@ namespace astu {
      * 
      * @ingroup sdl_group 
      */
-    class SdlTimeService : public UpdatableBaseService, public ITimeManager {
+    class SdlTimeService final : public virtual Service, private Updatable, public ITimeManager {
     public:
 
         /**
@@ -40,9 +43,11 @@ namespace astu {
 
     protected:
 
-        // Inherited via UpdatableBaseService
+        // Inherited via Service
         virtual void OnStartup() override;
         virtual void OnShutdown() override;
+
+        // Inherited via Updatable
         virtual void OnUpdate() override;
 
     private:        

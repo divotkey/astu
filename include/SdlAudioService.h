@@ -11,7 +11,10 @@
 
 namespace astu {
 
-    class SdlAudioService : public BaseService {
+    /**
+     * This service is unfinished and not usable yet. 
+     */
+    class SdlAudioService : public virtual Service {
     public:
 
         /**

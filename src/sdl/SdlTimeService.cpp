@@ -12,9 +12,10 @@
 namespace astu {
 
     SdlTimeService::SdlTimeService(int priority)
-        : UpdatableBaseService("SDL Time", priority)
+        : Service("SDL Time Service")
+        , Updatable(priority)
     {
-        // Intentioniall left empty.
+        // Intentionally left empty.
     }
 
     void SdlTimeService::OnStartup() 
@@ -27,7 +28,7 @@ namespace astu {
 
     void SdlTimeService::OnShutdown() 
     {
-        // Intentioniall left empty.
+        // Intentionally left empty.
     }
 
     void SdlTimeService::OnUpdate()

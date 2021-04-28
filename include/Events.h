@@ -87,37 +87,4 @@ namespace astu {
      */
     using IKeystrokeListener = ISignalListener<KeystrokeEvent>;
 
-    // Forward declaration
-    class IService;
-
-
-    /**
-     * Service events describe state changes of services, like being started or stopped.
-     */
-    class ServiceEvent {
-    public:
-        enum Type {Started, Stopped};
-
-        IService & service;
-        Type type;
-
-        ServiceEvent(Type type, IService & service)
-            : service(service), type(type) {}
-    };
-
-    /** 
-     * Type definition for signal services used to transmit keystroke events.
-     *
-     * @ingroup input_group
-     */
-    using ServiceEventService = SignalService<ServiceEvent>;
-
-    /** 
-     * Type definition for signal listeners which receive keystroke events.
-     *
-     * @ingroup input_group
-     */
-    using IServiceListener = ISignalListener<ServiceEvent>;
-
-
 } // end of namespace

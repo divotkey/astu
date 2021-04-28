@@ -7,10 +7,13 @@
 
 #pragma once
 
+// C++ Standard Library includes
 #include <memory>
 #include <vector>
-#include "Color.h"
+
+// Local includes
 #include "UpdateService.h"
+#include "Color.h"
 
 // Forward declaration.
 struct SDL_Renderer;
@@ -67,7 +70,7 @@ namespace astu {
      * 
      * @ingroup sdl_group
      */
-    class SdlRenderService : public UpdatableBaseService {
+    class SdlRenderService final : public virtual Service, private Updatable {
     public:
 
         /**
@@ -87,14 +90,14 @@ namespace astu {
          * 
          * @param layer the render layer to add
          */
-        void AddLayer(std::shared_ptr<ISdlRenderLayer> layer);
+        void AddLayer(ISdlRenderLayer &layer);
         
         /**
          * Removes a render layer from this service.
          * 
          * @param layer the render layer to remove
          */
-        void RemoveLayer(std::shared_ptr<ISdlRenderLayer> layer);
+        void RemoveLayer(ISdlRenderLayer &layer);
 
         /**
          * Tests whether a render layer has already been added.
@@ -102,29 +105,29 @@ namespace astu {
          * @param layer the render to test
          * @return `true` if the layer has already been added
          */
-        bool HasLayer(std::shared_ptr<ISdlRenderLayer> layer);
-
-    protected:
-
-        // Inherited via Base Service
-        virtual void OnStartup() override;
-        virtual void OnShutdown() override;
-        virtual void OnUpdate() override;
+        bool HasLayer(ISdlRenderLayer &layer);
 
     private:
         /** The SDL renderer. */
         SDL_Renderer* renderer;
 
         /** The render layers. */
-        std::vector<std::shared_ptr<ISdlRenderLayer>> layers;
+        std::vector<ISdlRenderLayer*> layers;
 
-        /** The backtround color. */
+        /** The background color. */
         Color backgroundColor;
 
         /**
          * Logs some additional information about the used renderer.
          */
         void LogRendererInfo();
+
+        // Inherited via Service
+        virtual void OnStartup() override;
+        virtual void OnShutdown() override;
+
+        // Inherited via Updatable
+        virtual void OnUpdate() override;
     };
 
     /**
@@ -133,7 +136,7 @@ namespace astu {
      * @ingroup sdl_group
      */
     class BaseSdlRenderLayer 
-        : public BaseService
+        : public virtual Service
         , public ISdlRenderLayer
     {
     public:
@@ -142,19 +145,13 @@ namespace astu {
          * Constructor.
          * 
          * @param renderPriority    the render priority of this layer
-         * @param name              the name of this service
          */
-        BaseSdlRenderLayer(int renderPriority, const std::string & name = BaseService::DEFAULT_NAME);
+        BaseSdlRenderLayer(int renderPriority);
 
         /**
          * Virtual destructor.
          */
         virtual ~BaseSdlRenderLayer() {}
-
-
-        // Inherited via BaseService/IService
-        virtual void Startup() override;
-        virtual void Shutdown() override;
 
         // Inherited via ISdlRenderLayer.
         virtual int GetRenderPriority() const final override;

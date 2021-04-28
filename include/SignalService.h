@@ -81,7 +81,7 @@ namespace astu {
      * @ingroup srv_group
      */
     template <typename T>
-    class SignalService final : public virtual Service, private Updatable
+    class SignalService final : virtual public Service, private Updatable
     {
     public:
 

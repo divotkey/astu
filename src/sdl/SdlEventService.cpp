@@ -13,9 +13,10 @@
 namespace astu {
 
     SdlEventService::SdlEventService(int priority)
-        : UpdatableBaseService("SDL Event", priority)
+        : Service("SDL Event Service")
+        , Updatable(priority)
     {
-        // Intentioniall left empty.
+        // Intentionally left empty.
     }
 
     void SdlEventService::OnStartup() 
@@ -111,6 +112,5 @@ namespace astu {
     {
         quit = false;
     }
-
 
 } // end of namespace

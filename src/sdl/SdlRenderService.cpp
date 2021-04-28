@@ -5,10 +5,13 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// C++ Standard LIbrary includes
 #include <cassert>
 #include <algorithm>
 #include <stdexcept>
 #include <SDL2/SDL.h>
+
+// Local incluees
 #include "ServiceManager.h"
 #include "SdlVideoService.h"
 #include "SdlRenderService.h"
@@ -19,12 +22,13 @@ namespace astu {
     /////// SdlRenderService
     /////////////////////////////////////////////////
 
-    bool compare(std::shared_ptr<ISdlRenderLayer> & l1, std::shared_ptr<ISdlRenderLayer> & l2) {
+    bool compare(ISdlRenderLayer * l1, ISdlRenderLayer *l2) {
         return l1->GetRenderPriority() < l2->GetRenderPriority();
     }
 
     SdlRenderService::SdlRenderService(int priority)
-        : UpdatableBaseService("SDL Render", priority)
+        : Service("SDL Render Service")
+        , Updatable(priority)
         , renderer(nullptr)
         , backgroundColor(WebColors::Black)
     {
@@ -103,55 +107,43 @@ namespace astu {
             info.max_texture_height);
     }
 
-    void SdlRenderService::AddLayer(std::shared_ptr<ISdlRenderLayer> layer)
+    void SdlRenderService::AddLayer(ISdlRenderLayer &layer)
     {
         if (HasLayer(layer)) {
             throw std::logic_error("Render layer already added");
         }
 
-        layers.push_back(layer);
+        layers.push_back(&layer);
         std::sort(layers.begin(), layers.end(), compare);
 
-        if (IsRunning()) {
+        if (GetStatus() != Stopped) {
             auto & wm = ASTU_SERVICE(IWindowManager);
-            layer->OnResize(wm.GetWidth(), wm.GetHeight());
+            layer.OnResize(wm.GetWidth(), wm.GetHeight());
         }
     }
 
-    void SdlRenderService::RemoveLayer(std::shared_ptr<ISdlRenderLayer> layer)
+    void SdlRenderService::RemoveLayer(ISdlRenderLayer &layer)
     {
         layers.erase(
-            std::remove(layers.begin(), layers.end(), layer), 
+            std::remove(layers.begin(), layers.end(), &layer), 
             layers.end()
         );        
     }
 
-    bool SdlRenderService::HasLayer(std::shared_ptr<ISdlRenderLayer> layer)
+    bool SdlRenderService::HasLayer(ISdlRenderLayer &layer)
     {
-        return std::find(layers.begin(), layers.end(), layer) != layers.end();
+        return std::find(layers.begin(), layers.end(), &layer) != layers.end();
     }
 
     /////////////////////////////////////////////////
     /////// BaseSdlRenderLayer
     /////////////////////////////////////////////////
 
-    BaseSdlRenderLayer::BaseSdlRenderLayer(int _renderPriority, const std::string & name)
-        : BaseService(name)
-        , renderPriority(_renderPriority)
+    BaseSdlRenderLayer::BaseSdlRenderLayer(int renderPriority)
+        : renderPriority(renderPriority)
     {
-        // Intentionally left empty.
-    }
-
-    void BaseSdlRenderLayer::Startup()
-    {
-        ASTU_SERVICE(SdlRenderService).AddLayer( shared_as<BaseSdlRenderLayer>() );
-        BaseService::Startup();        
-    }
-
-    void BaseSdlRenderLayer::Shutdown()
-    {
-        BaseService::Shutdown();
-        ASTU_SERVICE(SdlRenderService).RemoveLayer( shared_as<BaseSdlRenderLayer>() );
+        AddStartupHook([this]() { ASTU_SERVICE( SdlRenderService).AddLayer(*this); });
+        AddShutdownHook([this]() { ASTU_SERVICE( SdlRenderService).RemoveLayer(*this); });
     }
 
     void BaseSdlRenderLayer::OnResize(int width, int height)

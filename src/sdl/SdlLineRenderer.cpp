@@ -15,7 +15,8 @@
 namespace astu {
 
     SdlLineRenderer::SdlLineRenderer(int renderPriority)
-        : BaseSdlRenderLayer(renderPriority, "SDL Line Renderer")
+        : Service("SDL Line Renderer")
+        , BaseSdlRenderLayer(renderPriority)
     {
         // Intentionally left empty.
     }

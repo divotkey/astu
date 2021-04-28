@@ -45,7 +45,7 @@ namespace astu {
      * 
      * @ingroup srv_group
      */
-    class UpdateService : public Service {
+    class UpdateService final : public Service {
     public:
 
         /**
@@ -97,7 +97,7 @@ namespace astu {
     /**
      * Inherit from this class to get updated as a service.
      */
-    class Updatable : public virtual Service, private IUpdatable {
+    class Updatable : public virtual Service, protected IUpdatable {
     public:
 
         /**
@@ -107,10 +107,12 @@ namespace astu {
          */
         Updatable(int priority = 0);
 
+        ~Updatable() {}
+
     protected:
 
         // Inherited via IUpdatable
-        virtual void OnUpdate() override;
+        virtual void OnUpdate() override {}
     }; 
 
 } // end of namespace

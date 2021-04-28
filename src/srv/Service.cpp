@@ -22,6 +22,13 @@ namespace astu {
 
     const std::string & Service::DEFAULT_NAME = "UNNAMED";
 
+    Service::Service(const std::string & name)
+        : name(name)
+        , status(Stopped)
+    {
+        // Intentionally left empty.
+    }
+
     Service::~Service()
     {
         // Intentionally left empty.

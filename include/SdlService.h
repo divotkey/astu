@@ -7,6 +7,7 @@
 
 #pragma once
 
+// Local includes
 #include "Service.h"
 
 namespace astu {
@@ -16,7 +17,7 @@ namespace astu {
      * 
      * @ingroup sdl_group
      */
-    class SdlService : public BaseService {
+    class SdlService final : public Service {
     public:
 
         /**
@@ -29,12 +30,12 @@ namespace astu {
 
     protected:
 
-        // Inherited via Base Service
+        // Inherited via Service
         virtual void OnStartup() override;
         virtual void OnShutdown() override;
 
     private:
-        /** Enabmes debug logging messages etc. */
+        /** Enables debug logging messages etc. */
         bool debugMode;
 
         /** Defines whether log messages should be verbose. */

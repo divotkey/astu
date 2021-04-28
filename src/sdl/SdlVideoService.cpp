@@ -12,7 +12,7 @@
 namespace astu {
 
     SdlVideoService::SdlVideoService()
-        : BaseService("SDL Video")
+        : Service("SDL Video Service")
         , window(nullptr)
         , winWidth(1366)
         , winHeight(768)
@@ -29,7 +29,7 @@ namespace astu {
 
     void SdlVideoService::EnableVulkanSupport(bool b)
     {
-        if (IsRunning()) {
+        if (GetStatus() != Stopped) {
             throw std::logic_error("Vulkan support cannot be enabled/disabled while Video service is running.");
         }
 
@@ -85,7 +85,7 @@ namespace astu {
 
     void SdlVideoService::SetSize(int width, int height) 
     {
-        if (IsRunning()) {
+        if (GetStatus() != Stopped) {
             throw std::logic_error("Windows size must not be changed during runtime.");
         }
         winWidth = width;
@@ -105,7 +105,7 @@ namespace astu {
     void SdlVideoService::SetTitle(const std::string & title) 
     {
         winTitle = title;
-        if (IsRunning()) {
+        if (GetStatus() != Stopped) {
             SDL_SetWindowTitle(window, title.c_str());
         }
     }

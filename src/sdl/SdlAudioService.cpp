@@ -13,7 +13,7 @@ namespace astu {
 
 
     SdlAudioService::SdlAudioService()
-        : BaseService("SDL Audio")
+        : Service("SDL Audio")
     {
         // Intentionally left empty.
     }

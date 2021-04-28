@@ -11,7 +11,7 @@
 #include <vector>
 #include <cstdint>
 
-// Local (AST-Utilities) includes
+// Local includes
 #include "SdlRenderService.h"
 #include "ILineRenderer.h"
 
@@ -24,7 +24,7 @@ namespace astu {
      * to store the render calls and replays them when the render layer should
      * be rendered.
      */
-    class SdlLineRenderer : public BaseSdlRenderLayer, public ILineRenderer {
+    class SdlLineRenderer final : public BaseSdlRenderLayer, public ILineRenderer {
     public:
 
         /**

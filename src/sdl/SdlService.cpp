@@ -12,11 +12,11 @@
 namespace astu {
 
     SdlService::SdlService(bool debug, bool verbose)
-        : BaseService("SDL")
+        : Service("SDL Service")
         , debugMode(debug)
         , verboseLogging(verbose)
     {
-        // Intentioniall left empty.
+        // Intentionally left empty.
     }
 
     void SdlService::OnStartup() 

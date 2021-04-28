@@ -7,10 +7,11 @@
 
 #pragma once
 
-#include "Mouse.h"
-#include "Keyboard.h"
+// Local includes
 #include "UpdateService.h"
+#include "Keyboard.h"
 #include "Events.h"
+#include "Mouse.h"
 
 namespace astu {
 
@@ -22,7 +23,7 @@ namespace astu {
      *
      * @ingroup sdl_group
      */
-    class SdlEventService : public UpdatableBaseService {
+    class SdlEventService final : public virtual Service, public Updatable {
     public:
 
         /**
@@ -51,13 +52,15 @@ namespace astu {
 
     protected:
 
-        // Inherited via UpdatableBaseService
+        // Inherited via Service
         virtual void OnStartup() override;
         virtual void OnShutdown() override;
+
+        // Inherited via Updatable
         virtual void OnUpdate() override;
 
     private:
-        /** Determines whether a quit-signal has beed detected. */
+        /** Determines whether a quit-signal has been detected. */
         bool quit;
 
         /** Used to transfer mouse events to mouse states. */

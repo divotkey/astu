@@ -375,7 +375,7 @@ namespace astu {
          * @param family    the entity family the listener is interested in
          * @param listener  the entity listener to test
          */
-        bool HasEntityListener(const EntityFamily & family, std::shared_ptr<IEntityListener> listener) const;
+        bool HasEntityListener(const EntityFamily & family, IEntityListener & listener) const;
 
         /**
          * Adds an entity listener to this service.
@@ -383,7 +383,7 @@ namespace astu {
          * @param family    the entity family the listener is interested in
          * @param listener  the entity listener to add
          */
-        void AddEntityListener(const EntityFamily & family, std::shared_ptr<IEntityListener> listener);
+        void AddEntityListener(const EntityFamily & family, IEntityListener & listener);
 
         /**
          * Removes an entity listener to from service.
@@ -391,7 +391,7 @@ namespace astu {
          * @param family    the entity family the listener is interested in
          * @param listener  the entity listener to remove
          */
-        void RemoveEntityListener(const EntityFamily & family, std::shared_ptr<IEntityListener> listener);
+        void RemoveEntityListener(const EntityFamily & family, IEntityListener & listener);
 
     protected:
         // Inherited via Base Service
@@ -401,12 +401,12 @@ namespace astu {
 
     private:
 
-        using ListenerList = std::vector<std::weak_ptr<IEntityListener>>;
+        using ListenerList = std::vector<IEntityListener*>;
 
         /** Pending commands. */
         CommandQueue commands;
 
-		/** The entities administreed by this service. */
+		/** The entities administered by this service. */
 		std::vector<std::shared_ptr<Entity>> entities;        
 
         /** Maps entity families to corresponding vectors of entities. */

@@ -183,23 +183,18 @@ namespace astu
 		}
     }
 
-    bool EntityService::HasEntityListener(const EntityFamily & family, std::shared_ptr<IEntityListener> listener) const
+    bool EntityService::HasEntityListener(const EntityFamily & family, IEntityListener &  listener) const
     {
         auto it = listeners.find(family);
         if (it == listeners.end()) {
             return false;
         }
 
-        for (auto & wpListener : it->second) {
-            if (wpListener.lock() == listener) {
-                return true;
-            }
-        }
-
-        return false;
+        const ListenerList & familyListeners = it->second;
+        return std::find(familyListeners.begin(), familyListeners.end(), &listener) != familyListeners.end();
     }
 
-    void EntityService::AddEntityListener(const EntityFamily & family, std::shared_ptr<IEntityListener> listener)
+    void EntityService::AddEntityListener(const EntityFamily & family, IEntityListener & listener)
     {
 		if (firing) {
 			throw std::logic_error("Entity listeners must not be added while firing entity events");
@@ -209,10 +204,10 @@ namespace astu
             throw std::logic_error("Entity listener already added");
         }
 
-        listeners[family].push_back(listener);        
+        listeners[family].push_back(&listener);        
     }
 
-    void EntityService::RemoveEntityListener(const EntityFamily & family, std::shared_ptr<IEntityListener> listener)
+    void EntityService::RemoveEntityListener(const EntityFamily & family, IEntityListener & listener)
     {
 		if (firing) {
 			throw std::logic_error("Entity listeners must not be removed while firing entity events");
@@ -224,7 +219,7 @@ namespace astu
         }
 
         for (auto listIt = it->second.begin(); listIt != it->second.end(); ) {
-            if (listIt->lock() == listener) {
+            if (*listIt == &listener) {
                 listIt = it->second.erase(listIt);
             } else {
                 ++listIt;
@@ -234,27 +229,15 @@ namespace astu
 
     void EntityService::FireEntityAdded(ListenerList & listeners, std::shared_ptr<Entity> entity)
     {
-        for (auto it = listeners.begin(); it != listeners.end(); ){
-            auto listener = it->lock();
-            if (listener) {
-                listener->OnEntityAdded(entity);
-                ++it;
-            } else {
-                it = listeners.erase(it);
-            }
+        for (auto listener : listeners) {
+            listener->OnEntityAdded(entity);
         }
     }
 
     void EntityService::FireEntityRemoved(ListenerList & listeners, std::shared_ptr<Entity> entity)
     {
-        for (auto it = listeners.begin(); it != listeners.end(); ){
-            auto listener = it->lock();
-            if (listener) {
-                listener->OnEntityRemoved(entity);
-                ++it;
-            } else {
-                it = listeners.erase(it);
-            }
+        for (auto listener : listeners) {
+            listener->OnEntityRemoved(entity);
         }
     }
 

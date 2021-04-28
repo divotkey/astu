@@ -48,11 +48,14 @@ namespace astu {
         });
     }
 
+    /////////////////////////////////////////////////
+    /////// Updatable
+    /////////////////////////////////////////////////
+
     Updatable::Updatable(int priority)
     {
-        AddStartupHook([this, priority]() { ASTU_SERVICE(UpdateService).AddUpdatable(*this, priority); } );
+       AddStartupHook([this, priority]() { ASTU_SERVICE(UpdateService).AddUpdatable(*this, priority); } );
         AddShutdownHook([this]() { ASTU_SERVICE(UpdateService).RemoveUpdatable(*this); } );
     }
-
 
 } // end of namespace
