@@ -10,32 +10,15 @@
 
 namespace astu {
 
-    class KeystrokeListener : private IKeystrokeListener, private IServiceListener {
+    class KeystrokeListener : virtual public Service, private IKeystrokeListener {
     public:
 
+        /**
+         * Constructor.
+         */
         KeystrokeListener() {
-            ServiceManager::GetInstance().GetService<ServiceEventService>().AddListener(this);
-        }
-
-        virtual ~KeystrokeListener() {
-            ServiceManager::GetInstance().GetService<ServiceEventService>().RemoveListener(this);
-        }
-
-        virtual void OnSignal(const ServiceEvent & event) override {
-
-            if (dynamic_cast<KeystrokeListener*>(&event.service) == this) {
-
-                auto & keystrokeSrv = ServiceManager::GetInstance().GetService<KeystrokeEventService>();
-                switch (event.type) {
-                case ServiceEvent::Started:
-                    keystrokeSrv.AddListener(this);
-                    break;
-
-                case ServiceEvent::Stopped:
-                    keystrokeSrv.RemoveListener(this);
-                    break;
-                }
-            }
+            AddStartupHook([this](){ ASTU_SERVICE(KeystrokeEventService).AddListener(this); });
+            AddShutdownHook([this](){ ASTU_SERVICE(KeystrokeEventService).RemoveListener(this); });
         }
 
     protected:

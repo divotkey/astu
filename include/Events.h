@@ -53,6 +53,53 @@ namespace astu {
      */
     using IMouseButtonListener = ISignalListener<MouseButtonEvent>;
 
+
+    /**
+     * Services can derive from this class to process key strokes.
+     */
+    class MouseButtonListener : virtual public Service, private IMouseButtonListener {
+    public:
+
+        /**
+         * Constructor.
+         */
+        MouseButtonListener() {
+            AddStartupHook([this](){ ASTU_SERVICE(MouseButtonEventService).AddListener(*this); });
+            AddShutdownHook([this](){ ASTU_SERVICE(MouseButtonEventService).RemoveListener(*this); });
+        }
+
+    protected:
+
+        /** 
+         * Called by this base class when a key has been pressed.
+         * 
+         * @param button    the button which has been pressed
+         * @param x         the x-coordinate of the mouse course in screen space
+         * @param y         the y-coordinate of the mouse course in screen space
+         */
+        virtual void OnMouseButtonPressed(int button, int x, int y) { }
+
+        /** 
+         * Called by this base class when a key has been released.
+         * 
+         * @param button    the button which has been released
+         * @param x         the x-coordinate of the mouse course in screen space
+         * @param y         the y-coordinate of the mouse course in screen space
+         */
+        virtual void OnMouseButtonReleased(int button, int x, int y) { }
+
+    private:
+
+        // Inherited via MouseButtonListener 
+        virtual void OnSignal(const MouseButtonEvent & signal) {
+            if (signal.pressed) {
+                OnMouseButtonPressed(signal.button, signal.x, signal.y);
+            } else {
+                OnMouseButtonReleased(signal.button, signal.x, signal.y);
+            }
+        }
+    };
+
     /**
      * This event represents a keystroke event.
      * 
@@ -86,5 +133,48 @@ namespace astu {
      * @ingroup input_group
      */
     using IKeystrokeListener = ISignalListener<KeystrokeEvent>;
+
+    /**
+     * Services can derive from this class to process key strokes.
+     */
+    class KeystrokeListener : virtual public Service, private IKeystrokeListener {
+    public:
+
+        /**
+         * Constructor.
+         */
+        KeystrokeListener() {
+            AddStartupHook([this](){ ASTU_SERVICE(KeystrokeEventService).AddListener(*this); });
+            AddShutdownHook([this](){ ASTU_SERVICE(KeystrokeEventService).RemoveListener(*this); });
+        }
+
+    protected:
+
+        /** 
+         * Called by this base class when a key has been pressed.
+         * 
+         * @param keycode   the code of the key
+         */
+        virtual void OnKeyPressed(int keycode) {}
+
+        /** 
+         * Called by this base class when a key has been released.
+         * 
+         * @param keycode   the code of the key
+         */
+        virtual void OnKeyReleased(int keycode) {}
+
+    private:
+
+        // Inherited via KeystrokeListener
+        virtual void OnSignal(const KeystrokeEvent & signal) override {
+            if (signal.pressed) {
+                OnKeyPressed(signal.keycode);
+            } else {
+                OnKeyReleased(signal.keycode);
+            }
+        }
+
+    };    
 
 } // end of namespace

@@ -45,28 +45,46 @@ namespace astu {
         virtual double GetAbsoluteTime() const = 0;
     };
 
+    /**
+     * Services can derive from this if access to elapsed and absolute time is 
+     * needed.
+     */
     class TimeClient : virtual Service {
     public:
 
+        /**
+         * Constructor.
+         */
         TimeClient() {
             AddStartupHook([this]() { timeSrv = ASTU_GET_SERVICE(ITimeManager); });
             AddShutdownHook([this]() { timeSrv = nullptr; });
         }
 
+        /** Virtual destructor. */
+        virtual ~TimeClient() { }
+
     protected:
 
-        virtual ~TimeClient() {
-        }
-
+        /**
+         * Returns the elapsed time since the last update.
+         * 
+         * @return the elapsed time in seconds
+         */
         double GetElapsedTime() const {
             return timeSrv->GetElapsedTime();
         }
 
+        /**
+         * Returns the absolute time since.
+         * 
+         * @return the absolute time in seconds
+         */
         double GetAbsoluteTime() const {
             return timeSrv->GetAbsoluteTime();
         }
 
     private:
+        /** The time manager used by this class. */
         std::shared_ptr<ITimeManager> timeSrv;
     };
 
