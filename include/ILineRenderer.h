@@ -8,6 +8,7 @@
 #pragma once
 
 // Local (AST-Utilities) includes
+#include "Service.h"
 #include "Vector2.h"
 #include "Color.h"
 
@@ -52,6 +53,49 @@ namespace astu {
          * @param c the new drawing color 
          */
         virtual void SetDrawColor(const Color & c) = 0;
+    };
+
+
+    class LineRendererClient : public virtual Service {
+    public:
+
+        /**
+         * Constructor.
+         */
+        LineRendererClient(){
+            AddStartupHook([this](){ 
+                lineRenderer = ASTU_GET_SERVICE(ILineRenderer); 
+            });
+
+            AddShutdownHook([this](){ lineRenderer = nullptr; });
+        }
+
+    protected:
+
+        /**
+         * Returns the line renderer.
+         * 
+         * @return the line renderer
+         */
+        ILineRenderer & GetLineRenderer() {
+            return *lineRenderer;
+        }
+
+        void SetDrawColor(const Color & c) {
+            lineRenderer->SetDrawColor(c);
+        }
+
+        void DrawLine(double x1, double y1, double x2, double y2) {
+            lineRenderer->DrawLine(x1, y1, x2, y2);
+        }
+
+        virtual void DrawLine(const Vector2<double> & p1, const Vector2<double> & p2) {
+            lineRenderer->DrawLine(p1.x, p1.y, p2.x, p2.y);
+        }     
+
+    private:
+        /** The line renderer. */
+        std::shared_ptr<ILineRenderer> lineRenderer;
     };
 
 } // end of namespace
