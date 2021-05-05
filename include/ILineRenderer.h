@@ -19,6 +19,7 @@ namespace astu {
      * 
      * @ingroup gfx_group
      */
+    template <typename T>
     class ILineRenderer {
     public:
 
@@ -33,7 +34,10 @@ namespace astu {
          * @parma p1    the first point of the line
          * @parma p2    the second point of the line
          */
-        virtual void DrawLine(const Vector2<double> & p1, const Vector2<double> & p2) {
+        virtual void DrawLine(
+            const Vector2<T> & p1,
+            const Vector2<T> & p2)
+        {
             DrawLine(p1.x, p1.y, p2.x, p2.y);
         }
 
@@ -45,7 +49,7 @@ namespace astu {
          * @parma x2    the x-coordinate of the second point of the line
          * @parma y2    the y-coordinate of the second point of the line
          */
-        virtual void DrawLine(double x1, double y1, double x2, double y2) = 0;
+        virtual void DrawLine(T x1, T y1, T x2, T y2) = 0;
 
         /**
          * Sets the current drawing color used for all subsequent drawing calls.
@@ -55,7 +59,10 @@ namespace astu {
         virtual void SetDrawColor(const Color & c) = 0;
     };
 
+    using ILineRenderer2f = ILineRenderer<float>;
+    using ILineRenderer2d = ILineRenderer<double>;
 
+    template <typename T>
     class LineRendererClient : public virtual Service {
     public:
 
@@ -64,7 +71,7 @@ namespace astu {
          */
         LineRendererClient(){
             AddStartupHook([this](){ 
-                lineRenderer = ASTU_GET_SERVICE(ILineRenderer); 
+                lineRenderer = ASTU_GET_SERVICE(ILineRenderer<T>); 
             });
 
             AddShutdownHook([this](){ lineRenderer = nullptr; });
@@ -77,7 +84,7 @@ namespace astu {
          * 
          * @return the line renderer
          */
-        ILineRenderer & GetLineRenderer() {
+        ILineRenderer<T> & GetLineRenderer() {
             return *lineRenderer;
         }
 
@@ -85,17 +92,19 @@ namespace astu {
             lineRenderer->SetDrawColor(c);
         }
 
-        void DrawLine(double x1, double y1, double x2, double y2) {
+        void DrawLine(T x1, T y1, T x2, T y2) {
             lineRenderer->DrawLine(x1, y1, x2, y2);
         }
 
-        virtual void DrawLine(const Vector2<double> & p1, const Vector2<double> & p2) {
+        virtual void DrawLine(const Vector2<T> & p1, const Vector2<T> & p2) {
             lineRenderer->DrawLine(p1.x, p1.y, p2.x, p2.y);
         }     
 
     private:
         /** The line renderer. */
-        std::shared_ptr<ILineRenderer> lineRenderer;
+        std::shared_ptr<ILineRenderer<T>> lineRenderer;
     };
 
+    using LineRendererClient2f = LineRendererClient<float>;
+    using LineRendererClient2d = LineRendererClient<double>;
 } // end of namespace

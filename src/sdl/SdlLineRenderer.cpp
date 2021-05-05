@@ -6,7 +6,7 @@
  */
 
 // C++ Standard Library includes
-#include <cassert>
+#include <cassert>     
 #include <SDL2/SDL.h>
 
 // Local (AST-Utilities) includes
@@ -45,7 +45,19 @@ namespace astu {
 
     void SdlLineRenderer::DrawLine(double x1, double y1, double x2, double y2)
     {
+        RenderCommand cmd;
 
+        cmd.type = CommandType::DRAW_LINE;
+        cmd.line.x1 = static_cast<int>(x1);
+        cmd.line.y1 = static_cast<int>(y1);
+        cmd.line.x2 = static_cast<int>(x2);
+        cmd.line.y2 = static_cast<int>(y2);
+
+        commands.push_back(cmd);
+    }
+
+    void SdlLineRenderer::DrawLine(float x1, float y1, float x2, float y2)
+    {
         RenderCommand cmd;
 
         cmd.type = CommandType::DRAW_LINE;

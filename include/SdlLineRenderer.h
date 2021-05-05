@@ -24,7 +24,11 @@ namespace astu {
      * to store the render calls and replays them when the render layer should
      * be rendered.
      */
-    class SdlLineRenderer final : public BaseSdlRenderLayer, public ILineRenderer {
+    class SdlLineRenderer final 
+        : public BaseSdlRenderLayer
+        , public ILineRenderer2d
+        , public ILineRenderer2f
+    {
     public:
 
         /**
@@ -42,9 +46,13 @@ namespace astu {
         // Inherited via BaseSdlRenderLayer
         virtual void OnRender(SDL_Renderer* renderer) override;
 
-        // Inherited via ILineRenderer
+        // Inherited via ILineRenderer2d
         virtual void DrawLine(double x1, double y1, double x2, double X2) override;
         virtual void SetDrawColor(const Color & c) override;
+
+        // Inherited via ILineRenderer2f
+        virtual void DrawLine(float x1, float y1, float x2, float X2) override;
+        // virtual void SetDrawColor(const Color & c) override;
 
     protected:
 
