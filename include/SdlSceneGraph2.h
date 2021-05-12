@@ -20,7 +20,6 @@
 namespace astu {
 
     // Forward declaration
-    class 
 
     class SdlVertexBuffer2 : public VertexBuffer2 {
     public:
