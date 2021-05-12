@@ -23,7 +23,8 @@ namespace astu {
     /**
      * Interface for SDL-based renderer layers.
      * 
-     * This inteface for render layers is using the hardware accelerated 2D render-mechanism of SDL. 
+     * This inteface for render layers is using the hardware accelerated 2D
+     * render-mechanism of SDL. 
      * 
      * @ingroup sdl_group
      */
@@ -115,7 +116,7 @@ namespace astu {
         std::vector<ISdlRenderLayer*> layers;
 
         /** The background color. */
-        Color backgroundColor;
+        Color4d backgroundColor;
 
         /**
          * Logs some additional information about the used renderer.
@@ -131,11 +132,11 @@ namespace astu {
     };
 
     /**
-     * Base class for services which implement the ISdlRenderLayer interface.
+     * Services can derive from this class to become a SDL render layer.
      * 
      * @ingroup sdl_group
      */
-    class BaseSdlRenderLayer 
+    class SdlRenderLayer 
         : public virtual Service
         , public ISdlRenderLayer
     {
@@ -146,12 +147,12 @@ namespace astu {
          * 
          * @param renderPriority    the render priority of this layer
          */
-        BaseSdlRenderLayer(int renderPriority);
+        SdlRenderLayer(int renderPriority);
 
         /**
          * Virtual destructor.
          */
-        virtual ~BaseSdlRenderLayer() {}
+        virtual ~SdlRenderLayer() {}
 
         // Inherited via ISdlRenderLayer.
         virtual int GetRenderPriority() const final override;

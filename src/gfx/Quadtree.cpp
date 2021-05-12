@@ -114,7 +114,7 @@ namespace astu {
         return localBox;
     }
 
-    bool Quadtree::GetColorTransformed(const Vector2<double> &pt, Color & c) const
+    bool Quadtree::GetColorTransformed(const Vector2<double> &pt, Color4d & c) const
     {
         if (!localBox.IsInside(pt)) {
             return false;
@@ -142,11 +142,11 @@ namespace astu {
         return GetLocalColorTransformed(pt, c);
     }
 
-    bool Quadtree::GetLocalColorTransformed(const Vector2<double> &pt, Color & c) const
+    bool Quadtree::GetLocalColorTransformed(const Vector2<double> &pt, Color4d & c) const
     {
         bool hasColor = false;
         for (auto pattern : children) {
-            Color localColor;
+            Color4d localColor;
             if (pattern->GetColor(pt, localColor)) {
                 if (hasColor) {
                     c.Blend(localColor);

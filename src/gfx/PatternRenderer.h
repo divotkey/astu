@@ -87,9 +87,7 @@ namespace astu {
 
         // static unsigned int QualityToRadius(AntialiasingLevel level);
 
-
-
-        Color CalcColor(const Vector2<double> & p, const Pattern & shape);
+        Color4d CalcColor(const Vector2<double> & p, const Pattern & shape);
     };
 
     class StochasticAntiAlisaingPatternRenderer : public IPatternRenderer {
@@ -99,7 +97,7 @@ namespace astu {
         virtual void Render(const Pattern & pattern, Image & result) override;        
 
     private:
-        Color CalcColor(const Vector2<double> & p, const Pattern & shape);
+        Color4d CalcColor(const Vector2<double> & p, const Pattern & shape);
     };
 
 }

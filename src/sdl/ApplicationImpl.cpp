@@ -15,9 +15,9 @@
 
 namespace astu {
 
-    const Color ApplicationImpl::kDefaultBackgroundColor = Color::CreateFromRgb(0x77, 0x88, 0x99, 0xff);
+    const Color4d ApplicationImpl::kDefaultBackgroundColor = Color4d::CreateFromRgb(0x77, 0x88, 0x99, 0xff);
 
-    const Color ApplicationImpl::kDefaultDrawColor = Color::CreateFromRgb(0xD3, 0xD3, 0xD3, 0xff);
+    const Color4d ApplicationImpl::kDefaultDrawColor = Color4d::CreateFromRgb(0xD3, 0xD3, 0xD3, 0xff);
 
     ApplicationImpl::ApplicationImpl()
         : width(kDefaultWidth)
@@ -64,17 +64,17 @@ namespace astu {
         return height;
     }
 
-    void ApplicationImpl::SetBackgroundColor(const Color & c)
+    void ApplicationImpl::SetBackgroundColor(const Color4d & c)
     {
         backgroundColor = c;
     }
 
-    Color ApplicationImpl::GetBackgroundColor() const
+    Color4d ApplicationImpl::GetBackgroundColor() const
     {
         return backgroundColor;
     }
 
-    void ApplicationImpl::SetDrawColor(const Color & c)
+    void ApplicationImpl::SetDrawColor(const Color4d & c)
     {
         drawColor = c;
         if (renderer) {
@@ -87,7 +87,7 @@ namespace astu {
         }
     }
 
-    Color ApplicationImpl::GetDrawColor() const
+    Color4d ApplicationImpl::GetDrawColor() const
     {
         return drawColor;
     }    

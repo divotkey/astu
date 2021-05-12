@@ -65,28 +65,28 @@ namespace astu {
          * 
          * @param c the background color
          */
-        void SetBackgroundColor(const Color & c);
+        void SetBackgroundColor(const Color4d & c);
 
         /**
          * Returns the background color for the application window.
          * 
          * @param the current background color
          */
-        Color GetBackgroundColor() const;
+        Color4d GetBackgroundColor() const;
 
         /**
          * Sets the draw color of the application window.
          * 
          * @param c the draw color
          */
-        void SetDrawColor(const Color & c);
+        void SetDrawColor(const Color4d & c);
 
         /**
          * Returns the draw color for the application window.
          * 
          * @param the current draw color
          */
-        Color GetDrawColor() const;
+        Color4d GetDrawColor() const;
 
         /**
          * Draws a rectangle with the current draw color.

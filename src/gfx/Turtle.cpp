@@ -21,7 +21,7 @@ namespace astu {
         Go(0, 0);
         SetDirection(0);
         PenDown();
-        SetPenColor(Color(1, 1, 1));
+        SetPenColor(Color4d(1, 1, 1));
         SetPenWidth(2);
     }
 
@@ -30,12 +30,12 @@ namespace astu {
         return position;
     }
 
-    void Turtle::SetPenColor(const Color& c)
+    void Turtle::SetPenColor(const Color4d& c)
     {
         penColor = c;
     }
 
-    const Color & Turtle::GetPenColor() const
+    const Color4d & Turtle::GetPenColor() const
     {
         return penColor;
     }

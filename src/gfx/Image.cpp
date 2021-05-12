@@ -36,25 +36,25 @@ namespace astu {
         data.resize(width * height, WebColors::Black);
     }
 
-    const Color & Image::GetPixel(int x, int y) const
+    const Color4d & Image::GetPixel(int x, int y) const
     {
         ValidateCoordinates(x, y);
         return data[y * width + x];
     }
 
-    void Image::SetPixel(int x, int y, const Color & c)
+    void Image::SetPixel(int x, int y, const Color4d & c)
     {
         ValidateCoordinates(x, y);
         data[y * width + x] = c;
     }
 
-    const Color & Image::GetPixel(size_t idx) const
+    const Color4d & Image::GetPixel(size_t idx) const
     {
         ValidateIndex(idx);
         return data[idx];
     }
 
-    void Image::SetPixel(size_t idx, const Color & c)
+    void Image::SetPixel(size_t idx, const Color4d & c)
     {
         ValidateIndex(idx);
         data[idx] = c;
@@ -65,12 +65,12 @@ namespace astu {
         return data.size();
     }
 
-    Color* Image::GetPixels()
+    Color4d* Image::GetPixels()
     {
         return data.data();
     }
 
-    const Color* Image::GetPixels() const
+    const Color4d* Image::GetPixels() const
     {
         return data.data();
     }

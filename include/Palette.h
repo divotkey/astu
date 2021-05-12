@@ -26,7 +26,7 @@ namespace astu {
          * @param start the start color of this palette
          * @param end   the end color of thsi palette
          */
-        Palette(const Color & start = WebColors::Black, const Color & end = WebColors::White);
+        Palette(const Color4d & start = WebColors::Black, const Color4d & end = WebColors::White);
 
         /**
          * Sets the start color of this palette.
@@ -34,14 +34,14 @@ namespace astu {
          * @param c the start color
          * @returns a reference to this palette for method chaining
          */
-        Palette& SetStartColor(const Color & c);
+        Palette& SetStartColor(const Color4d & c);
 
         /**
          * Returns the start color of this palette.
          * 
          * @return the start color
          */
-        Color GetStartColor() const;
+        Color4d GetStartColor() const;
 
         /**
          * Sets the end color of this palette.
@@ -49,14 +49,14 @@ namespace astu {
          * @param c the start color
          * @returns a reference to this palette for method chaining
          */
-        Palette& SetEndColor(const Color & c);
+        Palette& SetEndColor(const Color4d & c);
 
         /**
          * Returns the end color of this palette.
          * 
          * @return the end color
          */
-        Color GetEndColor() const;
+        Color4d GetEndColor() const;
 
         /**
          * Adds a color to this palette.
@@ -65,7 +65,7 @@ namespace astu {
          * @param p the position within the palette [0, 1]
          * @throws std::out_of_range in case the position is out of range
          */
-        Palette& AddColor(const Color & c, double p);
+        Palette& AddColor(const Color4d & c, double p);
 
         /**
          * Extracts a color from this palette.
@@ -75,7 +75,7 @@ namespace astu {
          * @param pos   the the position within this palette [0, 1]
          * @return the requested color
          */
-        Color GetColor(double pos) const;
+        Color4d GetColor(double pos) const;
 
         /**
          * Returns the number of colors in this palette.
@@ -100,7 +100,7 @@ namespace astu {
          * @return the requested color
          * @throws std::out_of_range in case the index is invalid
          */
-        const Color & at(size_t idx) const;
+        const Color4d & at(size_t idx) const;
 
 		/**
 		 * Subscript operator for this palette.
@@ -108,7 +108,7 @@ namespace astu {
 		 * @param idx	index of the color to be retrieved
 		 * @return the requested color
 		 */
-		const Color & operator[](size_t idx) const;
+		const Color4d & operator[](size_t idx) const;
 
     private:
 
@@ -121,7 +121,7 @@ namespace astu {
         class Entry {
         public:
             /** The color of this palette entry. */
-            Color color;
+            Color4d color;
 
             /** The position within the palette within the range [0, 1]. */
             double pos;
@@ -133,7 +133,7 @@ namespace astu {
              * @param c the color of this entry
              * @param p the position within the palette [0, 1]
              */
-            Entry(const Color & c, double p);
+            Entry(const Color4d & c, double p);
 
             /**
              * Comparison opeator used to sort entries.
@@ -145,7 +145,7 @@ namespace astu {
         };
 
         /** The default color used when the palette has not enough entries. */
-        Color defaultColor;
+        Color4d defaultColor;
 
         /** The color entries of this palette. */
         std::vector<Entry> entries;

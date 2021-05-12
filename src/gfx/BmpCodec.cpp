@@ -236,7 +236,7 @@ namespace astu {
 				blue = *ptr++;
 				green = *ptr++;
 				red = *ptr++;
-				result->SetPixel(i, flip ? result->GetHeight() - 1 - j : j, Color::CreateFromRgb(red, green, blue));
+				result->SetPixel(i, flip ? result->GetHeight() - 1 - j : j, Color4d::CreateFromRgb(red, green, blue));
 			}
 		}
 

@@ -183,7 +183,7 @@ namespace astu1 {
         return it->second->GetHeight();
     }
 
-    astu::Color GetPixel(int hImg, int x, int y)
+    astu::Color4d GetPixel(int hImg, int x, int y)
     {
         auto it = images.find(hImg);
         if (it == images.end()) {
@@ -247,7 +247,7 @@ namespace astu1 {
 
         for (int j = 0; j < image.GetHeight(); ++j) {
             for (int i = 0; i < image.GetWidth(); ++i) {
-                astu::Color c;
+                astu::Color4d c;
                 c.r = *ptr++;
                 c.g = *ptr++;
                 c.b = *ptr++;

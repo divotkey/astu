@@ -26,14 +26,14 @@ namespace astu {
         double startY = dy / 2.0;
 
         Vector2<double> p(0, startY);
-        Color c1 = Color(0, 0, 0);
-        Color c2 = Color(1, 1, 1);
+        Color4d c1 = Color4d(0, 0, 0);
+        Color4d c2 = Color4d(1, 1, 1);
 
         cout << " 0 %";
         for (int j = 0; j < result.GetHeight(); ++j) {
             p.x = startX;
             for (int i = 0; i < result.GetWidth(); ++i) {
-                Color c;
+                Color4d c;
                 if (pattern.GetColor(p, c)) {
                     c.Saturate();
                     result.SetPixel(i, j, c);
@@ -291,8 +291,8 @@ namespace astu {
         double startY = dy / 2.0;
 
         Vector2<double> p(0, startY);
-        Color c1 = Color(0, 0, 0);
-        Color c2 = Color(1, 1, 1);
+        Color4d c1 = Color4d(0, 0, 0);
+        Color4d c2 = Color4d(1, 1, 1);
 
         cout << " 0 %";
         for (int j = 0; j < result.GetHeight(); ++j) {
@@ -310,24 +310,24 @@ namespace astu {
         std::cout << endl;
     }
 
-    Color AntiAlisaingPatternRenderer::CalcColor(const Vector2<double> & p, const Pattern & pattern)
+    Color4d AntiAlisaingPatternRenderer::CalcColor(const Vector2<double> & p, const Pattern & pattern)
     {
         const double dx = (kKernelRadius * 2) / kKernelSize;
         double startX = p.x - kKernelRadius;
         double dy = (kKernelRadius * 2) / kKernelSize;
         double startY = p.y - kKernelRadius;
 
-        const Color c1 = Color(1, 1, 1);
-        const Color c2 = Color(0, 0, 0);
+        const Color4d c1 = Color4d(1, 1, 1);
+        const Color4d c2 = Color4d(0, 0, 0);
 
-        Color c;
+        Color4d c;
         Vector2<double> aa(0, startY);
         const double *k = kernel;
         for (unsigned int j = 0; j < kKernelSize; ++j) {
             aa.x = startX;
             for (unsigned int i = 0; i < kKernelSize; ++i) {
                 aa.x += dx;
-                Color localColor;
+                Color4d localColor;
                 if (pattern.GetColor(aa, localColor)) {
                     c += localColor * (*k++);
                 } else {

@@ -7,7 +7,9 @@
 
 #pragma once
 
+// C++ Standard includes
 #include <iostream>
+#include <cmath>
 
 namespace astu {
     
@@ -21,21 +23,34 @@ namespace astu {
      * 
      * @ingroup gfx_group
      */
-    class Color final{
+    template <typename T>
+    class Color final {
     public:
         /** The red color component. */
-        double r;
+        T r;
 
         /** The green color component. */
-        double g;
+        T g;
 
         /** The blue color component. */
-        double b;
+        T b;
 
         /** The alpha color component. */
-        double a;
+        T a;
 
-        static Color CreateFromRgb(int red, int green, int blue, int alpha = 255);
+        /**
+         * Creates a color from RGB integer values.
+         * 
+         * @param red   red color component, value within the range 0 and 255
+         * @param green green color component, value within the range 0 and 255
+         * @param blue  blue color component, value within the range 0 and 255
+         * @param alpha transparency, value within the range 0 and 255
+         */
+        static Color<T> CreateFromRgb(
+            int red, int green, int blue, int alpha = 255)
+        {
+            return Color(red / 255.0, green / 255.0, blue / 255.0, alpha / 255.0);
+        }
 
         /**
          * Constructor.
@@ -45,7 +60,14 @@ namespace astu {
          * @param blue  the blue color component
          * @param alpha the alpha color component
          */
-        Color(double red = 0, double green = 0, double blue = 0, double alpha = 1);
+        Color(T red = 0, T green = 0, T blue = 0, T alpha = 1)
+            : r(red)
+            , g(green)
+            , b(blue)
+            , a(alpha)
+        {
+            // Intentionally left empty.
+        }
 
         /**
          * Constructor.
@@ -96,15 +118,20 @@ namespace astu {
          * 
          * @param rgb   the rgb color components encoded within in an integer
          */
-        Color(int rgb);
-
+        Color(int rgb) {
+            *this = CreateFromRgb(
+                        (rgb & 0xff0000) >> 16, 
+                        (rgb & 0xff00) >> 8, 
+                        rgb & 0xff);
+        }
+        
         /**
          * Sets the alpha channel of this color.
          * 
          * @param a the alpha channel
          * @return a reference to this color for method chaining
          */
-        Color & SetAlpha(double a) {
+        Color<T> & SetAlpha(T a) {
             this->a = a;
             return *this;
         }
@@ -117,7 +144,12 @@ namespace astu {
          * @param blue  the blue color component
          * @param alpha the alpha color component
          */
-        void Set(double red, double green, double blue, double alpha = 1);
+        void Set(T red, T green, T blue, T alpha = 1) {
+            r = red;
+            g = green;
+            b = blue;
+            a = alpha;
+        }
 
         /**
 		 * Converts this color to an RGBA integer.
@@ -138,7 +170,10 @@ namespace astu {
          * @param o the other color
          * @return the distance to the other color
          */
-        double DistanceWithoutAlpha(const Color & o) const;
+        T DistanceWithoutAlpha(const Color<T> & o) const
+        {
+            return std::sqrt( DistanceSquaredWithoutAlpha(o) );
+        }
 
         /**
          * Calculates the Euclidean squared in RGB color space.
@@ -146,7 +181,11 @@ namespace astu {
          * @param o the other color
          * @return the distance to the other color
          */
-        double DistanceSquaredWithoutAlpha(const Color & o) const;
+        T DistanceSquaredWithoutAlpha(const Color<T> & o) const {
+            return (r - o.r) * (r - o.r) 
+                + (g - o.g) * (g - o.g) 
+                + (b - o.b) * (b - o.b);
+        }
 
         /**
          * Calculates the Euclidean in RGBA color space.
@@ -154,7 +193,10 @@ namespace astu {
          * @param o the other color
          * @return the distance to the other color
          */
-        double Distance(const Color & o) const;
+        T Distance(const Color<T> & o) const
+        {
+            return std::sqrt( DistanceSquared(o) );        
+        }
 
         /**
          * Calculates the Euclidean squared in RGBA color space.
@@ -162,7 +204,12 @@ namespace astu {
          * @param o the other color
          * @return the distance to the other color
          */
-        double DistanceSquared(const Color & o) const;
+        T DistanceSquared(const Color<T> & o) const {
+            return (r - o.r) * (r - o.r) 
+                   + (g - o.g) * (g - o.g) 
+                   + (b - o.b) * (b - o.b) 
+                   + (a - o.a) * (a - o.a);
+        }
 
         /**
          * Multiplies all color except alpha channel with a scalar.
@@ -170,37 +217,70 @@ namespace astu {
          * @param s the scalar value
          * @return a reference to this color used for method chaining
          */
-        Color & MultiplyWithoutAlpha(double s) noexcept;
-
-        /**
-         * Does a linear interpolation between this and the specified color.
-         * 
-         * @param o the other color
-         * @param t the interpolation position in the interval [0, 1]
-         * @return  the new interpolated color
-         */
-        Color Lerp(const Color & o, double t) const;
+        Color<T> & MultiplyWithoutAlpha(T s) noexcept {
+            r *= s;
+            g *= s;
+            b *= s;
+            return *this;
+        }
 
         /**
          * Converts this color to an integer value.
          * 
          * @return the integer representation of this color
          */
-        int GetARGB() const;
+        int GetARGB() const {
+            return  ((int)(a * 255) << 24)
+                    | ((int)(r * 255) << 16)
+                    | ((int)(g * 255) << 8)
+                    | ((int)(b * 255));
+        }
+
 
         /**
          * Converts this color to an integer value.
          * 
          * @return the integer representation of this color
          */
-        int GetABGR() const;
+        int GetABGR() const {
+            return  ((int)(a * 255) << 24)
+                    | ((int)(b * 255) << 16)
+                    | ((int)(g * 255) << 8)
+                    | ((int)(r * 255));
+        }
 
         /**
          * Clamps all color components within the range of 0 to 1.
          * 
          * @return a reference to this color used for method chaining
          */
-        Color & Saturate() noexcept;
+        Color<T> & Saturate() noexcept {
+            if (r > 1) {
+                r = 1;
+            } else if (r < 0) {
+                r = 0;
+            }
+
+            if (g > 1) {
+                g = 1;
+            } else if (g < 0) {
+                g = 0;
+            }
+
+            if (b > 1) {
+                b = 1;
+            } else if (b < 0) {
+                b = 0;
+            }
+
+            if (a > 1) {
+                a = 1;
+            } else if (a < 0) {
+                a = 0;
+            }
+
+            return *this;
+        }
 
         /**
          * Blends this color with another color respecting the alpha channel.
@@ -211,7 +291,32 @@ namespace astu {
          * @param o the other color to blend with this color
          * @return a reference to this color used for method chaining
          */
-        Color & Blend(const Color & o);
+        Color<T> & Blend(const Color<T> & o) {
+            double iba = 1.0 - o.a;
+            a = o.a + a * iba;
+            
+            r = o.r * o.a + r * a * iba;
+            g = o.g * o.a + g * a * iba;
+            b = o.b * o.a + b * a * iba;
+            
+            r /= a;
+            g /= a;
+            b /= a;
+
+            return *this;
+        }
+
+
+        /**
+         * Does a linear interpolation between this and the specified color.
+         * 
+         * @param o the other color
+         * @param t the interpolation position in the interval [0, 1]
+         * @return  the new interpolated color
+         */
+        Color<T> Lerp(const Color<T> & o, T t) const {
+            return *this + (o - *this) * t;
+        }
 
         /**
          * Binary addition operator for two colors.
@@ -219,7 +324,10 @@ namespace astu {
          * @param rhs the right-hand side color
          * @return a new color representing the result of the operation
          */
-        Color operator+(const Color & rhs) const;
+        Color<T> operator+(const Color<T> & rhs) const
+        {
+            return Color(r + rhs.r, g + rhs.g, b + rhs.b, a + rhs.a);
+        }
 
         /**
          * Compound assignment and addition operator for two colors.
@@ -227,7 +335,13 @@ namespace astu {
          * @param rhs the right-hand side color
          * @return a reference to this color
          */
-        Color& operator+=(const Color & o);
+        Color<T>& operator+=(const Color<T> & o) {
+            r += o.r;
+            g += o.g;
+            b += o.b;
+            a += o.a;
+            return *this;
+        }
 
         /**
          * Binary subtraction operator for two colors.
@@ -235,7 +349,9 @@ namespace astu {
          * @param rhs the right-hand side color
          * @return a new color representing the result of the operation
          */
-        Color operator-(const Color & o) const;
+        Color<T> operator-(const Color<T> & o) const {
+            return Color(r - o.r, g - o.g, b - o.b, a - o.a);
+        }
 
         /**
          * Compound assignment and subtraction operator for two colors.
@@ -243,7 +359,13 @@ namespace astu {
          * @param rhs the right-hand side color
          * @return a reference to this color
          */
-        Color& operator-=(const Color & o);
+        Color<T>& operator-=(const Color<T> & o) {
+            r -= o.r;
+            g -= o.g;
+            b -= o.b;
+            a -= o.a;
+            return *this;
+        }
 
         /**
          * Binary multiplication operator for a color and a scalar value.
@@ -251,7 +373,9 @@ namespace astu {
          * @param s the right-hand side scalar value
          * @return a new color representing the result of the operation
          */
-        Color operator*(double s) const;
+        Color<T> operator*(T s) const {
+            return Color(r * s, g * s, b * s, a * s);
+        }
 
         /**
          * Compound assignment and multiplication operator for a color and a scalar value.
@@ -259,7 +383,13 @@ namespace astu {
          * @param s the right-hand side scalar value
          * @return a reference to this color
          */
-        Color & operator*=(double s);
+        Color<T> & operator*=(T s) {
+            r *= s;
+            g *= s;
+            b *= s;
+            a *= s;
+            return *this;
+        }
 
         /**
          * Binary division operator for a color and a scalar value.
@@ -267,7 +397,9 @@ namespace astu {
          * @param s the right-hand side scalar value
          * @return a new color representing the result of the operation
          */
-        Color operator/(double s) const;
+        Color<T> operator/(T s) const {
+            return Color(r / s, g / s, b / s, a / s);
+        }
 
         /**
          * Compound assignment and division operator for a color and a scalar value.
@@ -275,7 +407,13 @@ namespace astu {
          * @param s the right-hand side scalar value
          * @return a reference to this color
          */
-        Color & operator/=(double s);
+        Color<T> & operator/=(T s) {
+            r /= s;
+            g /= s;
+            b /= s;
+            a /= s;
+            return *this;
+        }    
 
         /**
          * Binary equality operator comparing two colors.
@@ -283,7 +421,9 @@ namespace astu {
          * @param o	the right-hand side color
          * @return `true` if the right-hand side color is equal to this color
          */
-		bool operator==(const Color& o) const;
+		bool operator==(const Color<T>& o) const {
+            return r == o.r && g == o.g && b == o.b && a == o.a;
+        }
 
         /**
          * Binary non-equality operator comparing two colors.
@@ -294,7 +434,7 @@ namespace astu {
          * @param o	the right-hand side color
          * @return `true` if the right-hand side color is not equal to this color
          */
-        bool operator!=(const Color& o) const {
+        bool operator!=(const Color<T>& o) const {
             return !(*this == o);
         }         
 
@@ -307,7 +447,12 @@ namespace astu {
          * @param o	the right-hand side color
          * @return `true` if this color evaluates as 'less than' compared to the right-hand side color
          */
-        bool operator<(const Color & rhs) const;
+        bool operator<(const Color<T> & rhs) const {
+            //XXX this implementation is slow, improvement required.
+            double lng1 = sqrt(r * r + g * g + b * b + a * a);
+            double lng2 = sqrt(rhs.r * rhs.r + rhs.g * rhs.g + rhs.b * rhs.b + rhs.a * rhs.a);
+            return lng1 < lng2;
+        }
     };
 
     /**
@@ -401,9 +546,13 @@ namespace astu {
      * @param c the right-hand color
      * @return a new color representing the result of the operation
      */
-	inline const Color operator*(double s, const Color & c) {
+    template <typename T>
+	inline const Color<T> operator*(T s, const Color<T> & c) {
 		return c * s;
 	}
+
+    using Color4f = Color<float>;
+    using Color4d = Color<double>;
 
 } // end of namespace
 
@@ -414,4 +563,8 @@ namespace astu {
  * @param c     the color
  * @return  reference to the output stream
  */
-std::ostream& operator<<(std::ostream& os, const astu::Color& c);
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const astu::Color<T>& c) {
+    os << '{' << c.r << ", " << c.g << ", " << c.b << ", " << c.a << '}';
+    return os;
+}

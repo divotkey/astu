@@ -30,14 +30,14 @@ namespace astu {
         const Vector2<double> & GetPosition() const;
 
         bool IsPenDown();
-        void SetPenColor(const Color& c);
-        const Color & GetPenColor() const;
+        void SetPenColor(const Color4d& c);
+        const Color4d & GetPenColor() const;
 
     private:
         static const Vector2<double> REF_DIRECTION;
         Vector2<double> position;
         double angle;
-        Color penColor;
+        Color4d penColor;
         double penWidth;
         bool penDown;
     };

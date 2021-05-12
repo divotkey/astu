@@ -47,22 +47,22 @@ namespace astu {
         return impl->GetHeight();
     }
 
-    void Application::SetBackgroundColor(const Color & c)
+    void Application::SetBackgroundColor(const Color4d & c)
     {
         impl->SetBackgroundColor(c);
     }
 
-    Color Application::GetBackgroundColor() const
+    Color4d Application::GetBackgroundColor() const
     {
         return impl->GetBackgroundColor();
     }
 
-    void Application::SetDrawColor(const Color & c)
+    void Application::SetDrawColor(const Color4d & c)
     {
         impl->SetDrawColor(c);
     }
 
-    Color Application::GetDrawColor() const
+    Color4d Application::GetDrawColor() const
     {
         return impl->GetDrawColor();
     }

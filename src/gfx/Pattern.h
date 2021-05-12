@@ -31,10 +31,10 @@ namespace astu {
         void Rotate(double phi);
 
         BoundingBox GetBoundingBox() const;
-        virtual bool GetColor(const Vector2<double> &p, Color & c) const;
+        virtual bool GetColor(const Vector2<double> &p, Color4d & c) const;
 
     protected:
-        virtual bool GetColorTransformed(const Vector2<double> &pt, Color & c) const = 0;
+        virtual bool GetColorTransformed(const Vector2<double> &pt, Color4d & c) const = 0;
         virtual BoundingBox GetLocalBoundingBox() const = 0;
 
     private:
@@ -46,18 +46,18 @@ namespace astu {
     class UnicolorPattern : public Pattern {
     public:
     
-        UnicolorPattern(const Color & c = Color(0, 1, 1))
+        UnicolorPattern(const Color4d & c = Color4d(0, 1, 1))
             : color(c) {}
             
-        const Color & GetColor() const {
+        const Color4d & GetColor() const {
             return color;
         }
 
-        void SetColor(const Color & c) {
+        void SetColor(const Color4d & c) {
             color = c;
         }
 
-        virtual bool GetColor(const Vector2<double> &p, Color & c) const override {
+        virtual bool GetColor(const Vector2<double> &p, Color4d & c) const override {
             c = color;
             return true;
         }
@@ -65,7 +65,7 @@ namespace astu {
 
     protected:
 
-        virtual bool GetColorTransformed(const Vector2<double> &pt, Color & c) const override {
+        virtual bool GetColorTransformed(const Vector2<double> &pt, Color4d & c) const override {
             // Should never get called.
             c = color;
             return true;
@@ -76,7 +76,7 @@ namespace astu {
         }
 
     private:
-        Color color;
+        Color4d color;
     };
 
     class RectanglePattern : public Pattern {
@@ -113,7 +113,7 @@ namespace astu {
         }
 
     protected:
-        virtual bool GetColorTransformed(const Vector2<double> &pt, Color & c) const override;
+        virtual bool GetColorTransformed(const Vector2<double> &pt, Color4d & c) const override;
         virtual BoundingBox GetLocalBoundingBox() const override;
 
     private:
@@ -147,7 +147,7 @@ namespace astu {
         }
 
     protected:
-        virtual bool GetColorTransformed(const Vector2<double> &pt, Color & c) const override;
+        virtual bool GetColorTransformed(const Vector2<double> &pt, Color4d & c) const override;
         virtual BoundingBox GetLocalBoundingBox() const override;
 
     private:
@@ -197,11 +197,11 @@ namespace astu {
     public:
 
     protected:
-        virtual bool GetColorTransformed(const Vector2<double> &pt, Color & c) const override;
+        virtual bool GetColorTransformed(const Vector2<double> &pt, Color4d & c) const override;
         virtual BoundingBox GetLocalBoundingBox() const override;
 
     private:
-        void Blend(Color & a, const Color & b) const;
+        void Blend(Color4d & a, const Color4d & b) const;
     };
 
 }

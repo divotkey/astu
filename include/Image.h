@@ -7,7 +7,10 @@
 
 #pragma once
 
+// C++ Library includes
 #include <vector>
+
+// Local includes
 #include "Color.h"
 
 namespace astu {
@@ -72,7 +75,7 @@ namespace astu {
          * @return the color at the specified location
          * @throws std::out_of_range in case the coordinates are invalid
          */
-        const Color & GetPixel(int x, int y) const;
+        const Color4d & GetPixel(int x, int y) const;
 
         /**
          * Sets the color of a pixel.
@@ -82,7 +85,7 @@ namespace astu {
          * @param c the new color
          * @throws std::out_of_range in case the coordinates are invalid
          */
-        void SetPixel(int x, int y, const Color & c);
+        void SetPixel(int x, int y, const Color4d & c);
 
         /**
          * Returns the color of a pixel.
@@ -91,7 +94,7 @@ namespace astu {
          * @return the color of the pixel at the specified location
          * @throws std::out_of_range in case the index is invalid
          */
-        const Color & GetPixel(size_t idx) const;
+        const Color4d & GetPixel(size_t idx) const;
 
         /**
          * Sets the color of a pixel.
@@ -100,7 +103,7 @@ namespace astu {
          * @param c     the new color of the pixel at the specified location
          * @throws std::out_of_range in case the index is invalid
          */
-        void SetPixel(size_t idx, const Color & c);
+        void SetPixel(size_t idx, const Color4d & c);
 
         /**
          * Returns the number of pixels of this image.
@@ -116,7 +119,7 @@ namespace astu {
          * 
          * @return pointer to the linear array of pixel colors
          */
-        Color* GetPixels();
+        Color4d* GetPixels();
 
         /**
          * This method provides raw access to the pixel colors, use with care.
@@ -126,7 +129,7 @@ namespace astu {
          * 
          * @return pointer to the linear array of pixel colors
          */
-        const Color* GetPixels() const;
+        const Color4d* GetPixels() const;
 
     private:
         /** The width of the image in pixel. */
@@ -136,7 +139,7 @@ namespace astu {
         int height;
 
         /** The image data, stored as linear vector of Color instances. */
-        std::vector<Color> data;
+        std::vector<Color4d> data;
 
         /**
          * Validates pixel coordinates.

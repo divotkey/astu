@@ -136,23 +136,23 @@ namespace astu {
     }
 
     /////////////////////////////////////////////////
-    /////// BaseSdlRenderLayer
+    /////// SdlRenderLayer
     /////////////////////////////////////////////////
 
-    BaseSdlRenderLayer::BaseSdlRenderLayer(int renderPriority)
+    SdlRenderLayer::SdlRenderLayer(int renderPriority)
         : renderPriority(renderPriority)
     {
         AddStartupHook([this]() { ASTU_SERVICE( SdlRenderService).AddLayer(*this); });
         AddShutdownHook([this]() { ASTU_SERVICE( SdlRenderService).RemoveLayer(*this); });
     }
 
-    void BaseSdlRenderLayer::OnResize(int width, int height)
+    void SdlRenderLayer::OnResize(int width, int height)
     {
         targetWidth = width;
         targetHeight = height;        
     }
 
-    int BaseSdlRenderLayer::GetRenderPriority() const
+    int SdlRenderLayer::GetRenderPriority() const
     {
         return renderPriority;
     }

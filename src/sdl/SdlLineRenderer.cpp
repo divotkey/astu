@@ -16,7 +16,7 @@ namespace astu {
 
     SdlLineRenderer::SdlLineRenderer(int renderPriority)
         : Service("SDL Line Renderer")
-        , BaseSdlRenderLayer(renderPriority)
+        , SdlRenderLayer(renderPriority)
     {
         // Intentionally left empty.
     }
@@ -69,7 +69,24 @@ namespace astu {
         commands.push_back(cmd);
     }
 
-    void SdlLineRenderer::SetDrawColor(const Color & c) 
+    void SdlLineRenderer::SetDrawColor(const Color4d & c) 
+    {
+        assert(c.r >= 0 && c.r <= 1);
+        assert(c.g >= 0 && c.g <= 1);
+        assert(c.b >= 0 && c.b <= 1);
+        assert(c.a >= 0 && c.a <= 1);
+
+        RenderCommand cmd;
+        cmd.type = CommandType::SET_COLOR;
+        cmd.color.r = static_cast<int>(c.r * 255);
+        cmd.color.g = static_cast<int>(c.g * 255);
+        cmd.color.b = static_cast<int>(c.b * 255);
+        cmd.color.a = static_cast<int>(c.a * 255);
+
+        commands.push_back(cmd);
+    }
+
+    void SdlLineRenderer::SetDrawColor(const Color4f & c) 
     {
         assert(c.r >= 0 && c.r <= 1);
         assert(c.g >= 0 && c.g <= 1);

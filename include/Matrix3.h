@@ -452,17 +452,20 @@ namespace astu {
     private:
         T m[9];
     };
-}
 
-/**
- * Convenient type alias for astu::Matrix3 template using double as data type.
- */
-using Matrix3d = astu::Matrix3<double>;
+	/**
+	 * Convenient type alias for astu::Matrix3 template using double as data type.
+	 */
+	using Matrix3d = astu::Matrix3<double>;
 
-/**
- * Convenient type alias for astu::Matrix3 template using float as data type.
- */
-using Matrix3f = astu::Matrix3<float>;
+	/**
+	 * Convenient type alias for astu::Matrix3 template using float as data type.
+	 */
+	using Matrix3f = astu::Matrix3<float>;
+
+} // end of namespace
+
+
 
 // std::ostream & operator<<(std::ostream& os, const astu::Matrix3& mat) {
 // 	os << '[';

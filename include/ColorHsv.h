@@ -52,7 +52,7 @@ namespace astu {
          * 
          * @param c the rgb color to initialize this color
          */
-        explicit ColorHsv(const Color & c)
+        explicit ColorHsv(const Color4d & c)
         {
             Set(c);
         }
@@ -77,7 +77,7 @@ namespace astu {
          * 
          * @param c the color in RGB color space
          */
-        ColorHsv & Set(const Color & c) {
+        ColorHsv & Set(const Color4d & c) {
             double min = std::min({c.r, c.g, c.b});
             double max = std::max({c.r, c.g, c.b});
             double delta = max - min;
@@ -123,11 +123,11 @@ namespace astu {
             return *this;
         }
 
-        Color ToRgb() const {
+        Color4d ToRgb() const {
             int i;
             if (s == 0) { 
                 // Achromatic (Gray).
-                return Color(v, v, v);
+                return Color4d(v, v, v);
             }
 
             // Sector 0 to 5.
@@ -145,27 +145,27 @@ namespace astu {
             switch( i ) {
                 case 0: 
                     // *r = v; *g = t; *b = p; 
-                    return Color(v, t, p);
+                    return Color4d(v, t, p);
 
                 case 1:
                     //*r = q; *g = v; *b = p;
-                    return Color(q, v, p);
+                    return Color4d(q, v, p);
 
                 case 2: 
                     // *r = p; *g = v; *b = t; 
-                    return Color(p, v, t);
+                    return Color4d(p, v, t);
 
                 case 3:
                     // *r = p; *g = q; *b = v;
-                    return Color(p, q, v);
+                    return Color4d(p, q, v);
 
                 case 4: 
                     // *r = t; *g = p; *b = v;
-                    return Color(t, p, v);
+                    return Color4d(t, p, v);
 
                 case 5:
                     // *r = v; *g = p; *b = q; 
-                    return Color(v, p, q);
+                    return Color4d(v, p, q);
 
                 default:
                     // Should never happen.

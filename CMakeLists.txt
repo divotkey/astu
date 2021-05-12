@@ -13,7 +13,6 @@ list(APPEND astulib_SOURCES
 
                     src/gfx/AstGraphics.cpp
 
-                    src/gfx/Color.cpp 
                     src/gfx/Palette.cpp
                     src/gfx/Image.cpp 
                     src/gfx/BmpCodec.cpp
@@ -38,6 +37,7 @@ list(APPEND astulib_SOURCES
                     src/srv/IteratingEntitySystem.cpp
                     src/srv/Mouse.cpp
                     src/srv/Keyboard.cpp
+                    src/srv/Scene2.cpp
 
                     src/AstUtils1.cpp)
 
@@ -64,6 +64,8 @@ if(WITH_SDL)
         src/sdl/SdlAudioService.cpp
         src/sdl/SdlTimeService.cpp
         src/sdl/SdlLineRenderer.cpp
+        src/sdl/SdlSceneGraph2.cpp
+        src/sdl/SdlScene2Renderer.cpp
         )
 else(WITH_SDL)
     list(APPEND astulib_SOURCES src/sdl/SdlApplicationDummy.cpp)

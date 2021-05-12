@@ -23,10 +23,10 @@ namespace astu {
         static const int kDefaultHeight = 600;
 
         /** The default background color. */
-        static const Color kDefaultBackgroundColor;
+        static const Color4d kDefaultBackgroundColor;
 
         /** The default draw color. */
-        static const Color kDefaultDrawColor;
+        static const Color4d kDefaultDrawColor;
 
         /**
          * Constructor.
@@ -37,10 +37,10 @@ namespace astu {
         void SetHeight(int h);
         int GetWidth() const;
         int GetHeight() const;    
-        void SetBackgroundColor(const Color & c);
-        Color GetBackgroundColor() const;
-        void SetDrawColor(const Color & c);
-        Color GetDrawColor() const;
+        void SetBackgroundColor(const Color4d & c);
+        Color4d GetBackgroundColor() const;
+        void SetDrawColor(const Color4d & c);
+        Color4d GetDrawColor() const;
         void DrawRectangle(int x, int y, int w, int h, bool filled);
         void DrawLine(int x1, int y1, int x2, int y2);
         void DrawPixel(int x, int y);
@@ -83,10 +83,10 @@ namespace astu {
         bool running;
 
         /** The background color used by the renderer. */
-        Color backgroundColor;
+        Color4d backgroundColor;
 
         /** The draw color used by the renderer. */
-        Color drawColor;
+        Color4d drawColor;
 
         /** Used to translate the performance counter to seconds. */
         double performToSeconds;

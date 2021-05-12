@@ -12,39 +12,39 @@
 
 namespace astu {
 
-    Palette::Palette(const Color & start, const Color & end)
+    Palette::Palette(const Color4d & start, const Color4d & end)
     {
         AddColor(start, 0);
         AddColor(end, 1);
     }
 
-    Palette& Palette::SetStartColor(const Color & c)
+    Palette& Palette::SetStartColor(const Color4d & c)
     {
         assert(entries.size() >= 1);
         entries[0].color = c;
         return *this;
     }
 
-    Color Palette::GetStartColor() const
+    Color4d Palette::GetStartColor() const
     {
         assert(!entries.empty());
         return entries[0].color;
     }
 
-    Palette& Palette::SetEndColor(const Color & c)
+    Palette& Palette::SetEndColor(const Color4d & c)
     {
         assert(!entries.empty());
         entries.back().color = c;
         return *this;
     }
 
-    Color Palette::GetEndColor() const
+    Color4d Palette::GetEndColor() const
     {
         assert(entries.size() >= 1);
         return entries.back().color;
     }
 
-    Palette& Palette::AddColor(const Color & c, double p)
+    Palette& Palette::AddColor(const Color4d & c, double p)
     {
         if (p < 0 || p > 1) {
             throw std::out_of_range("The position of a color within a color palette must lie in the interval [0, 1].");
@@ -56,7 +56,7 @@ namespace astu {
         return *this;
     }
 
-    Color Palette::GetColor(double t) const
+    Color4d Palette::GetColor(double t) const
     {
         t = (t < 0.0) ? 0.0 : (1.0 < t) ? 1.0 : t;
 
@@ -76,17 +76,16 @@ namespace astu {
         return entries.size();
     }
 
-    const Color & Palette::at(size_t idx) const
+    const Color4d & Palette::at(size_t idx) const
     {
         return entries.at(idx).color;
     }
 
-    const Color & Palette::operator[](size_t idx) const
+    const Color4d & Palette::operator[](size_t idx) const
     {
         assert(idx < entries.size());
         return entries[idx].color;
     }
-
 
     void Palette::FindBoundaries(double t, const Entry *&e1, const Entry *&e2) const
     {
@@ -117,7 +116,7 @@ namespace astu {
         }
     }
 
-    Palette::Entry::Entry(const Color & c, double p)
+    Palette::Entry::Entry(const Color4d & c, double p)
         : color(c)
         , pos(p)
     {

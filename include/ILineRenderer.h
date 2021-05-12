@@ -56,7 +56,7 @@ namespace astu {
          * 
          * @param c the new drawing color 
          */
-        virtual void SetDrawColor(const Color & c) = 0;
+        virtual void SetDrawColor(const Color<T> & c) = 0;
     };
 
     using ILineRenderer2f = ILineRenderer<float>;
@@ -88,7 +88,7 @@ namespace astu {
             return *lineRenderer;
         }
 
-        void SetDrawColor(const Color & c) {
+        void SetDrawColor(const Color<T> & c) {
             lineRenderer->SetDrawColor(c);
         }
 

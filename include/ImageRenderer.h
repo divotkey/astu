@@ -119,14 +119,14 @@ namespace astu {
          * 
          * @param c the color
          */
-        void SetDrawColor(const Color & c) noexcept;
+        void SetDrawColor(const Color4d & c) noexcept;
 
         /**
          * Returns the background color
          * 
          * @return the current background color
          */
-        const Color & GetDrawColor() const noexcept;
+        const Color4d & GetDrawColor() const noexcept;
 
         /**
          * Sets the background color.
@@ -137,14 +137,14 @@ namespace astu {
          * 
          * @param c the background color
          */
-        void SetBackgroundColor(const Color & c) noexcept;
+        void SetBackgroundColor(const Color4d & c) noexcept;
 
         /**
          * Returns the background color
          * 
          * @return the current background color
          */
-        const Color & GetBackgroundColor() const noexcept;
+        const Color4d & GetBackgroundColor() const noexcept;
 
         /**
          * Draws a filled circle.
@@ -258,10 +258,10 @@ namespace astu {
         RenderQuality quality;
 
         /** The current drawing color. */
-        Color drawColor;
+        Color4d drawColor;
 
         /** The background color. */
-        Color backgroundColor;
+        Color4d backgroundColor;
 
         /** The root container for all patterns. */
         std::unique_ptr<UnionPattern> root;

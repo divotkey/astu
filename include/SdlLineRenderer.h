@@ -25,7 +25,7 @@ namespace astu {
      * be rendered.
      */
     class SdlLineRenderer final 
-        : public BaseSdlRenderLayer
+        : public SdlRenderLayer
         , public ILineRenderer2d
         , public ILineRenderer2f
     {
@@ -43,20 +43,20 @@ namespace astu {
          */
         virtual ~SdlLineRenderer() {}
 
-        // Inherited via BaseSdlRenderLayer
+        // Inherited via SdlRenderLayer
         virtual void OnRender(SDL_Renderer* renderer) override;
 
         // Inherited via ILineRenderer2d
         virtual void DrawLine(double x1, double y1, double x2, double X2) override;
-        virtual void SetDrawColor(const Color & c) override;
+        virtual void SetDrawColor(const Color4d & c) override;
 
         // Inherited via ILineRenderer2f
         virtual void DrawLine(float x1, float y1, float x2, float X2) override;
-        // virtual void SetDrawColor(const Color & c) override;
+        virtual void SetDrawColor(const Color4f & c) override;
 
     protected:
 
-        // Inherited via BaseSdlRenderLayer
+        // Inherited via SdlRenderLayer
         virtual void OnStartup() override;
         virtual void OnShutdown() override;
 

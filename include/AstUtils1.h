@@ -81,7 +81,7 @@ namespace astu1 {
      */ 
     int GetImageHeight(int hImg);
 
-    astu::Color GetPixel(int hImg, int x, int y);
+    astu::Color4d GetPixel(int hImg, int x, int y);
 
     /**
      * Exports the image to 32-bit floating-point RGB values.

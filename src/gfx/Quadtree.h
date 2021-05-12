@@ -33,7 +33,7 @@ namespace astu {
     protected:
 
         // Inherited via CompoundPattern
-        virtual bool GetColorTransformed(const Vector2<double> &pt, Color & c) const override;
+        virtual bool GetColorTransformed(const Vector2<double> &pt, Color4d & c) const override;
         virtual BoundingBox GetLocalBoundingBox() const override;
         virtual void OnPatternAdded(Pattern & pattern) override;
         virtual void OnClear() override;
@@ -67,7 +67,7 @@ namespace astu {
         BoundingBox localBox;
 
         std::unique_ptr<Quadtree> CreateNode(double dx, double dy);
-        bool GetLocalColorTransformed(const Vector2<double> &pt, Color & c) const;
+        bool GetLocalColorTransformed(const Vector2<double> &pt, Color4d & c) const;
 
     };
 
