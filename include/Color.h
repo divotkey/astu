@@ -49,7 +49,12 @@ namespace astu {
         static Color<T> CreateFromRgb(
             int red, int green, int blue, int alpha = 255)
         {
-            return Color(red / 255.0, green / 255.0, blue / 255.0, alpha / 255.0);
+            return Color(
+                red / static_cast<T>(255), 
+                green / static_cast<T>(255), 
+                blue / static_cast<T>(255), 
+                alpha / static_cast<T>(255)
+                );
         }
 
         /**
