@@ -7,6 +7,8 @@
 
 // C++ Standard Library includes
 #include <cassert>     
+
+// Simple Direct Layer includes
 #include <SDL2/SDL.h>
 
 // Local (AST-Utilities) includes

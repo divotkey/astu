@@ -5,6 +5,8 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+#pragma once
+
 // C++ Standard Library includes
 #include <vector>
 #include <memory>
@@ -105,6 +107,13 @@ namespace astu {
     public:
 
         /**
+         * Constructor.
+         * 
+         * @param vertexBuffer  the vertex data
+         */
+        Polyline2(std::shared_ptr<VertexBuffer2> vertexBuffer);
+
+        /**
          * Returns the vertex buffer of this polyline.
          * 
          * @return the vertex buffer
@@ -117,6 +126,7 @@ namespace astu {
         virtual void Render(Scene2Renderer& renderer) override;
 
     private:
+        /** The vertex buffer representing the vertex data of this polyline. */
         std::shared_ptr<VertexBuffer2> vertexBuffer;
     };
 

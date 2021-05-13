@@ -75,6 +75,12 @@ namespace astu {
     /////// Polyline2
     /////////////////////////////////////////////////
 
+    Polyline2::Polyline2(std::shared_ptr<VertexBuffer2> vertexBuffer)
+        : vertexBuffer(vertexBuffer)
+    {
+        // Intentionally left empty
+    }
+
     void Polyline2::Render(Scene2Renderer& renderer)
     {
         renderer.Render(*this);
