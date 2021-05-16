@@ -10,6 +10,7 @@ list(APPEND astulib_SOURCES
                     src/AstUtils0.cpp
                     src/misc/VersionInfo.cpp
                     src/math/Random.cpp
+                    src/math/MathUtils.cpp
 
                     src/gfx/AstGraphics.cpp
 
@@ -38,6 +39,7 @@ list(APPEND astulib_SOURCES
                     src/srv/Mouse.cpp
                     src/srv/Keyboard.cpp
                     src/srv/Scene2.cpp
+                    src/srv/Shape2Generator.cpp
 
                     src/AstUtils1.cpp)
 

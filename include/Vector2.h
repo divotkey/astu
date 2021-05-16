@@ -293,6 +293,59 @@ namespace astu {
         }
 
         /**
+         * Adds the specified vector to this vector in-place.
+         *
+         * @param vx	the x-coordinate of the other vector
+         * @param vy	the y-coordinate of the other vector
+         * @return reference to this vector for method chaining
+         */
+        Vector2<T> & Add(T vx, T vy)
+        {
+            x += vx; y += vy;
+            return *this;
+        }
+
+        /**
+         * Adds the specified vector to this vector in-place.
+         *
+         * @param o		the other vector
+         * @return reference to this vector for method chaining
+         */
+        Vector2<T> & Add(const Vector2<T> & o)
+        {
+            x += o.x; y += o.y;
+            return *this;
+        }
+
+        /**
+         * Scales this vector by the specified scaling vector.
+         * 
+         * @param sv the scaling vector
+         * @return reference to this vector for method chaining
+         */
+        Vector2<T> & Scale(const Vector2<T> & sv)
+        {
+            x *= sv.x;
+            y *= sv.y;
+            return *this;
+        }       
+
+        /**
+         * Scales this vector by the specified vector.
+         * 
+         * @param sx the x-component of the scaling vector
+         * @param sy the y-component of the scaling vector
+         * @return reference to this vector for method chaining
+         */
+        Vector2<T> & Scale(T sx, T sy)
+        {
+            x *= sx;
+            y *= sy;
+            return *this;
+        }
+
+
+        /**
          * Binary addition operator for two vectors.
          *
          * @param right the right hand-side vector

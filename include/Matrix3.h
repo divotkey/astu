@@ -16,6 +16,7 @@
 
 // Local includes
 #include "Vector2.h"
+#include "MathUtils.h"
 
 namespace astu {
 
@@ -224,15 +225,15 @@ namespace astu {
     		return *this;
         }     
 
-		// /**
-		//  * Sets this matrix to a rotate matrix with the specified angle.
-		//  *
-		//  * @param phi	rotation angle in degrees
-		//  * @return reference to this matrix for method chaining
-		//  */
-		// Matrix3<T> & setToRotateDeg(T phi) {
-		// 	return setToRotate(phi * MathUtils::TO_RADIANS);
-		// }
+		/**
+		 * Sets this matrix to a rotate matrix with the specified angle.
+		 *
+		 * @param phi	rotation angle in degrees
+		 * @return reference to this matrix for method chaining
+		 */
+		Matrix3<T> & SetToRotateDeg(T phi) {
+			return SetToRotate(ToRadians<T>(phi));
+		}
 
 		/**
 		 * Applies a counter-clock wise rotation by the specified angle.
@@ -247,7 +248,19 @@ namespace astu {
             *this = tmp.SetToRotate(phi) * *this;
 
             return *this;
-        }        
+        } 
+
+		/**
+		 * Applies a counter-clock wise rotation by the specified angle.
+		 * This method creates a rotation matrix M<sub>r</sub> and pre-multiplies the
+		 * rotation matrix with this matrix: M = M<sub>r</sub> &middot; M.
+		 *
+		 * @param phi	rotation angle in degrees
+		 * @return reference to this matrix for method chaining
+		 */
+        Matrix3<T>& RotateDeg(T phi) {
+			return Rotate(ToRadians<T>(phi));
+        }
 
 		/**
 		 * Transforms the specified point.

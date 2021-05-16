@@ -19,4 +19,13 @@ namespace astu {
         return phi * static_cast<T>(180.0 / 3.14159265358979323846);
     }
 
+    class MathUtils final {
+    public:
+        const static double PId;
+        const static double PI2d;
+        const static float PIf;
+        const static float PI2f;
+    };
+
+
 } // end of namespace

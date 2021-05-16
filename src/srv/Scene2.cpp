@@ -34,6 +34,20 @@ namespace astu {
         // Intentionally left empty.
     }
 
+    void Spatial2::Update()
+    {
+        UpdateTransform();
+    }
+
+    void Spatial2::UpdateTransform()
+    {
+        if (parent) {
+            worldTransform = localTransform * parent->worldTransform;
+        } else {
+            worldTransform = localTransform;
+        }
+    }
+
     /////////////////////////////////////////////////
     /////// Node2
     /////////////////////////////////////////////////
@@ -62,6 +76,15 @@ namespace astu {
             children.end());
 
         child->SetParent(nullptr);
+    }
+
+    void Node2::UpdateTransform()
+    {
+        Spatial2::UpdateTransform();
+
+        for (auto & child : children) {
+            child->UpdateTransform();
+        }
     }
 
     void Node2::Render(Scene2Renderer& renderer)

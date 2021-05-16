@@ -65,7 +65,7 @@ namespace astu {
          * 
          * @return the newly created vertex buffer
          */
-        virtual std::unique_ptr<VertexBuffer2> Build() = 0;        
+        virtual std::shared_ptr<VertexBuffer2> Build() = 0;        
     };
 
 } // end of namespace

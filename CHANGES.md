@@ -10,6 +10,9 @@
 - Added ServiceEvents.
 - Improved API of `ServiceManager`.
 - Improved configuration of service features by inheritance (experimental).
+- Improvec `Vector2<T>` template class.
+- Added scene graph for two-dimensional renderings.
+- Improved/added `MathUtils` class.
 
 # Version 0.8.0
 *Date: 2021-04-07*

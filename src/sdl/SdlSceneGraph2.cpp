@@ -36,9 +36,9 @@ namespace astu {
         return *this;
     }
 
-    std::unique_ptr<VertexBuffer2> SdlVertexBuffer2BuilderService::Build()
+    std::shared_ptr<VertexBuffer2> SdlVertexBuffer2BuilderService::Build()
     {
-        auto result = std::make_unique<SdlVertexBuffer2>();
+        auto result = std::make_shared<SdlVertexBuffer2>();
         result->vertices = vertices;
         return result;
     }
@@ -61,6 +61,7 @@ namespace astu {
 
     void SdlSceneGraph2::OnRender(SDL_Renderer* renderer)
     {
+        GetRoot().Update();
         sceneRenderer->SetSdlRenderer(*renderer);
         GetRoot().Render(*sceneRenderer);
         sceneRenderer->ClearSdlRenderer();

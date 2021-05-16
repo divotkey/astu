@@ -38,24 +38,44 @@ namespace astu {
         ASSERT_VBUF(polyline.GetVertexBuffer());
         assert(renderer);
 
-        // DEBUG START
+        const auto & vertices = VBUF(polyline.GetVertexBuffer()).vertices;
+        if (vertices.size() < 2) {
+            return;
+        }
+
+       // DEBUG START
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         // DEBUG END
 
-        const auto & vertices = VBUF(polyline.GetVertexBuffer()).vertices;
-        auto prev = vertices.cbegin();
+        const auto & tx = polyline.GetWorldTransform();
+        auto it = vertices.cbegin();
+        auto p1 = tx.TransformPoint(*it);
 
-        for (auto it = prev + 1; it != vertices.cend(); ++it) {
+        while (++it != vertices.cend()) {
+            const auto p2 = tx.TransformPoint(*it);
             SDL_RenderDrawLine(
                 renderer, 
-                static_cast<int>(prev->x), 
-                static_cast<int>(prev->y), 
-                static_cast<int>(it->x), 
-                static_cast<int>(it->y)
+                static_cast<int>(p1.x), 
+                static_cast<int>(p1.y), 
+                static_cast<int>(p2.x), 
+                static_cast<int>(p2.y)
                 );
 
-            prev = it;
+            p1 = p2;
         }
+
+        // auto prev = vertices.cbegin();
+        // for (auto it = prev + 1; it != vertices.cend(); ++it) {
+        //     SDL_RenderDrawLine(
+        //         renderer, 
+        //         static_cast<int>(prev->x), 
+        //         static_cast<int>(prev->y), 
+        //         static_cast<int>(it->x), 
+        //         static_cast<int>(it->y)
+        //         );
+
+        //     prev = it;
+        // }
     }
 
 } // end of namespace

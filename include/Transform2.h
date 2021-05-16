@@ -15,28 +15,104 @@
 #include "Vector2.h"
 #include "Matrix3.h"
 
-template <typename T>
-class Transform2 {
-public:
+namespace astu {
+    template <typename T>
+    class Transform2 {
+    public:
 
-    void SetScaling(const Vector2<T> & s) {
-        scaling = s;
-    }
+        /**
+         * Constructor.
+         */
+        Transform2()
+            : translation(0, 0), scaling(0, 0), rotation(0)
+        {
+            // Intentionally left empty
+        }
 
-    const Vector2<T> & GetScaling() const {
-        return scaling;
-    }
+        Transform2<T> & SetTranslation(T tx, T ty) {
+            translation.Set(tx, ty);
+            return *this;
+        }
 
-private:
-    /** Translation of this transformation, as a vector. */
-    astu::Vector2<T> translation;
+        Transform2<T> & SetTranslation(const Vector2<T> & t) {
+            translation = s;
+            return *this;
+        }
 
-    /** 2D scale (always applied in local space) as a vector. */
-    astu::Vector2<T> scaling;
+        const Vector2<T> & GetTranslation() const {
+            return translation;
+        }
 
-    /** Rotation of this transformation, in radian. */
-    T rotation;
+        Transform2<T> & SetScaling(T sx, T sy) {
+            scaling.Set(sx, sy);
+            return *this;
+        }
 
-    /** The transformation matrix of this transform. */
-    Matrix3<t> matrix;
-};
+        Transform2<T> & SetScaling(const Vector2<T> & s) {
+            scaling = s;
+            return *this;
+        }
+
+        const Vector2<T> & GetScaling() const {
+            return scaling;
+        }
+
+        Transform2<T> & SetRotation(T phi) {
+            rotation = phi;
+            return *this;
+        }
+
+        T GetRotation() const {
+            return rotation;
+        }
+
+        Vector2<T> TransformPoint(const Vector2<T> & p) const {
+            return Vector2<T>(p)
+                .Scale(scaling)
+                .Rotate(rotation)
+                .Add(translation);
+        }
+
+        Vector2<T> TransformPoint(T x, T y) const {
+            return Vector2<T>(x, y)
+                .Scale(scaling)
+                .Rotate(rotation)
+                .Add(translation);
+        }
+
+        Vector2<T> TransformVector(const Vector2<T> & v) const {
+            return Vector2<T>(v)
+                .Scale(scaling)
+                .Rotate(rotation);
+        }
+
+        Vector2<T> TransformVector(T x, T y) const {
+            return Vector2<T>(x, y)
+                .Scale(x, y)
+                .Rotate(rotation);
+        }
+
+        const Transform2<T> operator*(const Transform2<T> & rhs) const
+		{
+            // TODO implement
+            return Transform2<T>();
+		}       
+
+    private:
+        /** Translation of this transformation, as a vector. */
+        astu::Vector2<T> translation;
+
+        /** 2D scale (always applied in local space) as a vector. */
+        astu::Vector2<T> scaling;
+
+        /** Rotation of this transformation, in radian. */
+        T rotation;
+
+        /** The transformation matrix of this transform. */
+        Matrix3<T> matrix;
+    };
+
+    using Transform2f = Transform2<float>;
+    using Transform2d = Transform2<double>;
+
+} // end of namespace
