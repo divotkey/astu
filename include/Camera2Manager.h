@@ -13,6 +13,7 @@
 #include <string>
 
 // Local includes
+#include "Transform2.h"
 #include "Service.h"
 #include "Matrix3.h"
 
@@ -21,23 +22,22 @@ namespace astu {
     class Camera2 {
     public:
 
-        void SetPosition(float x, float y);
-
-        void SetPosition(const Vector2f& p) {
-            SetPosition(p.x, p.y);
-        }
-
+        /**
+         * Constructor.
+         */
+        Camera2();
 
         /**
          * Returns the transformation matrix.
          * 
          * @return the transformation matrix
          */
-        const Matrix3f GetTransform();
+        const Matrix3f& GetTransform() const;
+
 
     private:
-        /** The transformation matrix. */
-        Matrix3f transform;
+        /** The transformation of this cameras. */
+        Transform2f transform;
     };
 
     class Camera2Manager : virtual public Service {

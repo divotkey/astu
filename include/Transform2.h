@@ -12,10 +12,12 @@
 #include <iostream>
 
 // Local includes
+#include "MathUtils.h"
 #include "Vector2.h"
 #include "Matrix3.h"
 
 namespace astu {
+    
     template <typename T>
     class Transform2 {
     public:
@@ -62,6 +64,11 @@ namespace astu {
             return *this;
         }
 
+        Transform2<T> & SetRotationDeg(T phi) {
+            rotation = MatuUtils::ToRadians<T>(phi);
+            return *this;
+        }
+
         T GetRotation() const {
             return rotation;
         }
@@ -92,11 +99,16 @@ namespace astu {
                 .Rotate(rotation);
         }
 
-        const Transform2<T> operator*(const Transform2<T> & rhs) const
-		{
-            // TODO implement
-            return Transform2<T>();
-		}       
+        const Matrix3<T>& StoreToMatrix(Matrix3<T>& m) const {
+            m.SetToScale(m_scale);
+            m.Rotate(m_angle);
+            m.Translate(m_pos);
+            return m;
+        }
+
+        Matrix3<T> CalcMatrix() const {
+            return StoreToMatrix(Matrix3<T>());
+        }
 
     private:
         /** Translation of this transformation, as a vector. */
@@ -107,9 +119,6 @@ namespace astu {
 
         /** Rotation of this transformation, in radian. */
         T rotation;
-
-        /** The transformation matrix of this transform. */
-        Matrix3<T> matrix;
     };
 
     using Transform2f = Transform2<float>;

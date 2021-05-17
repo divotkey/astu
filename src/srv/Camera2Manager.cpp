@@ -15,6 +15,25 @@ using namespace std;
 
 namespace astu {
 
+    /////////////////////////////////////////////////
+    /////// Camera2
+    /////////////////////////////////////////////////
+
+    Camera2::Camera2() 
+        // : position(0, 0), angle(0), dirty(true)
+    {
+        // Intentionally left empty
+    }
+
+    // const Matrix3f& Camera2::GetTransform() const
+    // {
+    //     return transform;
+    // }
+
+    /////////////////////////////////////////////////
+    /////// Camera2Manager
+    /////////////////////////////////////////////////
+
     const string Camera2Manager::DEFAULT_CAMERA = "Default Cam";
 
     Camera2Manager::Camera2Manager()
