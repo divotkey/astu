@@ -27,6 +27,15 @@ namespace astu {
          */
         Camera2();
 
+
+        Camera2& SetPosition(float x, float y);
+
+        Camera2& SetPosition(const Vector2f & p) {
+            return SetPosition(p.x, p.y);
+        }
+
+        Camera2& SetOrientation(float phi);
+
         /**
          * Returns the transformation matrix.
          * 
@@ -34,10 +43,12 @@ namespace astu {
          */
         const Matrix3f& GetTransform() const;
 
-
     private:
-        /** The transformation of this cameras. */
+        /** The transformation of this camera. */
         Transform2f transform;
+
+        /** The transformation matrix of this camera. */
+        Matrix3f matrix;
     };
 
     class Camera2Manager : virtual public Service {

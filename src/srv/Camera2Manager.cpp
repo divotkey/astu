@@ -20,15 +20,18 @@ namespace astu {
     /////////////////////////////////////////////////
 
     Camera2::Camera2() 
-        // : position(0, 0), angle(0), dirty(true)
     {
         // Intentionally left empty
     }
 
-    // const Matrix3f& Camera2::GetTransform() const
-    // {
-    //     return transform;
-    // }
+    const Matrix3f& Camera2::GetTransform() const
+    {
+        if (transform.IsDirty()) {
+            transform.StoreToMatrix(matrix);
+            transform.ClearDirty();
+        }
+        return matrix;
+    }
 
     /////////////////////////////////////////////////
     /////// Camera2Manager

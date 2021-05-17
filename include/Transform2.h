@@ -17,7 +17,7 @@
 #include "Matrix3.h"
 
 namespace astu {
-    
+
     template <typename T>
     class Transform2 {
     public:
@@ -26,18 +26,20 @@ namespace astu {
          * Constructor.
          */
         Transform2()
-            : translation(0, 0), scaling(0, 0), rotation(0)
+            : translation(0, 0), scaling(0, 0), rotation(0), dirty(false)
         {
             // Intentionally left empty
         }
 
         Transform2<T> & SetTranslation(T tx, T ty) {
             translation.Set(tx, ty);
+            dirty = true;
             return *this;
         }
 
         Transform2<T> & SetTranslation(const Vector2<T> & t) {
             translation = s;
+            dirty = true;
             return *this;
         }
 
@@ -47,11 +49,13 @@ namespace astu {
 
         Transform2<T> & SetScaling(T sx, T sy) {
             scaling.Set(sx, sy);
+            dirty = true;
             return *this;
         }
 
         Transform2<T> & SetScaling(const Vector2<T> & s) {
             scaling = s;
+            dirty = true;
             return *this;
         }
 
@@ -61,11 +65,13 @@ namespace astu {
 
         Transform2<T> & SetRotation(T phi) {
             rotation = phi;
+            dirty = true;
             return *this;
         }
 
         Transform2<T> & SetRotationDeg(T phi) {
             rotation = MatuUtils::ToRadians<T>(phi);
+            dirty = true;
             return *this;
         }
 
@@ -110,6 +116,15 @@ namespace astu {
             return StoreToMatrix(Matrix3<T>());
         }
 
+        bool IsDirty() const {
+            return dirty;
+        }
+
+        Transform2<T> & ClearDirty() {
+            dirty = false;
+            return *this;
+        }
+
     private:
         /** Translation of this transformation, as a vector. */
         astu::Vector2<T> translation;
@@ -119,6 +134,9 @@ namespace astu {
 
         /** Rotation of this transformation, in radian. */
         T rotation;
+
+        /** Indicats whether this transform is dirty. */
+        bool dirty;
     };
 
     using Transform2f = Transform2<float>;
