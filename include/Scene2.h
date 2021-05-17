@@ -21,14 +21,27 @@ namespace astu {
     class VertexBuffer2;
     class Polyline2;
 
+    /////////////////////////////////////////////////
+    /////// Scene2Renderer
+    /////////////////////////////////////////////////
+
     class Scene2Renderer {
     public:
 
         /** Virtual destructor. */
         virtual ~Scene2Renderer() {}
 
+        /**
+         * Renders a polyine node.
+         * 
+         * @param polyline  the polyline node to render
+         */
         virtual void Render(Polyline2& polyline) = 0;
     };
+
+    /////////////////////////////////////////////////
+    /////// Spatial2
+    /////////////////////////////////////////////////
 
     class Spatial2 {
     public:
@@ -155,6 +168,10 @@ namespace astu {
         friend class Node2;
     };
 
+    /////////////////////////////////////////////////
+    /////// Node2
+    /////////////////////////////////////////////////
+
     class Node2 : public Spatial2 {
     public:
 
@@ -191,6 +208,10 @@ namespace astu {
     // private:
     // };
 
+    /////////////////////////////////////////////////
+    /////// Polyline2
+    /////////////////////////////////////////////////
+
     class Polyline2 final : public Spatial2 {
     public:
 
@@ -218,6 +239,9 @@ namespace astu {
         std::shared_ptr<VertexBuffer2> vertexBuffer;
     };
 
+    /////////////////////////////////////////////////
+    /////// SceneGraph2
+    /////////////////////////////////////////////////
 
     /**
      * Represents a scene graph in two-dimensional space.
@@ -255,6 +279,10 @@ namespace astu {
         /** The root node of this scene graph. */
         std::shared_ptr<Node2> root;
     };
+
+    /////////////////////////////////////////////////
+    /////// Spatial2Builder
+    /////////////////////////////////////////////////
 
     template <typename T>
     class Spatial2Builder {
@@ -327,6 +355,10 @@ namespace astu {
         std::string name;
     };
 
+    /////////////////////////////////////////////////
+    /////// Node2Builder
+    /////////////////////////////////////////////////
+
     class Node2Builder final : public Spatial2Builder<Node2Builder> {
     public:
 
@@ -372,6 +404,10 @@ namespace astu {
         /** The children of this node. */
         std::vector<std::shared_ptr<Spatial2>> children;
     };
+
+    /////////////////////////////////////////////////
+    /////// Polyline2Builder
+    /////////////////////////////////////////////////
 
     class Polyline2Builder final : public Spatial2Builder<Polyline2Builder> {
     public:

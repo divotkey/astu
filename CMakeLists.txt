@@ -40,6 +40,7 @@ list(APPEND astulib_SOURCES
                     src/srv/Keyboard.cpp
                     src/srv/Scene2.cpp
                     src/srv/Shape2Generator.cpp
+                    src/srv/Camera2Manager.cpp
 
                     src/AstUtils1.cpp)
 
