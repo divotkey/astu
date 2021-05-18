@@ -34,23 +34,57 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    void Spatial2::Update()
+    void Spatial2::Update(double dt)
     {
-        UpdateTransform();
+        UpdateTransform(dt);
     }
 
-    void Spatial2::UpdateTransform()
+    void Spatial2::UpdateTransform(double dt)
     {
+        UpdateControllers(dt);
+
         if (parent) {
-            worldTransform = localTransform * parent->worldTransform;
+            worldMatrix = parent->worldMatrix * localTransform.StoreToMatrix(localMatrix);
         } else {
-            worldTransform = localTransform;
+            worldMatrix = localTransform.StoreToMatrix(localMatrix);
         }
     }
 
     /////////////////////////////////////////////////
     /////// Node2
     /////////////////////////////////////////////////
+
+    std::shared_ptr<Spatial2> Node2::FindChildOrNull(const std::string & name)
+    {
+        for(auto & child : children) {
+            if (child->GetName() == name) {
+                return child;
+            }
+        }
+
+        for(auto & child : children) {
+            auto node = std::dynamic_pointer_cast<Node2>(child);
+            if (node) {
+                auto result = node->FindChild(name);
+                if (result) {
+                    return result;
+                }
+            }
+        }
+
+        return nullptr;
+    }
+
+    std::shared_ptr<Spatial2> Node2::FindChild(const std::string & name)
+    {
+        auto result = FindChildOrNull(name);
+        if (!result) {
+            throw std::logic_error("No spatial with name '" + name + "' found");
+        }
+
+        return result;
+    }
+
 
     bool Node2::HasChild(std::shared_ptr<Spatial2> child)
     {
@@ -78,12 +112,12 @@ namespace astu {
         child->SetParent(nullptr);
     }
 
-    void Node2::UpdateTransform()
+    void Node2::UpdateTransform(double dt)
     {
-        Spatial2::UpdateTransform();
+        Spatial2::UpdateTransform(dt);
 
         for (auto & child : children) {
-            child->UpdateTransform();
+            child->UpdateTransform(dt);
         }
     }
 
@@ -107,6 +141,11 @@ namespace astu {
     void Polyline2::Render(Scene2Renderer& renderer)
     {
         renderer.Render(*this);
+    }
+
+    void Polyline2::SetColor(const Color4f& c)
+    {
+        color = c;
     }
 
 } // end of namespace

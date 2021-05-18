@@ -47,8 +47,9 @@ namespace astu {
     /////// SdlVertexBuffer2Builder
     /////////////////////////////////////////////////
 
-    SdlSceneGraph2::SdlSceneGraph2(int renderPriority)
+    SdlSceneGraph2::SdlSceneGraph2(int renderPriority, int updatePriority)
         : Service("SDL Scene Graph (2D)")
+        , Updatable(updatePriority)
         , SdlRenderLayer(renderPriority)
     {
         // Intentionally left empty.
@@ -61,19 +62,30 @@ namespace astu {
 
     void SdlSceneGraph2::OnRender(SDL_Renderer* renderer)
     {
-        GetRoot().Update();
+        if (camera) {
+            sceneRenderer->SetViewMatrix(camera->GetTransform());
+        }
         sceneRenderer->SetSdlRenderer(*renderer);
         GetRoot().Render(*sceneRenderer);
         sceneRenderer->ClearSdlRenderer();
     }
 
+    void SdlSceneGraph2::OnUpdate()
+    {
+        GetRoot().Update( GetElapsedTime() );
+    }
+
     void SdlSceneGraph2::OnStartup()
     {
         sceneRenderer = std::make_unique<SdlScene2Renderer>();
+        if (ASTU_HAS_SERVICE(Camera2Service)) {
+            camera = ASTU_SERVICE(Camera2Service).GetCamera();
+        }
     }
 
     void SdlSceneGraph2::OnShutdown()
     {
+        camera = nullptr;
         sceneRenderer = nullptr;
     }
 

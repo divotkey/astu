@@ -5,8 +5,14 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// C++ Standard Library includes
 #include <stdexcept>
+
+// Simple Direct Layer (SDL) includes
 #include <SDL2/SDL.h>
+
+// Local includes
+#include "Events.h"
 #include "SdlVideoService.h"
 
 namespace astu {
@@ -18,6 +24,7 @@ namespace astu {
         , winHeight(768)
         , winTitle("ASTU Window")
         , vulkanSupport(false)
+        , resizeable(false)
     {
         // Intentionally left empty.
     }
@@ -27,13 +34,27 @@ namespace astu {
         return vulkanSupport;
     }
 
-    void SdlVideoService::EnableVulkanSupport(bool b)
+    SdlVideoService& SdlVideoService::EnableVulkanSupport(bool b)
     {
         if (GetStatus() != Stopped) {
-            throw std::logic_error("Vulkan support cannot be enabled/disabled while Video service is running.");
+            throw std::logic_error("Vulkan support cannot be enabled/disabled while video service is running.");
         }
 
         vulkanSupport = b;
+        return *this;
+    }
+
+    void SdlVideoService::SetResizeable(bool b)
+    {
+        if (GetStatus() != Stopped) {
+            throw std::logic_error("Resizeable window cannot be enabled/disabled while video service is running.");
+        }
+        resizeable = b;
+    }
+
+    bool SdlVideoService::IsResizeable() const
+    {
+        return resizeable;
     }
 
     void SdlVideoService::OnStartup() 
@@ -50,6 +71,10 @@ namespace astu {
             flags |= SDL_WINDOW_VULKAN;
         }
 
+        if (resizeable) {
+            flags |= SDL_WINDOW_RESIZABLE;
+        }
+
         window = SDL_CreateWindow(
             winTitle.c_str(),
             SDL_WINDOWPOS_UNDEFINED, 
@@ -64,6 +89,11 @@ namespace astu {
             CleanUp();
             throw std::runtime_error(SDL_GetError());
         }
+
+        auto resizeSrv = ASTU_GET_SERVICE_OR_NULL(ResizeEventService);
+        if (resizeSrv) {
+            resizeSrv->QueueSignal(ResizeEvent(winWidth, winHeight));
+        }
     }
 
     void SdlVideoService::CleanUp()
@@ -75,7 +105,6 @@ namespace astu {
 
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
     }
-
 
     void SdlVideoService::OnShutdown()
     {

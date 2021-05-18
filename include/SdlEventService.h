@@ -74,6 +74,9 @@ namespace astu {
 
         /** Used to transmit keystroke events. */
         std::shared_ptr<KeystrokeEventService> keystrokeSrv;
+
+        /** Used to transmit keystroke events. */
+        std::shared_ptr<ResizeEventService> resizeSrv;
     };
 
 } 

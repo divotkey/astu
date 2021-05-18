@@ -11,7 +11,6 @@
 
 namespace astu {
 
-
     SdlAudioService::SdlAudioService()
         : Service("SDL Audio")
     {
@@ -34,7 +33,6 @@ namespace astu {
     {
         SDL_QuitSubSystem(SDL_INIT_AUDIO);
     }
-
 
     void SdlAudioService::OnShutdown()
     {

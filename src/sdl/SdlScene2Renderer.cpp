@@ -43,11 +43,16 @@ namespace astu {
             return;
         }
 
-       // DEBUG START
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        // DEBUG END
+        const auto& c = polyline.GetColor();
+        SDL_SetRenderDrawColor(
+            renderer, 
+            static_cast<int>(c.r * 255), 
+            static_cast<int>(c.g * 255), 
+            static_cast<int>(c.b * 255), 
+            static_cast<int>(c.a * 255)
+            );
 
-        const auto & tx = polyline.GetWorldTransform();
+        const auto & tx = viewMatrix * polyline.GetWorldMatrix();
         auto it = vertices.cbegin();
         auto p1 = tx.TransformPoint(*it);
 
@@ -63,19 +68,6 @@ namespace astu {
 
             p1 = p2;
         }
-
-        // auto prev = vertices.cbegin();
-        // for (auto it = prev + 1; it != vertices.cend(); ++it) {
-        //     SDL_RenderDrawLine(
-        //         renderer, 
-        //         static_cast<int>(prev->x), 
-        //         static_cast<int>(prev->y), 
-        //         static_cast<int>(it->x), 
-        //         static_cast<int>(it->y)
-        //         );
-
-        //     prev = it;
-        // }
     }
 
 } // end of namespace

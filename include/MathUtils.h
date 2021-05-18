@@ -34,12 +34,12 @@ namespace astu {
         const static float PI2f;
 
         template <typename T>
-        T ToRadians(T phi) {
+        static T ToRadians(T phi) {
             return phi * static_cast<T>(3.14159265358979323846 / 180.0);
         }
 
         template <typename T>
-        T ToDegrees(T phi) {
+        static T ToDegrees(T phi) {
             return phi * static_cast<T>(180.0 / 3.14159265358979323846);
         }
 

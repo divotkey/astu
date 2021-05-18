@@ -13,7 +13,11 @@
 #include <string>
 
 // Local includes
-#include <Transform2.h>
+#include "Controllable.h"
+#include "Transform2.h"
+#include "Vector2.h"
+#include "Matrix3.h"
+#include "Color.h"
 
 namespace astu {
 
@@ -43,7 +47,7 @@ namespace astu {
     /////// Spatial2
     /////////////////////////////////////////////////
 
-    class Spatial2 {
+    class Spatial2 : public Controllable {
     public:
 
         /** Virtual destructor. */
@@ -68,42 +72,45 @@ namespace astu {
         }
 
         /**
-         * Sets the local transformation matrix of this spatial.
+         * Sets the local transformation of this spatial.
          * 
-         * @param tx    the transformation matrix
+         * @param tx    the transformation 
          */
-        void SetLocalTransform(const Matrix3f & tx) {
+        void SetLocalTransform(const Transform2f & tx) {
             localTransform = tx;
         }
 
         /**
          * Retrieves the local transormation matrix  of this spatial.
          * 
-         * @return the local transformation matrix
+         * @return the local transformation
          */
-        Matrix3f& GetLocalTransform() {
+        Transform2f& GetLocalTransform() {
             return  localTransform;
         }
 
         /**
          * Retrieves the local transormation matrix  of this spatial.
          * 
-         * @return the local transformation matrix
+         * @return the local transformation
          */
-        const Matrix3f& GetLocalTransform() const {
-            return localTransform;
+        const Transform2f& GetLocalTransform() const {
+            return  localTransform;
         }
 
-        const Matrix3f& GetWorldTransform() const {
-            return worldTransform;
+        const Matrix3f& GetWorldMatrix() const {
+            return worldMatrix;
         }
 
         /**
          * Updates the geometric state.
          * 
-         * this method computes world transformations.
+         * This method updates attached controllers, computes world
+         * transformations  etc.
+         * 
+         * @param dt    the elapsed time since the last update in seconds
          */
-        void Update();
+        void Update(double dt);
 
         /**
          * Renders this spacial.
@@ -144,8 +151,10 @@ namespace astu {
 
         /**
          * Updates the world transformation of this spatial.
+         * 
+         * @param dt    the elapsed time since the last update in seconds
          */
-        virtual void UpdateTransform();
+        virtual void UpdateTransform(double dt);
 
         /**
          * Sets the parent of this spatial.
@@ -159,11 +168,14 @@ namespace astu {
         }
 
     private:
-        /** The world transformation of this spatial. */
-        Matrix3f worldTransform;
+        /** The local affine transformation of this spatial. */
+        Transform2f localTransform;
 
-        /** The local transformation of this spatial. */
-        Matrix3f localTransform;
+        /** The world transformation matrixof this spatial. */
+        Matrix3f worldMatrix;
+
+        /** The local transformation matrix of this spatial. */
+        Matrix3f localMatrix;
 
         friend class Node2;
     };
@@ -186,12 +198,16 @@ namespace astu {
         void AttachChild(std::shared_ptr<Spatial2> child);
         void DetachChild(std::shared_ptr<Spatial2> child);
 
+        std::shared_ptr<Spatial2> FindChildOrNull(const std::string & name);
+
+        std::shared_ptr<Spatial2> FindChild(const std::string & name);
+
         // Inherited via Spatial2
         virtual void Render(Scene2Renderer& renderer) override;
 
     protected:
         // Inherited via Spatial2
-        virtual void UpdateTransform() override;
+        virtual void UpdateTransform(double dt) override;
 
     private:
         /** The children of this node. */
@@ -222,6 +238,12 @@ namespace astu {
          */
         Polyline2(std::shared_ptr<VertexBuffer2> vertexBuffer);
 
+        void SetColor(const Color4f& c);
+
+        const Color4f& GetColor() const {
+            return color;
+        }
+
         /**
          * Returns the vertex buffer of this polyline.
          * 
@@ -237,6 +259,9 @@ namespace astu {
     private:
         /** The vertex buffer representing the vertex data of this polyline. */
         std::shared_ptr<VertexBuffer2> vertexBuffer;
+
+        /** The color of this polyline. */
+        Color4f color;
     };
 
     /////////////////////////////////////////////////
@@ -296,38 +321,38 @@ namespace astu {
             return reinterpret_cast<T&>(*this);
         }
 
-        T& Translate(const Vector2f& v) {
-            localTransform.Translate(v);
+        T& Translation(const Vector2f& v) {
+            localTransform.SetTranslation(v);
             return reinterpret_cast<T&>(*this);
         }
 
-        T& Translate(float x, float y) {
-            localTransform.Translate(x, y);
+        T& Translation(float x, float y) {
+            localTransform.SetTranslation(x, y);
             return reinterpret_cast<T&>(*this);
         }
 
-        T& Scale(float s) {
-            localTransform.Scale(s, s);
+        T& Scaling(float s) {
+            localTransform.SetScaling(s, s);
             return reinterpret_cast<T&>(*this);
         }
 
-        T& Scale(const Vector2f& s) {
-            localTransform.Scale(s);
+        T& Scaling(const Vector2f& s) {
+            localTransform.SetScaling(s);
             return reinterpret_cast<T&>(*this);
         }
 
-        T& Scale(float sx, float sy) {
-            localTransform.Scale(sx, sy);
+        T& Scaling(float sx, float sy) {
+            localTransform.SetScaling(sx, sy);
             return reinterpret_cast<T&>(*this);
         }
 
-        T& Rotate(float phi) {
-            localTransform.Rotate(phi);
+        T& Rotation(float phi) {
+            localTransform.SetRotation(phi);
             return reinterpret_cast<T&>(*this);
         }
 
-        T& RotateDeg(float phi) {
-            localTransform.RotateDeg(phi);
+        T& RotationDeg(float phi) {
+            localTransform.SetRotationDeg(phi);
             return reinterpret_cast<T&>(*this);
         }
 
@@ -337,7 +362,7 @@ namespace astu {
          * @return reference to this builder for method chaining
          */
         T& Reset() {
-            localTransform.SetToIdentity();
+            localTransform.SetIdentity();
             return reinterpret_cast<T&>(*this);
         }
 
@@ -345,11 +370,12 @@ namespace astu {
 
         void Build(Spatial2& spatial) {
             spatial.SetLocalTransform(localTransform);
+            spatial.SetName(name);
         }
 
     private:
         /** The local transformation of the spatial to build. */
-        Matrix3f localTransform;
+        Transform2f localTransform;
 
         /** The name of the spatial to build. */
         std::string name;
@@ -419,6 +445,11 @@ namespace astu {
             Reset();
         }
 
+        Polyline2Builder& Color(const Color4f c) {
+            color = c;
+            return *this;
+        }
+
         /**
          * Specifies the vertex buffer to be used.
          * 
@@ -438,6 +469,7 @@ namespace astu {
         Polyline2Builder& Reset() {
             Spatial2Builder::Reset();
             vertexBuffer = nullptr;
+            color = WebColors::Aqua;
             return *this;
         }
 
@@ -449,6 +481,7 @@ namespace astu {
         std::shared_ptr<Polyline2> Build() {
             auto result = std::make_shared<Polyline2>(vertexBuffer);
             Spatial2Builder::Build(*result);
+            result->SetColor(color);
 
             return result;
         }
@@ -456,5 +489,9 @@ namespace astu {
     private:
         /** The vertex buffer used to build the polyline. */
         std::shared_ptr<VertexBuffer2> vertexBuffer;    
+
+        /** The color of the polyline to build. */
+        Color4f color;
+
     };
 } // end of namespace

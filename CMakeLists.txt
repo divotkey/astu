@@ -38,9 +38,11 @@ list(APPEND astulib_SOURCES
                     src/srv/IteratingEntitySystem.cpp
                     src/srv/Mouse.cpp
                     src/srv/Keyboard.cpp
+                    src/srv/Controllable.cpp
+                    src/srv/Controller.cpp
                     src/srv/Scene2.cpp
                     src/srv/Shape2Generator.cpp
-                    src/srv/Camera2Manager.cpp
+                    src/srv/Camera2Service.cpp
 
                     src/AstUtils1.cpp)
 

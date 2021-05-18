@@ -26,10 +26,19 @@ namespace astu {
          * Constructor.
          */
         Transform2()
-            : translation(0, 0), scaling(0, 0), rotation(0), dirty(false)
+            : translation(0, 0), scaling(1, 1), rotation(0), dirty(false)
         {
             // Intentionally left empty
         }
+
+        Transform2<T> & SetIdentity() {
+            SetTranslation(0, 0);
+            SetScaling(1, 1);
+            SetRotation(0);
+            dirty = true;
+            return *this;
+        }
+
 
         Transform2<T> & SetTranslation(T tx, T ty) {
             translation.Set(tx, ty);
@@ -70,7 +79,7 @@ namespace astu {
         }
 
         Transform2<T> & SetRotationDeg(T phi) {
-            rotation = MatuUtils::ToRadians<T>(phi);
+            rotation = MathUtils::ToRadians<T>(phi);
             dirty = true;
             return *this;
         }
@@ -106,9 +115,9 @@ namespace astu {
         }
 
         const Matrix3<T>& StoreToMatrix(Matrix3<T>& m) const {
-            m.SetToScale(m_scale);
-            m.Rotate(m_angle);
-            m.Translate(m_pos);
+            m.SetToScale(scaling);
+            m.Rotate(rotation);
+            m.Translate(translation);
             return m;
         }
 

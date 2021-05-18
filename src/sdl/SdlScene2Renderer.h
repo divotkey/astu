@@ -13,6 +13,7 @@
 // Local includes
 #include "Scene2.h"
 #include "Vector2.h"
+#include "Matrix3.h"
 #include "VertexBuffer2.h"
 
 // Forward declaration.
@@ -49,12 +50,24 @@ namespace astu {
             renderer = nullptr;
         }
 
+        /**
+         * Sets the view transformation.
+         * 
+         * @param m the transformation matrix
+         */
+        void SetViewMatrix(const Matrix3f& m) {
+            viewMatrix = m;
+        }
+
         // Inherited via Scene2Renderer
         virtual void Render(Polyline2& polyline) override;
 
     private:
         /** The SDL renderer used for rendering. */
         SDL_Renderer *renderer;
+
+        /** The view transformation. */
+        Matrix3f viewMatrix;
     };
 
 } // end of namespace

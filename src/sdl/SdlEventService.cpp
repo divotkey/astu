@@ -28,14 +28,15 @@ namespace astu {
             throw std::runtime_error(SDL_GetError());
         }
 
-
         mouseButtonSrv = ASTU_GET_SERVICE_OR_NULL(MouseButtonEventService);
         keystrokeSrv = ASTU_GET_SERVICE_OR_NULL(KeystrokeEventService);
+        resizeSrv = ASTU_GET_SERVICE_OR_NULL(ResizeEventService);
         quit = false;
     }
 
     void SdlEventService::OnShutdown() 
     {
+        resizeSrv = nullptr;
         keystrokeSrv = nullptr;
         mouseButtonSrv = nullptr;
         SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Shutting down SDL event service");
@@ -80,6 +81,20 @@ namespace astu {
                 keyboard.SetKey(event.key.keysym.scancode, false);
                 if (keystrokeSrv) {
                     keystrokeSrv->FireSignal( KeystrokeEvent(event.key.keysym.scancode, false) );
+                }
+                break;
+
+            case SDL_WINDOWEVENT:
+                switch (event.window.event) {
+                case SDL_WINDOWEVENT_RESIZED:
+                    // Ignore.
+                    break;
+
+                case SDL_WINDOWEVENT_SIZE_CHANGED:
+                    if (resizeSrv) {
+                        resizeSrv->FireSignal( ResizeEvent(event.window.data1, event.window.data2));
+                    }
+                    break;
                 }
                 break;
 

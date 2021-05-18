@@ -12,6 +12,10 @@
 
 namespace astu {
 
+    /////////////////////////////////////////////////
+    /////// Mouse Events
+    /////////////////////////////////////////////////
+
     /**
      * This event represents a mouse button event.
      * 
@@ -100,6 +104,10 @@ namespace astu {
         }
     };
 
+    /////////////////////////////////////////////////
+    /////// Key Events
+    /////////////////////////////////////////////////
+
     /**
      * This event represents a keystroke event.
      * 
@@ -176,5 +184,72 @@ namespace astu {
         }
 
     };    
+
+    /////////////////////////////////////////////////
+    /////// Window Events
+    /////////////////////////////////////////////////
+
+    /**
+     * This event represents a change in window size
+     * 
+     * This event is supposed to be used in combination with the SignalService.
+     */
+    class ResizeEvent {
+    public:
+
+        ResizeEvent(int width, int height)
+            : width(width), height(height) {}
+
+        /** The current width of the application window. */
+        int width;
+
+        /** The current width of the application window. */
+        int height;
+    };
+
+    /** 
+     * Type definition for signal listeners which receive resize events.
+     */
+    using IResizeListener = ISignalListener<ResizeEvent>;
+
+    /** 
+     * Type definition for signal services used to transmit resize events.
+     *
+     * @ingroup input_group
+     */
+    using ResizeEventService = SignalService<ResizeEvent>;
+
+    /**
+     * Services can derive from this class to process window resize events.
+     */
+    class ReslizeListener : virtual public Service, private IResizeListener {
+    public:
+
+        /**
+         * Constructor.
+         */
+        ReslizeListener() {
+            AddStartupHook([this](){ ASTU_SERVICE(ResizeEventService).AddListener(*this); });
+            AddShutdownHook([this](){ ASTU_SERVICE(ResizeEventService).RemoveListener(*this); });
+        }
+
+    protected:
+
+        /** 
+         * Called by this base class when a resize event has occurred.
+         * 
+         * @param width the new window width
+         * @param height the new window height
+         */
+        virtual void OnResize(int width, int height) {}
+
+    private:
+
+        // Inherited via KeystrokeListener
+        virtual void OnSignal(const ResizeEvent & signal) override {
+            OnResize(signal.width, signal.height);
+        }
+    };    
+
 
 } // end of namespace

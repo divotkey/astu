@@ -57,6 +57,20 @@ namespace astu {
          * @return the window title
          */
         virtual const std::string & GetTitle() const = 0;
+
+        /***
+         * Specifies whether the window should be resizeable.
+         * 
+         * @param b the `true` if the window should be resizeable
+         */
+        virtual void SetResizeable(bool b) = 0;
+
+        /**
+         * Returns whether the window is resizeable.
+         * 
+         * @return `true` if the window is resizeable
+         */
+        virtual bool IsResizeable() const = 0;
     };
     
 } // end of namespace

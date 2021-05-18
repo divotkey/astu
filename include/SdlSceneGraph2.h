@@ -15,7 +15,10 @@
 #include "Scene2.h"
 #include "Vector2.h"
 #include "Service.h"
+#include "ITimeManager.h"
+#include "UpdateService.h"
 #include "VertexBuffer2.h"
+#include "Camera2Service.h"
 #include "SdlRenderService.h"
 
 namespace astu {
@@ -45,18 +48,27 @@ namespace astu {
         std::vector<astu::Vector2f> vertices;
     };
 
-    class SdlSceneGraph2 final : public SdlRenderLayer, public SceneGraph2 {
+    class SdlSceneGraph2 final 
+        : public SdlRenderLayer 
+        , public Updatable
+        , public TimeClient
+        , public SceneGraph2
+    {
     public:
 
         /**
          * Constructor.
          * 
          * @param renderPriority    the priority of this render layer
+         * @param updatePriority    the update priority of this scene graph
          */
-        SdlSceneGraph2(int renderPriority = 0);
+        SdlSceneGraph2(int renderPriority = 0, int updatePriority = 0);
 
-        /** Virtual ddestructor. */
+        /** Virtual destructor. */
         virtual ~SdlSceneGraph2();
+
+        // Inherited via Updatable
+        virtual void OnUpdate() override;
 
         // Inherited via SdlRenderLayer
         virtual void OnRender(SDL_Renderer* renderer) override;
@@ -66,6 +78,9 @@ namespace astu {
     private:
         /** The scene renderer used to render the scene graph. */
         std::unique_ptr<SdlScene2Renderer> sceneRenderer;
+
+        /** The camera used to create the view matrix for the renderer. */
+        std::shared_ptr<Camera2> camera;
     };
 
 } // end of namespace
