@@ -18,8 +18,10 @@ namespace astu {
     /////// SceneGraph2
     /////////////////////////////////////////////////
 
+    const std::string SceneGraph2::DEFAULT_ROOT_NAME = "ROOT";
+
     SceneGraph2::SceneGraph2()
-        : root(std::make_shared<Node2>())
+        : root(Node2Builder().Name(DEFAULT_ROOT_NAME).Build())
     {
         // Intentionally left empty.
     }

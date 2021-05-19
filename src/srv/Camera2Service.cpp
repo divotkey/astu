@@ -29,18 +29,18 @@ namespace astu {
     Camera2& Camera2::SetPosition(float x, float y)
     {
         position.Set(x, y);
-        dirty = true;
+        dirty = invDirty = true;
         return *this;
     }
 
     Camera2& Camera2::SetOrientation(float phi)
     {
         orientation = phi;
-        dirty = true;
+        dirty = invDirty = true;
         return *this;
     }
 
-    const Matrix3f& Camera2::GetTransform() const
+    const Matrix3f& Camera2::GetMatrix() const
     {
         if (dirty) {
             matrix.SetToIdentity();
@@ -50,7 +50,19 @@ namespace astu {
             matrix.Translate(targetWidth * 0.5f, targetHeight * 0.5f);
             dirty = false;
         }
+
         return matrix;
+    }
+
+    const Matrix3f& Camera2::GetInverseMatrix() const
+    {
+        if (invDirty) {
+            invMatrix = GetMatrix();
+            invMatrix.Invert();
+            invDirty = false;
+        }
+
+        return invMatrix;
     }
 
     Camera2& Camera2::Reset()
@@ -86,7 +98,7 @@ namespace astu {
         targetWidth = static_cast<float>(width); 
         targetHeight = static_cast<float>(height);
         state->UpdateScaling(*this);
-        dirty = true;
+        dirty = invDirty = true;
     }
 
     void Camera2::ScreenSpaceState::UpdateScaling(Camera2 & cam)

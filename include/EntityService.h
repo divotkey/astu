@@ -329,7 +329,7 @@ namespace astu {
          * 
          * @param updatePriority    the update priority of this service
          */
-        EntityService(int updatePriority = 0);
+        EntityService(int updatePriority = Priority::Normal);
 
         /**
          * Adds an entity to this service.

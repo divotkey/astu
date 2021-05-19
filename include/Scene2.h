@@ -274,6 +274,9 @@ namespace astu {
     class SceneGraph2 {
     public:
 
+        /** The default name of the root node. */
+        static const std::string DEFAULT_ROOT_NAME;
+
         /**
          * Constructor.
          */
@@ -287,8 +290,8 @@ namespace astu {
          * 
          * @return the root node
          */
-        Node2& GetRoot() {
-            return *root;
+        std::shared_ptr<Node2> GetRoot() {
+            return root;
         }
 
         /**
@@ -296,8 +299,8 @@ namespace astu {
          * 
          * @return the root node
          */
-        const Node2& GetRoot() const {
-            return *root;
+        std::shared_ptr<const Node2> GetRoot() const {
+            return root;
         }
 
     private:

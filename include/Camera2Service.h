@@ -84,7 +84,15 @@ namespace astu {
          * 
          * @return the transformation matrix
          */
-        const Matrix3f& GetTransform() const;
+        const Matrix3f& GetMatrix() const;
+
+        /**
+         * Returns the inverse transformation matrix.
+         * 
+         * @return the inverse transformation matrix
+         */
+        const Matrix3f& GetInverseMatrix() const;
+
 
     private:
         /** The position of this camera in world space. */
@@ -96,13 +104,17 @@ namespace astu {
         /** The orientation of this camera in radians. */
         float orientation;
 
-
-
         /** Indicates whether the transformation matrix requires update. */
         mutable bool dirty;
 
+        /** Indicates whether the inverse transformation matrix requires update. */
+        mutable bool invDirty;
+
         /** The transformation matrix of this camera. */
         mutable Matrix3f matrix;
+
+        /** The inverse transformation matrix of this camera. */
+        mutable Matrix3f invMatrix;
 
         /** The width of the render target. */
         float targetWidth;

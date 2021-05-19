@@ -63,16 +63,16 @@ namespace astu {
     void SdlSceneGraph2::OnRender(SDL_Renderer* renderer)
     {
         if (camera) {
-            sceneRenderer->SetViewMatrix(camera->GetTransform());
+            sceneRenderer->SetViewMatrix( camera->GetMatrix() );
         }
-        sceneRenderer->SetSdlRenderer(*renderer);
-        GetRoot().Render(*sceneRenderer);
+        sceneRenderer->SetSdlRenderer( *renderer );
+        GetRoot()->Render( *sceneRenderer );
         sceneRenderer->ClearSdlRenderer();
     }
 
     void SdlSceneGraph2::OnUpdate()
     {
-        GetRoot().Update( GetElapsedTime() );
+        GetRoot()->Update( GetElapsedTime() );
     }
 
     void SdlSceneGraph2::OnStartup()

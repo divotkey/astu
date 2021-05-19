@@ -12,6 +12,7 @@
 
 // Local includes.
 #include "ListenerManager.h"
+#include "Priority.h"
 #include "Service.h"
 
 namespace astu {
@@ -59,7 +60,7 @@ namespace astu {
          * @param updatable the updatable to be added
          * @param priority  the update priority to be used
          */        
-        void AddUpdatable(IUpdatable & updatable, int priority = 0);
+        void AddUpdatable(IUpdatable & updatable, int priority = Priority::Normal);
 
         /**
          * Removes an updatable.
@@ -107,6 +108,7 @@ namespace astu {
          */
         Updatable(int priority = 0);
 
+        /** Virtual destructor. */
         ~Updatable() {}
 
     protected:

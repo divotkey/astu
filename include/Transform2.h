@@ -47,7 +47,7 @@ namespace astu {
         }
 
         Transform2<T> & SetTranslation(const Vector2<T> & t) {
-            translation = s;
+            translation = t;
             dirty = true;
             return *this;
         }
