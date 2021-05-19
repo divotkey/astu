@@ -137,6 +137,12 @@ namespace astu {
     class BaseService : virtual public Service {
     public:
 
+        BaseService(const std::string name = Service::DEFAULT_NAME)
+            : Service(name)
+        {
+            // Intentionally left empty
+        }
+
         /** Virtual destructor. */
         virtual ~BaseService() {}
 

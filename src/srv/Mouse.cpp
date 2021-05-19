@@ -43,7 +43,6 @@ namespace astu {
         cursorY = y;
     }
 
-
     int Mouse::GetCursorX() const
     {
         return cursorX;
@@ -53,5 +52,14 @@ namespace astu {
     {
         return cursorY;
     }
+
+    Vector2f Mouse::GetCursorInWorldspace(const Camera2& camera)
+    {
+        return camera.GetInverseMatrix()
+        .TransformPoint(
+            static_cast<float>(cursorX), 
+            static_cast<float>(cursorY));
+    }
+
 
 } // end of namespace

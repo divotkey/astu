@@ -13,6 +13,7 @@
 #include <string>
 
 // Local includes
+#include "Service.h"
 #include "MathUtils.h"
 #include "Service.h"
 #include "Matrix3.h"
@@ -191,6 +192,14 @@ namespace astu {
 
         bool HasCamera(const std::string & name) const;
 
+        std::shared_ptr<Camera2> GetOrCreateCamera(const std::string & name) {
+            if (HasCamera(name)) {
+                return GetCamera(name);
+            } else {
+                return CreateCamera(name);
+            }
+        }
+
         /**
          * Destroyes
          */
@@ -205,6 +214,35 @@ namespace astu {
 
     private:
         std::unordered_map<std::string, std::shared_ptr<Camera2>> cameraMap;
+    };
+
+    class Camera2Client : public virtual Service {
+    public:
+
+        Camera2Client(const std::string & cameraName = Camera2Service::DEFAULT_CAMERA, bool createCamera = false) {
+            AddStartupHook([this, cameraName, createCamera](){
+                if (createCamera) {
+                    camera = ASTU_SERVICE(Camera2Service).GetOrCreateCamera(cameraName);
+                } else {
+                    camera = ASTU_SERVICE(Camera2Service).GetCamera(cameraName);
+                }
+            });
+
+            AddShutdownHook([this](){
+                camera = nullptr;
+            });
+        }
+
+        Camera2& GetCamera() {
+            return *camera;
+        }
+
+        const Camera2& GetCamera() const {
+            return *camera;
+        }
+
+    private:
+        std::shared_ptr<Camera2> camera;
     };
 
 } // end of namespace

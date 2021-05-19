@@ -8,6 +8,8 @@
 #pragma once
 
 #include <vector>
+#include <Vector2.h>
+#include <Camera2Service.h>
 
 namespace astu {
 
@@ -59,6 +61,13 @@ namespace astu {
          */
         int GetCursorY() const;
 
+        /**
+         * Returns the cursor position in world space.
+         * 
+         * @param camera    the camera used to transform screen space coords
+         * @return the cursor position in world space
+         */
+        Vector2f GetCursorInWorldspace(const Camera2& camera);
 
     private:
         /** Represents the state of the mouse buttons. */
