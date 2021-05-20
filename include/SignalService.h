@@ -68,11 +68,15 @@ namespace astu {
         /**
          * Called when a signal should be processed by this listener.
          *
+         * The return value determines whether the signal has been consumed.
+         * A consumed signal will no longer be forwarded to other signal
+         * listeners.    
+         * 
          * @param signal	the signal
+         * @return `true` if the signal has been comsumed
          */
-        virtual void OnSignal(const T & signal) = 0;        
+        virtual bool OnSignal(const T & signal) = 0;        
     };
-
 
     /**
      * A template-based service which is used to transmit objects 
@@ -125,7 +129,7 @@ namespace astu {
             });
 
             rawListenerManager.VisitListeners([signal](ISignalListener<T> & listener) {
-                listener.OnSignal(signal);
+                return listener.OnSignal(signal);
             });
         }
 

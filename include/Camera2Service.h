@@ -210,7 +210,7 @@ namespace astu {
         virtual void OnShutdown() override;
 
         // Inherited via ReslizeListener
-        virtual void OnResize(int width, int height) override;
+        virtual bool OnResize(int width, int height) override;
 
     private:
         std::unordered_map<std::string, std::shared_ptr<Camera2>> cameraMap;

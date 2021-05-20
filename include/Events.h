@@ -81,7 +81,9 @@ namespace astu {
          * @param x         the x-coordinate of the mouse course in screen space
          * @param y         the y-coordinate of the mouse course in screen space
          */
-        virtual void OnMouseButtonPressed(int button, int x, int y) { }
+        virtual bool OnMouseButtonPressed(int button, int x, int y) { 
+            return false;
+        }
 
         /** 
          * Called by this base class when a key has been released.
@@ -90,16 +92,18 @@ namespace astu {
          * @param x         the x-coordinate of the mouse course in screen space
          * @param y         the y-coordinate of the mouse course in screen space
          */
-        virtual void OnMouseButtonReleased(int button, int x, int y) { }
+        virtual bool OnMouseButtonReleased(int button, int x, int y) { 
+            return false;
+        }
 
     private:
 
         // Inherited via MouseButtonListener 
-        virtual void OnSignal(const MouseButtonEvent & signal) {
+        virtual bool OnSignal(const MouseButtonEvent & signal) {
             if (signal.pressed) {
-                OnMouseButtonPressed(signal.button, signal.x, signal.y);
+                return OnMouseButtonPressed(signal.button, signal.x, signal.y);
             } else {
-                OnMouseButtonReleased(signal.button, signal.x, signal.y);
+                return OnMouseButtonReleased(signal.button, signal.x, signal.y);
             }
         }
     };
@@ -163,23 +167,23 @@ namespace astu {
          * 
          * @param keycode   the code of the key
          */
-        virtual void OnKeyPressed(int keycode) {}
+        virtual bool OnKeyPressed(int keycode) { return false; }
 
         /** 
          * Called by this base class when a key has been released.
          * 
          * @param keycode   the code of the key
          */
-        virtual void OnKeyReleased(int keycode) {}
+        virtual bool OnKeyReleased(int keycode) { return false; }
 
     private:
 
         // Inherited via KeystrokeListener
-        virtual void OnSignal(const KeystrokeEvent & signal) override {
+        virtual bool OnSignal(const KeystrokeEvent & signal) override {
             if (signal.pressed) {
-                OnKeyPressed(signal.keycode);
+                return OnKeyPressed(signal.keycode);
             } else {
-                OnKeyReleased(signal.keycode);
+                return OnKeyReleased(signal.keycode);
             }
         }
 
@@ -241,13 +245,13 @@ namespace astu {
          * @param width the new window width
          * @param height the new window height
          */
-        virtual void OnResize(int width, int height) {}
+        virtual bool OnResize(int width, int height) { return false; }
 
     private:
 
         // Inherited via KeystrokeListener
-        virtual void OnSignal(const ResizeEvent & signal) override {
-            OnResize(signal.width, signal.height);
+        virtual bool OnSignal(const ResizeEvent & signal) override {
+           return OnResize(signal.width, signal.height);
         }
     };    
 

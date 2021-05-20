@@ -172,11 +172,13 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    void Camera2Service::OnResize(int width, int height) 
+    bool Camera2Service::OnResize(int width, int height) 
     {
         for (auto it : cameraMap) {
             it.second->SetRenderTargetSize(width, height);
         }
+        
+        return false;
     }
 
 } // end of namespace

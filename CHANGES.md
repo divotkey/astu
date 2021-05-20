@@ -2,17 +2,17 @@
 # Version History {#CHANGES}
 
 # Version 0.9.0
-*Date: 2021-04-28*
+*Date: 2021-05-20*
 
 - Renamed `MouseButtonListener` alias to `IMouseButtonListener`.
 - Renamed `KeystrokeListener` alias to `IKeystrokeListener`.
 - Renamed `ITimeService` to `ITimeManager`.
-- Added ServiceEvents.
 - Improved API of `ServiceManager`.
 - Improved configuration of service features by inheritance (experimental).
-- Improvec `Vector2<T>` template class.
+- Improved `Vector2<T>` template class.
 - Added scene graph for two-dimensional renderings.
 - Improved/added `MathUtils` class.
+- Improved signal facility.
 
 # Version 0.8.0
 *Date: 2021-04-07*
