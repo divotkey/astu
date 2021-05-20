@@ -125,7 +125,7 @@ namespace astu {
          */
         void FireSignal(const T & signal) {
             listenerManager.VisitListeners([signal](ISignalListener<T> & listener) {
-                listener.OnSignal(signal);
+                return listener.OnSignal(signal);
             });
 
             rawListenerManager.VisitListeners([signal](ISignalListener<T> & listener) {

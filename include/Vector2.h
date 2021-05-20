@@ -126,6 +126,15 @@ namespace astu {
         }
 
         /**
+         * Tests whether this vector has zero length.
+         * 
+         * @return `true` if this vector has zero length
+         */
+        bool IsZero() const {
+            return x == 0 && y == 0;
+        }
+
+        /**
          * Returns the length of this vector.#
          * 
          * This method uses a square root function and computationally

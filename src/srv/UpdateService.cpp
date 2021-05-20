@@ -45,6 +45,7 @@ namespace astu {
     {
         lstMngr.VisitListeners([](IUpdatable & updatable) { 
             updatable.OnUpdate(); 
+            return false;
         });
     }
 

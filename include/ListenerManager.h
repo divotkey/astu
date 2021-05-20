@@ -101,11 +101,14 @@ namespace astu {
          * 
          * @param func  the function to call
          */
-        void VisitListeners(std::function<void (T &)> func) {
+        void VisitListeners(std::function<bool (T &)> func) {
             firing = true;
             for (auto & deco : listeners) {
                 if (!deco.removed) {
-                    func(*deco.listener);
+                    if (func(*deco.listener)) {
+                        // signal has been consumed.
+                        break;
+                    }
                 }
             }
             firing = false;
@@ -246,11 +249,14 @@ namespace astu {
          * 
          * @param func  the function to call
          */
-        void VisitListeners(std::function<void (T &)> func) {
+        void VisitListeners(std::function<bool (T &)> func) {
             firing = true;
             for (auto & deco : listeners) {
                 if (!deco.removed) {
-                    func(*deco.listener);
+                    if (func(*deco.listener)) {
+                        // signal has been consumed.
+                        break;
+                    }
                 }
             }
             firing = false;
@@ -295,7 +301,6 @@ namespace astu {
 
         /** Pending commands. */
         CommandQueue commandQueue;
-
 
         void AddListenerInternal(const std::shared_ptr<T> & listener, int priority) {
             if (HasListener(listener)) {
@@ -562,11 +567,14 @@ namespace astu {
          * 
          * @param func  the function to call
          */
-        void VisitListeners(std::function<void (T &)> func) {
+        void VisitListeners(std::function<bool (T &)> func) {
             firing = true;
             for (auto & deco : listeners) {
                 if (!deco.removed) {
-                    func(*deco.listener);
+                    if (func(*deco.listener)) {
+                        // signal has been consumed.
+                        break;
+                    }
                 }
             }
             firing = false;
