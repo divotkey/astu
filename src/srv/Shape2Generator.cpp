@@ -5,8 +5,6 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-#pragma once
-
 // C++ Standard Library.
 #include <stdexcept>
 #include <cmath>
