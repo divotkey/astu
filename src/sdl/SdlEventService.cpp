@@ -72,6 +72,7 @@ namespace astu {
 
             case SDL_KEYDOWN:
                 keyboard.SetKey(event.key.keysym.scancode, true);
+                // std::cout << "scancode: " << event.key.keysym.scancode << std::endl;
                 if (keystrokeSrv) {
                     keystrokeSrv->FireSignal( KeystrokeEvent(event.key.keysym.scancode, true) );
                 }

@@ -54,6 +54,8 @@ if (WITH_JACK)
         )
 endif(WITH_JACK) 
 
+
+#OPTION(USE_SDL "Build the project with support for SDL2" OFF)
 set(WITH_SDL false CACHE BOOL "Use SDL")
 
 if(WITH_SDL)

@@ -25,7 +25,6 @@ namespace astu {
      */
     class MouseButtonEvent {
     public:
-        enum BUTTON {LEFT = 1, MIDDLE = 2, RIGHT = 3};
 
         MouseButtonEvent(int button = 0, bool pressed = false, int x = 0, int y = 0)
             : button(button), pressed(pressed), x(x), y(y) {}

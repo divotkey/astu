@@ -93,6 +93,23 @@ namespace astu {
             return *this;
         }
 
+        // /**
+        //  * Sets the x and y components of this vector.
+        //  * 
+        //  * This version of the setter methods accepts arguments of type integer
+        //  * and is exists to avoid compiler warnings when initializing vectors
+        //  * with integer values to float vectors. 
+        //  * 
+        //  * @param x the x-coordinate of the vector
+        //  * @param y the y-coordinate of the vector
+        //  * @return reference to this vector for method chaining
+        //  */
+        // Vector2 & Set(int x, int y) {
+        //     this->x = static_cast<T>(x);
+        //     this->y = static_cast<T>(y);
+        //     return *this;
+        // }
+
         /**
          * Sets the x component of this vector.
          *

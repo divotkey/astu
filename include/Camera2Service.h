@@ -49,12 +49,26 @@ namespace astu {
         }
 
         /**
+         * Returns the current position of this camera.
+         * 
+         * @return the current position in world space
+         */
+        const astu::Vector2f GetPosition() const;
+
+        /**
          * Sets the orientation of this camera
          * 
          * @param phi   the angle in radians
          * @return reference to this camera for method chaining
          */
         Camera2& SetOrientation(float phi);
+
+        /**
+         * Returns the current orientation of this camera.
+         * 
+         * @return the orientation in radians
+         */
+        float GetOrientation() const;
 
         /**
          * Sets the orientation of this camera
@@ -67,11 +81,76 @@ namespace astu {
             return *this;
         }
 
+        /**
+         * Switches the camera to screen space mode.
+         * 
+         * The camera shows the section of the world that is visible based on
+         * the current resolution of the output window. Except for centering 
+         * the output so that the coordinate origin is in the center of the
+         * output window, the camera performs no transformation.         
+         */
         Camera2& ShowScreenSpace();
 
-        Camera2& ShowFixedWorldWidth(float w);
+        /**
+         * Switches the camera to fixed width mode.
+         * 
+         * The camera will show the specified width of the game world
+         * independently from the aspect ratio of the output window.
+         * Empty areas on the top and bottom of the screen might appear.
+         * 
+         * @param width the visible width in world units
+         */
+        Camera2& ShowFixedWidth(float width);
 
-        Camera2& ShowFixedWorldHeight(float h);
+        /**
+         * Switches the camera to fixed height mode.
+         * 
+         * The camera will show the specified height of the game world
+         * independently from the aspect ratio of the output window.
+         * Empty areas on the left and right side of the screen might appear.
+         * 
+         * @param height    the visible height in world units
+         */
+        Camera2& ShowFixedHeight(float height);
+
+        /**
+         * Switches the camera to fitting view mode.
+         * 
+         * The camera will show the specified height of the game world
+         * independently from the aspect ratio of the output window.
+         * Empty areas on the top and bottom or on the left and right side 
+         * of the screen might appear.
+         * 
+         * @param width     the visible width in world units
+         * @param height    the visible height in world units
+         */
+        Camera2& ShowFitting(float width, float height);
+
+        /**
+         * Switches the camera to filling view mode.
+         * 
+         * The camera will show the specified height of the game world
+         * independently from the aspect ratio of the output window.
+         * If the aspect ratio of the output window does not match the
+         * aspect ratio of the visible world area, parts of the game world
+         * might not be cut off.
+         * 
+         * @param width     the visible width in world units
+         * @param height    the visible height in world units
+         */
+        Camera2& ShowFilling(float width, float height);
+
+        /**
+         * Switches the camera to streched view mode.
+         * 
+         * In case aspect ratio of the output window does not match
+         * the aspect ratio of the world dimensions, the output will
+         * be streched.
+         * 
+         * @param width     the visible width in world units
+         * @param height    the visible height in world units
+         */
+        Camera2& ShowStreched(float width, float height);
 
         /**
          * Resets this camera to its default configuration.
@@ -150,7 +229,7 @@ namespace astu {
             virtual void UpdateScaling(Camera2 & cam) override;
 
         private:
-            /** The wirth do show in world units. */
+            /** The width do show in world units. */
             float worldWidth;
         };
 
@@ -161,13 +240,65 @@ namespace astu {
             virtual void UpdateScaling(Camera2 & cam) override;
 
         private:
-            /** The wirth do show in world units. */
+            /** The height do show in world units. */
             float worldHeight;
         };
 
+        class FittingState final : public CameraState {
+        public:
+            FittingState(float w, float h) 
+                : worldWidth(w), worldHeight(h), ar(w/h) { }
+
+            virtual void UpdateScaling(Camera2 & cam) override;
+
+        private:
+            /** The width do show in world units. */
+            float worldWidth;
+
+            /** The height do show in world units. */
+            float worldHeight;
+
+            /** The aspect ratio of the visible world area. */
+            float ar;
+        };
+
+        class FillingState final : public CameraState {
+        public:
+            FillingState(float w, float h) 
+                : worldWidth(w), worldHeight(h), ar(w/h) { }
+
+            virtual void UpdateScaling(Camera2 & cam) override;
+
+        private:
+            /** The width do show in world units. */
+            float worldWidth;
+
+            /** The height do show in world units. */
+            float worldHeight;
+
+            /** The aspect ratio of the visible world area. */
+            float ar;
+        };
+
+        class StrechedState final : public CameraState {
+        public:
+            StrechedState(float w, float h) 
+                : worldWidth(w), worldHeight(h) { }
+
+            virtual void UpdateScaling(Camera2 & cam) override;
+
+        private:
+            /** The width do show in world units. */
+            float worldWidth;
+
+            /** The height do show in world units. */
+            float worldHeight;
+        };
 
         /** The current state of the camera. */
         std::unique_ptr<CameraState> state;
+
+        void SwitchState(std::unique_ptr<CameraState> newState);
 
         friend class Camera2Service;
     };

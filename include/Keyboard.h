@@ -60,6 +60,7 @@ namespace astu {
             KEY_9 = 38,
             KEY_0 = 39,
             KEY_RETURN = 40,
+            KEY_HOME = 74,
             KEY_ESCAPE = 41,
             KEY_BACKSPACE = 42,
             KEY_TAB = 43,

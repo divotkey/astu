@@ -8,11 +8,13 @@
 #pragma once
 
 // C++ Standard Library includes
+#include <stdexcept>
 #include <vector>
 #include <memory>
 #include <string>
 
 // Local includes
+#include "VertexBuffer2.h"
 #include "Controllable.h"
 #include "Transform2.h"
 #include "Vector2.h"
@@ -22,7 +24,6 @@
 namespace astu {
 
     // Forward declaration
-    class VertexBuffer2;
     class Polyline2;
 
     /////////////////////////////////////////////////
@@ -482,6 +483,10 @@ namespace astu {
          * @return the newly created polyline
          */
         std::shared_ptr<Polyline2> Build() {
+            if (!vertexBuffer) {
+                throw std::logic_error(
+                    "Unable to build Polyline2, vertex buffer not specified");
+            }
             auto result = std::make_shared<Polyline2>(vertexBuffer);
             Spatial2Builder::Build(*result);
             result->SetColor(color);

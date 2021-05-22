@@ -33,11 +33,21 @@ namespace astu {
         return *this;
     }
 
+    const astu::Vector2f Camera2::GetPosition() const
+    {
+        return position;
+    }
+
     Camera2& Camera2::SetOrientation(float phi)
     {
         orientation = phi;
         dirty = invDirty = true;
         return *this;
+    }
+
+    float Camera2::GetOrientation() const
+    {
+        return orientation;
     }
 
     const Matrix3f& Camera2::GetMatrix() const
@@ -77,19 +87,37 @@ namespace astu {
 
     Camera2& Camera2::ShowScreenSpace()
     {
-        state = make_unique<ScreenSpaceState>();
+        SwitchState(make_unique<ScreenSpaceState>());
         return *this;
     }
 
-    Camera2& Camera2::ShowFixedWorldWidth(float w)
+    Camera2& Camera2::ShowFixedWidth(float w)
     {
-        state = make_unique<FixedWidthState>(w); 
+        SwitchState(make_unique<FixedWidthState>(w));
         return *this;
     }
 
-    Camera2& Camera2::ShowFixedWorldHeight(float h)
+    Camera2& Camera2::ShowFixedHeight(float h)
     {
-        state = make_unique<FixedHeightState>(h);        
+        SwitchState(make_unique<FixedHeightState>(h));
+        return *this;
+    }
+
+    Camera2& Camera2::ShowStreched(float width, float height)
+    {
+        SwitchState(make_unique<StrechedState>(width, height));
+        return *this;
+    }
+
+    Camera2& Camera2::ShowFitting(float width, float height)
+    {
+        SwitchState(make_unique<FittingState>(width, height));
+        return *this;
+    }
+
+    Camera2& Camera2::ShowFilling(float width, float height)
+    {
+        SwitchState(make_unique<FillingState>(width, height));
         return *this;
     }
 
@@ -118,6 +146,41 @@ namespace astu {
         cam.scaling.Set(s, s);
     }
 
+    void Camera2::StrechedState::UpdateScaling(Camera2 & cam)
+    {
+        cam.scaling.Set(
+            cam.targetWidth / worldWidth, 
+            cam.targetHeight / worldHeight);
+    }
+
+    void Camera2::FittingState::UpdateScaling(Camera2 & cam)
+    {
+        float s;
+        if (cam.targetWidth / cam.targetHeight < ar) {
+            s = cam.targetWidth / worldWidth;
+        } else {
+            s = cam.targetHeight / worldHeight;
+        }
+        cam.scaling.Set(s, s);
+    }
+
+    void Camera2::FillingState::UpdateScaling(Camera2 & cam)
+    {
+        float s;
+        if (cam.targetWidth / cam.targetHeight < ar) {
+            s = cam.targetHeight / worldHeight;
+        } else {
+            s = cam.targetWidth / worldWidth;
+        }
+        cam.scaling.Set(s, s);
+    }
+
+    void Camera2::SwitchState(std::unique_ptr<CameraState> newState)
+    {
+        state = std::move(newState);
+        state->UpdateScaling(*this);
+        dirty = invDirty = true;
+    }
 
     /////////////////////////////////////////////////
     /////// Camera2Service

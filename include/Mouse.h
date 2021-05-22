@@ -23,6 +23,9 @@ namespace astu {
     class Mouse {
     public:
 
+        /** Enum constants for mouse buttons. */
+        enum Button {LEFT = 1, MIDDLE = 2, RIGHT = 3};
+
         /**
          * Sets the state of a button.
          * 
