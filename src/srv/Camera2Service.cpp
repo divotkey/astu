@@ -45,6 +45,18 @@ namespace astu {
         return *this;
     }
 
+    Camera2& Camera2::SetZoom(float z)
+    {
+        zoom = z;
+        dirty = invDirty = true;
+        return *this;
+    }
+
+    float Camera2::GetZoom() const
+    {
+        return zoom;
+    }
+
     float Camera2::GetOrientation() const
     {
         return orientation;
@@ -56,7 +68,7 @@ namespace astu {
             matrix.SetToIdentity();
             matrix.Translate(-position);
             matrix.Rotate(-orientation);
-            matrix.Scale(scaling);
+            matrix.Scale(scaling * zoom);
             matrix.Translate(targetWidth * 0.5f, targetHeight * 0.5f);
             dirty = false;
         }
@@ -81,6 +93,7 @@ namespace astu {
         SetPosition(0, 0);
         SetOrientation(0);
         SetRenderTargetSize(0, 0);
+        zoom = 1.0;
 
         return *this;
     }

@@ -49,6 +49,21 @@ namespace astu {
         }
 
         /**
+         * Sets the zoom factor of this camera.
+         * 
+         * @param z the zoom factor
+         * @return reference to this camera for method chaining
+         */
+        Camera2& SetZoom(float z);
+
+        /**
+         * Returns the current zoom factor of this camera.
+         * 
+         * @return the zoom factor
+         */
+        float GetZoom() const;
+
+        /**
          * Returns the current position of this camera.
          * 
          * @return the current position in world space
@@ -183,6 +198,9 @@ namespace astu {
 
         /** The orientation of this camera in radians. */
         float orientation;
+
+        /** The zoom factor used additionally to the scaling. */
+        float zoom;
 
         /** Indicates whether the transformation matrix requires update. */
         mutable bool dirty;

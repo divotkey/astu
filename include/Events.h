@@ -56,7 +56,6 @@ namespace astu {
      */
     using IMouseButtonListener = ISignalListener<MouseButtonEvent>;
 
-
     /**
      * Services can derive from this class to process key strokes.
      */
@@ -104,6 +103,78 @@ namespace astu {
             } else {
                 return OnMouseButtonReleased(signal.button, signal.x, signal.y);
             }
+        }
+    };
+
+    /**
+     * This event represents a mouse button event.
+     * 
+     * This event is supposed to be used in combination with the SignalService.
+     * 
+     * @ingroup input_group
+     */
+    class MouseWheelEvent {
+    public:
+
+        /**
+         * Constructor.
+         *
+         * @param amount the amount scrolled 
+         */
+        MouseWheelEvent(int amount) : amount(amount) {}
+
+        int amount;
+    };
+
+    /** 
+     * Type definition for signal services used to transmit mouse wheel events.
+     *
+     * @ingroup input_group
+     */
+    using MouseWheelEventService = SignalService<MouseWheelEvent>;
+
+    /** 
+     * Type definition for signal listeners which receive mouse wheel events.
+     *
+     * @ingroup input_group
+     */
+    using IMouseWheelListener = ISignalListener<MouseWheelEvent>;
+
+    /**
+     * Services can derive from this class to process mouse wheel events.
+     */
+    class MouseWheelListener : virtual public Service, private IMouseWheelListener {
+    public:
+
+        /**
+         * Constructor.
+         */
+        MouseWheelListener() {
+            AddStartupHook([this](){ 
+                    ASTU_SERVICE(MouseWheelEventService).AddListener(*this); 
+            });
+
+            AddShutdownHook([this](){
+                ASTU_SERVICE(MouseWheelEventService).RemoveListener(*this); 
+            });
+        }
+
+    protected:
+
+        /** 
+         * Called by this base class when a mouse wheel event has occurred.
+         * 
+         * @param amount    the amount scrolled 
+         */
+        virtual bool OnMouseWheel(int amount) { 
+            return false;
+        }
+
+    private:
+
+        // Inherited via MouseButtonListener 
+        virtual bool OnSignal(const MouseWheelEvent & signal) {
+            return OnMouseWheel(signal.amount);
         }
     };
 
