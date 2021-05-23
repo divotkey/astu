@@ -257,4 +257,36 @@ namespace astu {
         return false;
     }
 
+
+    /////////////////////////////////////////////////
+    /////// Camera2Client
+    /////////////////////////////////////////////////
+
+    Camera2Client::Camera2Client(const std::string & cameraName, bool createCamera)
+    {
+        AddStartupHook([this, cameraName, createCamera](){
+            if (createCamera) {
+                camera = ASTU_SERVICE(Camera2Service)
+                    .GetOrCreateCamera(cameraName);
+            } else {
+                camera = ASTU_SERVICE(Camera2Service)
+                    .GetCamera(cameraName);
+            }
+        });
+
+        AddShutdownHook([this](){
+            camera = nullptr;
+        });
+    }
+
+    void Camera2Client::UseCamera(const std::string & cameraName)
+    {
+        if (GetStatus() != Running) {
+            throw std::logic_error(
+                    "Unable to switch camera, service not running");
+        }
+        camera = ASTU_SERVICE(Camera2Service).GetCamera(cameraName);
+    }
+
+
 } // end of namespace

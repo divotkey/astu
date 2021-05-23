@@ -48,7 +48,7 @@ namespace astu {
     /////////////////////////////////////////////////
 
     SdlSceneGraph2::SdlSceneGraph2(int renderPriority, int updatePriority)
-        : Service("SDL Scene Graph (2D)")
+        : Service("SDL Scene Graph 2D")
         , Updatable(updatePriority)
         , SdlRenderLayer(renderPriority)
     {

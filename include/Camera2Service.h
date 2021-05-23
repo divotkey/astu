@@ -21,6 +21,14 @@
 
 namespace astu {
 
+    /////////////////////////////////////////////////
+    /////// Camera2
+    /////////////////////////////////////////////////
+
+    /**
+     * A camera object describes the portion of the game world shown on the
+     * screen.
+     */
     class Camera2 {
     public:
 
@@ -188,7 +196,6 @@ namespace astu {
          */
         const Matrix3f& GetInverseMatrix() const;
 
-
     private:
         /** The position of this camera in world space. */
         astu::Vector2f position;
@@ -321,6 +328,15 @@ namespace astu {
         friend class Camera2Service;
     };
 
+
+    /////////////////////////////////////////////////
+    /////// Camera2Service
+    /////////////////////////////////////////////////
+
+    /**
+     * The camera service manages various camera objects. Cameras are created
+     * with a specific name and can be retrieved using this name.
+     */
     class Camera2Service final 
         : public virtual Service
         , public ReslizeListener
@@ -335,12 +351,40 @@ namespace astu {
          */
         Camera2Service();
 
+        /**
+         * Creates a new camera with the specified name.
+         * 
+         * @param name  the name of the camera to create
+         * @return the newly created camera
+         * @throws std::logic_error in case a camera with that name already
+         *  exists
+         */
         std::shared_ptr<Camera2> CreateCamera(const std::string & name);
 
-        std::shared_ptr<Camera2> GetCamera(const std::string & name = DEFAULT_CAMERA);
+        /**
+         * Retrieves the camera with the specified name.
+         * 
+         * @param name  the name of the camera
+         * @return the requested camera
+         * @throws std::logic_error in case the camera is unknown
+         */
+        std::shared_ptr<Camera2> 
+            GetCamera(const std::string & name = DEFAULT_CAMERA);
 
+        /**
+         * Tests whether a camera with the specified name exists.
+         * 
+         * @param name  the name of the camera
+         * @return `true` if the camera exists
+         */
         bool HasCamera(const std::string & name) const;
 
+        /**
+         * Retrieves a camera with the specified name or creates it.
+         * 
+         * @param name  the name of the camera
+         * @return the retrieved or newly created camera
+         */
         std::shared_ptr<Camera2> GetOrCreateCamera(const std::string & name) {
             if (HasCamera(name)) {
                 return GetCamera(name);
@@ -362,35 +406,55 @@ namespace astu {
         virtual bool OnResize(int width, int height) override;
 
     private:
+        /** Associates the cameras with names. */
         std::unordered_map<std::string, std::shared_ptr<Camera2>> cameraMap;
     };
+
+    /////////////////////////////////////////////////
+    /////// Camera2Client
+    /////////////////////////////////////////////////
 
     class Camera2Client : public virtual Service {
     public:
 
-        Camera2Client(const std::string & cameraName = Camera2Service::DEFAULT_CAMERA, bool createCamera = false) {
-            AddStartupHook([this, cameraName, createCamera](){
-                if (createCamera) {
-                    camera = ASTU_SERVICE(Camera2Service).GetOrCreateCamera(cameraName);
-                } else {
-                    camera = ASTU_SERVICE(Camera2Service).GetCamera(cameraName);
-                }
-            });
+        /**
+         * Constructor.
+         * 
+         * @param cameraName    the name of the camera to be used
+         * @param createCamera  whether the camera should be created
+         */
+        Camera2Client(
+            const std::string & cameraName = Camera2Service::DEFAULT_CAMERA, 
+            bool createCamera = false);
 
-            AddShutdownHook([this](){
-                camera = nullptr;
-            });
-        }
-
+        /**
+         * Returne the camera this client uses.
+         * 
+         * @return the used camera
+         */
         Camera2& GetCamera() {
             return *camera;
         }
 
+        /**
+         * Returne the camera this client uses.
+         * 
+         * @return the used camera
+         */
         const Camera2& GetCamera() const {
             return *camera;
         }
 
+        /**
+         * Specified which camera to use.
+         * 
+         * @param cameraName    the name of the camera
+         * @throws std::logic_error in case the camera is unknown
+         */
+        void UseCamera(const std::string & cameraName);
+
     private:
+        /** The camera. */
         std::shared_ptr<Camera2> camera;
     };
 
