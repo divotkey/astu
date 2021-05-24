@@ -53,6 +53,7 @@ namespace astu {
         , public Updatable
         , public TimeClient
         , public SceneGraph2
+        , public Camera2Client
     {
     public:
 
@@ -78,9 +79,6 @@ namespace astu {
     private:
         /** The scene renderer used to render the scene graph. */
         std::unique_ptr<SdlScene2Renderer> sceneRenderer;
-
-        /** The camera used to create the view matrix for the renderer. */
-        std::shared_ptr<Camera2> camera;
     };
 
 } // end of namespace

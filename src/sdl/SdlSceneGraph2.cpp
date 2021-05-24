@@ -62,9 +62,7 @@ namespace astu {
 
     void SdlSceneGraph2::OnRender(SDL_Renderer* renderer)
     {
-        if (camera) {
-            sceneRenderer->SetViewMatrix( camera->GetMatrix() );
-        }
+        sceneRenderer->SetViewMatrix( GetCamera().GetMatrix() );
         sceneRenderer->SetSdlRenderer( *renderer );
         GetRoot()->Render( *sceneRenderer );
         sceneRenderer->ClearSdlRenderer();
@@ -78,14 +76,10 @@ namespace astu {
     void SdlSceneGraph2::OnStartup()
     {
         sceneRenderer = std::make_unique<SdlScene2Renderer>();
-        if (ASTU_HAS_SERVICE(Camera2Service)) {
-            camera = ASTU_SERVICE(Camera2Service).GetCamera();
-        }
     }
 
     void SdlSceneGraph2::OnShutdown()
     {
-        camera = nullptr;
         sceneRenderer = nullptr;
     }
 

@@ -449,13 +449,33 @@ namespace astu {
          * Specified which camera to use.
          * 
          * @param cameraName    the name of the camera
+         * @param create        whether the camera should be created
          * @throws std::logic_error in case the camera is unknown
          */
-        void UseCamera(const std::string & cameraName);
+        void UseCamera(const std::string & cameraName, bool create = false);
+
+        /** 
+         * Returns the name of the camera to be used.
+         * 
+         * 
+         * @return the name of the camera
+         */
+        const std::string& GetCameraName() const;
 
     private:
+        /** Determines whether the used camera should be created. */
+        bool createCamera;
+
+        /** The name of the camera to use. */
+        std::string cameraName;
+
         /** The camera. */
         std::shared_ptr<Camera2> camera;
+
+        /** 
+         * Fetches or create the requested camera.
+         */
+        void InitCamera();
     };
 
 } // end of namespace
