@@ -31,7 +31,7 @@ namespace astu {
          * 
          * @param priority    the priority used to update this service
          */
-        SdlEventService(int priority = 0);
+        SdlEventService(int priority = Priority::Normal);
 
         /**
          * Virtual destructor.

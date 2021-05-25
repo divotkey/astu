@@ -36,7 +36,7 @@ namespace astu {
          * 
          * @param renderPriority    the priority of this render layer
          */
-        SdlLineRenderer(int renderPriority = 0);
+        SdlLineRenderer(int renderPriority = Priority::Normal);
 
         /**
          * Virtual destructor.

@@ -22,7 +22,11 @@ namespace astu {
      * 
      * @ingroup sdl_group 
      */
-    class SdlTimeService final : public virtual Service, private Updatable, public ITimeManager {
+    class SdlTimeService final 
+        : public virtual Service, 
+        private Updatable, 
+        public ITimeManager
+    {
     public:
 
         /**
@@ -30,7 +34,7 @@ namespace astu {
          * 
          * @param priority    the priority used to update this service
          */
-        SdlTimeService(int priority = 0);
+        SdlTimeService(int priority = Priority::Normal);
 
         /**
          * Virtual destructor.

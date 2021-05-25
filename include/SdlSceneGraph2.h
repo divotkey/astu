@@ -63,7 +63,9 @@ namespace astu {
          * @param renderPriority    the priority of this render layer
          * @param updatePriority    the update priority of this scene graph
          */
-        SdlSceneGraph2(int renderPriority = 0, int updatePriority = Priority::Low);
+        SdlSceneGraph2(
+            int renderPriority = Priority::Normal, 
+            int updatePriority = Priority::Low);
 
         /** Virtual destructor. */
         virtual ~SdlSceneGraph2();

@@ -13,17 +13,19 @@
 #include <memory>
 #include <string>
 
-// Useful macros
+// Service Macros
 #define ASTU_SERVICE_MANAGER() astu::ServiceManager::GetInstance()
-#define ASTU_SERVICE(a) (*astu::ServiceManager::GetInstance().FindService<a>())
-#define ASTU_GET_SERVICE(a) astu::ServiceManager::GetInstance().FindService<a>()
-#define ASTU_HAS_SERVICE(a) (astu::ServiceManager::GetInstance().FindService<a>(nullptr) != nullptr)
-#define ASTU_GET_SERVICE_OR_DEFAULT(a, b) astu::ServiceManager::GetInstance().FindService<a>(b)
-#define ASTU_GET_SERVICE_OR_NULL(a) astu::ServiceManager::GetInstance().FindService<a>(nullptr)
-#define ASTU_STARTUP_SERVICES() astu::ServiceManager::GetInstance().StartupAll()
-#define ASTU_SHUTDOWN_SERVICES() astu::ServiceManager::GetInstance().ShutdownAll()
-#define ASTU_ADD_SERVICE(a) astu::ServiceManager::GetInstance().AddService(a)
-#define ASTU_CREATE_AND_ADD_SERVICE(a) astu::ServiceManager::GetInstance().AddService( std::make_shared<a>() )
+#define ASTU_SERVICE(type) (*ASTU_SERVICE_MANAGER().FindService<type>())
+#define ASTU_GET_SERVICE(type) ASTU_SERVICE_MANAGER().FindService<type>()
+#define ASTU_GET_SERVICE_OR_DEFAULT(type, b) ASTU_SERVICE_MANAGER().FindService<type>(b)
+#define ASTU_GET_SERVICE_OR_NULL(type) ASTU_SERVICE_MANAGER().FindService<type>(nullptr)
+#define ASTU_HAS_SERVICE(type) (ASTU_GET_SERVICE_OR_NULL(type) != nullptr)
+
+#define ASTU_STARTUP_SERVICES() ASTU_SERVICE_MANAGER().StartupAll()
+#define ASTU_SHUTDOWN_SERVICES() ASTU_SERVICE_MANAGER().ShutdownAll()
+
+#define ASTU_ADD_SERVICE(srv) ASTU_SERVICE_MANAGER().AddService(srv)
+#define ASTU_CREATE_AND_ADD_SERVICE(srvType, ...) ASTU_ADD_SERVICE(std::make_shared<srvType>(__VA_ARGS__) )
 
 namespace astu {
 
