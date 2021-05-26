@@ -5,6 +5,9 @@
 *Date: 2021-05-26*
 
 - Improved service macros.
+- Improved Camera2d.
+- Added `IRenderService` interface to set background color.
+- Added additional color constants.
 
 # Version 0.9.0
 *Date: 2021-05-24*

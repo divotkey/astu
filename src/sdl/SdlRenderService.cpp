@@ -135,6 +135,15 @@ namespace astu {
         return std::find(layers.begin(), layers.end(), &layer) != layers.end();
     }
 
+    void SdlRenderService::SetBackgroundColor(const Color4f & bg)
+    {
+        backgroundColor = bg;
+    }
+
+    const Color4f& SdlRenderService::GetBackgroundColor() const {
+        return backgroundColor;
+    }
+
     /////////////////////////////////////////////////
     /////// SdlRenderLayer
     /////////////////////////////////////////////////

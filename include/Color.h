@@ -470,15 +470,6 @@ namespace astu {
         /** Color constant for the color *White* (0xFFFFFF). */
         White = 0xFFFFFF,
 
-        /** Color constant for the color *Silver* (0xC0C0C0). */
-        Silver = 0xC0C0C0,
-
-        /** Color constant for the color *Gray* (0x808080). */
-        Gray = 0x808080,
-
-        /** Color constant for the color *Black* (0x000000). */
-        Black = 0x000000,
-
         /** Color constant for the color *Red* (0xFF0000). */
         Red = 0xFF0000,
 
@@ -515,13 +506,16 @@ namespace astu {
         /** Color constant for the color *Purple* (0x800080). */
         Purple = 0x800080,
 
-
+        //////////////////////////
         /////// Red colors ///////
+        //////////////////////////
 
         /** Color constant for the color *Dark Red* (0x8B0000). */
         DarkRed = 0x8B0000,
 
+        /////////////////////////////
         /////// Orange colors ///////
+        /////////////////////////////
 
         /** Color constant for the color *Orange Red* (0xFF4500). */
         OrangeRed = 0xFF4500,
@@ -529,18 +523,52 @@ namespace astu {
         /** Color constant for the color *Orange* (0xFFA500). */
         Orange = 0xFFA500,
 
+        /////////////////////////////
         /////// Yellow colors ///////
+        /////////////////////////////
         /** Color constant for the color *Gold* (0xFFD700). */
         Gold = 0xFFD700,
 
+        //////////////////////////////////////////////////
         /////// Purple, violet, and magenta colors ///////
+        //////////////////////////////////////////////////
 
         /** Color constant for the color *Indigo* (0x4B0082). */
         Indigo = 0x4B0082,
 
+        /////////////////////////////////////
         /////// Gray and black colors ///////
+        /////////////////////////////////////
+
+        /** Color constant for the color *Black* (0x000000). */
+        Black = 0x000000,
+
         /** Color constant for the color *DarkSlateGray* (0x2F4F4F). */
         DarkSlateGray = 0x2F4F4F,
+
+        /** Color constant for the color *DimGray* (0x696969). */
+        DimGray = 0x696969,
+
+        /** Color constant for the color *SlateGray* (0x708090). */
+        SlateGray = 0x708090,
+
+        /** Color constant for the color *Gray* (0x808080). */
+        Gray = 0x808080,
+
+        /** Color constant for the color *LightSlateGray* (0x778899). */
+        LightSlateGray = 0x778899,
+
+        /** Color constant for the color *DarkGray* (0xA9A9A9). */
+        DarkGray = 0xA9A9A9,
+
+        /** Color constant for the color *Silver* (0xC0C0C0). */
+        Silver = 0xC0C0C0,
+
+        /** Color constant for the color *LightGray* (0xC0C0C0). */
+        LightGray = 0xC0C0C0,
+
+        /** Color constant for the color *Gainsboro* (0xDCDCDC). */
+        Gainsboro = 0xDCDCDC,
 
     };
 

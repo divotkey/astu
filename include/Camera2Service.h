@@ -13,9 +13,9 @@
 #include <string>
 
 // Local includes
-#include "Service.h"
 #include "MathUtils.h"
 #include "Service.h"
+#include "Vector2.h"
 #include "Matrix3.h"
 #include "Events.h"
 
@@ -150,6 +150,20 @@ namespace astu {
         Camera2& ShowFitting(float width, float height);
 
         /**
+         * Switches the camera to fitting view mode.
+         * 
+         * The camera will show the specified height of the game world
+         * independently from the aspect ratio of the output window.
+         * Empty areas on the top and bottom or on the left and right side 
+         * of the screen might appear.
+         * 
+         * @param size  vector containing width and height in world units
+         */
+        Camera2& ShowFitting(const astu::Vector2f size) {
+            return ShowFitting(size.x, size.y);
+        }
+
+        /**
          * Switches the camera to filling view mode.
          * 
          * The camera will show the specified height of the game world
@@ -164,6 +178,21 @@ namespace astu {
         Camera2& ShowFilling(float width, float height);
 
         /**
+         * Switches the camera to filling view mode.
+         * 
+         * The camera will show the specified height of the game world
+         * independently from the aspect ratio of the output window.
+         * If the aspect ratio of the output window does not match the
+         * aspect ratio of the visible world area, parts of the game world
+         * might not be cut off.
+         * 
+         * @param size  vector containing width and height in world units
+         */
+        Camera2& ShowFilling(const astu::Vector2f size) {
+            return ShowFilling(size.x, size.y);
+        }
+
+        /**
          * Switches the camera to streched view mode.
          * 
          * In case aspect ratio of the output window does not match
@@ -174,6 +203,19 @@ namespace astu {
          * @param height    the visible height in world units
          */
         Camera2& ShowStreched(float width, float height);
+
+        /**
+         * Switches the camera to streched view mode.
+         * 
+         * In case aspect ratio of the output window does not match
+         * the aspect ratio of the world dimensions, the output will
+         * be streched.
+         * 
+         * @param size  vector containing width and height in world units
+         */
+        Camera2& ShowStreched(const astu::Vector2f size) {
+            return ShowStreched(size.x, size.y);
+        }
 
         /**
          * Resets this camera to its default configuration.

@@ -75,7 +75,6 @@ namespace astu {
         virtual void SetResizeable(bool b) override;
         virtual bool IsResizeable() const override;
 
-
     protected:
 
         // Inherited via Base Service

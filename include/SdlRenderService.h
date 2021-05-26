@@ -12,6 +12,7 @@
 #include <vector>
 
 // Local includes
+#include "IRenderService.h"
 #include "UpdateService.h"
 #include "Color.h"
 
@@ -30,6 +31,7 @@ namespace astu {
      */
     class ISdlRenderLayer {
     public:
+
         /**
          * Virtual destructor.
          */
@@ -71,7 +73,11 @@ namespace astu {
      * 
      * @ingroup sdl_group
      */
-    class SdlRenderService final : public virtual Service, private Updatable {
+    class SdlRenderService final 
+        : public virtual Service
+        , public IRenderService
+        , private Updatable
+    {
     public:
 
         /**
@@ -79,7 +85,7 @@ namespace astu {
          * 
          * @param priority    the priority used to update this service
          */
-        SdlRenderService(int priority = 0);
+        SdlRenderService(int priority = Priority::Normal);
 
         /**
          * Virtual destructor.
@@ -108,6 +114,10 @@ namespace astu {
          */
         bool HasLayer(ISdlRenderLayer &layer);
 
+        // INherited via IRenderService
+        virtual void SetBackgroundColor(const Color4f& bg) override;
+        virtual const Color4f& GetBackgroundColor() const override;
+
     private:
         /** The SDL renderer. */
         SDL_Renderer* renderer;
@@ -116,7 +126,7 @@ namespace astu {
         std::vector<ISdlRenderLayer*> layers;
 
         /** The background color. */
-        Color4d backgroundColor;
+        Color4f backgroundColor;
 
         /**
          * Logs some additional information about the used renderer.
