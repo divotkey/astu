@@ -84,15 +84,6 @@ namespace astu {
             return *entityService;
         }
 
-        /**
-         * Returns the entity view of this system.
-         * 
-         * @return the entity view
-         */
-        EntityView & GetEntityView() {
-            return *entityView;
-        }
-
     private:
         /** The view to the family of entities. */
         std::shared_ptr<EntityView> entityView;
