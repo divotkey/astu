@@ -275,7 +275,7 @@ namespace astu {
     /////// EntityView
     /////////////////////////////////////////////////
 
-    using EntityView = std::vector<std::shared_ptr<Entity>>;
+    using EntityView = std::vector<std::shared_ptr<astu::Entity>>;
 
     /////////////////////////////////////////////////
     /////// IEntityListener
