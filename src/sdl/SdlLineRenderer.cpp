@@ -49,11 +49,14 @@ namespace astu {
     {
         RenderCommand cmd;
 
+        Vector2d p1 = tx3d.TransformPoint(x1, y1);
+        Vector2d p2 = tx3d.TransformPoint(x2, y2);
+
         cmd.type = CommandType::DRAW_LINE;
-        cmd.line.x1 = static_cast<int>(x1);
-        cmd.line.y1 = static_cast<int>(y1);
-        cmd.line.x2 = static_cast<int>(x2);
-        cmd.line.y2 = static_cast<int>(y2);
+        cmd.line.x1 = static_cast<int>(p1.x + 0.5);
+        cmd.line.y1 = static_cast<int>(p1.y + 0.5);
+        cmd.line.x2 = static_cast<int>(p2.x + 0.5);
+        cmd.line.y2 = static_cast<int>(p2.y + 0.5);
 
         commands.push_back(cmd);
     }
@@ -62,11 +65,15 @@ namespace astu {
     {
         RenderCommand cmd;
 
+        Vector2f p1 = tx3f.TransformPoint(x1, y1);
+        Vector2f p2 = tx3f.TransformPoint(x2, y2);
+
+
         cmd.type = CommandType::DRAW_LINE;
-        cmd.line.x1 = static_cast<int>(x1);
-        cmd.line.y1 = static_cast<int>(y1);
-        cmd.line.x2 = static_cast<int>(x2);
-        cmd.line.y2 = static_cast<int>(y2);
+        cmd.line.x1 = static_cast<int>(p1.x + 0.5f);
+        cmd.line.y1 = static_cast<int>(p1.y + 0.5f);
+        cmd.line.x2 = static_cast<int>(p2.x + 0.5f);
+        cmd.line.y2 = static_cast<int>(p2.y + 0.5f);
 
         commands.push_back(cmd);
     }
@@ -88,6 +95,11 @@ namespace astu {
         commands.push_back(cmd);
     }
 
+    void SdlLineRenderer::SetTransform(const Matrix3d & m)
+    {
+        tx3d = m;
+    }
+
     void SdlLineRenderer::SetDrawColor(const Color4f & c) 
     {
         assert(c.r >= 0 && c.r <= 1);
@@ -103,6 +115,11 @@ namespace astu {
         cmd.color.a = static_cast<int>(c.a * 255);
 
         commands.push_back(cmd);
+    }
+
+    void SdlLineRenderer::SetTransform(const Matrix3<float> & m)
+    {
+        tx3f = m;
     }
 
     void SdlLineRenderer::OnStartup()

@@ -10,6 +10,7 @@
 // Local (AST-Utilities) includes
 #include "Service.h"
 #include "Vector2.h"
+#include "Matrix3.h"
 #include "Color.h"
 
 namespace astu {
@@ -57,6 +58,13 @@ namespace astu {
          * @param c the new drawing color 
          */
         virtual void SetDrawColor(const Color<T> & c) = 0;
+
+        /**
+         * Sets the stransformation matrix used to render lines.
+         * 
+         * @param m the transformation matrix
+         */
+        virtual void SetTransform(const Matrix3<T> & m) = 0;
     };
 
     using ILineRenderer2f = ILineRenderer<float>;
@@ -96,9 +104,22 @@ namespace astu {
             lineRenderer->DrawLine(x1, y1, x2, y2);
         }
 
+        void DrawRectangle(T cx, T cy, T w, T h) {
+            lineRenderer->DrawLine(cx - w / 2, cy - h / 2, cx + w / 2, cy - h / 2);
+            lineRenderer->DrawLine(cx - w / 2, cy - h / 2, cx - w / 2, cy + h / 2);
+            lineRenderer->DrawLine(cx + w / 2, cy - h / 2, cx + w / 2, cy + h / 2);
+            lineRenderer->DrawLine(cx + w / 2, cy + h / 2, cx - w / 2, cy + h / 2);
+        }
+
+        void DrawRectangle(const Vector2<T>& c, const Vector2<T>& s) {
+            DrawRectangle(c.x, c.y, s.x, s.y);
+        }
+
         virtual void DrawLine(const Vector2<T> & p1, const Vector2<T> & p2) {
             lineRenderer->DrawLine(p1.x, p1.y, p2.x, p2.y);
         }     
+
+
 
     private:
         /** The line renderer. */

@@ -49,10 +49,12 @@ namespace astu {
         // Inherited via ILineRenderer2d
         virtual void DrawLine(double x1, double y1, double x2, double X2) override;
         virtual void SetDrawColor(const Color4d & c) override;
+        virtual void SetTransform(const Matrix3d & m) override;
 
         // Inherited via ILineRenderer2f
         virtual void DrawLine(float x1, float y1, float x2, float X2) override;
         virtual void SetDrawColor(const Color4f & c) override;
+        virtual void SetTransform(const Matrix3f & m) override;
 
     protected:
 
@@ -61,6 +63,11 @@ namespace astu {
         virtual void OnShutdown() override;
 
     private:
+        /** Transfromation matrix for line rendering with single precision. */
+        Matrix3f tx3f;
+
+        /** Transfromation matrix for line rendering with double precision. */
+        Matrix3d tx3d;
 
         /** Enumeration for types of render commands. */
         enum CommandType {DRAW_LINE, SET_COLOR};
@@ -82,7 +89,7 @@ namespace astu {
             SetColorCommand color;
         };
 
-        // /** The current render commands to be processed. */
+        /** The current render commands to be processed. */
         std::vector<RenderCommand> commands;
     };
 
