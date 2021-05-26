@@ -8,6 +8,7 @@
 - Improved Camera2d.
 - Added `IRenderService` interface to set background color.
 - Added additional color constants.
+- Added signal for mouse movement.
 
 # Version 0.9.0
 *Date: 2021-05-24*
