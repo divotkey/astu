@@ -71,7 +71,9 @@ namespace astu {
             KEY_LEFT = 80,
             KEY_DOWN = 81,
             KEY_UP = 82,
-            KEY_MAX = 48
+            KEY_LCTRL = 224,
+            KEY_RCTRL = 228,
+            // KEY_MAX = 48
             };
 
         /**

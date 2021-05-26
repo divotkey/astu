@@ -226,8 +226,13 @@ namespace astu {
          * Constructor.
          */
         KeystrokeListener() {
-            AddStartupHook([this](){ ASTU_SERVICE(KeystrokeEventService).AddListener(*this); });
-            AddShutdownHook([this](){ ASTU_SERVICE(KeystrokeEventService).RemoveListener(*this); });
+            AddStartupHook([this](){ 
+                ASTU_SERVICE(KeystrokeEventService).AddListener(*this);
+            });
+
+            AddShutdownHook([this](){ 
+                ASTU_SERVICE(KeystrokeEventService).RemoveListener(*this);
+            });
         }
 
     protected:
