@@ -33,6 +33,7 @@ namespace astu {
 
         mouseButtonSrv = ASTU_GET_SERVICE_OR_NULL(MouseButtonEventService);
         mouseWheelSrv = ASTU_GET_SERVICE_OR_NULL(MouseWheelEventService);
+        mouseMoveSrv = ASTU_GET_SERVICE_OR_NULL(MouseMoveEventService);
         keystrokeSrv = ASTU_GET_SERVICE_OR_NULL(KeystrokeEventService);
         resizeSrv = ASTU_GET_SERVICE_OR_NULL(ResizeEventService);
         quit = false;
@@ -44,6 +45,7 @@ namespace astu {
         keystrokeSrv = nullptr;
         mouseWheelSrv = nullptr;
         mouseButtonSrv = nullptr;
+        mouseMoveSrv = nullptr;
         SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, 
             "Shutting down SDL event service");
         SDL_QuitSubSystem(SDL_INIT_EVENTS);
@@ -60,6 +62,10 @@ namespace astu {
 
             case SDL_MOUSEMOTION:
                 mouse.SetCursor(event.motion.x, event.motion.y);
+                if (mouseMoveSrv) {
+                    mouseMoveSrv->FireSignal(
+                        MouseMoveEvent(event.motion.x, event.motion.y));
+                }
                 break;
 
             case SDL_MOUSEWHEEL:

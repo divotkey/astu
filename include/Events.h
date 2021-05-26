@@ -107,7 +107,7 @@ namespace astu {
     };
 
     /**
-     * This event represents a mouse button event.
+     * This event represents a mouse wheel event.
      * 
      * This event is supposed to be used in combination with the SignalService.
      * 
@@ -177,6 +177,87 @@ namespace astu {
             return OnMouseWheel(signal.amount);
         }
     };
+
+    /**
+     * This event represents a mouse movement event.
+     * 
+     * This event is supposed to be used in combination with the SignalService.
+     * 
+     * @ingroup input_group
+     */
+    class MouseMoveEvent {
+    public:
+
+        /**
+         * Constructor.
+         * 
+         * @param x the x-coordinate of the mouse cursor in screen coordinates
+         * @param x the y-coordinate of the mouse cursor in screen coordinates
+         */
+        MouseMoveEvent(int x = 0, int y = 0)
+            : x(x), y(y) {}
+
+        /** The x-coordinate of the mouse cursor. */
+        int x;
+
+        /** The y-coordinate of the mouse cursor. */
+        int y;
+    };
+
+    /** 
+     * Type definition for signal services used to transmit mouse wheel events.
+     *
+     * @ingroup input_group
+     */
+    using MouseMoveEventService = SignalService<MouseMoveEvent>;
+
+    /** 
+     * Type definition for signal listeners which receive mouse wheel events.
+     *
+     * @ingroup input_group
+     */
+    using IMouseMoveListener = ISignalListener<MouseMoveEvent>;
+
+
+    /**
+     * Services can derive from this class to process mouse wheel events.
+     */
+    class MouseMoveListener : virtual public Service, private IMouseMoveListener {
+    public:
+
+        /**
+         * Constructor.
+         */
+        MouseMoveListener() {
+            AddStartupHook([this](){ 
+                    ASTU_SERVICE(MouseMoveEventService).AddListener(*this); 
+            });
+
+            AddShutdownHook([this](){
+                ASTU_SERVICE(MouseMoveEventService).RemoveListener(*this); 
+            });
+        }
+
+    protected:
+
+        /** 
+         * Called by this base class when a mouse wheel event has occurred.
+         * 
+         * @param x the x-coordinate of the mouse cursor in screen coordinates
+         * @param x the y-coordinate of the mouse cursor in screen coordinates
+         */
+        virtual bool OnMouseMove(int x, int y) { 
+            return false;
+        }
+
+    private:
+
+        // Inherited via MouseButtonListener 
+        virtual bool OnSignal(const MouseMoveEvent & signal) {
+            return OnMouseMove(signal.x, signal.y);
+        }
+    };
+
 
     /////////////////////////////////////////////////
     /////// Key Events
