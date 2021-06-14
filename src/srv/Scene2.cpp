@@ -12,6 +12,8 @@
 // Local includes
 #include "Scene2.h"
 
+using namespace std;
+
 namespace astu {
 
     /////////////////////////////////////////////////
@@ -35,6 +37,17 @@ namespace astu {
     {
         // Intentionally left empty.
     }
+
+    Spatial2::Spatial2(const Spatial2 &o)
+        : parent(nullptr)
+        , name(o.name)
+        , localTransform(o.localTransform)
+        , worldMatrix(o.worldMatrix)
+        , localMatrix(o.localMatrix)
+    {
+        // Intentionally left empty.
+    }
+
 
     void Spatial2::Update(double dt)
     {
@@ -130,6 +143,16 @@ namespace astu {
         }
     }
 
+    std::shared_ptr<Spatial2> Node2::Clone() const
+    {
+        auto result = make_shared<Node2>();
+
+        for (const auto & child : children) {
+            result->AttachChild( child->Clone() );
+        }
+        return result;
+    }
+
     /////////////////////////////////////////////////
     /////// Polyline2
     /////////////////////////////////////////////////
@@ -148,6 +171,11 @@ namespace astu {
     void Polyline2::SetColor(const Color4f& c)
     {
         color = c;
+    }
+
+    std::shared_ptr<Spatial2> Polyline2::Clone() const
+    {
+        return std::make_shared<Polyline2>(*this);
     }
 
 } // end of namespace

@@ -138,6 +138,13 @@ namespace astu {
             return parent;
         }
 
+        /**
+         * Creats a copy of this spatial.
+         * 
+         * @return the copy
+         */
+        virtual std::shared_ptr<Spatial2> Clone() const = 0;
+
     protected:
         /** The parent of this spatial. */
         Spatial2* parent;
@@ -149,6 +156,13 @@ namespace astu {
          * Constructor. 
          */ 
         Spatial2();
+
+        /**
+         * Copy constructor.
+         * 
+         * @param o the other spatial from which to copy
+         */
+        Spatial2(const Spatial2 &o);
 
         /**
          * Updates the world transformation of this spatial.
@@ -205,6 +219,7 @@ namespace astu {
 
         // Inherited via Spatial2
         virtual void Render(Scene2Renderer& renderer) override;
+        virtual std::shared_ptr<Spatial2> Clone() const override;
 
     protected:
         // Inherited via Spatial2
@@ -256,6 +271,7 @@ namespace astu {
 
         // Inherited via Node2/Spatial2
         virtual void Render(Scene2Renderer& renderer) override;
+        virtual std::shared_ptr<Spatial2> Clone() const override;
 
     private:
         /** The vertex buffer representing the vertex data of this polyline. */

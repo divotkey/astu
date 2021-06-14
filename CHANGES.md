@@ -1,6 +1,12 @@
 
 # Version History {#CHANGES}
 
+# Version 0.9.2
+*Date: 2021-06-06*
+
+- Added `EntityFactoryService` and extended `Entity` and `EntityComponent` class.
+
+
 # Version 0.9.1
 *Date: 2021-05-26*
 

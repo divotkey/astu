@@ -75,6 +75,15 @@ namespace astu {
         }
 
         /**
+         * Returns the elapsed time since the last update in single precision.
+         * 
+         * @return the elapsed time in seconds
+         */
+        float GetElapsedTimeF() const {
+            return static_cast<float>(timeSrv->GetElapsedTime());
+        }
+
+        /**
          * Returns the absolute time since.
          * 
          * @return the absolute time in seconds

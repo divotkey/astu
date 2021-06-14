@@ -43,6 +43,13 @@ namespace astu {
          * Virtual destructor.
          */
         virtual ~EntityComponent() {}
+
+        /**
+         * Creates a copy of this entity component.
+         * 
+         * @return a copy of this componend
+         */
+        virtual std::shared_ptr<EntityComponent> Clone() = 0;
     };
 
 
@@ -188,6 +195,20 @@ namespace astu {
 			return HasComponent( typeid(T) );
 		}
 
+        /**
+         * Creates a copy of this entity.
+         * 
+         * @return the copy of this entity
+         */
+        std::shared_ptr<Entity> Clone() {
+            auto result = std::make_shared<Entity>();
+            for (auto & cmp : compMap) {
+                result->AddComponent(cmp.second->Clone());
+            }
+
+            return result;
+        }
+
     private:
 		/** Used for fast access to components. */
 		std::unordered_map<std::type_index, std::shared_ptr<EntityComponent>> compMap;
@@ -217,12 +238,14 @@ namespace astu {
         }
 
 		/**
-		 * Creates a new entity family. This static factory method is the only way to construct entity families.
-		 * The constructor of this class is private.
+		 * Creates a new entity family. This static factory method is the only
+         * way to construct entity families. The constructor of this class is
+         * private.
 		 *
 		 * Example usage:
 		 * ```
-		 * EntityFamily myFamily = EntityFamily::create<Transform2D, ShapeVisual2D>();
+		 * EntityFamily myFamily 
+         *  = EntityFamily::create<Transform2D, ShapeVisual2D>();
 		 * ```
 		 *
 		 * @tparam Ts list of components the requested entities should share
@@ -260,7 +283,9 @@ namespace astu {
         // Intentionally left empty.
         }
 
-		template<typename ... Tx> void AddType(const std::type_index & typeIndex, Tx... tx) {
+		template<typename ... Tx> void AddType(
+            const std::type_index & typeIndex, Tx... tx)
+        {
 			types.insert(typeIndex);
 			AddType(tx...);
 		}

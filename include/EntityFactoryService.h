@@ -1,0 +1,81 @@
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ * 
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
+ */
+
+#pragma once
+
+// C++ Standard Libraries includes
+#include <memory>
+#include <string>
+#include <map>
+
+// Local includes
+#include "EntityService.h"
+#include "Service.h"
+
+namespace astu {
+
+    /**
+     * This entity factory is used to generate new entities, where entities are
+     * defined by prototypes that are cloned when new entities are created. 
+     */
+    class EntityFactoryService : public virtual Service {
+    public:
+
+        /**
+         * Constructor.
+         */
+        EntityFactoryService();
+        
+        /**
+         * Tests whether a entity has been register.
+         * 
+         * @param name  the name under which the entity has been registered
+         * @return `true` if an entity has been registered with the given name
+         */
+        bool HasPrototype(const std::string & name) const;
+
+        /**
+         * Registers a new entity prototype.
+         * 
+         * @param name  the name of the prototype
+         * @param proto the entity prototype 
+         * @throws std::logic_error in case the given name is already used
+         */
+        void RegisterPrototype(
+            const std::string & name, std::shared_ptr<Entity> proto);
+
+        /**
+         * Deregisters an entityentity prototype.
+         * 
+         * @param name  the name of the prototype
+         */
+        void DeregisterPrototype(const std::string & name);
+
+        /**
+         * Deregisters all prototypes.
+         */
+        void DeregisterAllPrototypes();
+
+        /**
+         * Creates a new entity based on an registered prototype.
+         * 
+         * @param name  the name of the prototype
+         * @throws std::logic_error in case the given name is unknown
+         */
+        std::shared_ptr<Entity> CreateEntity(const std::string & name) const;
+
+        // Inherited via Service
+        virtual void OnStartup() override;
+        virtual void OnShutdown() override;
+
+    private:
+        /** The registered prototypes. */
+        std::map<std::string, std::shared_ptr<Entity>> prototypes;
+    };
+
+} // end of namespace
+

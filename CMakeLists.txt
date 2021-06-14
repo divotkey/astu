@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(ASTU VERSION 0.9.1)
+project(ASTU VERSION 0.9.2)
 
 configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 set(CMAKE_CXX_STANDARD 17)
@@ -35,6 +35,7 @@ list(APPEND astulib_SOURCES
                     src/srv/UpdateService.cpp
                     src/srv/StateService.cpp
                     src/srv/EntityService.cpp
+                    src/srv/EntityFactoryService.cpp
                     src/srv/IteratingEntitySystem.cpp
                     src/srv/Mouse.cpp
                     src/srv/Keyboard.cpp
