@@ -33,6 +33,13 @@ namespace astu {
         double NextDouble();
 
         /**
+         * Returns a random number within the range [0, 1).
+         * 
+         * @return the next random number.
+         */
+        float NextFloat();
+
+        /**
          * Returns a random integer number within the range [0, INT_MAX].
          * 
          * @return the next random integer number.
@@ -50,6 +57,9 @@ namespace astu {
 
         /** The uniform distribution used to create random doubles. */
         std::uniform_real_distribution<double> doubleDist;
+
+        /** The uniform distribution used to create random floats. */
+        std::uniform_real_distribution<float> floatDist;
 
         /** The uniform distribution used to create random integers. */
         std::uniform_int_distribution<int> intDist;

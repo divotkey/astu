@@ -35,6 +35,11 @@ namespace astu {
         return doubleDist(mt);
     }
 
+    float Random::NextFloat()
+    {
+        return floatDist(mt);
+    }
+
     int Random::NextInt()
     {
         return intDist(mt);

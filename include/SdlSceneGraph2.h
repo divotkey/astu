@@ -40,6 +40,8 @@ namespace astu {
 
         // Inherited via VertexBuffer2Builder
         virtual VertexBuffer2Builder& AddVertex(float x, float y) override;
+        virtual Vector2f GetVertex(size_t idx) override;
+        virtual size_t GetNumVertices() const override;
         virtual VertexBuffer2Builder& Reset() override;
         virtual std::shared_ptr<VertexBuffer2> Build() override;        
 

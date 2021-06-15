@@ -586,6 +586,24 @@ double GetRandomDouble(double minValue = 0.0, double maxValue = 1.0);
  * This function will generate a random number using a 
  * pseudo random number generator.
  * 
+ * The generated numbers are of type `double` and lie within the interval of
+ * [minValue, maxValue).
+ * 
+ * *Note:* the notation for the interval *[minValue, maxValue)* means
+ * that `minValue` is included but `maxValue` is not.
+ * 
+ * @param minValue  the minimum value
+ * @param maxValue  the minimum value
+ * @return the new random number
+ */
+float GetRandomFloat(float minValue = 0.0f, float maxValue = 1.0f);
+
+
+/**
+ * Returns a random number within the specified range.
+ * This function will generate a random number using a 
+ * pseudo random number generator.
+ * 
  * The generated numbers are of type `int` and lie within the interval of
  * [minValue, maxValue).
  * 

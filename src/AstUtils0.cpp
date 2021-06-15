@@ -332,6 +332,16 @@ double GetRandomDouble(double minValue, double maxValue)
     }
 }
 
+float GetRandomFloat(float minValue, float maxValue)
+{
+    if (minValue == 0 && maxValue == 1) {
+        return Random::GetInstance().NextFloat();
+    } else {
+        return minValue + Random::GetInstance().NextFloat() * (maxValue - minValue);
+    }
+}
+
+
 int GetRandomInt(int minValue, int maxValue)
 {
     return minValue + static_cast<int>(Random::GetInstance().NextDouble() * (maxValue - minValue));

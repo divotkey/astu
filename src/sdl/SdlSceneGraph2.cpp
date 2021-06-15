@@ -30,6 +30,17 @@ namespace astu {
         return *this;
     }
 
+    Vector2f SdlVertexBuffer2BuilderService::GetVertex(size_t idx)
+    {
+        return vertices.at(idx);
+    }
+
+    size_t SdlVertexBuffer2BuilderService::GetNumVertices() const
+    {
+        return vertices.size();
+    }
+
+
     VertexBuffer2Builder& SdlVertexBuffer2BuilderService::Reset()
     {
         vertices.clear();
@@ -44,7 +55,7 @@ namespace astu {
     }
 
     /////////////////////////////////////////////////
-    /////// SdlVertexBuffer2Builder
+    /////// SdlSceneGraph2
     /////////////////////////////////////////////////
 
     SdlSceneGraph2::SdlSceneGraph2(int renderPriority, int updatePriority)

@@ -228,4 +228,28 @@ namespace astu {
         }
     };
 
+    /**
+     * A template-based signal listener.
+     * 
+     * @ingroup srv_group
+     */
+    template <typename T>
+    class SignalListener : virtual public Service, private ISignalListener<T> {
+    public:
+
+        SignalListener() {
+            AddStartupHook([this]() { 
+                ASTU_SERVICE(SignalService<T>).AddListener(*this);
+            });
+
+            AddShutdownHook([this]() {
+                ASTU_SERVICE(SignalService<T>).RemoveListener(*this);
+            });
+        }
+
+    protected:
+        // Inherited via ISignalListener
+        virtual bool OnSignal(const T & signal) override { return false; };        
+    };
+
 } // end of namespace

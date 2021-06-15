@@ -54,6 +54,22 @@ namespace astu {
         }
 
         /**
+         * Returns the number of vertices, added to this builder.
+         * 
+         * @return the number of vertices
+         */
+        virtual size_t GetNumVertices() const = 0;
+
+        /**
+         * Returns the vertex with the specified index.
+         * 
+         * @param idx   the index of the vertex to return
+         * 
+         * @return the vertex
+         */
+        virtual Vector2f GetVertex(size_t idx) = 0;
+
+        /**
          * Resets this builder to its initial configuration.
          * 
          * @return reference to this builder for method chaining
