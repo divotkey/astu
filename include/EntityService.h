@@ -209,9 +209,18 @@ namespace astu {
             return result;
         }
 
+        int GetId() const {
+            return id;
+        }
+
     private:
 		/** Used for fast access to components. */
 		std::unordered_map<std::type_index, std::shared_ptr<EntityComponent>> compMap;
+
+        /** Internal entity id. */
+        int id;
+
+        friend class EntityService;
     };
 
     /////////////////////////////////////////////////
@@ -370,6 +379,13 @@ namespace astu {
 		 */
 		void RemoveEntity(std::shared_ptr<Entity> entity);
 
+        /**
+         * Tests whether the specified entity exists.
+         * 
+         * @return `true` if the entity exists
+         */
+        bool HasEntity(std::shared_ptr<Entity> entity) const;
+
 		/**
 		 * Removes an entity from this service.
 		 *
@@ -442,6 +458,9 @@ namespace astu {
 
         /** Indicates whether an event is currently fired. */
         bool firing;
+
+        /** Used to generate unique entity IDs. */
+        int idCounter;
 
         void AddEntityInternally(std::shared_ptr<Entity> entity);
         void RemoveEntityInternally(std::shared_ptr<Entity> entity);

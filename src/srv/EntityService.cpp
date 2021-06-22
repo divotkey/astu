@@ -5,10 +5,16 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// C++ Standard Library includes.
+#include <iostream>
 #include <string>
 #include <stdexcept>
 #include <algorithm>
+
+// Local includes
 #include "EntityService.h"
+
+using namespace std;
 
 namespace astu {
     
@@ -108,6 +114,11 @@ namespace astu {
         commands.Add([this, entity](){ RemoveEntityInternally(entity); });
     }
 
+    bool EntityService::HasEntity(std::shared_ptr<Entity> entity) const
+    {
+        return find(entities.begin(), entities.end(), entity) != entities.end();
+    }
+
     void EntityService::RemoveAll()
     {
         commands.Add([this](){ RemoveAllInternally(); });
@@ -116,6 +127,7 @@ namespace astu {
     void EntityService::OnStartup()
     {
         firing = false;
+        idCounter = 0;
     }
 
     void EntityService::OnShutdown()
@@ -147,10 +159,17 @@ namespace astu {
 			}
 		}
         firing = false;
+
+        // Assign unique entity ID.
+        entity->id = ++idCounter;
     }
 
     void EntityService::RemoveEntityInternally(std::shared_ptr<Entity> entity)
     {
+        if (!HasEntity(entity)) {
+            return;
+        }
+
         // Fire entity removed event.
         firing = true;
 		for (auto it : listeners) {
