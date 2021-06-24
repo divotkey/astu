@@ -21,8 +21,7 @@ using namespace std;
 #define VBUF(a) static_cast<const SdlVertexBuffer2&>(a)
 
 namespace astu {
-
-
+    
     /////////////////////////////////////////////////
     /////// SdlScene2Renderer
     /////////////////////////////////////////////////

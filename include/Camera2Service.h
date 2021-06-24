@@ -381,7 +381,7 @@ namespace astu {
      */
     class Camera2Service final 
         : public virtual Service
-        , public ReslizeListener
+        , public ResizeListener
     {
     public:
 
@@ -396,30 +396,30 @@ namespace astu {
         /**
          * Creates a new camera with the specified name.
          * 
-         * @param name  the name of the camera to create
+         * @param camName   the name of the camera to create
          * @return the newly created camera
          * @throws std::logic_error in case a camera with that name already
          *  exists
          */
-        std::shared_ptr<Camera2> CreateCamera(const std::string & name);
+        std::shared_ptr<Camera2> CreateCamera(const std::string & camName);
 
         /**
          * Retrieves the camera with the specified name.
          * 
-         * @param name  the name of the camera
+         * @param camName  the name of the camera
          * @return the requested camera
          * @throws std::logic_error in case the camera is unknown
          */
         std::shared_ptr<Camera2> 
-            GetCamera(const std::string & name = DEFAULT_CAMERA);
+            GetCamera(const std::string & camName = DEFAULT_CAMERA);
 
         /**
          * Tests whether a camera with the specified name exists.
          * 
-         * @param name  the name of the camera
+         * @param camName  the name of the camera
          * @return `true` if the camera exists
          */
-        bool HasCamera(const std::string & name) const;
+        bool HasCamera(const std::string & camName) const;
 
         /**
          * Retrieves a camera with the specified name or creates it.
@@ -427,16 +427,16 @@ namespace astu {
          * @param name  the name of the camera
          * @return the retrieved or newly created camera
          */
-        std::shared_ptr<Camera2> GetOrCreateCamera(const std::string & name) {
-            if (HasCamera(name)) {
-                return GetCamera(name);
+        std::shared_ptr<Camera2> GetOrCreateCamera(const std::string & camName) {
+            if (HasCamera(camName)) {
+                return GetCamera(camName);
             } else {
-                return CreateCamera(name);
+                return CreateCamera(camName);
             }
         }
 
         /**
-         * Destroyes
+         * Destroys all cameras.
          */
         void DestroyAll();
 
@@ -490,11 +490,11 @@ namespace astu {
         /**
          * Specified which camera to use.
          * 
-         * @param cameraName    the name of the camera
-         * @param create        whether the camera should be created
+         * @param camName   the name of the camera
+         * @param create    whether the camera should be created
          * @throws std::logic_error in case the camera is unknown
          */
-        void UseCamera(const std::string & cameraName, bool create = false);
+        void UseCamera(const std::string & camName, bool create = false);
 
         /** 
          * Returns the name of the camera to be used.

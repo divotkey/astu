@@ -5,9 +5,13 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "Mouse.h"
+#include "Camera2Service.h"
+
+// C++ Standard Library includes
 #include <string>
 #include <stdexcept>
-#include "Mouse.h"
 
 namespace astu {
 

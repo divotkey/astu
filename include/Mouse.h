@@ -8,10 +8,12 @@
 #pragma once
 
 #include <vector>
-#include <Vector2.h>
-#include <Camera2Service.h>
+#include "Vector2.h"
 
 namespace astu {
+
+    // Forward declaration.
+    class Camera2;
 
     /**
      * Provides access to mouse input.

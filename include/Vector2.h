@@ -87,9 +87,9 @@ namespace astu {
          * @param y the y-coordinate of the vector
          * @return reference to this vector for method chaining
          */
-        Vector2 & Set(T x, T y) {
-            this->x = x;
-            this->y = y;
+        Vector2 & Set(T _x, T _y) {
+			x = _x;
+            y = _y;
             return *this;
         }
 

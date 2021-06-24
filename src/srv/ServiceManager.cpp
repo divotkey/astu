@@ -5,12 +5,13 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-// C++ Standard Library includes
-#include <algorithm>
-
 // Local includes
 #include "Service.h"
 #include "ServiceManager.h"
+
+// C++ Standard Library includes
+#include <algorithm>
+
 
 using namespace std;
 

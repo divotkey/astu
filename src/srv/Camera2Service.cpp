@@ -5,13 +5,13 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-// C++ Standard includes
+ // Local includes
+#include "Camera2Service.h"
+#include "IWindowManager.h"
+
+ // C++ Standard includes
 #include <stdexcept>
 #include <iostream>
-
-// Local includes
-#include "IWindowManager.h"
-#include "Camera2Service.h"
 
 using namespace std;
 
@@ -207,34 +207,34 @@ namespace astu {
         CreateCamera(DEFAULT_CAMERA);
     }
 
-    std::shared_ptr<Camera2> Camera2Service::CreateCamera(const std::string & name)
+    std::shared_ptr<Camera2> Camera2Service::CreateCamera(const std::string & camName)
     {
-        auto it = cameraMap.find(name);
+        auto it = cameraMap.find(camName);
         if (it != cameraMap.end()) {
-            throw std::logic_error("Camera '" + name + "' alreayd exists");
+            throw std::logic_error("Camera '" + camName + "' already exists");
         }
 
         auto result = make_shared<Camera2>();
-        cameraMap[name] = result;
+        cameraMap[camName] = result;
 
         const auto& wnd = ASTU_SERVICE(IWindowManager);
         result->SetRenderTargetSize(wnd.GetWidth(), wnd.GetHeight());
         return result;
     }
 
-    std::shared_ptr<Camera2> Camera2Service::GetCamera(const std::string & name)
+    std::shared_ptr<Camera2> Camera2Service::GetCamera(const std::string & camName)
     {
-        auto it = cameraMap.find(name);
+        auto it = cameraMap.find(camName);
         if (it == cameraMap.end()) {
-            throw std::logic_error("Camera '" + name + "' is unknown");
+            throw std::logic_error("Camera '" + camName + "' is unknown");
         }
 
         return it->second;
     }
 
-    bool Camera2Service::HasCamera(const std::string & name) const
+    bool Camera2Service::HasCamera(const std::string & camName) const
     {
-        return cameraMap.find(name) == cameraMap.end();
+        return cameraMap.find(camName) == cameraMap.end();
     }
 
     void Camera2Service::OnStartup()
@@ -262,17 +262,17 @@ namespace astu {
     /////////////////////////////////////////////////
 
     Camera2Client::Camera2Client(const std::string & cameraName, bool createCamera)
-        : cameraName(cameraName)
-        , createCamera(createCamera)
+        : createCamera(createCamera)
+		, cameraName(cameraName)
     {
         AddStartupHook([this](){ InitCamera(); });
         AddShutdownHook([this](){ camera = nullptr; });
     }
 
-    void Camera2Client::UseCamera(const std::string & cameraName, bool create)
+    void Camera2Client::UseCamera(const std::string & camName, bool create)
     {
-        this->cameraName = cameraName;
-        this->createCamera = create;
+        cameraName = camName;
+        createCamera = create;
         if (GetStatus() == Running) {
             InitCamera();
         }

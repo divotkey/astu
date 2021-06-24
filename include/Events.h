@@ -8,6 +8,8 @@
 #pragma once
 
 // AST Utilities includes
+#include "Mouse.h"
+#include "Keyboard.h"
 #include "SignalService.h"
 
 namespace astu {
@@ -382,13 +384,13 @@ namespace astu {
     /**
      * Services can derive from this class to process window resize events.
      */
-    class ReslizeListener : virtual public Service, private IResizeListener {
+    class ResizeListener : virtual public Service, private IResizeListener {
     public:
 
         /**
          * Constructor.
          */
-        ReslizeListener() {
+        ResizeListener() {
             AddStartupHook([this](){ ASTU_SERVICE(ResizeEventService).AddListener(*this); });
             AddShutdownHook([this](){ ASTU_SERVICE(ResizeEventService).RemoveListener(*this); });
         }

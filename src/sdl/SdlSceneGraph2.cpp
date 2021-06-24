@@ -40,7 +40,6 @@ namespace astu {
         return vertices.size();
     }
 
-
     VertexBuffer2Builder& SdlVertexBuffer2BuilderService::Reset()
     {
         vertices.clear();

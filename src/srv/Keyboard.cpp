@@ -5,9 +5,13 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "Keyboard.h"
+
+// C++ Standard Library includes
 #include <string>
 #include <stdexcept>
-#include "Keyboard.h"
+
 
 namespace astu {
 

@@ -63,7 +63,7 @@ namespace astu {
         /**
          * Virtual destructor.
          */
-        ~ISignalListener() {}
+        virtual ~ISignalListener() {}
 
         /**
          * Called when a signal should be processed by this listener.
@@ -73,7 +73,7 @@ namespace astu {
          * listeners.    
          * 
          * @param signal	the signal
-         * @return `true` if the signal has been comsumed
+         * @return `true` if the signal has been consumed
          */
         virtual bool OnSignal(const T & signal) = 0;        
     };

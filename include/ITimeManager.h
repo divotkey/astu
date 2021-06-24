@@ -28,7 +28,7 @@ namespace astu {
         /**
          * Virtual destructor.
          */
-        ~ITimeManager() {}
+        virtual ~ITimeManager() {}
 
         /**
          * Returns the elapsed time since the last update.

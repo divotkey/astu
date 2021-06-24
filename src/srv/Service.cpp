@@ -5,12 +5,13 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "Service.h"
+#include "ServiceManager.h"
+
 // C++ Standard Library includes
 #include <stdexcept>
 
-// Local includes
-#include "ServiceManager.h"
-#include "Service.h"
 
 namespace astu {
 
