@@ -10,7 +10,6 @@
 
 // Local includes
 #include "ServiceManager.h"
-#include "Events.h"
 #include "Service.h"
 
 namespace astu {
