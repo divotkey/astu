@@ -13,7 +13,6 @@
 // Local includes.
 #include "Priority.h"
 #include "ListenerManager.h"
-#include "Priority.h"
 #include "Service.h"
 
 namespace astu {
