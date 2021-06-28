@@ -66,10 +66,10 @@ namespace astu {
         /**
          * Sets the name of this spatial.
          * 
-         * @param name  then name
+         * @param _name  then name
          */
-        void SetName(const std::string & name) {
-            this->name = name;
+        void SetName(const std::string & _name) {
+            name = _name;
         }
 
         /**
@@ -82,7 +82,7 @@ namespace astu {
         }
 
         /**
-         * Retrieves the local transormation matrix  of this spatial.
+         * Retrieves the local transformation matrix  of this spatial.
          * 
          * @return the local transformation
          */
@@ -176,17 +176,17 @@ namespace astu {
          * 
          * Do not call this method directly.
          * 
-         * @param parent    the parent
+         * @param _parent    the parent
          */
-        void SetParent(Spatial2 *parent) {
-            this->parent = parent;
+        void SetParent(Spatial2 *_parent) {
+            parent = _parent;
         }
 
     private:
         /** The local affine transformation of this spatial. */
         Transform2f localTransform;
 
-        /** The world transformation matrixof this spatial. */
+        /** The world transformation matrix of this spatial. */
         Matrix3f worldMatrix;
 
         /** The local transformation matrix of this spatial. */
@@ -213,9 +213,9 @@ namespace astu {
         void AttachChild(std::shared_ptr<Spatial2> child);
         void DetachChild(std::shared_ptr<Spatial2> child);
 
-        std::shared_ptr<Spatial2> FindChildOrNull(const std::string & name);
+        std::shared_ptr<Spatial2> FindChildOrNull(const std::string & childName);
 
-        std::shared_ptr<Spatial2> FindChild(const std::string & name);
+        std::shared_ptr<Spatial2> FindChild(const std::string & childName);
 
         // Inherited via Spatial2
         virtual void Render(Scene2Renderer& renderer) override;
@@ -336,8 +336,8 @@ namespace astu {
         /** Virtual destructor. */
         virtual ~Spatial2Builder() {}
 
-        T& Name(const std::string &name) {
-            this->name = name;
+        T& Name(const std::string &spatialName) {
+            name = spatialName;
             return reinterpret_cast<T&>(*this);
         }
 

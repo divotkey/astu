@@ -5,11 +5,11 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-// C++ Standard Library includes
-#include <memory>
-
 // Local includes
 #include "Controller.h"
+
+// C++ Standard Library includes
+#include <memory>
 
 namespace astu {
 
@@ -18,9 +18,9 @@ namespace astu {
         // Intentionally left empty.        
     }
 
-    void Controller::SetControllable(Controllable *controllable)
+    void Controller::SetControllable(Controllable *c)
     {
-        this->controllable = controllable;
+        controllable = c;
     }
 
     void Controller::Update(double dt)

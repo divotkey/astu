@@ -5,6 +5,9 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "Shape2Generator.h"
+
 // C++ Standard Library.
 #include <stdexcept>
 #include <cmath>
@@ -13,9 +16,6 @@
 #include "MathUtils.h"
 #include "Vector2.h"
 #include "Service.h"
-
-// Local includes
-#include "Shape2Generator.h"
 
 using namespace std;
 

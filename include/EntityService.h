@@ -467,8 +467,8 @@ namespace astu {
         void RemoveFromView(EntityView & view, std::shared_ptr<Entity> entity);
         void RemoveAllInternally();
         
-        void FireEntityAdded(ListenerList & listeners, std::shared_ptr<Entity> entity);
-        void FireEntityRemoved(ListenerList & listeners, std::shared_ptr<Entity> entity);
+        void FireEntityAdded(ListenerList & lst, std::shared_ptr<Entity> e);
+        void FireEntityRemoved(ListenerList & lst, std::shared_ptr<Entity> e);
     };
 
 } // end of namespace

@@ -5,11 +5,11 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-// C++ Standard Libraries includes
-#include <stdexcept>
-
 // Local includes
 #include "EntityFactoryService.h"
+
+// C++ Standard Libraries includes
+#include <stdexcept>
 
 using namespace std;
 
@@ -31,25 +31,25 @@ namespace astu {
         prototypes.clear();
     }
 
-    bool EntityFactoryService::HasPrototype(const string & name) const 
+    bool EntityFactoryService::HasPrototype(const string & protoName) const 
     {
-        return prototypes.find(name) != prototypes.end();
+        return prototypes.find(protoName) != prototypes.end();
     }
 
     void EntityFactoryService::RegisterPrototype(
-        const string & name, shared_ptr<Entity> proto)
+        const string & protoName, shared_ptr<Entity> proto)
     {
-        if (HasPrototype(name)) {
+        if (HasPrototype(protoName)) {
             throw logic_error("Unable to register prototype, ambiguous name '" 
-                + name + "'");
+                + protoName + "'");
         }        
 
-        prototypes[name] = proto;
+        prototypes[protoName] = proto;
     }
 
-    void EntityFactoryService::DeregisterPrototype(const std::string & name)
+    void EntityFactoryService::DeregisterPrototype(const std::string & protoName)
     {
-        auto it = prototypes.find(name);
+        auto it = prototypes.find(protoName);
         if (it != prototypes.end()) {
             prototypes.erase(it);
         }
@@ -60,12 +60,12 @@ namespace astu {
         prototypes.clear();
     }
 
-    shared_ptr<Entity> EntityFactoryService::CreateEntity(const string & name) const
+    shared_ptr<Entity> EntityFactoryService::CreateEntity(const string & protoName) const
     {
-        auto it = prototypes.find(name);
+        auto it = prototypes.find(protoName);
         if (it == prototypes.end()) {
             throw logic_error("Unable to create entity, ptototype '" 
-                + name + "' is unknown");
+                + protoName + "' is unknown");
         }
 
         return it->second->Clone();

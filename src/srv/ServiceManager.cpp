@@ -6,8 +6,8 @@
  */
 
 // Local includes
-#include "Service.h"
 #include "ServiceManager.h"
+#include "Service.h"
 
 // C++ Standard Library includes
 #include <algorithm>
@@ -59,6 +59,17 @@ namespace astu {
         // Remove service from list.
         services.erase(it);
     }
+
+	void ServiceManager::RemoveAllServices()
+	{
+		for (auto & service : services) {
+			if (service->GetStatus() != Service::Status::Stopped) {
+				service->Shutdown();
+			}
+		}
+
+		services.clear();
+	}
 
     bool ServiceManager::HasService(shared_ptr<Service> service) const
     {

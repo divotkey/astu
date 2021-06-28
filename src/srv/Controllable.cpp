@@ -5,12 +5,12 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "Controllable.h"
+
 // C++ Standard Library includes
 #include <stdexcept>
 #include <algorithm>
-
-// Local includes
-#include "Controllable.h"
 
 using namespace std;
 

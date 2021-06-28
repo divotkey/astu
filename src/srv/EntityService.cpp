@@ -5,14 +5,14 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "EntityService.h"
+
 // C++ Standard Library includes.
 #include <iostream>
 #include <string>
 #include <stdexcept>
 #include <algorithm>
-
-// Local includes
-#include "EntityService.h"
 
 using namespace std;
 
@@ -246,17 +246,17 @@ namespace astu {
         }
     }
 
-    void EntityService::FireEntityAdded(ListenerList & listeners, std::shared_ptr<Entity> entity)
+    void EntityService::FireEntityAdded(ListenerList & lst, std::shared_ptr<Entity> e)
     {
-        for (auto listener : listeners) {
-            listener->OnEntityAdded(entity);
+        for (auto listener : lst) {
+            listener->OnEntityAdded(e);
         }
     }
 
-    void EntityService::FireEntityRemoved(ListenerList & listeners, std::shared_ptr<Entity> entity)
+    void EntityService::FireEntityRemoved(ListenerList & lst, std::shared_ptr<Entity> e)
     {
-        for (auto listener : listeners) {
-            listener->OnEntityRemoved(entity);
+        for (auto listener : lst) {
+            listener->OnEntityRemoved(e);
         }
     }
 

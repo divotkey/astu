@@ -39,7 +39,6 @@ namespace astu {
             return *this;
         }
 
-
         Transform2<T> & SetTranslation(T tx, T ty) {
             translation.Set(tx, ty);
             dirty = true;

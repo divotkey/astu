@@ -16,7 +16,6 @@
 
 namespace astu {
 
-
     class Controllable {
     public:
 

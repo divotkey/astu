@@ -5,9 +5,11 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-#include <limits>
+// Local includes.
 #include "Random.h"
 
+// C++ Standard Library includes
+#include <limits>
 
 namespace astu {
 
@@ -35,14 +37,29 @@ namespace astu {
         return doubleDist(mt);
     }
 
+    double Random::NextDouble(double minValue, double maxValue)
+    {
+        return minValue + NextDouble() * (maxValue - minValue);
+    }
+
     float Random::NextFloat()
     {
         return floatDist(mt);
     }
 
+    float Random::NextFloat(float minValue, float maxValue)
+    {
+        return minValue + NextFloat() * (maxValue - minValue);
+    }
+
     int Random::NextInt()
     {
         return intDist(mt);
+    }
+
+    int Random::NextInt(int minValue, int maxValue)
+    {
+        return minValue + static_cast<int>(NextDouble() * (maxValue - minValue));
     }
 
     void Random::SetSeed(unsigned int value)

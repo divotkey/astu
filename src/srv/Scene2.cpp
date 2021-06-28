@@ -5,12 +5,12 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "Scene2.h"
+
 // C++ Standard Library includes
 #include <algorithm>
 #include <cassert>
-
-// Local includes
-#include "Scene2.h"
 
 using namespace std;
 
@@ -69,10 +69,10 @@ namespace astu {
     /////// Node2
     /////////////////////////////////////////////////
 
-    std::shared_ptr<Spatial2> Node2::FindChildOrNull(const std::string & name)
+    std::shared_ptr<Spatial2> Node2::FindChildOrNull(const std::string & childName)
     {
         for(auto & child : children) {
-            if (child->GetName() == name) {
+            if (child->GetName() == childName) {
                 return child;
             }
         }
@@ -80,7 +80,7 @@ namespace astu {
         for(auto & child : children) {
             auto node = std::dynamic_pointer_cast<Node2>(child);
             if (node) {
-                auto result = node->FindChild(name);
+                auto result = node->FindChild(childName);
                 if (result) {
                     return result;
                 }
@@ -90,11 +90,11 @@ namespace astu {
         return nullptr;
     }
 
-    std::shared_ptr<Spatial2> Node2::FindChild(const std::string & name)
+    std::shared_ptr<Spatial2> Node2::FindChild(const std::string & childName)
     {
-        auto result = FindChildOrNull(name);
+        auto result = FindChildOrNull(childName);
         if (!result) {
-            throw std::logic_error("No spatial with name '" + name + "' found");
+            throw std::logic_error("No spatial with name '" + childName + "' found");
         }
 
         return result;

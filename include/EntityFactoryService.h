@@ -33,27 +33,27 @@ namespace astu {
         /**
          * Tests whether a entity has been register.
          * 
-         * @param name  the name under which the entity has been registered
+         * @param protoName  the name under which the entity has been registered
          * @return `true` if an entity has been registered with the given name
          */
-        bool HasPrototype(const std::string & name) const;
+        bool HasPrototype(const std::string & protoName) const;
 
         /**
          * Registers a new entity prototype.
          * 
-         * @param name  the name of the prototype
-         * @param proto the entity prototype 
+         * @param protoName the name of the prototype
+         * @param proto     the entity prototype 
          * @throws std::logic_error in case the given name is already used
          */
         void RegisterPrototype(
-            const std::string & name, std::shared_ptr<Entity> proto);
+            const std::string & protoName, std::shared_ptr<Entity> proto);
 
         /**
          * Deregisters an entityentity prototype.
          * 
-         * @param name  the name of the prototype
+         * @param protoName the name of the prototype
          */
-        void DeregisterPrototype(const std::string & name);
+        void DeregisterPrototype(const std::string & protoName);
 
         /**
          * Deregisters all prototypes.
@@ -63,10 +63,10 @@ namespace astu {
         /**
          * Creates a new entity based on an registered prototype.
          * 
-         * @param name  the name of the prototype
+         * @param protoName the name of the prototype
          * @throws std::logic_error in case the given name is unknown
          */
-        std::shared_ptr<Entity> CreateEntity(const std::string & name) const;
+        std::shared_ptr<Entity> CreateEntity(const std::string & protoName) const;
 
         // Inherited via Service
         virtual void OnStartup() override;

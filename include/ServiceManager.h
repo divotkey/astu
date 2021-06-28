@@ -21,6 +21,7 @@
 #define ASTU_GET_SERVICE_OR_NULL(type) ASTU_SERVICE_MANAGER().FindService<type>(nullptr)
 #define ASTU_HAS_SERVICE(type) (ASTU_GET_SERVICE_OR_NULL(type) != nullptr)
 
+#define ASTU_REMOVE_ALL_SERVICES() ASTU_SERVICE_MANAGER().RemoveAllServices()
 #define ASTU_STARTUP_SERVICES() ASTU_SERVICE_MANAGER().StartupAll()
 #define ASTU_SHUTDOWN_SERVICES() ASTU_SERVICE_MANAGER().ShutdownAll()
 
@@ -63,6 +64,11 @@ namespace astu {
          * @param service the service to remove
          */
         void RemoveService(std::shared_ptr<Service> service);
+
+		/**
+		 * Removes all services.
+		 */
+		void RemoveAllServices();
 
         /**
          * Tests whether the specified services has already been added.

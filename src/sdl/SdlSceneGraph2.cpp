@@ -20,6 +20,7 @@ namespace astu {
     /////////////////////////////////////////////////
 
     SdlVertexBuffer2BuilderService::SdlVertexBuffer2BuilderService()
+        : Service("SDL Vertex Buffer 2D Builder Service")
     {
         Reset();
     }

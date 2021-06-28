@@ -33,6 +33,23 @@ namespace astu {
         double NextDouble();
 
         /**
+         * Returns a random number within the specified range.
+         * This function will generate a random number using a 
+         * pseudo random number generator.
+         * 
+         * The generated numbers are of type `double` and lie within the interval
+         * of [minValue, maxValue).
+         * 
+         * *Note:* the notation for the interval *[minValue, maxValue)* means
+         * that `minValue` is included but `maxValue` is not.
+         * 
+         * @param minValue  the minimum value
+         * @param maxValue  the minimum value
+         * @return the new random number
+         */
+        double NextDouble(double minValue, double maxValue);
+
+        /**
          * Returns a random number within the range [0, 1).
          * 
          * @return the next random number.
@@ -40,11 +57,45 @@ namespace astu {
         float NextFloat();
 
         /**
+         * Returns a random number within the specified range.
+         * This function will generate a random number using a 
+         * pseudo random number generator.
+         * 
+         * The generated numbers are of type `float` and lie within the interval
+         * of [minValue, maxValue).
+         * 
+         * *Note:* the notation for the interval *[minValue, maxValue)* means
+         * that `minValue` is included but `maxValue` is not.
+         * 
+         * @param minValue  the minimum value
+         * @param maxValue  the minimum value
+         * @return the new random number
+         */
+        float NextFloat(float minValue, float maxValue);
+
+        /**
          * Returns a random integer number within the range [0, INT_MAX].
          * 
          * @return the next random integer number.
          */
         int NextInt();
+
+        /**
+         * Returns a random number within the specified range.
+         * This function will generate a random number using a 
+         * pseudo random number generator.
+         * 
+         * The generated numbers are of type `int` and lie within the interval
+         * of [minValue, maxValue).
+         * 
+         * *Note:* the notation for the interval *[minValue, maxValue)* means
+         * that `minValue` is included but `maxValue` is not.
+         * 
+         * @param minValue  the minimum value
+         * @param maxValue  the minimum value
+         * @return the new random number
+         */
+        int NextInt(int minValue, int maxValue);
 
         void SetSeed(unsigned int value);
 
