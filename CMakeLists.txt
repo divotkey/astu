@@ -37,6 +37,8 @@ list(APPEND astulib_SOURCES
                     src/srv/EntityService.cpp
                     src/srv/EntityFactoryService.cpp
                     src/srv/IteratingEntitySystem.cpp
+                    src/srv/InputMapperService.cpp
+                    src/srv/Keys.cpp
                     src/srv/Mouse.cpp
                     src/srv/Keyboard.cpp
                     src/srv/Controllable.cpp
@@ -67,6 +69,7 @@ if(WITH_SDL)
         
         src/sdl/SdlService.cpp
         src/sdl/SdlEventService.cpp
+        src/sdl/SdlKeyTable.cpp
         src/sdl/SdlVideoService.cpp
         src/sdl/SdlRenderService.cpp
         src/sdl/SdlAudioService.cpp

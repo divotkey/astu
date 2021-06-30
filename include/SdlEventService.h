@@ -8,6 +8,7 @@
 #pragma once
 
 // Local includes
+#include "InputMapperService.h"
 #include "UpdateService.h"
 #include "Keyboard.h"
 #include "Events.h"
@@ -68,6 +69,9 @@ namespace astu {
 
         /** Used to transfer keyboard events to keyboard states. */
         Keyboard keyboard;
+
+        /** Used to map input events to actions and axis. */
+        std::shared_ptr<InputMapperService> inputMapperSrv;
 
         /** Used to transmit mouse button events. */
         std::shared_ptr<MouseButtonEventService> mouseButtonSrv;

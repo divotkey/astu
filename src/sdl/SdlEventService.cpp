@@ -5,10 +5,17 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "SdlEventService.h"
+#include "SdlKeyTable.h"
+
+// C++ Standard library includes
 #include <stdexcept>
 #include <iostream>
+
+// SDL 2 includes
 #include <SDL2/SDL.h>
-#include "SdlEventService.h"
+
 
 namespace astu {
 
@@ -31,6 +38,7 @@ namespace astu {
             throw std::runtime_error(SDL_GetError());
         }
 
+        inputMapperSrv = ASTU_GET_SERVICE_OR_NULL(InputMapperService);
         mouseButtonSrv = ASTU_GET_SERVICE_OR_NULL(MouseButtonEventService);
         mouseWheelSrv = ASTU_GET_SERVICE_OR_NULL(MouseWheelEventService);
         mouseMoveSrv = ASTU_GET_SERVICE_OR_NULL(MouseMoveEventService);
@@ -46,6 +54,7 @@ namespace astu {
         mouseWheelSrv = nullptr;
         mouseButtonSrv = nullptr;
         mouseMoveSrv = nullptr;
+        inputMapperSrv = nullptr;
         SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, 
             "Shutting down SDL event service");
         SDL_QuitSubSystem(SDL_INIT_EVENTS);
@@ -111,6 +120,9 @@ namespace astu {
                     keystrokeSrv->FireSignal( 
                         KeystrokeEvent(event.key.keysym.scancode, true) );
                 }
+                if (inputMapperSrv) {
+                    inputMapperSrv->ProcessKey( SdlKeyTable::ScanCodeToKey(event.key.keysym.scancode), true);
+                }
                 break;
 
             case SDL_KEYUP:
@@ -118,6 +130,9 @@ namespace astu {
                 if (keystrokeSrv) {
                     keystrokeSrv->FireSignal( 
                             KeystrokeEvent(event.key.keysym.scancode, false) );
+                }
+                if (inputMapperSrv) {
+                    inputMapperSrv->ProcessKey( SdlKeyTable::ScanCodeToKey(event.key.keysym.scancode), false);
                 }
                 break;
 
