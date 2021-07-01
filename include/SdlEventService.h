@@ -8,13 +8,16 @@
 #pragma once
 
 // Local includes
-#include "InputMapperService.h"
+#include "InputMappingService.h"
 #include "UpdateService.h"
 #include "Keyboard.h"
 #include "Events.h"
 #include "Mouse.h"
 
 namespace astu {
+
+    // Forward declaration
+    class ISdlEventListener;
 
     /**
      * Initializes the SDL event submodule. 
@@ -51,6 +54,31 @@ namespace astu {
          */
         void ClearQuit();
 
+        /**
+         * Adds an event listener which listens to raw sdl events.
+         * This method is for internal usage only.
+         * 
+         * @param listener  event listener to add
+         * @throws std::logic_error in case the listener has already been added
+         */
+        void AddSdlEventListener(ISdlEventListener & listener);
+
+        /**
+         * Removes an event listener.
+         * This method is for internal usage only.
+         * 
+         * @param listener  event listener to remove
+         */
+        void RemoveSdlEventListener(ISdlEventListener & listener);
+
+        /**
+         * Tests whether an event listener has already been added.
+         * This method is for internal usage only.
+         * 
+         * @param listener  event listener to remove
+         */
+        bool HasSdlEventListener(ISdlEventListener & listener) const;
+
     protected:
 
         // Inherited via Service
@@ -71,7 +99,7 @@ namespace astu {
         Keyboard keyboard;
 
         /** Used to map input events to actions and axis. */
-        std::shared_ptr<InputMapperService> inputMapperSrv;
+        std::shared_ptr<InputMappingService> inputMapperSrv;
 
         /** Used to transmit mouse button events. */
         std::shared_ptr<MouseButtonEventService> mouseButtonSrv;
@@ -87,6 +115,9 @@ namespace astu {
 
         /** Used to transmit keystroke events. */
         std::shared_ptr<ResizeEventService> resizeSrv;
+
+        /** The registered event listeners. */
+        std::vector<ISdlEventListener*> eventListeners;
     };
 
 } 

@@ -8,7 +8,7 @@
 #pragma once
 
 // Local includes
-#include "InputMapperService.h"
+#include "InputMappingService.h"
 
 
 namespace astu {

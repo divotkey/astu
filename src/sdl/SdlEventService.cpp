@@ -7,15 +7,16 @@
 
 // Local includes
 #include "SdlEventService.h"
+#include "ISdlEventListener.h"
 #include "SdlKeyTable.h"
 
 // C++ Standard library includes
 #include <stdexcept>
+#include <algorithm>
 #include <iostream>
 
 // SDL 2 includes
 #include <SDL2/SDL.h>
-
 
 namespace astu {
 
@@ -38,7 +39,7 @@ namespace astu {
             throw std::runtime_error(SDL_GetError());
         }
 
-        inputMapperSrv = ASTU_GET_SERVICE_OR_NULL(InputMapperService);
+        inputMapperSrv = ASTU_GET_SERVICE_OR_NULL(InputMappingService);
         mouseButtonSrv = ASTU_GET_SERVICE_OR_NULL(MouseButtonEventService);
         mouseWheelSrv = ASTU_GET_SERVICE_OR_NULL(MouseWheelEventService);
         mouseMoveSrv = ASTU_GET_SERVICE_OR_NULL(MouseMoveEventService);
@@ -64,6 +65,10 @@ namespace astu {
     {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
+
+            // Uncomment for debugging.
+            // std::cout << "event: " << event.type << std::endl;
+
             switch (event.type) {
             case SDL_QUIT:
                 quit = true;
@@ -154,6 +159,14 @@ namespace astu {
                 }
                 break;
 
+            case SDL_TEXTINPUT:
+                // ignore.
+                break;
+
+            case SDL_TEXTEDITING:
+                // ignore.
+                break;
+
             case SDL_DROPTEXT:
                 // std::cout << "drop text" << std::endl;
                 break;
@@ -170,6 +183,13 @@ namespace astu {
                 // std::cout << "file dropped: '" << event.drop.file << "'" << std::endl;
                 SDL_free(event.drop.file);
                 break;
+
+            default:
+                // Propagate event to registered listeners.
+                for (auto listener : eventListeners) {
+                    listener->HandleEvent(event);
+                }
+                break;
             }
         }
     }
@@ -182,6 +202,28 @@ namespace astu {
     void SdlEventService::ClearQuit() 
     {
         quit = false;
+    }
+
+    bool SdlEventService::HasSdlEventListener(ISdlEventListener & listener) const
+    {
+        return find(eventListeners.begin(), eventListeners.end(), &listener) 
+            != eventListeners.end();
+    }
+
+    void SdlEventService::AddSdlEventListener(ISdlEventListener & listener)
+    {
+        if (HasSdlEventListener(listener)) {
+            throw std::logic_error("SDL event listener already added");
+        }
+
+        eventListeners.push_back(&listener);
+    }
+
+    void SdlEventService::RemoveSdlEventListener(ISdlEventListener & listener)
+    {
+        eventListeners.erase(
+            remove(eventListeners.begin(), eventListeners.end(), &listener),
+            eventListeners.end());
     }
 
 } // end of namespace

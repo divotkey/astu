@@ -23,9 +23,9 @@ namespace astu {
      * @ingroup sdl_group 
      */
     class SdlTimeService final 
-        : public virtual Service, 
-        private Updatable, 
-        public ITimeManager
+        : public virtual Service
+        , private Updatable
+        , public ITimeManager
     {
     public:
 

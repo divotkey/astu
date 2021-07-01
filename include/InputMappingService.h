@@ -10,6 +10,10 @@
 // Local includes
 #include "Service.h"
 
+// AST Utilities includes
+#include "Service.h"
+#include "UpdateService.h"
+
 // C++ Standard Library includes
 #include <functional>
 #include <memory>
@@ -53,10 +57,13 @@ namespace astu {
         std::string name;
     };
 
-    // struct KeyState {
-    //     /** Whether the key is currently pressed or released. */
-    //     bool pressed;
-    // };
+    class KeyState {
+    public:
+        KeyState() : pressed(false), value(0) {}
+
+        bool pressed;
+        float value;
+    };
 
     class ActionMapping {
     public:
@@ -135,9 +142,8 @@ namespace astu {
          */
         void Update(bool newPressed);
 
-        friend class InputMapperService;
+        friend class InputMappingService;
     };
-
 
     class AxisMapping {
     public:
@@ -147,8 +153,9 @@ namespace astu {
          * 
          * @param name  the name of this mapping
          * @param key   the key of this mapping
+         * @param scale the multiplier on the axis value
          */
-        AxisMapping(const std::string & name, const Key &key);
+        AxisMapping(const std::string & name, const Key &key, float scale = 1);
 
         /**
          * Returns the name of the axis of this mapping.
@@ -162,24 +169,37 @@ namespace astu {
          * 
          * @return the key
          */
-        const Key& GetAxis() const;
+        const Key& GetKey() const;
+
+        /**
+         * Returns the axis multiplier.
+         * 
+         * @return multiplier on the axis value
+         */
+        float GetScale() const;
 
     private:
-        /** The name of this axis mapping. */
-        std::string mappingName;
+        /** The name of this axis. */
+        std::string axisName;
 
         /** The key of this mapping. */
-        Key axis;
+        Key key;
 
         /** A multiplier on the axis value. */
         float scale;
     };
 
-
     class AxisBinding {
     public:
 
-        AxisBinding();
+        using Delegate = std::function<void (AxisBinding &)>;
+
+        /**
+         * Constructor.
+         * 
+         * @param axisName  the name of the axis to bind
+         */
+        AxisBinding(const std::string & axisName);
 
         /**
          * Returns the current value of this axis binding.
@@ -188,17 +208,53 @@ namespace astu {
          */
         float GetValue() const;
 
+        /**
+         * Returns the name of the axis of this binding.
+         * 
+         * @return the axis name
+         */
+        const std::string& GetAxis() const;
+
+        /**
+         * Sets the delegate function to be called on state changes.
+         * 
+         * @param delegate  the the delegate function
+         */
+        void SetDelegate(Delegate delegate);
+
     private:
         /** The current value. */
         float value;
 
-        void Update(float newValue);
+        /** The previous value. */
+        float prevValue;
 
-        friend class InputMapperService;
+        /** The name of the axis of this binding. */
+        std::string axisName;
+
+        /** The delegate function, called on state changes. */
+        Delegate delegateFunc;
+
+        void Update();
+
+        friend class InputMappingService;
     };
 
-    class InputMapperService : virtual public Service {
+    /**
+     * This service mapps input events to game actions or axis.
+     */
+    class InputMappingService 
+        : virtual public Service
+        , private Updatable
+    {
     public:
+
+        /**
+         * Constructor.
+         * 
+         * @param updatePriority the update priority of this
+         */
+        InputMappingService(Priority updatePriority = Priority::Normal);
 
         /**
          * Adds mapping for an acton to an input key.
@@ -236,17 +292,27 @@ namespace astu {
          */
         void RemoveActionBinding(std::shared_ptr<ActionBinding> binding);
 
-        // /**
-        //  * Adds an axis mapping.
-        //  * 
-        //  * @param axisName the unique name of the action
-        //  * @param 
-        //  */
-        // void AddAxisMapping(const std::string & axisName, const Axis& axis);
-        // std::shared_ptr<AxisBinding> GetAxisBinding(const std::string & name);
+        /**
+         * Adds an axis mapping.
+         * 
+         * @param axisName  the unique name of the action
+         * @param key       the key of this axis binding
+         * @param scale     the multiplier on the axis value
+         */
+        void AddAxisMapping(const std::string & axisName, const Key& key, float scale)
+        {
+            AddAxisMapping( AxisMapping(axisName, key, scale));
+        }
 
+        /**
+         * Adds an axis mapping.
+         * 
+         * @param mapping   the axis mapping
+         */
+        void AddAxisMapping(const AxisMapping & mapping);
 
         std::shared_ptr<AxisBinding> BindAxis(const std::string &axisName);
+        void RemoveAxisBinding(std::shared_ptr<AxisBinding> binding);
 
         /**
          * Processes a key event. 
@@ -256,11 +322,20 @@ namespace astu {
          */
         void ProcessKey(const Key & key, bool pressed);
 
+        /**
+         * Processes a axis input event.
+         * 
+         * @param key
+         * @param value
+         */
         void ProcessAxis(const Key & key, float value);
 
     private:
+        /** The current states of keys. */
+        std::map<Key, KeyState> keyStates;
+
         /** The action mappings, accessible by key. */
-        std::map<Key, std::vector<ActionMapping>> actionMappings;
+        // std::map<Key, std::vector<ActionMapping>> actionMappings;
 
         /** The axis mappings, accessible by key. */
         std::map<Key, std::vector<AxisMapping>> axisMappings;
@@ -268,11 +343,25 @@ namespace astu {
         /** The bindings to the actions. */
         std::map<std::string, std::vector<std::shared_ptr<ActionBinding>>> actionBindings;
 
+        /** The bindings to axes. */
+        std::map<std::string, std::vector<std::shared_ptr<AxisBinding>>> axisBindings;
+
+        /** Associates actions to action mappings. */
+        std::map<std::string, std::vector<ActionMapping>> actionToMapping;
+
         void ProcessAxisMappings(const Key & key, bool pressed);
         void ProcessActionMappings(const Key & key, bool pressed);
         void UpdateActionBindings(const std::string & actionName, bool pressed);
+        void UpdateAxisBindings(const std::string & axisName, float value);
 
-        bool HasActionMapping(const std::vector<ActionMapping> mappings, const Key & key);
+        bool HasActionMapping(const std::vector<ActionMapping>& mappings, const Key & key) const;
+        bool HasAxisMapping(const std::vector<AxisMapping>& mappings, const Key & key) const;
+        void EnsureKeyState(const Key& key);
+        KeyState& GetKeyState(const Key& key);
+        void ReleaseKeyState(const Key& key);
+
+        // Inherited via Updatable
+        virtual void OnUpdate() override;
     };
 
 } // end of namespace
