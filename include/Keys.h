@@ -15,6 +15,11 @@ namespace astu {
 
     class Keys {
     public:
+
+		/////////////////////////////////////////////////
+		/////// Keyboard Keys
+		/////////////////////////////////////////////////
+
 		/** Constant for key 'A' */
 		static const Key A;
 
@@ -224,6 +229,43 @@ namespace astu {
 
 		/** Constant for key 'RightGui' */
 		static const Key RightGui;
+
+		/////////////////////////////////////////////////
+		/////// Special Keys
+		/////////////////////////////////////////////////
+
+		/** Constant for 'Unknown key' */
+		static const Key Unknown;
+
+		/** Constant for 'Gamepad Face Button Bottom' */
+		static const Key GamepadFaceButtonBottom;
+
+		/** Constant for 'Gamepad Face Button Top' */
+		static const Key GamepadFaceButtonTop;
+
+		/** Constant for 'Gamepad Face Button Right' */
+		static const Key GamepadFaceButtonRight;
+
+		/** Constant for 'Gamepad Face Button Left' */
+		static const Key GamepadFaceButtonLeft;
+
+		/** Constant for 'Gamepad Left Thumbstick X-Achis' */
+		static const Key GamepadLeftThumbstickX;
+
+		/** Constant for 'Gamepad Left Thumbstick Y-Achis' */
+		static const Key GamepadLeftThumbstickY;
+
+		/** Constant for 'Gamepad Right Thumbstick X-Achis' */
+		static const Key GamepadRightThumbstickX;
+
+		/** Constant for 'Gamepad Right Thumbstick Y-Achis' */
+		static const Key GamepadRightThumbstickY;
+
+		/** Constant for 'Gamepad Keft Shoulder' */
+		static const Key GamepadLeftShoulder;
+
+		/** Constant for 'Gamepad Right Shoulder' */
+		static const Key GamepadRightShoulder;
 	};
 
 } // end of namespace

@@ -10,6 +10,7 @@
 
 namespace astu {
 
+		// Keyboard keys.
 		const Key Keys::A = Key("A");
 		const Key Keys::B = Key("B");
 		const Key Keys::C = Key("C");
@@ -80,5 +81,18 @@ namespace astu {
 		const Key Keys::RightShift = Key("RightShift");
 		const Key Keys::RightAlt = Key("RightAlt");
 		const Key Keys::RightGui = Key("RightGui");
+
+		// Special keys.
+		const Key Keys::Unknown = Key("Unknown");
+		const Key Keys::GamepadFaceButtonBottom = Key("GamepadFaceButtonBottom");
+		const Key Keys::GamepadFaceButtonTop = Key("GamepadFaceButtonTop");
+		const Key Keys::GamepadFaceButtonRight = Key("GamepadFaceButtonRight");
+		const Key Keys::GamepadFaceButtonLeft = Key("GamepadFaceButtonLeft");
+		const Key Keys::GamepadLeftThumbstickX = Key("GamepadLeftThumbstickX");
+		const Key Keys::GamepadLeftThumbstickY = Key("GamepadLeftThumbstickY");
+		const Key Keys::GamepadRightThumbstickX = Key("GamepadRightThumbstickX");
+		const Key Keys::GamepadRightThumbstickY = Key("GamepadRightThumbstickY");
+		const Key Keys::GamepadLeftShoulder = Key("GamepadLeftShoulder");
+		const Key Keys::GamepadRightShoulder = Key("GamepadRightShoulder");
 
 } // end of namespace

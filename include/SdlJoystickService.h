@@ -13,6 +13,7 @@
 
 // C++ Standard Library includes
 #include <memory>
+#include <map>
 
 namespace astu {
 
@@ -32,13 +33,31 @@ namespace astu {
 
         /**
          * Constructor.
+         * 
+         * @param defaultDeadZone   the default dead zone for control axis
          */
-        SdlJoystickService();
+        SdlJoystickService(float defaultDeadZone = 0.25f);
 
         /**
          * Virtual destructor.
          */
         virtual ~SdlJoystickService();
+
+        /**
+         * Sets the deadzone of the specified axis control.
+         * 
+         * @param key   the axis control
+         * @param deadzone  the deadzone within the range [0, 1]
+         * @throws std::domain_error in case the deadzone is out of range
+         */
+        void SetAxisDeadzone(const Key& key, float deadzone);
+
+        /**
+         * Returns the deadzone for an axis control.
+         * 
+         * @return the deadzone
+         */
+        float GetAxisDeadzone(const Key& key) const;
 
     private:
         /** Used to update axis values of gamepads. */
@@ -46,6 +65,9 @@ namespace astu {
 
         /** Used to receive SDL events without exposing SDL in this header. */
         std::unique_ptr<EventListenerProxy> proxy;
+
+        /** The deadzones for axis. */
+        std::map<Key, float> deadzones;
 
         // Inherited via Service
         virtual void OnStartup() override;

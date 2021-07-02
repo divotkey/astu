@@ -23,6 +23,10 @@
 
 namespace astu {
 
+    /////////////////////////////////////////////////
+    /////// Key
+    /////////////////////////////////////////////////
+
     class Key {
     public:
 
@@ -57,6 +61,10 @@ namespace astu {
         std::string name;
     };
 
+    /////////////////////////////////////////////////
+    /////// KeyState
+    /////////////////////////////////////////////////
+
     class KeyState {
     public:
         KeyState() : pressed(false), value(0) {}
@@ -64,6 +72,10 @@ namespace astu {
         bool pressed;
         float value;
     };
+
+    /////////////////////////////////////////////////
+    /////// ActionMapping
+    /////////////////////////////////////////////////
 
     class ActionMapping {
     public:
@@ -91,6 +103,10 @@ namespace astu {
         /** The key of this mapping. */
         Key actionKey;
     };
+
+    /////////////////////////////////////////////////
+    /////// ActionBinding
+    /////////////////////////////////////////////////
 
     class ActionBinding {
     public:
@@ -145,6 +161,10 @@ namespace astu {
         friend class InputMappingService;
     };
 
+    /////////////////////////////////////////////////
+    /////// AxisMapping
+    /////////////////////////////////////////////////
+
     class AxisMapping {
     public:
 
@@ -189,6 +209,10 @@ namespace astu {
         float scale;
     };
 
+    /////////////////////////////////////////////////
+    /////// AxisBinding
+    /////////////////////////////////////////////////
+
     class AxisBinding {
     public:
 
@@ -226,19 +250,25 @@ namespace astu {
         /** The current value. */
         float value;
 
-        /** The previous value. */
-        float prevValue;
-
         /** The name of the axis of this binding. */
         std::string axisName;
 
         /** The delegate function, called on state changes. */
         Delegate delegateFunc;
 
-        void Update();
+        /**
+         * Updates the state of this axis binding.
+         * 
+         * @param newValue  the new axis value of this binding
+         */
+        void Update(float newValue);
 
         friend class InputMappingService;
     };
+
+    /////////////////////////////////////////////////
+    /////// InputMappingService
+    /////////////////////////////////////////////////
 
     /**
      * This service mapps input events to game actions or axis.
@@ -299,7 +329,11 @@ namespace astu {
          * @param key       the key of this axis binding
          * @param scale     the multiplier on the axis value
          */
-        void AddAxisMapping(const std::string & axisName, const Key& key, float scale)
+        void AddAxisMapping(
+            const std::string & axisName, 
+            const Key& key, 
+            float scale = 1.0f
+        )
         {
             AddAxisMapping( AxisMapping(axisName, key, scale));
         }
@@ -311,7 +345,17 @@ namespace astu {
          */
         void AddAxisMapping(const AxisMapping & mapping);
 
-        std::shared_ptr<AxisBinding> BindAxis(const std::string &axisName);
+        /**
+         * Creates a new axis binding.
+         * 
+         * @param actionName    the name of the axis to bind to
+         * @param delegate      the delegate function of the action binding
+         * @return the action binding
+         */
+        std::shared_ptr<AxisBinding> BindAxis(
+            const std::string &axisName, 
+            AxisBinding::Delegate delegate = nullptr);
+
         void RemoveAxisBinding(std::shared_ptr<AxisBinding> binding);
 
         /**
@@ -334,12 +378,6 @@ namespace astu {
         /** The current states of keys. */
         std::map<Key, KeyState> keyStates;
 
-        /** The action mappings, accessible by key. */
-        // std::map<Key, std::vector<ActionMapping>> actionMappings;
-
-        /** The axis mappings, accessible by key. */
-        std::map<Key, std::vector<AxisMapping>> axisMappings;
-
         /** The bindings to the actions. */
         std::map<std::string, std::vector<std::shared_ptr<ActionBinding>>> actionBindings;
 
@@ -349,10 +387,8 @@ namespace astu {
         /** Associates actions to action mappings. */
         std::map<std::string, std::vector<ActionMapping>> actionToMapping;
 
-        void ProcessAxisMappings(const Key & key, bool pressed);
-        void ProcessActionMappings(const Key & key, bool pressed);
-        void UpdateActionBindings(const std::string & actionName, bool pressed);
-        void UpdateAxisBindings(const std::string & axisName, float value);
+        /** Associates actions to action mappings. */
+        std::map<std::string, std::vector<AxisMapping>> axisToMapping;
 
         bool HasActionMapping(const std::vector<ActionMapping>& mappings, const Key & key) const;
         bool HasAxisMapping(const std::vector<AxisMapping>& mappings, const Key & key) const;

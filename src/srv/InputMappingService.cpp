@@ -34,14 +34,14 @@ namespace astu {
     /////// ActionMapping
     /////////////////////////////////////////////////
 
-    ActionMapping::ActionMapping(const std::string & name, const Key & key)
+    ActionMapping::ActionMapping(const string & name, const Key & key)
         : actionName(name)
         , actionKey(key)
     {
         // Intentionally left empty.
     }
     
-    const std::string & ActionMapping::GetName() const
+    const string & ActionMapping::GetName() const
     {
         return actionName;
     }
@@ -55,7 +55,7 @@ namespace astu {
     /////// ActionBinding
     /////////////////////////////////////////////////
 
-    ActionBinding::ActionBinding(const std::string & name)
+    ActionBinding::ActionBinding(const string & name)
         : actionName(name)
         , pressed(false)
     {
@@ -91,7 +91,7 @@ namespace astu {
     /////// AxisMapping
     /////////////////////////////////////////////////
 
-    AxisMapping::AxisMapping(const std::string & name, const Key &key, float scale)
+    AxisMapping::AxisMapping(const string & name, const Key &key, float scale)
         : axisName(name)
         , key(key)
         , scale(scale)
@@ -99,7 +99,7 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    const std::string & AxisMapping::GetName() const
+    const string & AxisMapping::GetName() const
     {
         return axisName;
     }
@@ -118,10 +118,9 @@ namespace astu {
     /////// AxisBinding
     /////////////////////////////////////////////////
 
-    AxisBinding::AxisBinding(const std::string & axisName)
+    AxisBinding::AxisBinding(const string & axisName)
         : axisName(axisName)
         , value(0)
-        , prevValue(0)
     {
         // Intentionally left empty.
     }
@@ -131,8 +130,7 @@ namespace astu {
         return value;
     }
 
-
-    const std::string& AxisBinding::GetAxis() const
+    const string& AxisBinding::GetAxis() const
     {
         return axisName;
     }
@@ -141,13 +139,13 @@ namespace astu {
         delegateFunc = delegate;
     }
 
-    void AxisBinding::Update()
+    void AxisBinding::Update(float newValue)
     {
-        if (value != prevValue) {
+        if (value != newValue) {
+            value = newValue;
             if (delegateFunc) {
                 delegateFunc(*this);
             }
-            prevValue = value;
         }
     }
 
@@ -175,7 +173,10 @@ namespace astu {
         return false;
     }
 
-    bool InputMappingService::HasAxisMapping(const std::vector<AxisMapping>& mappings, const Key & key) const
+    bool InputMappingService::HasAxisMapping(
+        const vector<AxisMapping>& mappings, 
+        const Key & key
+    ) const
     {
         for (const auto & mapping : mappings) {
             if (mapping.GetKey() == key) {
@@ -199,10 +200,10 @@ namespace astu {
     }
 
     shared_ptr<ActionBinding> InputMappingService::BindAction (
-        const std::string & actionName, 
+        const string & actionName, 
         ActionBinding::Delegate delegate)
     {
-        auto binding = std::make_shared<ActionBinding>(actionName);
+        auto binding = make_shared<ActionBinding>(actionName);
         binding->SetDelegate(delegate);
 
         auto it = actionBindings.find(binding->GetAction());
@@ -213,7 +214,7 @@ namespace astu {
         return binding; 
     }
 
-    void InputMappingService::RemoveActionBinding(std::shared_ptr<ActionBinding> binding)
+    void InputMappingService::RemoveActionBinding(shared_ptr<ActionBinding> binding)
     {
         auto it = actionBindings.find(binding->GetAction());
         if (it == actionBindings.end()) {
@@ -229,23 +230,23 @@ namespace astu {
 
     void InputMappingService::AddAxisMapping(const AxisMapping & mapping)
     {
-        auto it = axisMappings.find(mapping.GetKey());
-        if (it == axisMappings.end()) {
-            axisMappings[mapping.GetKey()].push_back(mapping);
-            return;
-        }
-
-        if (!HasAxisMapping(it->second, mapping.GetKey())) {
+        auto it = axisToMapping.find(mapping.GetName());
+        if (it == axisToMapping.end()) {
+            axisToMapping[mapping.GetName()].push_back(mapping);
+        } else if (!HasAxisMapping(it->second, mapping.GetKey())){
             it->second.push_back(mapping);
         }
 
         EnsureKeyState(mapping.GetKey());
     }
 
-    std::shared_ptr<AxisBinding> InputMappingService::BindAxis(const std::string &axisName)
+    shared_ptr<AxisBinding> InputMappingService::BindAxis(
+        const string &axisName, 
+        AxisBinding::Delegate delegate
+    )
     {
-        auto binding = std::make_shared<AxisBinding>(axisName);
-        // binding->SetDelegate(delegate);
+        auto binding = make_shared<AxisBinding>(axisName);
+        binding->SetDelegate(delegate);
 
         auto it = axisBindings.find(binding->GetAxis());
         if (it == axisBindings.end()) {
@@ -255,7 +256,7 @@ namespace astu {
         return binding; 
     }
 
-    void InputMappingService::RemoveAxisBinding(std::shared_ptr<AxisBinding> binding)
+    void InputMappingService::RemoveAxisBinding(shared_ptr<AxisBinding> binding)
     {
         auto it = axisBindings.find(binding->GetAxis());
         if (it == axisBindings.end()) {
@@ -281,58 +282,37 @@ namespace astu {
         keyState.value = pressed ? 1.0f : 0.0f;
     }
 
-    // void InputMappingService::ProcessActionMappings(const Key & key, bool pressed)
-    // {
-    //     auto it = actionMappings.find(key);
-    //     if (it == actionMappings.end()) {
-    //         return;
-    //     }
+    void InputMappingService::ProcessAxis(const Key & key, float value)
+    {
+        auto it = keyStates.find(key);
+        if (it == keyStates.end()) {
+            return;
+        }
 
-    //     std::vector<ActionMapping> mappings = it->second;
-    //     for (auto & mapping : mappings) {
-    //         UpdateActionBindings(mapping.GetName(), pressed);
-    //     }
-    // }
+        auto &keyState = it->second;
+        keyState.pressed = value != 0;
+        keyState.value = value;
+    }
 
-    // void InputMappingService::UpdateActionBindings(
-    //     const std::string & actionName, 
-    //     bool pressed)
-    // {
-    //     auto it = actionBindings.find(actionName);
-    //     if (it == actionBindings.end()) {
-    //         return;
-    //     }
 
-    //     for (auto & binding : it->second) {
-    //         binding->Update(pressed);
-    //     }
-    // }
+    void InputMappingService::EnsureKeyState(const Key& key)
+    {
+        auto it = keyStates.find(key);
+        if (it == keyStates.end()) {
+            keyStates[key] = KeyState();
+        }
+    }
 
-    // void InputMappingService::ProcessAxisMappings(const Key & key, bool pressed)
-    // {
-    //     auto it = axisMappings.find(key);
-    //     if (it == axisMappings.end()) {
-    //         return;
-    //     }
+    KeyState& InputMappingService::GetKeyState(const Key& key)
+    {
+        assert(keyStates.find(key) != keyStates.end());
+        return keyStates[key];
+    }
 
-    //     auto mappings = it->second;
-    //     for (auto & mapping : mappings) {
-    //         UpdateAxisBindings(mapping.GetName(), mapping.GetScale());
-    //     }
-    // }
-
-    // void InputMappingService::UpdateAxisBindings(const std::string & axisName, float value)
-    // {
-    //     auto it = axisBindings.find(axisName);
-    //     if (it == axisBindings.end()) {
-    //         return;
-    //     }
-
-    //     auto bindings = it->second;
-    //     for (const auto& binding : bindings) {
-    //         binding->value += value;
-    //     }
-    // }
+    void InputMappingService::ReleaseKeyState(const Key& key)
+    {
+        // Not impoemented.
+    }
 
     void InputMappingService::OnUpdate()
     {
@@ -358,44 +338,25 @@ namespace astu {
             }
         }
 
-        // for (const auto& it : actionMappings) {
-        //     auto keyState = GetKeyState(it.first);
-        //     const auto& mappings = it.second;
-        //     for (mapping : )
-        //     it.second->
-        // }
+        // Update axis bindings.
+        for (const auto& it :axisToMapping) {
+            auto bindingIt = axisBindings.find(it.first);
+            if (bindingIt == axisBindings.end()) {
+                // No action bindings for this action, continue with next.
+                continue;
+            }
 
-        // for (const auto& it : actionBindings) {
-        //     for (const auto& binding : it.second) {
-        //         binding->Update()
-        //     }
-        // }
+            // Determine current axis value, by summing up all associated keys.
+            float value = 0.0;
+            for (const auto & mapping : it.second) {
+                value += GetKeyState(mapping.GetKey()).value * mapping.GetScale();
+            }
 
-        // for (const auto& it : axisBindings) {
-        //     for (const auto& binding : it.second) {
-        //         binding->Update();
-        //         binding->value = 0;
-        //     }
-        // }
-    }
-
-    void InputMappingService::EnsureKeyState(const Key& key)
-    {
-        auto it = keyStates.find(key);
-        if (it == keyStates.end()) {
-            keyStates[key] = KeyState();
+            // Update all bindings of this action.
+            for (const auto & binding : bindingIt->second) {
+                binding->Update(value);
+            }
         }
-    }
-
-    KeyState& InputMappingService::GetKeyState(const Key& key)
-    {
-        assert(keyStates.find(key) != keyStates.end());
-        return keyStates[key];
-    }
-
-    void InputMappingService::ReleaseKeyState(const Key& key)
-    {
-        // Not impoemented.
-    }
+   }
 
 } // end of namespace
