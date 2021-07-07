@@ -375,26 +375,111 @@ namespace astu {
         void ProcessAxis(const Key & key, float value);
 
     private:
+        using ActionBindings = std::vector<std::shared_ptr<ActionBinding>>;
+        using AxisBindings = std::vector<std::shared_ptr<AxisBinding>>;
+        using ActionMappings = std::vector<ActionMapping>;
+        using AxisMappings = std::vector<AxisMapping>;
+
         /** The current states of keys. */
         std::map<Key, KeyState> keyStates;
 
         /** The bindings to the actions. */
-        std::map<std::string, std::vector<std::shared_ptr<ActionBinding>>> actionBindings;
+        std::map<std::string, ActionBindings> actionBindings;
 
         /** The bindings to axes. */
-        std::map<std::string, std::vector<std::shared_ptr<AxisBinding>>> axisBindings;
+        std::map<std::string, AxisBindings> axisBindings;
 
         /** Associates actions to action mappings. */
-        std::map<std::string, std::vector<ActionMapping>> actionToMapping;
+        std::map<std::string, ActionMappings> actionToMapping;
 
         /** Associates actions to action mappings. */
-        std::map<std::string, std::vector<AxisMapping>> axisToMapping;
+        std::map<std::string, AxisMappings> axisToMapping;
 
-        bool HasActionMapping(const std::vector<ActionMapping>& mappings, const Key & key) const;
-        bool HasAxisMapping(const std::vector<AxisMapping>& mappings, const Key & key) const;
-        void EnsureKeyState(const Key& key);
+        /**
+         * Determins whether an action mapping for a certain key exists.
+         * 
+         * @param mappings  the list of action mappings
+         * @param key       the key in question
+         * @return `true` if an action mapping for the key exits
+         */
+        bool HasActionMapping(const ActionMappings &mappings, const Key & key) const;
+
+        /**
+         * Determins whether an axis mapping for a certain key exists.
+         * 
+         * @param mappings  the list of axis mappings
+         * @param key       the key in question
+         * @return `true` if an axis mapping for the key exits
+         */
+        bool HasAxisMapping(const AxisMappings &mappings, const Key & key) const;
+
+        /**
+         * Returns the state for a given key.
+         * 
+         * @param key   the key
+         * @return the state of the key
+         */
         KeyState& GetKeyState(const Key& key);
+
+        /**
+         * Ensures that a key state for the given key exits.
+         * 
+         * @param key   the key
+         */
+        void EnsureKeyState(const Key& key);
+
+        /**
+         * Releases the state of a given key, if the state is not needed anymore.
+         * 
+         * @param key
+         */
         void ReleaseKeyState(const Key& key);
+
+        /**
+         * Update axis bindings with specified value.
+         * 
+         * @param bindings  the action bindings to update
+         * @param value     the axus value
+         */
+        void UpdateAxisBindings(AxisBindings& bindings, float value);
+
+        /**
+         * Calculates the value sum of all axis mappings.
+         * 
+         * @return the value sum
+         */
+        float SumAxisValue(const std::vector<AxisMapping>& mappings);
+
+        /**
+         * Updates all axis binding according to key current states.
+         */
+        void UpdateAxisBinding();
+
+        /**
+         * Updates all action binding according to key current states.
+         */
+        void UpdateActionBinding();
+
+        /**
+         * Find out, if at least one key state of specified actions is pressed.
+         * 
+         * @param mappings  the action mappings
+         * @return `true` if at leas on key state is pressed
+         */
+        bool IsPressed(const std::vector<ActionMapping>& mappings);
+
+        /**
+         * Update action bindings with specified pressed state.
+         * 
+         * @param bindings  the action bindings to update
+         * @param pressed   the pressed state
+         */
+        void UpdateAcitonBindings(ActionBindings& bindings, bool pressed);
+
+        // Inherited via Service
+        virtual void OnStartup() override;
+        virtual void OnShutdown() override;
+
 
         // Inherited via Updatable
         virtual void OnUpdate() override;

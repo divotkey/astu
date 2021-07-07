@@ -160,9 +160,20 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    bool InputMappingService::HasActionMapping(
-        const vector<ActionMapping> &mappings, 
-        const Key & key) const
+    void InputMappingService::OnStartup() 
+    {
+        // Intentionally left empty.
+    }
+
+    void InputMappingService::OnShutdown() 
+    {
+        // Cleanup.
+        actionToMapping.clear();
+        axisToMapping.clear();
+        keyStates.clear();
+    }
+
+    bool InputMappingService::HasActionMapping(const ActionMappings &mappings, const Key & key) const
     {
         for (const auto & mapping : mappings) {
             if (mapping.GetKey() == key) {
@@ -173,10 +184,7 @@ namespace astu {
         return false;
     }
 
-    bool InputMappingService::HasAxisMapping(
-        const vector<AxisMapping>& mappings, 
-        const Key & key
-    ) const
+    bool InputMappingService::HasAxisMapping(const AxisMappings& mappings, const Key & key) const
     {
         for (const auto & mapping : mappings) {
             if (mapping.GetKey() == key) {
@@ -311,34 +319,62 @@ namespace astu {
 
     void InputMappingService::ReleaseKeyState(const Key& key)
     {
-        // Not impoemented.
+        // Not implemented.
     }
 
-    void InputMappingService::OnUpdate()
+    bool InputMappingService::IsPressed(const ActionMappings &mappings)
     {
-        // Update action bindings.
+        for (const auto & mapping : mappings) {
+            if (GetKeyState(mapping.GetKey()).pressed) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    void InputMappingService::UpdateAcitonBindings(ActionBindings &bindings, bool pressed)
+    {
+        for (const auto & binding : bindings) {
+            binding->Update(pressed);
+        }
+    }
+
+    void InputMappingService::UpdateActionBinding()
+    {
         for (const auto& it : actionToMapping) {
             auto bindingIt = actionBindings.find(it.first);
+
             if (bindingIt == actionBindings.end()) {
                 // No action bindings for this action, continue with next.
                 continue;
             }
 
-            // Find out, if at least one key is pressed for this action.
-            bool pressed;
-            for (const auto & mapping : it.second) {
-                pressed = GetKeyState(mapping.GetKey()).pressed;
-                if (pressed) 
-                    break;
-            }
-            
-            // Update all bindings of this action.
-            for (const auto & binding : bindingIt->second) {
-                binding->Update(pressed);
-            }
+            // Update all bindigs with summerzied pressed state.
+            UpdateAcitonBindings(bindingIt->second, IsPressed(it.second));
+        }
+    }
+
+    void InputMappingService::UpdateAxisBindings(AxisBindings& bindings, float value)
+    {
+        // Update all bindings of this action.
+        for (const auto & binding : bindings) {
+            binding->Update(value);
+        }
+    }
+
+    float InputMappingService::SumAxisValue(const AxisMappings &mappings)
+    {
+        float value = 0.0;
+        for (const auto & mapping : mappings) {
+            value += GetKeyState(mapping.GetKey()).value * mapping.GetScale();
         }
 
-        // Update axis bindings.
+        return value;
+    }
+
+    void InputMappingService::UpdateAxisBinding()
+    {
         for (const auto& it :axisToMapping) {
             auto bindingIt = axisBindings.find(it.first);
             if (bindingIt == axisBindings.end()) {
@@ -346,17 +382,15 @@ namespace astu {
                 continue;
             }
 
-            // Determine current axis value, by summing up all associated keys.
-            float value = 0.0;
-            for (const auto & mapping : it.second) {
-                value += GetKeyState(mapping.GetKey()).value * mapping.GetScale();
-            }
+            // Update axis bindings with sum of values.
+            UpdateAxisBindings(bindingIt->second, SumAxisValue(it.second));
+        }        
+    }
 
-            // Update all bindings of this action.
-            for (const auto & binding : bindingIt->second) {
-                binding->Update(value);
-            }
-        }
-   }
+    void InputMappingService::OnUpdate()
+    {
+        UpdateActionBinding();
+        UpdateAxisBinding();
+    }
 
 } // end of namespace
