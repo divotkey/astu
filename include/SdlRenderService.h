@@ -75,8 +75,8 @@ namespace astu {
      */
     class SdlRenderService final 
         : public virtual Service
-        , public IRenderService
         , private Updatable
+        , public IRenderService
     {
     public:
 

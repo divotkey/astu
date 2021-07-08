@@ -39,7 +39,7 @@ namespace astu {
         /**
          * Virtual destructor.
          */
-        ~SdlTimeService() {}
+        virtual ~SdlTimeService() {}
 
         // Inherited via ITimeManager
         virtual double GetElapsedTime() const override;

@@ -1,6 +1,13 @@
 
 # Version History {#CHANGES}
 
+# Version 0.9.3
+*Date: 2021-07-08*
+
+- Improved compatibility with GNU C++ Compiler
+- Added input mapping service.
+- Added task service.
+
 # Version 0.9.2
 *Date: 2021-06-06*
 

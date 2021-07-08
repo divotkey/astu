@@ -40,7 +40,7 @@ namespace astu {
         /**
          * Virtual destructor.
          */
-        ~SdlEventService() {}
+        virtual ~SdlEventService() {}
 
         /**
          * Return whether a quit-signal has been detected.

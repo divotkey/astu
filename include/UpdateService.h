@@ -98,7 +98,7 @@ namespace astu {
     /**
      * Inherit from this class to get updated as a service.
      */
-    class Updatable : public virtual Service, protected IUpdatable {
+    class Updatable : public virtual Service, private IUpdatable {
     public:
 
         /**
@@ -106,10 +106,10 @@ namespace astu {
          * 
          * @param priority  the update priority
          */
-        Updatable(int priority = 0);
+        Updatable(int priority = Priority::Normal);
 
         /** Virtual destructor. */
-        ~Updatable() {}
+        virtual ~Updatable() {}
 
     protected:
 

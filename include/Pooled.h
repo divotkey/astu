@@ -134,10 +134,10 @@ namespace astu {
 
 	private:
 		/** The pool of pooled instances items. */
-		static std::vector<T *> ms_rawPool;
+		static inline std::vector<T *> ms_rawPool;
 
 		/** Used for debugging purpose to verify that items get pooled. */
-		static std::vector<T *> ms_rawUsed;
+		static inline std::vector<T *> ms_rawUsed;
 
 
 		/**
@@ -177,5 +177,17 @@ namespace astu {
 		}
 
 	};
+
+
+	// Static template members must be defined here to. Since it is
+	// part of a template, as with all templates the compiler will make sure it
+	// is only defined once. C++ 17 does alow an inline notation as well.
+	// Uncomment this code and remove `inline` keyword in the template static
+	// member defintion when using older C++ versions.
+	// template <typename T>
+	// std::vector<T *> Pooled<T>::ms_rawPool;
+
+	// template <typename T>
+	// std::vector<T *> Pooled<T>::ms_rawUsed;
 
 } // end of namespace

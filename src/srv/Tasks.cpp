@@ -29,9 +29,13 @@ namespace astu {
         duration = inDuration;
     }
 
+    /////////////////////////////////////////////////
+    /////// DelegateTask
+    /////////////////////////////////////////////////
+
     // Required for pooling.
-    std::vector<DelegateTask *> DelegateTask::ms_rawPool;
-    std::vector<DelegateTask *> DelegateTask::ms_rawUsed;
+    // template<> std::vector<DelegateTask *> Pooled<DelegateTask>::ms_rawPool;
+    // template<> std::vector<DelegateTask *> Pooled<DelegateTask>::ms_rawUsed;
 
     unique_ptr<DelegateTask> DelegateTask::Create(Delegate delegate, double delay)
     {
