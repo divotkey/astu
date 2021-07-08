@@ -49,7 +49,7 @@ namespace astu {
          * @param vertex    the vertex to add
          * @return reference to this builder for method chaining
          */
-        VertexBuffer2Builder& AddVertex(const Vector2f vertex) {
+        VertexBuffer2Builder& AddVertex(const Vector2f& vertex) {
             return AddVertex(vertex.x, vertex.y);
         }
 
@@ -66,8 +66,29 @@ namespace astu {
          * @param idx   the index of the vertex to return
          * 
          * @return the vertex
+         * @throws std::out_of_range in case the specified index is invalid
          */
-        virtual Vector2f GetVertex(size_t idx) = 0;
+        virtual Vector2f GetVertex(size_t idx) const = 0;
+
+        /**
+         * Redefines a previously added vertex.
+         * 
+         * @param idx       the index of the vertex to redefine
+         * @param vertex    the vertex
+         */
+        virtual void SetVertex(size_t idx, const Vector2f& vertex) {
+            SetVertex(idx, vertex.x, vertex.y);
+        }
+
+        /**
+         * Redefines a previously added vertex.
+         * 
+         * @param idx       the index of the vertex to redefine
+         * @param x the x-coordinate of the vertex
+         * @param y the y-coordinate of the vertex
+         * @throws std::out_of_range in case the specified index is invalid
+         */
+        virtual void SetVertex(size_t idx, float x, float y) = 0;
 
         /**
          * Resets this builder to its initial configuration.
