@@ -549,8 +549,8 @@ int Maximum(int a, int b, int c);
 
 /**
  * Returns a random number within the specified range.
- * This function will generate a random number using a 
- * pseudo random number generator.
+ * This function will generate a random number using a pseudo random number 
+ * generator.
  * 
  * The generated numbers are of type `double` and lie within the interval of
  * [minValue, maxValue).
@@ -583,8 +583,8 @@ double GetRandomDouble(double minValue = 0.0, double maxValue = 1.0);
 
 /**
  * Returns a random number within the specified range.
- * This function will generate a random number using a 
- * pseudo random number generator.
+ * This function will generate a random number using a pseudo random number 
+ * generator.
  * 
  * The generated numbers are of type `float` and lie within the interval of
  * [minValue, maxValue).
@@ -598,11 +598,10 @@ double GetRandomDouble(double minValue = 0.0, double maxValue = 1.0);
  */
 float GetRandomFloat(float minValue = 0.0f, float maxValue = 1.0f);
 
-
 /**
  * Returns a random number within the specified range.
- * This function will generate a random number using a 
- * pseudo random number generator.
+ * This function will generate a random number using a pseudo random number 
+ * generator.
  * 
  * The generated numbers are of type `int` and lie within the interval of
  * [minValue, maxValue).
@@ -615,6 +614,15 @@ float GetRandomFloat(float minValue = 0.0f, float maxValue = 1.0f);
  * @return the new random number
  */
 int GetRandomInt(int minValue = 0, int maxValue = 32767);
+
+/**
+ * Returns a random boolean value.
+ * This function will generate a random bolean using a pseudo random number 
+ * generator.
+ * 
+ * @return a random boolean value
+ */
+bool GetRandomBool();
 
 /**
  * Sets the seed of the random value generator.

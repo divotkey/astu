@@ -7,6 +7,7 @@
 - Improved compatibility with GNU C++ Compiler
 - Added input mapping service.
 - Added task service.
+- Added `GetRanndomBool(`) function.
 
 # Version 0.9.2
 *Date: 2021-06-06*

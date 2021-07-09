@@ -341,10 +341,14 @@ float GetRandomFloat(float minValue, float maxValue)
     }
 }
 
-
 int GetRandomInt(int minValue, int maxValue)
 {
     return minValue + static_cast<int>(Random::GetInstance().NextDouble() * (maxValue - minValue));
+}
+
+bool GetRandomBool()
+{
+    return Random::GetInstance().NextInt(0, 2) == 1;    
 }
 
 void SetRandomSeed(unsigned int value)
