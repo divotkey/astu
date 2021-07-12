@@ -80,7 +80,7 @@ namespace astu {
     {
         sceneRenderer->SetViewMatrix( GetCamera().GetMatrix() );
         sceneRenderer->SetSdlRenderer( *renderer );
-        GetRoot()->Render( *sceneRenderer );
+        GetRoot()->Render(*sceneRenderer, 1.0f);
         sceneRenderer->ClearSdlRenderer();
     }
 

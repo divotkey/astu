@@ -34,6 +34,7 @@ namespace astu {
 
     Spatial2::Spatial2()
         : parent(nullptr)
+        , alpha(1.0f)
     {
         // Intentionally left empty.
     }
@@ -41,6 +42,7 @@ namespace astu {
     Spatial2::Spatial2(const Spatial2 &o)
         : parent(nullptr)
         , name(o.name)
+        , alpha(o.alpha)
         , localTransform(o.localTransform)
         , worldMatrix(o.worldMatrix)
         , localMatrix(o.localMatrix)
@@ -48,6 +50,11 @@ namespace astu {
         // Intentionally left empty.
     }
 
+    void Spatial2::SetTransparance(float inAlpha)
+    {
+        assert(alpha >= 0.0f && alpha <= 1.0f);
+        alpha = inAlpha;
+    }
 
     void Spatial2::Update(double dt)
     {
@@ -136,10 +143,10 @@ namespace astu {
         }
     }
 
-    void Node2::Render(Scene2Renderer& renderer)
+    void Node2::Render(Scene2Renderer& renderer, float alpha)
     {
         for (auto child : children) {
-            child->Render(renderer);
+            child->Render(renderer, alpha * child->GetTransparency());
         }
     }
 
@@ -163,9 +170,9 @@ namespace astu {
         // Intentionally left empty
     }
 
-    void Polyline2::Render(Scene2Renderer& renderer)
+    void Polyline2::Render(Scene2Renderer& renderer, float alpha)
     {
-        renderer.Render(*this);
+        renderer.Render(*this, alpha);
     }
 
     void Polyline2::SetColor(const Color4f& c)

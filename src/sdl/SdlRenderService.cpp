@@ -50,6 +50,13 @@ namespace astu {
             throw std::runtime_error(SDL_GetError());
         }
 
+        if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)) {
+            SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't set blend mode for SDL Renderer: %s", SDL_GetError());        
+            auto && lastError = SDL_GetError();
+            SDL_DestroyRenderer(renderer);
+            throw std::runtime_error(lastError);
+        }            
+
         LogRendererInfo();
 
         // Fire resize event.

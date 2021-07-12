@@ -126,7 +126,10 @@ namespace astu {
                         KeystrokeEvent(event.key.keysym.scancode, true) );
                 }
                 if (inputMapperSrv) {
-                    inputMapperSrv->ProcessKey( SdlKeyTable::ScanCodeToKey(event.key.keysym.scancode), true);
+                    inputMapperSrv->ProcessKey( 
+                        SdlKeyTable::ScanCodeToKey(event.key.keysym.scancode), 
+                        true
+                    );
                 }
                 break;
 
@@ -137,7 +140,10 @@ namespace astu {
                             KeystrokeEvent(event.key.keysym.scancode, false) );
                 }
                 if (inputMapperSrv) {
-                    inputMapperSrv->ProcessKey( SdlKeyTable::ScanCodeToKey(event.key.keysym.scancode), false);
+                    inputMapperSrv->ProcessKey( 
+                        SdlKeyTable::ScanCodeToKey(event.key.keysym.scancode), 
+                        false
+                    );
                 }
                 break;
 

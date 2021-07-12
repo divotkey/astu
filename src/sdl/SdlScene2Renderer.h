@@ -60,7 +60,7 @@ namespace astu {
         }
 
         // Inherited via Scene2Renderer
-        virtual void Render(Polyline2& polyline) override;
+        virtual void Render(Polyline2& polyline, float alpha) override;
 
     private:
         /** The SDL renderer used for rendering. */

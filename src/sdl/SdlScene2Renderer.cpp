@@ -32,7 +32,7 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    void SdlScene2Renderer::Render(Polyline2& polyline)
+    void SdlScene2Renderer::Render(Polyline2& polyline, float alpha)
     {
         ASSERT_VBUF(polyline.GetVertexBuffer());
         assert(renderer);
@@ -48,7 +48,7 @@ namespace astu {
             static_cast<int>(c.r * 255), 
             static_cast<int>(c.g * 255), 
             static_cast<int>(c.b * 255), 
-            static_cast<int>(c.a * 255)
+            static_cast<int>((c.a * alpha) * 255)
             );
 
         const auto & tx = viewMatrix * polyline.GetWorldMatrix();

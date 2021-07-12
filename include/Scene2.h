@@ -40,8 +40,9 @@ namespace astu {
          * Renders a polyine node.
          * 
          * @param polyline  the polyline node to render
+         * @param alpha     the transparency
          */
-        virtual void Render(Polyline2& polyline) = 0;
+        virtual void Render(Polyline2& polyline, float alpha) = 0;
     };
 
     /////////////////////////////////////////////////
@@ -117,8 +118,9 @@ namespace astu {
          * Renders this spacial.
          * 
          * @param renderer  the renderer to be used
+         * @param alpha     the transparancy
          */
-        virtual void Render(Scene2Renderer& renderer) = 0;
+        virtual void Render(Scene2Renderer& renderer, float alpha) = 0;
 
         /**
          * Returns whether this spatial has a parent.
@@ -139,6 +141,22 @@ namespace astu {
         }
 
         /**
+         * Sets the transparance of this spatial.
+         * 
+         * @param alpha the transparance within the range [0, 1]
+         */
+        void SetTransparance(float alpha);
+
+        /**
+         * Returns the transparency of this spatial.
+         * 
+         * @return the transparency within the range [0, 1]
+         */
+        float GetTransparency() const {
+            return alpha;
+        }
+
+        /**
          * Creats a copy of this spatial.
          * 
          * @return the copy
@@ -151,6 +169,9 @@ namespace astu {
 
         /** The name of this spatial. */
         std::string name;
+
+        /** The transparancy. */
+        float alpha;
 
         /**
          * Constructor. 
@@ -218,7 +239,7 @@ namespace astu {
         std::shared_ptr<Spatial2> FindChild(const std::string & childName);
 
         // Inherited via Spatial2
-        virtual void Render(Scene2Renderer& renderer) override;
+        virtual void Render(Scene2Renderer& renderer, float alpha) override;
         virtual std::shared_ptr<Spatial2> Clone() const override;
 
     protected:
@@ -270,7 +291,7 @@ namespace astu {
         }
 
         // Inherited via Node2/Spatial2
-        virtual void Render(Scene2Renderer& renderer) override;
+        virtual void Render(Scene2Renderer& renderer, float alpha) override;
         virtual std::shared_ptr<Spatial2> Clone() const override;
 
     private:
