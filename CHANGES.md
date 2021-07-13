@@ -9,6 +9,7 @@
 - Added task service.
 - Added `GetRandomBool()` function.
 - Renamed classed and structures for 2D environments to new naming convention.
+- Added service to control 2D cameras with mouse and keyboard (`CameraControlService2D`).
 
 # Version 0.9.2
 *Date: 2021-06-06*
