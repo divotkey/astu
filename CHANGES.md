@@ -7,13 +7,13 @@
 - Improved compatibility with GNU C++ Compiler
 - Added input mapping service.
 - Added task service.
-- Added `GetRanndomBool(`) function.
+- Added `GetRandomBool()` function.
+- Renamed classed and structures for 2D environments to new naming convention.
 
 # Version 0.9.2
 *Date: 2021-06-06*
 
 - Added `EntityFactoryService` and extended `Entity` and `EntityComponent` class.
-
 
 # Version 0.9.1
 *Date: 2021-05-26*
