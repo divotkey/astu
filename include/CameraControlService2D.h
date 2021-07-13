@@ -21,7 +21,7 @@ namespace astu {
      * This service lets the user change the camera mode while the application 
      * is running.
      */
-    class CameraControlService 
+    class CameraControlService2D 
         : public astu::BaseService
         , public astu::Updatable
         , public astu::KeystrokeListener
@@ -36,7 +36,7 @@ namespace astu {
          * 
          * @param updatePriority the priority used to update this service
          */
-        CameraControlService(int updatePriority = astu::Priority::Normal);
+        CameraControlService2D(int updatePriority = astu::Priority::Normal);
 
         // Inherited via BaseService
         virtual void OnStartup() override;
