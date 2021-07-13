@@ -18,7 +18,7 @@
 #include "ITimeManager.h"
 #include "UpdateService.h"
 #include "VertexBuffer2.h"
-#include "Camera2Service.h"
+#include "CameraService2D.h"
 #include "SdlRenderService.h"
 
 namespace astu {
@@ -56,7 +56,7 @@ namespace astu {
         , public Updatable
         , public TimeClient
         , public SceneGraph2
-        , public Camera2Client
+        , public CameraClient2D
     {
     public:
 

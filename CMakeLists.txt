@@ -47,7 +47,7 @@ list(APPEND astulib_SOURCES
                     src/srv/Controller.cpp
                     src/srv/Scene2.cpp
                     src/srv/Shape2Generator.cpp
-                    src/srv/Camera2Service.cpp
+                    src/srv/CameraService2D.cpp
 
                     src/AstUtils1.cpp)
 

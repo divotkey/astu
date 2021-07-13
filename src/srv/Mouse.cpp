@@ -7,7 +7,7 @@
 
 // Local includes
 #include "Mouse.h"
-#include "Camera2Service.h"
+#include "CameraService2D.h"
 
 // C++ Standard Library includes
 #include <string>
@@ -57,7 +57,7 @@ namespace astu {
         return cursorY;
     }
 
-    Vector2f Mouse::GetCursorInWorldspace(const Camera2& camera)
+    Vector2f Mouse::GetCursorInWorldspace(const Camera2D& camera)
     {
         return camera.GetInverseMatrix()
         .TransformPoint(

@@ -13,7 +13,7 @@
 namespace astu {
 
     // Forward declaration.
-    class Camera2;
+    class Camera2D;
 
     /**
      * Provides access to mouse input.
@@ -72,7 +72,7 @@ namespace astu {
          * @param camera    the camera used to transform screen space coords
          * @return the cursor position in world space
          */
-        Vector2f GetCursorInWorldspace(const Camera2& camera);
+        Vector2f GetCursorInWorldspace(const Camera2D& camera);
 
     private:
         /** Represents the state of the mouse buttons. */

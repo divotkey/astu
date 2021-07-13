@@ -22,20 +22,21 @@
 namespace astu {
 
     /////////////////////////////////////////////////
-    /////// Camera2
+    /////// Camera2D
     /////////////////////////////////////////////////
 
     /**
      * A camera object describes the portion of the game world shown on the
-     * screen.
+     * screen. This camera object ist used for two-dimensional
+     * game environments, hence the name `Camera2D`. 
      */
-    class Camera2 {
+    class Camera2D {
     public:
 
         /**
          * Constructor.
          */
-        Camera2();
+        Camera2D();
 
         /**
          * Sets the position of this camera.
@@ -44,7 +45,7 @@ namespace astu {
          * @param y the y-coordinate of the position in world space
          * @return reference to this camera for method chaining
          */
-        Camera2& SetPosition(float x, float y);
+        Camera2D& SetPosition(float x, float y);
 
         /**
          * Sets the position of this camera.
@@ -52,7 +53,7 @@ namespace astu {
          * @param p the positoin in world space
          * @return reference to this camera for method chaining
          */
-        Camera2& SetPosition(const Vector2f & p) {
+        Camera2D& SetPosition(const Vector2f & p) {
             return SetPosition(p.x, p.y);
         }
 
@@ -62,7 +63,7 @@ namespace astu {
          * @param z the zoom factor
          * @return reference to this camera for method chaining
          */
-        Camera2& SetZoom(float z);
+        Camera2D& SetZoom(float z);
 
         /**
          * Returns the current zoom factor of this camera.
@@ -84,7 +85,7 @@ namespace astu {
          * @param phi   the angle in radians
          * @return reference to this camera for method chaining
          */
-        Camera2& SetOrientation(float phi);
+        Camera2D& SetOrientation(float phi);
 
         /**
          * Returns the current orientation of this camera.
@@ -99,7 +100,7 @@ namespace astu {
          * @param phi   the angle in degree
          * @return reference to this camera for method chaining
          */
-        Camera2& SetOrientationDeg(float phi) {
+        Camera2D& SetOrientationDeg(float phi) {
             orientation =  MathUtils::ToRadians(phi);
             return *this;
         }
@@ -112,7 +113,7 @@ namespace astu {
          * the output so that the coordinate origin is in the center of the
          * output window, the camera performs no transformation.         
          */
-        Camera2& ShowScreenSpace();
+        Camera2D& ShowScreenSpace();
 
         /**
          * Switches the camera to fixed width mode.
@@ -123,7 +124,7 @@ namespace astu {
          * 
          * @param width the visible width in world units
          */
-        Camera2& ShowFixedWidth(float width);
+        Camera2D& ShowFixedWidth(float width);
 
         /**
          * Switches the camera to fixed height mode.
@@ -134,7 +135,7 @@ namespace astu {
          * 
          * @param height    the visible height in world units
          */
-        Camera2& ShowFixedHeight(float height);
+        Camera2D& ShowFixedHeight(float height);
 
         /**
          * Switches the camera to fitting view mode.
@@ -147,7 +148,7 @@ namespace astu {
          * @param width     the visible width in world units
          * @param height    the visible height in world units
          */
-        Camera2& ShowFitting(float width, float height);
+        Camera2D& ShowFitting(float width, float height);
 
         /**
          * Switches the camera to fitting view mode.
@@ -159,7 +160,7 @@ namespace astu {
          * 
          * @param size  vector containing width and height in world units
          */
-        Camera2& ShowFitting(const astu::Vector2f size) {
+        Camera2D& ShowFitting(const astu::Vector2f size) {
             return ShowFitting(size.x, size.y);
         }
 
@@ -175,7 +176,7 @@ namespace astu {
          * @param width     the visible width in world units
          * @param height    the visible height in world units
          */
-        Camera2& ShowFilling(float width, float height);
+        Camera2D& ShowFilling(float width, float height);
 
         /**
          * Switches the camera to filling view mode.
@@ -188,7 +189,7 @@ namespace astu {
          * 
          * @param size  vector containing width and height in world units
          */
-        Camera2& ShowFilling(const astu::Vector2f size) {
+        Camera2D& ShowFilling(const astu::Vector2f size) {
             return ShowFilling(size.x, size.y);
         }
 
@@ -202,7 +203,7 @@ namespace astu {
          * @param width     the visible width in world units
          * @param height    the visible height in world units
          */
-        Camera2& ShowStreched(float width, float height);
+        Camera2D& ShowStreched(float width, float height);
 
         /**
          * Switches the camera to streched view mode.
@@ -213,7 +214,7 @@ namespace astu {
          * 
          * @param size  vector containing width and height in world units
          */
-        Camera2& ShowStreched(const astu::Vector2f size) {
+        Camera2D& ShowStreched(const astu::Vector2f size) {
             return ShowStreched(size.x, size.y);
         }
 
@@ -222,7 +223,7 @@ namespace astu {
          * 
          * @return reference to this camera for method chaining
          */
-        Camera2& Reset();
+        Camera2D& Reset();
 
         /**
          * Returns the transformation matrix.
@@ -281,19 +282,19 @@ namespace astu {
         class CameraState {
         public:
             virtual ~CameraState() {}
-            virtual void UpdateScaling(Camera2 & cam) = 0;
+            virtual void UpdateScaling(Camera2D & cam) = 0;
         };
 
         class ScreenSpaceState final : public CameraState {
         public:
-            virtual void UpdateScaling(Camera2 & cam) override;
+            virtual void UpdateScaling(Camera2D & cam) override;
         };
 
         class FixedWidthState final : public CameraState {
         public:
             FixedWidthState(float width) : worldWidth(width) { }
 
-            virtual void UpdateScaling(Camera2 & cam) override;
+            virtual void UpdateScaling(Camera2D & cam) override;
 
         private:
             /** The width do show in world units. */
@@ -304,7 +305,7 @@ namespace astu {
         public:
             FixedHeightState(float height) : worldHeight(height) { }
 
-            virtual void UpdateScaling(Camera2 & cam) override;
+            virtual void UpdateScaling(Camera2D & cam) override;
 
         private:
             /** The height do show in world units. */
@@ -316,7 +317,7 @@ namespace astu {
             FittingState(float w, float h) 
                 : worldWidth(w), worldHeight(h), ar(w/h) { }
 
-            virtual void UpdateScaling(Camera2 & cam) override;
+            virtual void UpdateScaling(Camera2D & cam) override;
 
         private:
             /** The width do show in world units. */
@@ -334,7 +335,7 @@ namespace astu {
             FillingState(float w, float h) 
                 : worldWidth(w), worldHeight(h), ar(w/h) { }
 
-            virtual void UpdateScaling(Camera2 & cam) override;
+            virtual void UpdateScaling(Camera2D & cam) override;
 
         private:
             /** The width do show in world units. */
@@ -352,7 +353,7 @@ namespace astu {
             StrechedState(float w, float h) 
                 : worldWidth(w), worldHeight(h) { }
 
-            virtual void UpdateScaling(Camera2 & cam) override;
+            virtual void UpdateScaling(Camera2D & cam) override;
 
         private:
             /** The width do show in world units. */
@@ -367,19 +368,18 @@ namespace astu {
 
         void SwitchState(std::unique_ptr<CameraState> newState);
 
-        friend class Camera2Service;
+        friend class CameraService2D;
     };
 
-
     /////////////////////////////////////////////////
-    /////// Camera2Service
+    /////// CameraService2D
     /////////////////////////////////////////////////
 
     /**
      * The camera service manages various camera objects. Cameras are created
      * with a specific name and can be retrieved using this name.
      */
-    class Camera2Service final 
+    class CameraService2D final 
         : public virtual Service
         , public ResizeListener
     {
@@ -391,7 +391,7 @@ namespace astu {
         /**
          * Constructor.
          */
-        Camera2Service();
+        CameraService2D();
 
         /**
          * Creates a new camera with the specified name.
@@ -401,7 +401,7 @@ namespace astu {
          * @throws std::logic_error in case a camera with that name already
          *  exists
          */
-        std::shared_ptr<Camera2> CreateCamera(const std::string & camName);
+        std::shared_ptr<Camera2D> CreateCamera(const std::string & camName);
 
         /**
          * Retrieves the camera with the specified name.
@@ -410,7 +410,7 @@ namespace astu {
          * @return the requested camera
          * @throws std::logic_error in case the camera is unknown
          */
-        std::shared_ptr<Camera2> 
+        std::shared_ptr<Camera2D> 
             GetCamera(const std::string & camName = DEFAULT_CAMERA);
 
         /**
@@ -427,7 +427,7 @@ namespace astu {
          * @param name  the name of the camera
          * @return the retrieved or newly created camera
          */
-        std::shared_ptr<Camera2> GetOrCreateCamera(const std::string & camName) {
+        std::shared_ptr<Camera2D> GetOrCreateCamera(const std::string & camName) {
             if (HasCamera(camName)) {
                 return GetCamera(camName);
             } else {
@@ -449,14 +449,14 @@ namespace astu {
 
     private:
         /** Associates the cameras with names. */
-        std::unordered_map<std::string, std::shared_ptr<Camera2>> cameraMap;
+        std::unordered_map<std::string, std::shared_ptr<Camera2D>> cameraMap;
     };
 
     /////////////////////////////////////////////////
-    /////// Camera2Client
+    /////// CameraClient2D
     /////////////////////////////////////////////////
 
-    class Camera2Client : public virtual Service {
+    class CameraClient2D : public virtual Service {
     public:
 
         /**
@@ -465,8 +465,8 @@ namespace astu {
          * @param cameraName    the name of the camera to be used
          * @param createCamera  whether the camera should be created
          */
-        Camera2Client(
-            const std::string & cameraName = Camera2Service::DEFAULT_CAMERA, 
+        CameraClient2D(
+            const std::string & cameraName = CameraService2D::DEFAULT_CAMERA, 
             bool createCamera = false);
 
         /**
@@ -474,7 +474,7 @@ namespace astu {
          * 
          * @return the used camera
          */
-        Camera2& GetCamera() {
+        Camera2D& GetCamera() {
             return *camera;
         }
 
@@ -483,7 +483,7 @@ namespace astu {
          * 
          * @return the used camera
          */
-        const Camera2& GetCamera() const {
+        const Camera2D& GetCamera() const {
             return *camera;
         }
 
@@ -512,7 +512,7 @@ namespace astu {
         std::string cameraName;
 
         /** The camera. */
-        std::shared_ptr<Camera2> camera;
+        std::shared_ptr<Camera2D> camera;
 
         /** 
          * Fetches or create the requested camera.

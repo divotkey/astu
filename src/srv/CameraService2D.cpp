@@ -6,7 +6,7 @@
  */
 
  // Local includes
-#include "Camera2Service.h"
+#include "CameraService2D.h"
 #include "IWindowManager.h"
 
  // C++ Standard includes
@@ -21,48 +21,48 @@ namespace astu {
     /////// Camera2
     /////////////////////////////////////////////////
 
-    Camera2::Camera2() 
+    Camera2D::Camera2D() 
     {
         Reset();
     }
 
-    Camera2& Camera2::SetPosition(float x, float y)
+    Camera2D& Camera2D::SetPosition(float x, float y)
     {
         position.Set(x, y);
         dirty = invDirty = true;
         return *this;
     }
 
-    const astu::Vector2f Camera2::GetPosition() const
+    const astu::Vector2f Camera2D::GetPosition() const
     {
         return position;
     }
 
-    Camera2& Camera2::SetOrientation(float phi)
+    Camera2D& Camera2D::SetOrientation(float phi)
     {
         orientation = phi;
         dirty = invDirty = true;
         return *this;
     }
 
-    Camera2& Camera2::SetZoom(float z)
+    Camera2D& Camera2D::SetZoom(float z)
     {
         zoom = z;
         dirty = invDirty = true;
         return *this;
     }
 
-    float Camera2::GetZoom() const
+    float Camera2D::GetZoom() const
     {
         return zoom;
     }
 
-    float Camera2::GetOrientation() const
+    float Camera2D::GetOrientation() const
     {
         return orientation;
     }
 
-    const Matrix3f& Camera2::GetMatrix() const
+    const Matrix3f& Camera2D::GetMatrix() const
     {
         if (dirty) {
             matrix.SetToIdentity();
@@ -76,7 +76,7 @@ namespace astu {
         return matrix;
     }
 
-    const Matrix3f& Camera2::GetInverseMatrix() const
+    const Matrix3f& Camera2D::GetInverseMatrix() const
     {
         if (invDirty) {
             invMatrix = GetMatrix();
@@ -87,7 +87,7 @@ namespace astu {
         return invMatrix;
     }
 
-    Camera2& Camera2::Reset()
+    Camera2D& Camera2D::Reset()
     {
         ShowScreenSpace();
         SetPosition(0, 0);
@@ -98,43 +98,43 @@ namespace astu {
         return *this;
     }
 
-    Camera2& Camera2::ShowScreenSpace()
+    Camera2D& Camera2D::ShowScreenSpace()
     {
         SwitchState(make_unique<ScreenSpaceState>());
         return *this;
     }
 
-    Camera2& Camera2::ShowFixedWidth(float w)
+    Camera2D& Camera2D::ShowFixedWidth(float w)
     {
         SwitchState(make_unique<FixedWidthState>(w));
         return *this;
     }
 
-    Camera2& Camera2::ShowFixedHeight(float h)
+    Camera2D& Camera2D::ShowFixedHeight(float h)
     {
         SwitchState(make_unique<FixedHeightState>(h));
         return *this;
     }
 
-    Camera2& Camera2::ShowStreched(float width, float height)
+    Camera2D& Camera2D::ShowStreched(float width, float height)
     {
         SwitchState(make_unique<StrechedState>(width, height));
         return *this;
     }
 
-    Camera2& Camera2::ShowFitting(float width, float height)
+    Camera2D& Camera2D::ShowFitting(float width, float height)
     {
         SwitchState(make_unique<FittingState>(width, height));
         return *this;
     }
 
-    Camera2& Camera2::ShowFilling(float width, float height)
+    Camera2D& Camera2D::ShowFilling(float width, float height)
     {
         SwitchState(make_unique<FillingState>(width, height));
         return *this;
     }
 
-    void Camera2::SetRenderTargetSize(int width, int height)
+    void Camera2D::SetRenderTargetSize(int width, int height)
     {
         targetWidth = static_cast<float>(width); 
         targetHeight = static_cast<float>(height);
@@ -142,31 +142,31 @@ namespace astu {
         dirty = invDirty = true;
     }
 
-    void Camera2::ScreenSpaceState::UpdateScaling(Camera2 & cam)
+    void Camera2D::ScreenSpaceState::UpdateScaling(Camera2D & cam)
     {
         cam.scaling.Set(1, 1);
     }
 
-    void Camera2::FixedWidthState::UpdateScaling(Camera2 & cam)
+    void Camera2D::FixedWidthState::UpdateScaling(Camera2D & cam)
     {
         float s = cam.targetWidth / worldWidth;
         cam.scaling.Set(s, s);
     }
 
-    void Camera2::FixedHeightState::UpdateScaling(Camera2 & cam)
+    void Camera2D::FixedHeightState::UpdateScaling(Camera2D & cam)
     {
         float s = cam.targetHeight / worldHeight;
         cam.scaling.Set(s, s);
     }
 
-    void Camera2::StrechedState::UpdateScaling(Camera2 & cam)
+    void Camera2D::StrechedState::UpdateScaling(Camera2D & cam)
     {
         cam.scaling.Set(
             cam.targetWidth / worldWidth, 
             cam.targetHeight / worldHeight);
     }
 
-    void Camera2::FittingState::UpdateScaling(Camera2 & cam)
+    void Camera2D::FittingState::UpdateScaling(Camera2D & cam)
     {
         float s;
         if (cam.targetWidth / cam.targetHeight < ar) {
@@ -177,7 +177,7 @@ namespace astu {
         cam.scaling.Set(s, s);
     }
 
-    void Camera2::FillingState::UpdateScaling(Camera2 & cam)
+    void Camera2D::FillingState::UpdateScaling(Camera2D & cam)
     {
         float s;
         if (cam.targetWidth / cam.targetHeight < ar) {
@@ -188,7 +188,7 @@ namespace astu {
         cam.scaling.Set(s, s);
     }
 
-    void Camera2::SwitchState(std::unique_ptr<CameraState> newState)
+    void Camera2D::SwitchState(std::unique_ptr<CameraState> newState)
     {
         state = std::move(newState);
         state->UpdateScaling(*this);
@@ -199,22 +199,22 @@ namespace astu {
     /////// Camera2Service
     /////////////////////////////////////////////////
 
-    const string Camera2Service::DEFAULT_CAMERA = "Default Cam";
+    const string CameraService2D::DEFAULT_CAMERA = "Default Cam";
 
-    Camera2Service::Camera2Service()
+    CameraService2D::CameraService2D()
         : Service("Camera 2D Manager")
     {
         CreateCamera(DEFAULT_CAMERA);
     }
 
-    std::shared_ptr<Camera2> Camera2Service::CreateCamera(const std::string & camName)
+    std::shared_ptr<Camera2D> CameraService2D::CreateCamera(const std::string & camName)
     {
         auto it = cameraMap.find(camName);
         if (it != cameraMap.end()) {
             throw std::logic_error("Camera '" + camName + "' already exists");
         }
 
-        auto result = make_shared<Camera2>();
+        auto result = make_shared<Camera2D>();
         cameraMap[camName] = result;
 
         const auto& wnd = ASTU_SERVICE(IWindowManager);
@@ -222,7 +222,7 @@ namespace astu {
         return result;
     }
 
-    std::shared_ptr<Camera2> Camera2Service::GetCamera(const std::string & camName)
+    std::shared_ptr<Camera2D> CameraService2D::GetCamera(const std::string & camName)
     {
         auto it = cameraMap.find(camName);
         if (it == cameraMap.end()) {
@@ -232,23 +232,23 @@ namespace astu {
         return it->second;
     }
 
-    bool Camera2Service::HasCamera(const std::string & camName) const
+    bool CameraService2D::HasCamera(const std::string & camName) const
     {
         return cameraMap.find(camName) == cameraMap.end();
     }
 
-    void Camera2Service::OnStartup()
+    void CameraService2D::OnStartup()
     {
         const auto& wnd = ASTU_SERVICE(IWindowManager);
         OnResize(wnd.GetWidth(), wnd.GetHeight());
     }
 
-    void Camera2Service::OnShutdown()
+    void CameraService2D::OnShutdown()
     {
         // Intentionally left empty.
     }
 
-    bool Camera2Service::OnResize(int width, int height) 
+    bool CameraService2D::OnResize(int width, int height) 
     {
         for (auto it : cameraMap) {
             it.second->SetRenderTargetSize(width, height);
@@ -261,7 +261,7 @@ namespace astu {
     /////// Camera2Client
     /////////////////////////////////////////////////
 
-    Camera2Client::Camera2Client(const std::string & cameraName, bool createCamera)
+    CameraClient2D::CameraClient2D(const std::string & cameraName, bool createCamera)
         : createCamera(createCamera)
 		, cameraName(cameraName)
     {
@@ -269,7 +269,7 @@ namespace astu {
         AddShutdownHook([this](){ camera = nullptr; });
     }
 
-    void Camera2Client::UseCamera(const std::string & camName, bool create)
+    void CameraClient2D::UseCamera(const std::string & camName, bool create)
     {
         cameraName = camName;
         createCamera = create;
@@ -278,23 +278,23 @@ namespace astu {
         }
     }
 
-    const std::string& Camera2Client::GetCameraName() const
+    const std::string& CameraClient2D::GetCameraName() const
     {
         return cameraName;
     }
 
-    void Camera2Client::InitCamera()
+    void CameraClient2D::InitCamera()
     {
-        if (!ASTU_HAS_SERVICE(Camera2Service)) {
+        if (!ASTU_HAS_SERVICE(CameraService2D)) {
             // Fallback
-            camera = make_shared<Camera2>();
+            camera = make_shared<Camera2D>();
             return;
         }
 
         if (createCamera) {
-            camera = ASTU_SERVICE(Camera2Service).GetOrCreateCamera(cameraName);
+            camera = ASTU_SERVICE(CameraService2D).GetOrCreateCamera(cameraName);
         } else {
-            camera = ASTU_SERVICE(Camera2Service).GetCamera(this->cameraName);
+            camera = ASTU_SERVICE(CameraService2D).GetCamera(this->cameraName);
         }
     }
 
