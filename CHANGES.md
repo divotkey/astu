@@ -8,6 +8,7 @@
 - Added input mapping service.
 - Added task service.
 - Added `GetRanndomBool(`) function.
+- Added service to control 2D cameras with mouse and keyboard (`CameraControlService2D`).
 
 # Version 0.9.2
 *Date: 2021-06-06*
