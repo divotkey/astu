@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "Scene2.h"
+#include "Scene2D.h"
 
 // C++ Standard Library includes
 #include <algorithm>
@@ -20,10 +20,10 @@ namespace astu {
     /////// SceneGraph2
     /////////////////////////////////////////////////
 
-    const std::string SceneGraph2::DEFAULT_ROOT_NAME = "ROOT";
+    const std::string SceneGraph2D::DEFAULT_ROOT_NAME = "ROOT";
 
-    SceneGraph2::SceneGraph2()
-        : root(Node2Builder().Name(DEFAULT_ROOT_NAME).Build())
+    SceneGraph2D::SceneGraph2D()
+        : root(NodeBuilder2D().Name(DEFAULT_ROOT_NAME).Build())
     {
         // Intentionally left empty.
     }
@@ -32,14 +32,14 @@ namespace astu {
     /////// Spatial2
     /////////////////////////////////////////////////
 
-    Spatial2::Spatial2()
+    Spatial2D::Spatial2D()
         : parent(nullptr)
         , alpha(1.0f)
     {
         // Intentionally left empty.
     }
 
-    Spatial2::Spatial2(const Spatial2 &o)
+    Spatial2D::Spatial2D(const Spatial2D &o)
         : parent(nullptr)
         , name(o.name)
         , alpha(o.alpha)
@@ -50,18 +50,18 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    void Spatial2::SetTransparance(float inAlpha)
+    void Spatial2D::SetTransparance(float inAlpha)
     {
         assert(alpha >= 0.0f && alpha <= 1.0f);
         alpha = inAlpha;
     }
 
-    void Spatial2::Update(double dt)
+    void Spatial2D::Update(double dt)
     {
         UpdateTransform(dt);
     }
 
-    void Spatial2::UpdateTransform(double dt)
+    void Spatial2D::UpdateTransform(double dt)
     {
         UpdateControllers(dt);
 
@@ -76,7 +76,7 @@ namespace astu {
     /////// Node2
     /////////////////////////////////////////////////
 
-    std::shared_ptr<Spatial2> Node2::FindChildOrNull(const std::string & childName)
+    std::shared_ptr<Spatial2D> Node2D::FindChildOrNull(const std::string & childName)
     {
         for(auto & child : children) {
             if (child->GetName() == childName) {
@@ -85,7 +85,7 @@ namespace astu {
         }
 
         for(auto & child : children) {
-            auto node = std::dynamic_pointer_cast<Node2>(child);
+            auto node = std::dynamic_pointer_cast<Node2D>(child);
             if (node) {
                 auto result = node->FindChild(childName);
                 if (result) {
@@ -97,7 +97,7 @@ namespace astu {
         return nullptr;
     }
 
-    std::shared_ptr<Spatial2> Node2::FindChild(const std::string & childName)
+    std::shared_ptr<Spatial2D> Node2D::FindChild(const std::string & childName)
     {
         auto result = FindChildOrNull(childName);
         if (!result) {
@@ -108,12 +108,12 @@ namespace astu {
     }
 
 
-    bool Node2::HasChild(std::shared_ptr<Spatial2> child)
+    bool Node2D::HasChild(std::shared_ptr<Spatial2D> child)
     {
         return find(children.begin(), children.end(), child) != children.end();
     }
 
-    void Node2::AttachChild(std::shared_ptr<Spatial2> child)
+    void Node2D::AttachChild(std::shared_ptr<Spatial2D> child)
     {
         assert(!child->HasParent());
         assert(!HasChild(child));
@@ -122,7 +122,7 @@ namespace astu {
         children.push_back(child);
     }
 
-    void Node2::DetachChild(std::shared_ptr<Spatial2> child)
+    void Node2D::DetachChild(std::shared_ptr<Spatial2D> child)
     {
         assert(HasChild(child));
         assert(child->GetParent() == this);
@@ -134,25 +134,25 @@ namespace astu {
         child->SetParent(nullptr);
     }
 
-    void Node2::UpdateTransform(double dt)
+    void Node2D::UpdateTransform(double dt)
     {
-        Spatial2::UpdateTransform(dt);
+        Spatial2D::UpdateTransform(dt);
 
         for (auto & child : children) {
             child->UpdateTransform(dt);
         }
     }
 
-    void Node2::Render(Scene2Renderer& renderer, float alpha)
+    void Node2D::Render(SceneRenderer2D& renderer, float alpha)
     {
         for (auto child : children) {
             child->Render(renderer, alpha * child->GetTransparency());
         }
     }
 
-    std::shared_ptr<Spatial2> Node2::Clone() const
+    std::shared_ptr<Spatial2D> Node2D::Clone() const
     {
-        auto result = make_shared<Node2>();
+        auto result = make_shared<Node2D>();
 
         for (const auto & child : children) {
             result->AttachChild( child->Clone() );
@@ -164,25 +164,25 @@ namespace astu {
     /////// Polyline2
     /////////////////////////////////////////////////
 
-    Polyline2::Polyline2(std::shared_ptr<VertexBuffer2> vertexBuffer)
+    Polyline2D::Polyline2D(std::shared_ptr<VertexBuffer2D> vertexBuffer)
         : vertexBuffer(vertexBuffer)
     {
         // Intentionally left empty
     }
 
-    void Polyline2::Render(Scene2Renderer& renderer, float alpha)
+    void Polyline2D::Render(SceneRenderer2D& renderer, float alpha)
     {
         renderer.Render(*this, alpha);
     }
 
-    void Polyline2::SetColor(const Color4f& c)
+    void Polyline2D::SetColor(const Color4f& c)
     {
         color = c;
     }
 
-    std::shared_ptr<Spatial2> Polyline2::Clone() const
+    std::shared_ptr<Spatial2D> Polyline2D::Clone() const
     {
-        return std::make_shared<Polyline2>(*this);
+        return std::make_shared<Polyline2D>(*this);
     }
 
 } // end of namespace

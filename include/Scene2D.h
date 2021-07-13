@@ -14,7 +14,7 @@
 #include <string>
 
 // Local includes
-#include "VertexBuffer2.h"
+#include "VertexBuffer2D.h"
 #include "Controllable.h"
 #include "Transform2.h"
 #include "Vector2.h"
@@ -24,17 +24,17 @@
 namespace astu {
 
     // Forward declaration
-    class Polyline2;
+    class Polyline2D;
 
     /////////////////////////////////////////////////
-    /////// Scene2Renderer
+    /////// SceneRenderer2D
     /////////////////////////////////////////////////
 
-    class Scene2Renderer {
+    class SceneRenderer2D {
     public:
 
         /** Virtual destructor. */
-        virtual ~Scene2Renderer() {}
+        virtual ~SceneRenderer2D() {}
 
         /**
          * Renders a polyine node.
@@ -42,18 +42,18 @@ namespace astu {
          * @param polyline  the polyline node to render
          * @param alpha     the transparency
          */
-        virtual void Render(Polyline2& polyline, float alpha) = 0;
+        virtual void Render(Polyline2D& polyline, float alpha) = 0;
     };
 
     /////////////////////////////////////////////////
-    /////// Spatial2
+    /////// Spatial2D
     /////////////////////////////////////////////////
 
-    class Spatial2 : public Controllable {
+    class Spatial2D : public Controllable {
     public:
 
         /** Virtual destructor. */
-        virtual ~Spatial2() {}
+        virtual ~Spatial2D() {}
 
         /**
          * Returns the name of this spatial.
@@ -120,7 +120,7 @@ namespace astu {
          * @param renderer  the renderer to be used
          * @param alpha     the transparancy
          */
-        virtual void Render(Scene2Renderer& renderer, float alpha) = 0;
+        virtual void Render(SceneRenderer2D& renderer, float alpha) = 0;
 
         /**
          * Returns whether this spatial has a parent.
@@ -136,7 +136,7 @@ namespace astu {
          * 
          * @return the parent or nullptr if this patial has not parrent
          */
-        Spatial2* GetParent() const {
+        Spatial2D* GetParent() const {
             return parent;
         }
 
@@ -161,11 +161,11 @@ namespace astu {
          * 
          * @return the copy
          */
-        virtual std::shared_ptr<Spatial2> Clone() const = 0;
+        virtual std::shared_ptr<Spatial2D> Clone() const = 0;
 
     protected:
         /** The parent of this spatial. */
-        Spatial2* parent;
+        Spatial2D* parent;
 
         /** The name of this spatial. */
         std::string name;
@@ -176,14 +176,14 @@ namespace astu {
         /**
          * Constructor. 
          */ 
-        Spatial2();
+        Spatial2D();
 
         /**
          * Copy constructor.
          * 
          * @param o the other spatial from which to copy
          */
-        Spatial2(const Spatial2 &o);
+        Spatial2D(const Spatial2D &o);
 
         /**
          * Updates the world transformation of this spatial.
@@ -199,7 +199,7 @@ namespace astu {
          * 
          * @param _parent    the parent
          */
-        void SetParent(Spatial2 *_parent) {
+        void SetParent(Spatial2D *_parent) {
             parent = _parent;
         }
 
@@ -213,14 +213,14 @@ namespace astu {
         /** The local transformation matrix of this spatial. */
         Matrix3f localMatrix;
 
-        friend class Node2;
+        friend class Node2D;
     };
 
     /////////////////////////////////////////////////
-    /////// Node2
+    /////// Node2D
     /////////////////////////////////////////////////
 
-    class Node2 : public Spatial2 {
+    class Node2D : public Spatial2D {
     public:
 
         /**
@@ -229,18 +229,18 @@ namespace astu {
          * @return child    the spatial to test
          * @return `true` if the spatial has already been added as child
          */
-        bool HasChild(std::shared_ptr<Spatial2> child);
+        bool HasChild(std::shared_ptr<Spatial2D> child);
 
-        void AttachChild(std::shared_ptr<Spatial2> child);
-        void DetachChild(std::shared_ptr<Spatial2> child);
+        void AttachChild(std::shared_ptr<Spatial2D> child);
+        void DetachChild(std::shared_ptr<Spatial2D> child);
 
-        std::shared_ptr<Spatial2> FindChildOrNull(const std::string & childName);
+        std::shared_ptr<Spatial2D> FindChildOrNull(const std::string & childName);
 
-        std::shared_ptr<Spatial2> FindChild(const std::string & childName);
+        std::shared_ptr<Spatial2D> FindChild(const std::string & childName);
 
         // Inherited via Spatial2
-        virtual void Render(Scene2Renderer& renderer, float alpha) override;
-        virtual std::shared_ptr<Spatial2> Clone() const override;
+        virtual void Render(SceneRenderer2D& renderer, float alpha) override;
+        virtual std::shared_ptr<Spatial2D> Clone() const override;
 
     protected:
         // Inherited via Spatial2
@@ -248,7 +248,7 @@ namespace astu {
 
     private:
         /** The children of this node. */
-        std::vector<std::shared_ptr<Spatial2>> children;
+        std::vector<std::shared_ptr<Spatial2D>> children;
     };
 
     // A possible intermediate class if leaf nodes, that share things.
@@ -262,10 +262,10 @@ namespace astu {
     // };
 
     /////////////////////////////////////////////////
-    /////// Polyline2
+    /////// Polyline2D
     /////////////////////////////////////////////////
 
-    class Polyline2 final : public Spatial2 {
+    class Polyline2D final : public Spatial2D {
     public:
 
         /**
@@ -273,7 +273,7 @@ namespace astu {
          * 
          * @param vertexBuffer  the vertex data
          */
-        Polyline2(std::shared_ptr<VertexBuffer2> vertexBuffer);
+        Polyline2D(std::shared_ptr<VertexBuffer2D> vertexBuffer);
 
         void SetColor(const Color4f& c);
 
@@ -286,30 +286,30 @@ namespace astu {
          * 
          * @return the vertex buffer
          */
-        VertexBuffer2& GetVertexBuffer() {
+        VertexBuffer2D& GetVertexBuffer() {
             return *vertexBuffer;
         }
 
         // Inherited via Node2/Spatial2
-        virtual void Render(Scene2Renderer& renderer, float alpha) override;
-        virtual std::shared_ptr<Spatial2> Clone() const override;
+        virtual void Render(SceneRenderer2D& renderer, float alpha) override;
+        virtual std::shared_ptr<Spatial2D> Clone() const override;
 
     private:
         /** The vertex buffer representing the vertex data of this polyline. */
-        std::shared_ptr<VertexBuffer2> vertexBuffer;
+        std::shared_ptr<VertexBuffer2D> vertexBuffer;
 
         /** The color of this polyline. */
         Color4f color;
     };
 
     /////////////////////////////////////////////////
-    /////// SceneGraph2
+    /////// SceneGraph2D
     /////////////////////////////////////////////////
 
     /**
      * Represents a scene graph in two-dimensional space.
      */
-    class SceneGraph2 {
+    class SceneGraph2D {
     public:
 
         /** The default name of the root node. */
@@ -318,17 +318,17 @@ namespace astu {
         /**
          * Constructor.
          */
-        SceneGraph2();
+        SceneGraph2D();
 
         /** Virtual destructor. */
-        virtual ~SceneGraph2() {}
+        virtual ~SceneGraph2D() {}
 
         /**
          * Returns the root node of this scene graph.
          * 
          * @return the root node
          */
-        std::shared_ptr<Node2> GetRoot() {
+        std::shared_ptr<Node2D> GetRoot() {
             return root;
         }
 
@@ -337,25 +337,25 @@ namespace astu {
          * 
          * @return the root node
          */
-        std::shared_ptr<const Node2> GetRoot() const {
+        std::shared_ptr<const Node2D> GetRoot() const {
             return root;
         }
 
     private:
         /** The root node of this scene graph. */
-        std::shared_ptr<Node2> root;
+        std::shared_ptr<Node2D> root;
     };
 
     /////////////////////////////////////////////////
-    /////// Spatial2Builder
+    /////// SpatialBuilder2D
     /////////////////////////////////////////////////
 
     template <typename T>
-    class Spatial2Builder {
+    class SpatialBuilder2D {
     public:
 
         /** Virtual destructor. */
-        virtual ~Spatial2Builder() {}
+        virtual ~SpatialBuilder2D() {}
 
         T& Name(const std::string &spatialName) {
             name = spatialName;
@@ -409,7 +409,7 @@ namespace astu {
 
     protected:
 
-        void Build(Spatial2& spatial) {
+        void Build(Spatial2D& spatial) {
             spatial.SetLocalTransform(localTransform);
             spatial.SetName(name);
         }
@@ -423,20 +423,20 @@ namespace astu {
     };
 
     /////////////////////////////////////////////////
-    /////// Node2Builder
+    /////// NodeBuilder2D
     /////////////////////////////////////////////////
 
-    class Node2Builder final : public Spatial2Builder<Node2Builder> {
+    class NodeBuilder2D final : public SpatialBuilder2D<NodeBuilder2D> {
     public:
 
         /**
          * Constructor.
          */
-        Node2Builder() {
+        NodeBuilder2D() {
             Reset();
         }
 
-        Node2Builder&  AttachChild(std::shared_ptr<Spatial2> child) {
+        NodeBuilder2D&  AttachChild(std::shared_ptr<Spatial2D> child) {
             children.push_back(child);
             return *this;
         }
@@ -446,8 +446,8 @@ namespace astu {
          * 
          * @return reference to this builder for method chaining
          */
-        Node2Builder& Reset() {
-            Spatial2Builder::Reset();
+        NodeBuilder2D& Reset() {
+            SpatialBuilder2D::Reset();
             return *this;
         }
 
@@ -456,9 +456,9 @@ namespace astu {
          * 
          * @return the newly created polyline
          */
-        std::shared_ptr<Node2> Build() {
-            auto result = std::make_shared<Node2>();
-            Spatial2Builder::Build(*result);
+        std::shared_ptr<Node2D> Build() {
+            auto result = std::make_shared<Node2D>();
+            SpatialBuilder2D::Build(*result);
             for (auto child : children) {
                 result->AttachChild(child);
             }
@@ -469,24 +469,24 @@ namespace astu {
 
     private:
         /** The children of this node. */
-        std::vector<std::shared_ptr<Spatial2>> children;
+        std::vector<std::shared_ptr<Spatial2D>> children;
     };
 
     /////////////////////////////////////////////////
     /////// Polyline2Builder
     /////////////////////////////////////////////////
 
-    class Polyline2Builder final : public Spatial2Builder<Polyline2Builder> {
+    class PolylineBuilder2D final : public SpatialBuilder2D<PolylineBuilder2D> {
     public:
 
         /**
          * Constructor.
          */
-        Polyline2Builder() {
+        PolylineBuilder2D() {
             Reset();
         }
 
-        Polyline2Builder& Color(const Color4f c) {
+        PolylineBuilder2D& Color(const Color4f c) {
             color = c;
             return *this;
         }
@@ -497,7 +497,7 @@ namespace astu {
          * @param vb    the vertex buffer
          * @return reference to this builder for method chaining
          */
-        Polyline2Builder& VertexBuffer(std::shared_ptr<VertexBuffer2> vb) {
+        PolylineBuilder2D& VertexBuffer(std::shared_ptr<VertexBuffer2D> vb) {
             vertexBuffer = vb;
             return *this;
         }
@@ -507,8 +507,8 @@ namespace astu {
          * 
          * @return reference to this builder for method chaining
          */
-        Polyline2Builder& Reset() {
-            Spatial2Builder::Reset();
+        PolylineBuilder2D& Reset() {
+            SpatialBuilder2D::Reset();
             vertexBuffer = nullptr;
             color = WebColors::Aqua;
             return *this;
@@ -519,13 +519,13 @@ namespace astu {
          * 
          * @return the newly created polyline
          */
-        std::shared_ptr<Polyline2> Build() {
+        std::shared_ptr<Polyline2D> Build() {
             if (!vertexBuffer) {
                 throw std::logic_error(
                     "Unable to build Polyline2, vertex buffer not specified");
             }
-            auto result = std::make_shared<Polyline2>(vertexBuffer);
-            Spatial2Builder::Build(*result);
+            auto result = std::make_shared<Polyline2D>(vertexBuffer);
+            SpatialBuilder2D::Build(*result);
             result->SetColor(color);
 
             return result;
@@ -533,10 +533,11 @@ namespace astu {
 
     private:
         /** The vertex buffer used to build the polyline. */
-        std::shared_ptr<VertexBuffer2> vertexBuffer;    
+        std::shared_ptr<VertexBuffer2D> vertexBuffer;    
 
         /** The color of the polyline to build. */
         Color4f color;
 
     };
+    
 } // end of namespace

@@ -12,50 +12,50 @@
 #include <vector>
 
 // Local includes
-#include "Scene2.h"
+#include "Scene2D.h"
 #include "Vector2.h"
 #include "Service.h"
 #include "ITimeManager.h"
 #include "UpdateService.h"
-#include "VertexBuffer2.h"
+#include "VertexBuffer2D.h"
 #include "CameraService2D.h"
 #include "SdlRenderService.h"
 
 namespace astu {
 
     // Forward declaration
-    class SdlVertexBuffer2;
-    class SdlScene2Renderer;
+    class SdlVertexBuffer2D;
+    class SdlSceneRenderer2D;
 
-    class SdlVertexBuffer2BuilderService 
+    class SdlVertexBufferBuilderService2D 
         : public Service
-        , public VertexBuffer2Builder
+        , public VertexBufferBuilder2D
     {
     public:
 
         /**
          * Constructor.
          */
-        SdlVertexBuffer2BuilderService();
+        SdlVertexBufferBuilderService2D();
 
         // Inherited via VertexBuffer2Builder
-        virtual VertexBuffer2Builder& AddVertex(float x, float y) override;
+        virtual VertexBufferBuilder2D& AddVertex(float x, float y) override;
         virtual Vector2f GetVertex(size_t idx) const override;
         virtual void SetVertex(size_t idx, float x, float y) override;
         virtual size_t GetNumVertices() const override;
-        virtual VertexBuffer2Builder& Reset() override;
-        virtual std::shared_ptr<VertexBuffer2> Build() override;        
+        virtual VertexBufferBuilder2D& Reset() override;
+        virtual std::shared_ptr<VertexBuffer2D> Build() override;        
 
     private:
         /** The vertices used for the buffer to build. */
         std::vector<astu::Vector2f> vertices;
     };
 
-    class SdlSceneGraph2 final 
+    class SdlSceneGraph2D final 
         : public SdlRenderLayer 
         , public Updatable
         , public TimeClient
-        , public SceneGraph2
+        , public SceneGraph2D
         , public CameraClient2D
     {
     public:
@@ -66,12 +66,12 @@ namespace astu {
          * @param renderPriority    the priority of this render layer
          * @param updatePriority    the update priority of this scene graph
          */
-        SdlSceneGraph2(
+        SdlSceneGraph2D(
             int renderPriority = Priority::Normal, 
             int updatePriority = Priority::Low);
 
         /** Virtual destructor. */
-        virtual ~SdlSceneGraph2();
+        virtual ~SdlSceneGraph2D();
 
         // Inherited via Updatable
         virtual void OnUpdate() override;
@@ -83,7 +83,7 @@ namespace astu {
 
     private:
         /** The scene renderer used to render the scene graph. */
-        std::unique_ptr<SdlScene2Renderer> sceneRenderer;
+        std::unique_ptr<SdlSceneRenderer2D> sceneRenderer;
     };
 
 } // end of namespace

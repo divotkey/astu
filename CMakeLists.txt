@@ -45,8 +45,8 @@ list(APPEND astulib_SOURCES
                     src/srv/Keyboard.cpp
                     src/srv/Controllable.cpp
                     src/srv/Controller.cpp
-                    src/srv/Scene2.cpp
-                    src/srv/Shape2Generator.cpp
+                    src/srv/Scene2D.cpp
+                    src/srv/ShapeGenerator2D.cpp
                     src/srv/CameraService2D.cpp
 
                     src/AstUtils1.cpp)
@@ -78,8 +78,8 @@ if(WITH_SDL)
         src/sdl/SdlAudioService.cpp
         src/sdl/SdlTimeService.cpp
         src/sdl/SdlLineRenderer.cpp
-        src/sdl/SdlSceneGraph2.cpp
-        src/sdl/SdlScene2Renderer.cpp
+        src/sdl/SdlSceneGraph2D.cpp
+        src/sdl/SdlSceneRenderer2D.cpp
         )
 else(WITH_SDL)
     list(APPEND astulib_SOURCES src/sdl/SdlApplicationDummy.cpp)

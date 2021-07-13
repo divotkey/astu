@@ -10,8 +10,8 @@
 #include <SDL2/SDL.h>
 
 // Local includes
-#include "SdlScene2Renderer.h"
-#include "SdlSceneGraph2.h"
+#include "SdlSceneRenderer2D.h"
+#include "SdlSceneGraph2D.h"
 
 namespace astu {
 
@@ -19,42 +19,42 @@ namespace astu {
     /////// SdlVertexBuffer2Builder
     /////////////////////////////////////////////////
 
-    SdlVertexBuffer2BuilderService::SdlVertexBuffer2BuilderService()
+    SdlVertexBufferBuilderService2D::SdlVertexBufferBuilderService2D()
         : Service("SDL Vertex Buffer 2D Builder Service")
     {
         Reset();
     }
 
-    VertexBuffer2Builder& SdlVertexBuffer2BuilderService::AddVertex(float x, float y)
+    VertexBufferBuilder2D& SdlVertexBufferBuilderService2D::AddVertex(float x, float y)
     {
         vertices.push_back({x, y});
         return *this;
     }
 
-    Vector2f SdlVertexBuffer2BuilderService::GetVertex(size_t idx) const
+    Vector2f SdlVertexBufferBuilderService2D::GetVertex(size_t idx) const
     {
         return vertices.at(idx);
     }
 
-    void SdlVertexBuffer2BuilderService::SetVertex(size_t idx, float x, float y)
+    void SdlVertexBufferBuilderService2D::SetVertex(size_t idx, float x, float y)
     {
         vertices.at(idx).Set(x, y);
     }
 
-    size_t SdlVertexBuffer2BuilderService::GetNumVertices() const
+    size_t SdlVertexBufferBuilderService2D::GetNumVertices() const
     {
         return vertices.size();
     }
 
-    VertexBuffer2Builder& SdlVertexBuffer2BuilderService::Reset()
+    VertexBufferBuilder2D& SdlVertexBufferBuilderService2D::Reset()
     {
         vertices.clear();
         return *this;
     }
 
-    std::shared_ptr<VertexBuffer2> SdlVertexBuffer2BuilderService::Build()
+    std::shared_ptr<VertexBuffer2D> SdlVertexBufferBuilderService2D::Build()
     {
-        auto result = std::make_shared<SdlVertexBuffer2>();
+        auto result = std::make_shared<SdlVertexBuffer2D>();
         result->vertices = vertices;
         return result;
     }
@@ -63,7 +63,7 @@ namespace astu {
     /////// SdlSceneGraph2
     /////////////////////////////////////////////////
 
-    SdlSceneGraph2::SdlSceneGraph2(int renderPriority, int updatePriority)
+    SdlSceneGraph2D::SdlSceneGraph2D(int renderPriority, int updatePriority)
         : Service("SDL Scene Graph 2D")
         , Updatable(updatePriority)
         , SdlRenderLayer(renderPriority)
@@ -71,12 +71,12 @@ namespace astu {
         // Intentionally left empty.
     }
     
-    SdlSceneGraph2::~SdlSceneGraph2()
+    SdlSceneGraph2D::~SdlSceneGraph2D()
     {
         // Intentionally left empty.
     }
 
-    void SdlSceneGraph2::OnRender(SDL_Renderer* renderer)
+    void SdlSceneGraph2D::OnRender(SDL_Renderer* renderer)
     {
         sceneRenderer->SetViewMatrix( GetCamera().GetMatrix() );
         sceneRenderer->SetSdlRenderer( *renderer );
@@ -84,17 +84,17 @@ namespace astu {
         sceneRenderer->ClearSdlRenderer();
     }
 
-    void SdlSceneGraph2::OnUpdate()
+    void SdlSceneGraph2D::OnUpdate()
     {
         GetRoot()->Update( GetElapsedTime() );
     }
 
-    void SdlSceneGraph2::OnStartup()
+    void SdlSceneGraph2D::OnStartup()
     {
-        sceneRenderer = std::make_unique<SdlScene2Renderer>();
+        sceneRenderer = std::make_unique<SdlSceneRenderer2D>();
     }
 
-    void SdlSceneGraph2::OnShutdown()
+    void SdlSceneGraph2D::OnShutdown()
     {
         sceneRenderer = nullptr;
     }

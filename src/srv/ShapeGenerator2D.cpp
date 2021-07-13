@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "Shape2Generator.h"
+#include "ShapeGenerator2D.h"
 
 // C++ Standard Library.
 #include <stdexcept>
@@ -21,18 +21,18 @@ using namespace std;
 
 namespace astu {
 
-    Shape2Generator::Shape2Generator()
+    ShapeGenerator2D::ShapeGenerator2D()
     {
         // Intentionally left empty.        
     }
 
-    Shape2Generator& Shape2Generator::VertexBufferBuilder(shared_ptr<VertexBuffer2Builder> builder)
+    ShapeGenerator2D& ShapeGenerator2D::VertexBufferBuilder(shared_ptr<VertexBufferBuilder2D> builder)
     {
         vbBuilder = builder;
         return *this;
     }
 
-    shared_ptr<VertexBuffer2> Shape2Generator::GenCircle(float r, unsigned int n) const
+    shared_ptr<VertexBuffer2D> ShapeGenerator2D::GenCircle(float r, unsigned int n) const
     {   
         if (r <= 0) {
             throw std::domain_error(
@@ -52,7 +52,7 @@ namespace astu {
         return builder.Build();
     }
 
-    std::shared_ptr<VertexBuffer2> Shape2Generator::GenRectangle(float w, float h) const
+    std::shared_ptr<VertexBuffer2D> ShapeGenerator2D::GenRectangle(float w, float h) const
     {
         auto & builder = GetBuilder();
         builder.Reset();
@@ -65,7 +65,7 @@ namespace astu {
         return builder.Build();
     }
 
-    std::shared_ptr<VertexBuffer2> Shape2Generator::GenTriangle(float r, const Vector2f & d)
+    std::shared_ptr<VertexBuffer2D> ShapeGenerator2D::GenTriangle(float r, const Vector2f & d)
     {
         if (d.IsZero()) {
             throw std::domain_error(
@@ -91,7 +91,7 @@ namespace astu {
         return builder.Build();
     }
 
-    std::shared_ptr<VertexBuffer2> Shape2Generator::GenStar(float r, int n, const Vector2f & d)
+    std::shared_ptr<VertexBuffer2D> ShapeGenerator2D::GenStar(float r, int n, const Vector2f & d)
     {
         if (d.IsZero()) {
             throw std::domain_error(
@@ -128,7 +128,7 @@ namespace astu {
         return builder.Build();
     }
 
-    std::shared_ptr<VertexBuffer2> Shape2Generator::GenCross(float s, float th)
+    std::shared_ptr<VertexBuffer2D> ShapeGenerator2D::GenCross(float s, float th)
     {
         if (th <= 0 || th >= 1) {
             throw std::domain_error(
@@ -156,7 +156,7 @@ namespace astu {
         return builder.Build();
     }
 
-    std::shared_ptr<VertexBuffer2> Shape2Generator::GenArrow(float s, float th, const Vector2f & d)
+    std::shared_ptr<VertexBuffer2D> ShapeGenerator2D::GenArrow(float s, float th, const Vector2f & d)
     {
         auto & builder = GetBuilder();
         builder.Reset();
@@ -181,20 +181,20 @@ namespace astu {
     }
 
 
-    Shape2Generator& Shape2Generator::Reset()
+    ShapeGenerator2D& ShapeGenerator2D::Reset()
     {
         vbBuilder = nullptr;
         offset.SetZero();
         return *this;
     }
 
-    VertexBuffer2Builder& Shape2Generator::GetBuilder() const
+    VertexBufferBuilder2D& ShapeGenerator2D::GetBuilder() const
     {
         if (vbBuilder) {
             return *vbBuilder;
         }
 
-        return ASTU_SERVICE(VertexBuffer2Builder);
+        return ASTU_SERVICE(VertexBufferBuilder2D);
     }
 
 } // end of namespace

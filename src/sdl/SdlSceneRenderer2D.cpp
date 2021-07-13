@@ -13,12 +13,12 @@
 #include <SDL2/SDL.h>
 
 // Local includes
-#include "SdlScene2Renderer.h"
+#include "SdlSceneRenderer2D.h"
 
 using namespace std;
 
-#define ASSERT_VBUF(a) assert(dynamic_cast<SdlVertexBuffer2*>(&a))
-#define VBUF(a) static_cast<const SdlVertexBuffer2&>(a)
+#define ASSERT_VBUF(a) assert(dynamic_cast<SdlVertexBuffer2D*>(&a))
+#define VBUF(a) static_cast<const SdlVertexBuffer2D&>(a)
 
 namespace astu {
     
@@ -26,13 +26,13 @@ namespace astu {
     /////// SdlScene2Renderer
     /////////////////////////////////////////////////
 
-    SdlScene2Renderer::SdlScene2Renderer()
+    SdlSceneRenderer2D::SdlSceneRenderer2D()
         : renderer(nullptr)
     {
         // Intentionally left empty.
     }
 
-    void SdlScene2Renderer::Render(Polyline2& polyline, float alpha)
+    void SdlSceneRenderer2D::Render(Polyline2D& polyline, float alpha)
     {
         ASSERT_VBUF(polyline.GetVertexBuffer());
         assert(renderer);

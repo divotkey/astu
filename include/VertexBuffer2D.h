@@ -18,21 +18,21 @@ namespace astu {
     /**
      * Abstract base class for vertex buffers.
      */
-    class VertexBuffer2 {
+    class VertexBuffer2D {
     public:
 
         /** Virtual destructor. */
-        virtual ~VertexBuffer2() {}
+        virtual ~VertexBuffer2D() {}
     };
 
     /**
      * Abstract base class for vertex buffer buildes.
      */
-    class VertexBuffer2Builder {
+    class VertexBufferBuilder2D {
     public:
 
         /** Virtual destructor. */
-        virtual ~VertexBuffer2Builder() {}
+        virtual ~VertexBufferBuilder2D() {}
 
         /**
          * Adds the specified vertex.
@@ -41,7 +41,7 @@ namespace astu {
          * @param y the y-coordinate of the vertex
          * @return reference to this builder for method chaining
          */
-        virtual VertexBuffer2Builder& AddVertex(float x, float y) = 0;
+        virtual VertexBufferBuilder2D& AddVertex(float x, float y) = 0;
 
         /**
          * Adds the specified vertex.
@@ -49,7 +49,7 @@ namespace astu {
          * @param vertex    the vertex to add
          * @return reference to this builder for method chaining
          */
-        VertexBuffer2Builder& AddVertex(const Vector2f& vertex) {
+        VertexBufferBuilder2D& AddVertex(const Vector2f& vertex) {
             return AddVertex(vertex.x, vertex.y);
         }
 
@@ -95,14 +95,14 @@ namespace astu {
          * 
          * @return reference to this builder for method chaining
          */
-        virtual VertexBuffer2Builder& Reset() = 0;
+        virtual VertexBufferBuilder2D& Reset() = 0;
 
         /**
          * Creates a new vertex buffer.
          * 
          * @return the newly created vertex buffer
          */
-        virtual std::shared_ptr<VertexBuffer2> Build() = 0;        
+        virtual std::shared_ptr<VertexBuffer2D> Build() = 0;        
     };
 
 } // end of namespace
