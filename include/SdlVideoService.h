@@ -7,12 +7,12 @@
 
 #pragma once
 
-// C++ Standard Library includes
-#include <string>
-
 // Local includes.
 #include "Service.h"
 #include "IWindowManager.h"
+
+// C++ Standard Library includes
+#include <string>
 
 // Forward declaration.
 struct SDL_Window;
@@ -27,7 +27,10 @@ namespace astu {
      * 
      * @ingroup sdl_group
      */
-    class SdlVideoService final : public Service, public IWindowManager {
+    class SdlVideoService final 
+        : public Service
+        , public IWindowManager
+    {
     public:
 
         /**

@@ -51,6 +51,18 @@ namespace astu {
             return *this;
         }
 
+        Transform2<T> & Translate(T tx, T ty) {
+            translation.Add(tx, ty);
+            dirty = true;
+            return *this;
+        }
+
+        Transform2<T> & Translate(const Vector2<T> & t) {
+            translation += t;
+            dirty = true;
+            return *this;
+        }
+
         const Vector2<T> & GetTranslation() const {
             return translation;
         }
@@ -67,6 +79,18 @@ namespace astu {
             return *this;
         }
 
+        Transform2<T> & Scale(T sx, T sy) {
+            scaling.Scale(sx, sy);
+            dirty = true;
+            return *this;
+        }
+
+        Transform2<T> & Scale(const Vector2<T> & s) {
+            scaling *= s;
+            dirty = true;
+            return *this;
+        }
+
         const Vector2<T> & GetScaling() const {
             return scaling;
         }
@@ -79,6 +103,18 @@ namespace astu {
 
         Transform2<T> & SetRotationDeg(T phi) {
             rotation = MathUtils::ToRadians<T>(phi);
+            dirty = true;
+            return *this;
+        }
+
+        Transform2<T> & RotateDeg(T deltaPhi) {
+            rotation += MathUtils::ToRadians<T>(deltaPhi);
+            dirty = true;
+            return *this;
+        }
+
+        Transform2<T> & Rotate(T deltaPhi) {
+            rotation += deltaPhi;
             dirty = true;
             return *this;
         }

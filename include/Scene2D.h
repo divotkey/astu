@@ -25,6 +25,7 @@ namespace astu {
 
     // Forward declaration
     class Polyline2D;
+    class Node2D;
 
     /////////////////////////////////////////////////
     /////// SceneRenderer2D
@@ -136,7 +137,7 @@ namespace astu {
          * 
          * @return the parent or nullptr if this patial has not parrent
          */
-        Spatial2D* GetParent() const {
+        Node2D* GetParent() const {
             return parent;
         }
 
@@ -165,7 +166,7 @@ namespace astu {
 
     protected:
         /** The parent of this spatial. */
-        Spatial2D* parent;
+        Node2D* parent;
 
         /** The name of this spatial. */
         std::string name;
@@ -197,10 +198,10 @@ namespace astu {
          * 
          * Do not call this method directly.
          * 
-         * @param _parent    the parent
+         * @param newParent the parent
          */
-        void SetParent(Spatial2D *_parent) {
-            parent = _parent;
+        void SetParent(Node2D *newParent) {
+            parent = newParent;
         }
 
     private:
@@ -231,11 +232,60 @@ namespace astu {
          */
         bool HasChild(std::shared_ptr<Spatial2D> child);
 
+        /**
+         * Attaches a child to this node.
+         * 
+         * The specified child must neither be child of any other node, 
+         * nor a child of this node, other wise the behaviour is undefied and
+         * might result in an exception.
+         * 
+         * @param child the child to attach
+         */
         void AttachChild(std::shared_ptr<Spatial2D> child);
+
+        /**
+         * Detaches a child from this node.
+         * 
+         * The specified child node must be a child of this node otherwise
+         * the behaviour is undefined and might result in an exception.
+         * 
+         * @param child the child to detach
+         */
         void DetachChild(std::shared_ptr<Spatial2D> child);
 
+        /**
+         * Removes a child with the specified name.
+         * 
+         * @param childName the name of the child to remove
+         * @return  `true` if a child with the specified name has been found
+         *          and removed
+         */
+        bool DetachChild(const std::string & childName) {
+            auto child = FindChildOrNull(name);
+            if (child && child->HasParent()) {
+                child->GetParent()->DetachChild(child);
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Searches recursively for a child node with a specific name.
+         * 
+         * @param childName the name of the child node to search for
+         * @return  the requested child or `nullptr` if no child with the 
+         *          specified name has been found
+         */
         std::shared_ptr<Spatial2D> FindChildOrNull(const std::string & childName);
 
+        /**
+         * Searches recursively for a child node with a specific name.
+         * 
+         * @param childName the name of the child node to search for
+         * @return  the requested child
+         * @throws  std::logic_error in case no child with the specified name
+         *          has been found
+         */
         std::shared_ptr<Spatial2D> FindChild(const std::string & childName);
 
         // Inherited via Spatial2

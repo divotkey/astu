@@ -22,6 +22,9 @@
 
 namespace astu {
 
+    // Forward declaration
+    class Entity;
+
     /////////////////////////////////////////////////
     /////// EntityComponent
     /////////////////////////////////////////////////
@@ -50,8 +53,20 @@ namespace astu {
          * @return a copy of this componend
          */
         virtual std::shared_ptr<EntityComponent> Clone() = 0;
-    };
 
+		/**
+		 * Called when added to an entity.
+         * 
+		 * Most components do not need to override this method. Is 
+		 * is used occasionally to register additional interfaces
+		 * a component implements. Registering implemented interfaces
+		 * is necessary in order to make a component accessible via
+		 * this interface and not just by the component type itself.
+         * 
+         * @param entity    the entity this component has been added to
+		 */
+        virtual void OnAddedToEntity(astu::Entity & entity) {}
+    };
 
     /////////////////////////////////////////////////
     /////// Entity
@@ -78,6 +93,21 @@ namespace astu {
          * @param cmp   the component to add
          */
         void AddComponent(std::shared_ptr<EntityComponent> cmp);
+
+        /**
+         * Makes a specific component accessible via an interface.
+         * 
+		 * Registering an additional interface for a component might be
+         * necessary for components which should be accessible not only by its
+         * direct type but also by an interface which the component implements.
+		 * Typically this method is call by a component itself when its
+         * 
+         * @param cmp   the component
+         * @param type  the interface
+         * @throws std::logic_error in case the component is not part of this
+         *  entity or the interface type has already been registered
+         */
+        void AddInterface(EntityComponent& cmp, const std::type_index &type);
         
 		/**
 		 * Tests if specified type of component has been added to this entity.
@@ -85,9 +115,9 @@ namespace astu {
 		 * This method is mainly used by the template method `HasComponent`,
          * which is more convenient to use.
          * 
-		 * This method requires a std::type_index parameter to specify the type of
-		 * component to be tested. The C++ `typeid` operator can be used to get
-		 * the std::type_info object, which will be automatically converted
+		 * This method requires a std::type_index parameter to specify the type
+         * of component to be tested. The C++ `typeid` operator can be used to
+         * get the std::type_info object, which will be automatically converted
 		 * to a std::type_index object when calling this method.
 		 *
 		 * **Usage example:**
@@ -139,8 +169,9 @@ namespace astu {
 		/**
 		 * Retrieves the component a specific type from this entity.
 		 *
-		 * This template method offers a convenient way to retrieve a component by
-		 * specifying the type of the component to retrieve as template parameter.
+		 * This template method offers a convenient way to retrieve a component
+         * by specifying the type of the component to retrieve as template
+         * parameter.
 		 *
 		 * **Usage example:**
 		 * ```cpp
@@ -158,8 +189,9 @@ namespace astu {
 		/**
 		 * Retrieves the component a specific type from this entity.
 		 *
-		 * This template method offers a convenient way to retrieve a component by
-		 * specifying the type of the component to retrieve as template parameter.
+		 * This template method offers a convenient way to retrieve a component
+         * by specifying the type of the component to retrieve as template
+         * parameter.
 		 *
 		 * **Usage example:**
 		 * ```cpp
@@ -175,11 +207,11 @@ namespace astu {
 		}
 
 		/**
-		 * Tests whether a component of a specific type has been added to this entity.
+		 * Tests if a component of a specific type has been added.
 		 *
-		 * This template method offers a convenient way to test if a certain component type
-		 * exists in this entity by specifying the type of the component as template
-		 * parameter.
+		 * This template method offers a convenient way to test if a certain
+         * component type exists in this entity by specifying the type of the
+         * component as template parameter.
 		 *
 		 * **Usage example:**
 		 * ```cpp
@@ -202,18 +234,27 @@ namespace astu {
          */
         std::shared_ptr<Entity> Clone() {
             auto result = std::make_shared<Entity>();
-            for (auto & cmp : compMap) {
-                result->AddComponent(cmp.second->Clone());
+
+            for (auto & cmp : components) {
+                result->AddComponent(cmp->Clone());
             }
 
             return result;
         }
 
+        /**
+         * Returns an unique identifires of this entity.
+         * 
+         * @return the unique identifier
+         */
         int GetId() const {
             return id;
         }
 
     private:
+        /** The components of this entity. */
+        std::vector<std::shared_ptr<EntityComponent>> components;
+
 		/** Used for fast access to components. */
 		std::unordered_map<std::type_index, std::shared_ptr<EntityComponent>> compMap;
 

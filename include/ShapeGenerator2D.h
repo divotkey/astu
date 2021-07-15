@@ -59,6 +59,46 @@ namespace astu {
         }
 
         /**
+         * Swichtes this shape generator to polyline mode.
+         * 
+         * Polyline mode will close the shaped by duplicating
+         * the first vertex.
+         */
+        ShapeGenerator2D& PolygoneMode() {
+            duplicateStartVertex = false;
+            return *this;
+        }
+
+        /**
+         * Swichtes this shape generator to polygon mode.
+         * 
+         * Polyline mode asumes that the created polygone is closed
+         * automatically.
+         */
+        ShapeGenerator2D& PolylineMode() {
+            duplicateStartVertex = true;
+            return *this;
+        }
+
+        /**
+         * Returns whether this generator is in polyline mode.
+         * 
+         * @return `true` if this generator is in polyline mode
+         */
+        bool IsPolylineMode() const {
+            return duplicateStartVertex;
+        }
+
+        /**
+         * Returns whether this generator is in polygon mode.
+         * 
+         * @return `true` if this generator is in polygon mode
+         */
+        bool IsPolygoneMode() const {
+            return !duplicateStartVertex;
+        }
+
+        /**
          * Generates a circle.
          * 
          * @param r the radius of the circle
@@ -128,7 +168,6 @@ namespace astu {
         std::shared_ptr<VertexBuffer2D> GenArrow(
             float l, float th = 0.381967f, const Vector2f & d = Vector2f(1, 0));
 
-
         /**
          * Resets this generator to its initial configuration.
          * 
@@ -142,6 +181,9 @@ namespace astu {
 
         /** The offset from the center used to generate the shapes. */
         Vector2f offset;
+
+        /** Whether to duplicate the start vertex, used for closed polylines. */
+        bool duplicateStartVertex;
 
         /** 
          * Returns the vertex buffer builder to be used.

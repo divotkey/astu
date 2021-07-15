@@ -68,7 +68,7 @@ namespace astu {
          * @return the vertex
          * @throws std::out_of_range in case the specified index is invalid
          */
-        virtual Vector2f GetVertex(size_t idx) const = 0;
+        virtual const Vector2f & GetVertex(size_t idx) const = 0;
 
         /**
          * Redefines a previously added vertex.

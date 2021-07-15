@@ -44,7 +44,7 @@ namespace astu {
          * 
          * @return the entity view
          */
-        EntityView & GetEntityView() {
+        EntityView& GetEntityView() {
             return *entityView;
         }
 
@@ -53,7 +53,7 @@ namespace astu {
          * 
          * @return the entity view
          */
-        const EntityView & GetEntityView() const {
+        const EntityView& GetEntityView() const {
             return *entityView;
         }
 

@@ -31,7 +31,7 @@ namespace astu {
         return *this;
     }
 
-    Vector2f SdlVertexBufferBuilderService2D::GetVertex(size_t idx) const
+    const Vector2f& SdlVertexBufferBuilderService2D::GetVertex(size_t idx) const
     {
         return vertices.at(idx);
     }

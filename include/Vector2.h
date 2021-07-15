@@ -200,6 +200,17 @@ namespace astu {
         }
 
         /**
+         * Flips this vector in-place.
+         * 
+         * @return reference to this vector for method chaining
+         */
+        Vector2 & Flip() { 
+            x = -x; 
+            y = -y;  
+            return *this;
+        }
+
+        /**
          * Returns the distance between this vector and the other vector.
          *
          * @param o the other vector
@@ -314,7 +325,7 @@ namespace astu {
         {
             T tmp = x;
             x = -y;
-            y = x;
+            y = tmp;
             return *this;
         }
 

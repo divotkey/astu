@@ -22,49 +22,73 @@ namespace astu {
     /////// Entity
     /////////////////////////////////////////////////
 
-    void Entity::AddComponent(std::shared_ptr<EntityComponent> cmp)
+    void Entity::AddComponent(shared_ptr<EntityComponent> cmp)
     {
-
-        // working with reference to silence warning on macOS.
+        // Workaround to silence warning on macOS. Without macOS compilers
+        // the code should look like this:
+        // auto type = type_index(typeid(*cmp));
         auto & c = *cmp;
-        auto type = std::type_index(typeid(c));
+        auto type = type_index(typeid(c));
 
-        // Original code.
-        // auto type = std::type_index(typeid(*cmp));
-
-        if (compMap.find(type) != compMap.end())
-        {
-            throw std::logic_error(std::string("Component of type ' ") + type.name() + "' already added to entity");
+        // Ensure component is the only one of its type.
+        if (HasComponent(type)) {
+            throw logic_error(string("Component of type ' ") 
+                + type.name() + "' already added to entity");
         }
 
+        // Add component to component list.
+        assert(find(components.begin(), components.end(), cmp) == components.end());
+        components.push_back(cmp);
+
+        // Add component type to map for fast access.
+        assert(compMap.find(type) == compMap.end());
         compMap[type] = cmp;
+
+        // Inform component that it has been added.
+        cmp->OnAddedToEntity(*this);
     }
 
-    bool Entity::HasComponent(const std::type_index &type) const
+    void Entity::AddInterface(EntityComponent& cmp, const type_index &type)
+    {
+		if (!HasComponent(typeid(cmp))) {
+			throw logic_error(
+                string("Unable to add interface, unknown component  '") 
+				+ typeid(cmp).name() + "'");
+		}
+        
+		if (compMap.find(type) != compMap.end()) {
+			throw logic_error(
+                string("Unable to add interface, already added: '") 
+				+ type.name() + "'");
+		}
+
+		compMap[type] = compMap[typeid(cmp)];
+    }
+
+    bool Entity::HasComponent(const type_index &type) const
     {
         return compMap.find(type) != compMap.end();
-        ;
     }
 
-    EntityComponent &Entity::GetComponent(const std::type_index &type)
+    EntityComponent &Entity::GetComponent(const type_index &type)
     {
         auto it = compMap.find(type);
         if (it == compMap.end())
         {
-            throw std::logic_error(
-                std::string("Unknown component type '") + type.name() + "'");
+            throw logic_error(
+                string("Unknown component type '") + type.name() + "'");
         }
 
         return *it->second;
     }
 
-    const EntityComponent &Entity::GetComponent(const std::type_index &type) const
+    const EntityComponent &Entity::GetComponent(const type_index &type) const
     {
         auto it = compMap.find(type);
         if (it == compMap.end())
         {
-            throw std::logic_error(
-                std::string("Unknown component type '") + type.name() + "'");
+            throw logic_error(
+                string("Unknown component type '") + type.name() + "'");
         }
 
         return *it->second;
@@ -81,7 +105,7 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    const std::shared_ptr<EntityView> EntityService::GetEntityView(const EntityFamily &family)
+    const shared_ptr<EntityView> EntityService::GetEntityView(const EntityFamily &family)
     {
         const auto &it = viewMap.find(family);
         if (it != viewMap.end())
@@ -91,7 +115,7 @@ namespace astu {
         }
 
         // Create new view and add associated entities.
-        auto view = std::make_shared<EntityView>();
+        auto view = make_shared<EntityView>();
         viewMap[family] = view;
         for (const auto &entity : entities)
         {
@@ -104,17 +128,17 @@ namespace astu {
         return view;
     }
 
-    void EntityService::AddEntity(std::shared_ptr<Entity> entity)
+    void EntityService::AddEntity(shared_ptr<Entity> entity)
     {
         commands.Add([this, entity](){ AddEntityInternally(entity); });
     }
 
-    void EntityService::RemoveEntity(std::shared_ptr<Entity> entity)
+    void EntityService::RemoveEntity(shared_ptr<Entity> entity)
     {
         commands.Add([this, entity](){ RemoveEntityInternally(entity); });
     }
 
-    bool EntityService::HasEntity(std::shared_ptr<Entity> entity) const
+    bool EntityService::HasEntity(shared_ptr<Entity> entity) const
     {
         return find(entities.begin(), entities.end(), entity) != entities.end();
     }
@@ -140,7 +164,7 @@ namespace astu {
         commands.Execute();
     }
 
-    void EntityService::AddEntityInternally(std::shared_ptr<Entity> entity)
+    void EntityService::AddEntityInternally(shared_ptr<Entity> entity)
     {
 		// Add entity to entity families.
 		for (auto & it : viewMap) {
@@ -164,7 +188,7 @@ namespace astu {
         entity->id = ++idCounter;
     }
 
-    void EntityService::RemoveEntityInternally(std::shared_ptr<Entity> entity)
+    void EntityService::RemoveEntityInternally(shared_ptr<Entity> entity)
     {
         if (!HasEntity(entity)) {
             return;
@@ -186,13 +210,13 @@ namespace astu {
 
         // Remove entity.
 		entities.erase(
-            std::remove(entities.begin(), entities.end(), entity), 
+            remove(entities.begin(), entities.end(), entity), 
             entities.end());
     }
 
-    void EntityService::RemoveFromView(EntityView & view, std::shared_ptr<Entity> entity)
+    void EntityService::RemoveFromView(EntityView & view, shared_ptr<Entity> entity)
     {
-		view.erase(std::remove(view.begin(), view.end(), entity), view.end());
+		view.erase(remove(view.begin(), view.end(), entity), view.end());
     }
 
     void EntityService::RemoveAllInternally()
@@ -210,17 +234,17 @@ namespace astu {
         }
 
         const ListenerList & familyListeners = it->second;
-        return std::find(familyListeners.begin(), familyListeners.end(), &listener) != familyListeners.end();
+        return find(familyListeners.begin(), familyListeners.end(), &listener) != familyListeners.end();
     }
 
     void EntityService::AddEntityListener(const EntityFamily & family, IEntityListener & listener)
     {
 		if (firing) {
-			throw std::logic_error("Entity listeners must not be added while firing entity events");
+			throw logic_error("Entity listeners must not be added while firing entity events");
 		}
 
         if (HasEntityListener(family, listener)) {
-            throw std::logic_error("Entity listener already added");
+            throw logic_error("Entity listener already added");
         }
 
         listeners[family].push_back(&listener);        
@@ -229,7 +253,7 @@ namespace astu {
     void EntityService::RemoveEntityListener(const EntityFamily & family, IEntityListener & listener)
     {
 		if (firing) {
-			throw std::logic_error("Entity listeners must not be removed while firing entity events");
+			throw logic_error("Entity listeners must not be removed while firing entity events");
 		}
 
         auto it = listeners.find(family);
@@ -246,14 +270,14 @@ namespace astu {
         }
     }
 
-    void EntityService::FireEntityAdded(ListenerList & lst, std::shared_ptr<Entity> e)
+    void EntityService::FireEntityAdded(ListenerList & lst, shared_ptr<Entity> e)
     {
         for (auto listener : lst) {
             listener->OnEntityAdded(e);
         }
     }
 
-    void EntityService::FireEntityRemoved(ListenerList & lst, std::shared_ptr<Entity> e)
+    void EntityService::FireEntityRemoved(ListenerList & lst, shared_ptr<Entity> e)
     {
         for (auto listener : lst) {
             listener->OnEntityRemoved(e);

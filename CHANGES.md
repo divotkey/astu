@@ -10,6 +10,8 @@
 - Added `GetRandomBool()` function.
 - Renamed classed and structures for 2D environments to new naming convention.
 - Added service to control 2D cameras with mouse and keyboard (`CameraControlService2D`).
+- Improved 2D scene graph.
+- Improved ECS to use component interfaces in order to support derived componts as well.
 
 # Version 0.9.2
 *Date: 2021-06-06*

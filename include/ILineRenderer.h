@@ -111,6 +111,24 @@ namespace astu {
             lineRenderer->DrawLine(cx + w / 2, cy + h / 2, cx - w / 2, cy + h / 2);
         }
 
+        void DrawCircle(T cx, T cy, T r, unsigned int segments = 24) {
+            T da = static_cast<T>(MathUtils::PI2d) / segments;
+
+            Vector2<T> p0(0, r);
+            for (unsigned int i = 0; i < segments; ++i) {
+                Vector2<T> p1(0, r);
+                p1.Rotate(i * da);
+
+                DrawLine(p0.x + cx, p0.y + cy, p1.x + cx, p1.y + cy);
+                p0 = p1;
+            }
+            DrawLine(p0.x + cx, p0.y + cy, cx, r + cy);
+        }
+
+        void DrawCircle(const Vector2<T>& c, T r, unsigned int segments = 24) {
+            DrawCircle(c.x, c.y, r, segments);
+        }
+
         void DrawRectangle(const Vector2<T>& c, const Vector2<T>& s) {
             DrawRectangle(c.x, c.y, s.x, s.y);
         }
@@ -119,8 +137,6 @@ namespace astu {
             lineRenderer->DrawLine(p1.x, p1.y, p2.x, p2.y);
         }     
 
-
-
     private:
         /** The line renderer. */
         std::shared_ptr<ILineRenderer<T>> lineRenderer;
@@ -128,4 +144,5 @@ namespace astu {
 
     using LineRendererClient2f = LineRendererClient<float>;
     using LineRendererClient2d = LineRendererClient<double>;
+    
 } // end of namespace

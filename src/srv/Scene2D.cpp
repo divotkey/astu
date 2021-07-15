@@ -101,7 +101,8 @@ namespace astu {
     {
         auto result = FindChildOrNull(childName);
         if (!result) {
-            throw std::logic_error("No spatial with name '" + childName + "' found");
+            throw std::logic_error(
+                "No spatial with name '" + childName + "' found");
         }
 
         return result;
