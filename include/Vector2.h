@@ -14,7 +14,6 @@
 // Local includes
 #include "MathUtils.h"
 
-
 namespace astu {
 
     /**

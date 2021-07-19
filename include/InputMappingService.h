@@ -480,7 +480,6 @@ namespace astu {
         virtual void OnStartup() override;
         virtual void OnShutdown() override;
 
-
         // Inherited via Updatable
         virtual void OnUpdate() override;
     };

@@ -7,13 +7,22 @@
 
 #pragma once
 
+// AST Utilities includes
+#include <Vector2.h>
+
+// C++ Standard Library includes
 #include <memory>
 #include <random>
 
 namespace astu {
 
     /**
-     * This singleton simplifies the creation of random numbers.
+     * Create random numbers.
+     * 
+     * All generated pseudo random number are distributed uniformly over the
+     * specified range.
+     * 
+     * @ingroup math_group
      */
     class Random final {
     public:
@@ -97,13 +106,34 @@ namespace astu {
          */
         int NextInt(int minValue, int maxValue);
 
+        /**
+         * Returns a ranfom vector with the specified length.
+         * 
+         * @param length    the length of the vector
+         * @return a vector pointing in a random direction
+         */
+        Vector2f NextVector2f(float length);
+
+        /**
+         * Returns a ranfom vector with the specified length.
+         * 
+         * @param length    the length of the vector
+         * @return a vector pointing in a random direction
+         */
+        Vector2d NextVector2d(double length);
+
+        /**
+         * Sets the seed of the random number generator used.
+         * 
+         * @param value the new seed value
+         */
         void SetSeed(unsigned int value);
 
     private:
         /** The one and only instance of this singleton. */
         static std::unique_ptr<Random> theInstance;
 
-        /** The random number generator used to generate pseudo-random numbers. */
+        /** The random number generator used to generate random numbers. */
         std::mt19937 mt;
 
         /** The uniform distribution used to create random doubles. */

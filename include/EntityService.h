@@ -66,6 +66,39 @@ namespace astu {
          * @param entity    the entity this component has been added to
 		 */
         virtual void OnAddedToEntity(astu::Entity & entity) {}
+
+        /**
+         * Tests whether this component has been attached to an entity.
+         * 
+         * @return `true` if this component has a parent entity
+         */
+        bool HasParent() const { 
+            return parent.lock() != nullptr;
+        }
+
+        /**
+         * Returns the parent entity of this component.
+         * 
+         * @return the parent entity
+         */
+        Entity& GetParent() {
+            return *parent.lock();
+        }
+
+        /**
+         * Returns the parent entity of this component.
+         * 
+         * @return the parent entity
+         */
+        const Entity& GetParent() const {
+            return *parent.lock();
+        }
+
+    private:
+        /** The entity this component belonts to. */
+        std::weak_ptr<Entity> parent;
+
+        friend class Entity;
     };
 
     /////////////////////////////////////////////////

@@ -115,6 +115,10 @@ namespace astu {
 
         // Inherited via IUpdatable
         virtual void OnUpdate() override {}
+
+    private:
+        /** The update priority of this updatable. */
+        int updatePriority;
     }; 
 
 } // end of namespace

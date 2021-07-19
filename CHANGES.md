@@ -12,10 +12,13 @@
 - Added service to control 2D cameras with mouse and keyboard (`CameraControlService2D`).
 - Improved 2D scene graph.
 - Improved ECS to use component interfaces in order to support derived componts as well.
+- Started to reorganice source code struct.re
+- Extended random number generator class and made public.
+- Added option to pause services.
+- Added mamthematical utility class `Segment1`.
 
 # Version 0.9.2
 *Date: 2021-06-06*
-
 - Added `EntityFactoryService` and extended `Entity` and `EntityComponent` class.
 
 # Version 0.9.1

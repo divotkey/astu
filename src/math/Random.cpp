@@ -6,7 +6,7 @@
  */
 
 // Local includes.
-#include "Random.h"
+#include "Math/Random.h"
 
 // C++ Standard Library includes
 #include <limits>
@@ -26,6 +26,7 @@ namespace astu {
 
     Random::Random()
         : doubleDist(0, 1)
+        , floatDist(0, 1)
         , intDist(0, std::numeric_limits<int>::max())
     {
         std::random_device rd;
@@ -62,9 +63,23 @@ namespace astu {
         return minValue + static_cast<int>(NextDouble() * (maxValue - minValue));
     }
 
+    Vector2f Random::NextVector2f(float length)
+    {
+        Vector2f result(0, length);
+        result.Rotate(NextFloat(0, MathUtils::PI2f));
+        return result;
+    }
+
+    Vector2d Random::NextVector2d(double length)
+    {
+        Vector2d result(0, length);
+        result.Rotate(NextDouble(0, MathUtils::PI2d));
+        return result;
+    }
+
     void Random::SetSeed(unsigned int value)
     {
         mt.seed(static_cast<uint_fast32_t>(value));
     }
 
-}
+} // end of namespace

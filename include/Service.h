@@ -86,6 +86,20 @@ namespace astu {
         void AddShutdownHook(std::function<void (void)> func);
 
         /**
+         * Adds a function which is called when this services is paused.
+         * 
+         * @param func  the function to be called.
+         */
+        void AddPauseHook(std::function<void (void)> func);
+
+        /**
+         * Adds a function which is called when this services is resumed.
+         * 
+         * @param func  the function to be called.
+         */
+        void AddResumeHook(std::function<void (void)> func);
+
+        /**
          * Starts this service.
          * 
          * @throws std::logic_error in case this service is already running
@@ -99,6 +113,23 @@ namespace astu {
          * has no effect.
          */
         void Shutdown();
+
+        /**
+         * Pauses this service.
+         */
+        void Pause();
+
+        /**
+         * Returns whether this service has been paused.
+         * 
+         * @return `true` if this service is currently in paused-state.
+         */
+        bool IsPaused() const;
+
+        /**
+         * Resumes this state from paused state.
+         */
+        void Resume();
 
     protected:
 
@@ -117,6 +148,16 @@ namespace astu {
          */
         virtual void OnShutdown() {}
 
+        /**
+         * Called when this service switches from started to paused state.
+         */
+        virtual void OnPaused() {}
+
+        /**
+         * Called when this service switches from paused to running.
+         */
+        virtual void OnResumed() {}
+
     private:
         /** The name of this service. */
         std::string name;
@@ -129,6 +170,12 @@ namespace astu {
 
         /** Shutdown hooks. */
         std::vector<std::function<void (void)>> shutdownHooks;
+
+        /** Pause hooks. */
+        std::vector<std::function<void (void)>> pauseHooks;
+
+        /** Resume hooks. */
+        std::vector<std::function<void (void)>> resumeHooks;
     };
 
     /**

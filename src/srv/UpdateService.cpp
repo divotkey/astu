@@ -54,9 +54,25 @@ namespace astu {
     /////////////////////////////////////////////////
 
     Updatable::Updatable(int priority)
+        : updatePriority(priority)
     {
-       AddStartupHook([this, priority]() { ASTU_SERVICE(UpdateService).AddUpdatable(*this, priority); } );
-        AddShutdownHook([this]() { ASTU_SERVICE(UpdateService).RemoveUpdatable(*this); } );
+        AddStartupHook([this, priority]() { 
+            ASTU_SERVICE(UpdateService).AddUpdatable(*this, priority); } );
+
+        AddShutdownHook([this]() { 
+            ASTU_SERVICE(UpdateService).RemoveUpdatable(*this); } );
+
+        AddPauseHook([this]() { 
+            if (GetStatus() == Running) {
+                ASTU_SERVICE(UpdateService).RemoveUpdatable(*this);
+            }            
+        });
+
+        AddResumeHook([this]() { 
+            if (GetStatus() == Paused) {
+                ASTU_SERVICE(UpdateService).AddUpdatable(*this, updatePriority);
+            }
+        });
     }
 
 } // end of namespace

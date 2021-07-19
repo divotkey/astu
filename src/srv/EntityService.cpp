@@ -44,8 +44,12 @@ namespace astu {
         assert(compMap.find(type) == compMap.end());
         compMap[type] = cmp;
 
+        // Assing this entity as parent.
+        cmp->parent = shared_from_this();
+
         // Inform component that it has been added.
         cmp->OnAddedToEntity(*this);
+
     }
 
     void Entity::AddInterface(EntityComponent& cmp, const type_index &type)

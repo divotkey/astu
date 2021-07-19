@@ -45,6 +45,18 @@ namespace astu {
             return *this;
         }
 
+        Transform2<T> & SetTranslationX(T tx) {
+            translation.x = tx;
+            dirty = true;
+            return *this;
+        }
+
+        Transform2<T> & SetTranslationY(T ty) {
+            translation.y = ty;
+            dirty = true;
+            return *this;
+        }
+
         Transform2<T> & SetTranslation(const Vector2<T> & t) {
             translation = t;
             dirty = true;
