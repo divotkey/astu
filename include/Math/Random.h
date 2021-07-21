@@ -112,7 +112,7 @@ namespace astu {
          * @param length    the length of the vector
          * @return a vector pointing in a random direction
          */
-        Vector2f NextVector2f(float length);
+        Vector2f NextVector2f(float length = 1.0f);
 
         /**
          * Returns a ranfom vector with the specified length.
@@ -120,7 +120,7 @@ namespace astu {
          * @param length    the length of the vector
          * @return a vector pointing in a random direction
          */
-        Vector2d NextVector2d(double length);
+        Vector2d NextVector2d(double length = 1.0);
 
         /**
          * Sets the seed of the random number generator used.

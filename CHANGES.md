@@ -12,7 +12,7 @@
 - Added service to control 2D cameras with mouse and keyboard (`CameraControlService2D`).
 - Improved 2D scene graph.
 - Improved ECS to use component interfaces in order to support derived componts as well.
-- Started to reorganice source code struct.re
+- Started to reorganice source code structure.
 - Extended random number generator class and made public.
 - Added option to pause services.
 - Added mamthematical utility class `Segment1`.

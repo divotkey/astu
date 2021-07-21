@@ -59,7 +59,7 @@ namespace astu {
 				 T m3, T m4, T m5,
 				 T m6, T m7, T m8)
 		{
-			set(m0, m1, m2, m3, m4, m5, m6, m7, m8);
+			Set(m0, m1, m2, m3, m4, m5, m6, m7, m8);
 		}
 
 		/**
@@ -77,7 +77,7 @@ namespace astu {
 		 * @param m09 the tenth value
 		 * @return reference to this matrix for method chaining
 		 */
-		Matrix3<T>& set(T m0, T m1, T m2,
+		Matrix3<T>& Set(T m0, T m1, T m2,
 					    T m3, T m4, T m5,
 					    T m6, T m7, T m8)
 		{

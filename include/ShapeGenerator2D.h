@@ -33,7 +33,7 @@ namespace astu {
          * @return reference to this generator for method chaining
          */
         ShapeGenerator2D& VertexBufferBuilder(
-            std::shared_ptr<VertexBufferBuilder2D> builder);
+            std::shared_ptr<VertexBufferBuilder2f> builder);
 
         /**
          * Specifies the offset from the center used to generate shapes.
@@ -104,7 +104,7 @@ namespace astu {
          * @param r the radius of the circle
          * @param n the number of segments
          */
-        std::shared_ptr<VertexBuffer2D> GenCircle(
+        std::shared_ptr<VertexBuffer2f> GenCircle(
             float r, unsigned int n = 24) const;
 
         /**
@@ -113,14 +113,14 @@ namespace astu {
          * @param w the width of the rectangle
          * @param n the height of the rectangle
          */
-        std::shared_ptr<VertexBuffer2D> GenRectangle(float w, float h) const;
+        std::shared_ptr<VertexBuffer2f> GenRectangle(float w, float h) const;
 
         /**
          * Generates an axis aligned rectangle.
          * 
          * @param a the side length of the square.
          */
-        std::shared_ptr<VertexBuffer2D> GenSquare(float a) const {
+        std::shared_ptr<VertexBuffer2f> GenSquare(float a) const {
             return GenRectangle(a, a);
         }
 
@@ -130,7 +130,7 @@ namespace astu {
          * @param r the radius of the equilateral triangle
          * @param d the direction in which the triangle points
          */
-        std::shared_ptr<VertexBuffer2D> GenTriangle(
+        std::shared_ptr<VertexBuffer2f> GenTriangle(
             float r, const Vector2f & d = Vector2f(0, -1));
 
         /**
@@ -140,7 +140,7 @@ namespace astu {
          * @param n determines the number of point the star should have
          * @param d the direction in which the star points
          */
-        std::shared_ptr<VertexBuffer2D> GenStar(
+        std::shared_ptr<VertexBuffer2f> GenStar(
             float r, 
             int n = 5, 
             const Vector2f & d = Vector2f(0, -1)
@@ -154,7 +154,7 @@ namespace astu {
          * @param r     the size of the cross
          * @param th    determines the thickness of the cross (0, 1)
          */
-        std::shared_ptr<VertexBuffer2D> GenCross(float s, float th = 0.381967f);
+        std::shared_ptr<VertexBuffer2f> GenCross(float s, float th = 0.381967f);
 
         /**
          * Generates an arrow.
@@ -165,7 +165,7 @@ namespace astu {
          * @param th    determines the thickness of the arrow (0, 1)
          * @param d     the direction in which the arrow points
          */
-        std::shared_ptr<VertexBuffer2D> GenArrow(
+        std::shared_ptr<VertexBuffer2f> GenArrow(
             float l, float th = 0.381967f, const Vector2f & d = Vector2f(1, 0));
 
         /**
@@ -177,7 +177,7 @@ namespace astu {
 
     private:
         /** The vertex buffer builder used to generate the shapes. */
-        std::shared_ptr<VertexBufferBuilder2D> vbBuilder;
+        std::shared_ptr<VertexBufferBuilder2f> vbBuilder;
 
         /** The offset from the center used to generate the shapes. */
         Vector2f offset;
@@ -191,7 +191,7 @@ namespace astu {
          * @return the vertex buffer builder
          * @throws std::runtime_error in case no VertexBuffer2Builder exists
          */
-        VertexBufferBuilder2D& GetBuilder() const;
+        VertexBufferBuilder2f& GetBuilder() const;
     };
 
 } // end of namespace

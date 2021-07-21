@@ -45,28 +45,13 @@ namespace astu {
         commands.clear();
     }
 
-    void SdlLineRenderer::DrawLine(double x1, double y1, double x2, double y2)
-    {
-        RenderCommand cmd;
-
-        Vector2d p1 = tx3d.TransformPoint(x1, y1);
-        Vector2d p2 = tx3d.TransformPoint(x2, y2);
-
-        cmd.type = CommandType::DRAW_LINE;
-        cmd.line.x1 = static_cast<int>(p1.x + 0.5);
-        cmd.line.y1 = static_cast<int>(p1.y + 0.5);
-        cmd.line.x2 = static_cast<int>(p2.x + 0.5);
-        cmd.line.y2 = static_cast<int>(p2.y + 0.5);
-
-        commands.push_back(cmd);
-    }
-
     void SdlLineRenderer::DrawLine(float x1, float y1, float x2, float y2)
     {
         RenderCommand cmd;
 
-        Vector2f p1 = tx3f.TransformPoint(x1, y1);
-        Vector2f p2 = tx3f.TransformPoint(x2, y2);
+        const auto& tx = GetModelViewMatrix();
+        Vector2f p1 = tx.TransformPoint(x1, y1);
+        Vector2f p2 = tx.TransformPoint(x2, y2);
 
 
         cmd.type = CommandType::DRAW_LINE;
@@ -78,7 +63,7 @@ namespace astu {
         commands.push_back(cmd);
     }
 
-    void SdlLineRenderer::SetDrawColor(const Color4d & c) 
+    void SdlLineRenderer::OnSetDrawColor(const Color4f & c) 
     {
         assert(c.r >= 0 && c.r <= 1);
         assert(c.g >= 0 && c.g <= 1);
@@ -93,33 +78,6 @@ namespace astu {
         cmd.color.a = static_cast<int>(c.a * 255);
 
         commands.push_back(cmd);
-    }
-
-    void SdlLineRenderer::SetTransform(const Matrix3d & m)
-    {
-        tx3d = m;
-    }
-
-    void SdlLineRenderer::SetDrawColor(const Color4f & c) 
-    {
-        assert(c.r >= 0 && c.r <= 1);
-        assert(c.g >= 0 && c.g <= 1);
-        assert(c.b >= 0 && c.b <= 1);
-        assert(c.a >= 0 && c.a <= 1);
-
-        RenderCommand cmd;
-        cmd.type = CommandType::SET_COLOR;
-        cmd.color.r = static_cast<int>(c.r * 255);
-        cmd.color.g = static_cast<int>(c.g * 255);
-        cmd.color.b = static_cast<int>(c.b * 255);
-        cmd.color.a = static_cast<int>(c.a * 255);
-
-        commands.push_back(cmd);
-    }
-
-    void SdlLineRenderer::SetTransform(const Matrix3<float> & m)
-    {
-        tx3f = m;
     }
 
     void SdlLineRenderer::OnStartup()

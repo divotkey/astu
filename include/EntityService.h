@@ -81,8 +81,8 @@ namespace astu {
          * 
          * @return the parent entity
          */
-        Entity& GetParent() {
-            return *parent.lock();
+        std::shared_ptr<Entity> GetParent() {
+            return parent.lock();
         }
 
         /**
@@ -90,8 +90,8 @@ namespace astu {
          * 
          * @return the parent entity
          */
-        const Entity& GetParent() const {
-            return *parent.lock();
+        std::shared_ptr<const Entity> GetParent() const {
+            return parent.lock();
         }
 
     private:

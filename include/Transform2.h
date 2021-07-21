@@ -31,6 +31,11 @@ namespace astu {
             // Intentionally left empty
         }
 
+        /**
+         * Sets this transform to its identity.
+         * 
+         * @return reference to this transform for method chaining.
+         */
         Transform2<T> & SetIdentity() {
             SetTranslation(0, 0);
             SetScaling(1, 1);
@@ -149,6 +154,10 @@ namespace astu {
                 .Add(translation);
         }
 
+        Vector2<T>& TransformPointIp(Vector2<T> & p) const {
+            return p.Scale(scaling).Rotate(rotation).Add(translation);
+        }
+
         Vector2<T> TransformVector(const Vector2<T> & v) const {
             return Vector2<T>(v)
                 .Scale(scaling)
@@ -161,6 +170,10 @@ namespace astu {
                 .Rotate(rotation);
         }
 
+        Vector2<T>& TransformVectorIp(Vector2<T> & v) const {
+            return v.Scale(scaling).Rotate(rotation);
+        }
+        
         const Matrix3<T>& StoreToMatrix(Matrix3<T>& m) const {
             m.SetToScale(scaling);
             m.Rotate(rotation);

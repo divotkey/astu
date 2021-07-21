@@ -513,6 +513,12 @@ namespace astu {
         /** Color constant for the color *Dark Red* (0x8B0000). */
         DarkRed = 0x8B0000,
 
+        /** Color constant for the color *Light Coral* (0xF08080). */
+        LightCoral = 0xF08080,
+
+        /** Color constant for the color *Light Salmon* (0xFFA07A). */
+        LightSalmon = 0xFFA07A,
+
         /////////////////////////////
         /////// Orange colors ///////
         /////////////////////////////
@@ -523,9 +529,17 @@ namespace astu {
         /** Color constant for the color *Orange* (0xFFA500). */
         Orange = 0xFFA500,
 
+        ////////////////////////////
+        /////// Blue colors  ///////
+        ////////////////////////////
+        
+        /** Color constant for the color *Light Blue* (0xADD8E6). */
+        LightBlue = 0xADD8E6,
+
         /////////////////////////////
         /////// Yellow colors ///////
         /////////////////////////////
+
         /** Color constant for the color *Gold* (0xFFD700). */
         Gold = 0xFFD700,
 

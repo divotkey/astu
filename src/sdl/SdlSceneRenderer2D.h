@@ -21,7 +21,7 @@ struct SDL_Renderer;
 
 namespace astu {
 
-    class SdlVertexBuffer2D : public VertexBuffer2D {
+    class SdlVertexBuffer2D : public VertexBuffer2f {
     public:
         std::vector<Vector2f> vertices;
     };

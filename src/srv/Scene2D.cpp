@@ -165,7 +165,7 @@ namespace astu {
     /////// Polyline2
     /////////////////////////////////////////////////
 
-    Polyline2D::Polyline2D(std::shared_ptr<VertexBuffer2D> vertexBuffer)
+    Polyline2D::Polyline2D(std::shared_ptr<VertexBuffer2f> vertexBuffer)
         : vertexBuffer(vertexBuffer)
     {
         // Intentionally left empty

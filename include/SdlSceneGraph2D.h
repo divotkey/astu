@@ -29,7 +29,7 @@ namespace astu {
 
     class SdlVertexBufferBuilderService2D 
         : public Service
-        , public VertexBufferBuilder2D
+        , public VertexBufferBuilder2f
     {
     public:
 
@@ -38,13 +38,13 @@ namespace astu {
          */
         SdlVertexBufferBuilderService2D();
 
-        // Inherited via VertexBuffer2Builder
-        virtual VertexBufferBuilder2D& AddVertex(float x, float y) override;
+        // Inherited via VertexBufferBuilder2f
+        virtual VertexBufferBuilder2f& AddVertex(float x, float y) override;
         virtual const Vector2f& GetVertex(size_t idx) const override;
-        virtual void SetVertex(size_t idx, float x, float y) override;
+        virtual VertexBufferBuilder2f& SetVertex(size_t idx, float x, float y) override;
         virtual size_t GetNumVertices() const override;
-        virtual VertexBufferBuilder2D& Reset() override;
-        virtual std::shared_ptr<VertexBuffer2D> Build() override;        
+        virtual VertexBufferBuilder2f& Reset() override;
+        virtual std::shared_ptr<VertexBuffer2f> Build() override;        
 
     private:
         /** The vertices used for the buffer to build. */

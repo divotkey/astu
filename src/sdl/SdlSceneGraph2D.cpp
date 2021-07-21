@@ -25,7 +25,7 @@ namespace astu {
         Reset();
     }
 
-    VertexBufferBuilder2D& SdlVertexBufferBuilderService2D::AddVertex(float x, float y)
+    VertexBufferBuilder2f& SdlVertexBufferBuilderService2D::AddVertex(float x, float y)
     {
         vertices.push_back({x, y});
         return *this;
@@ -36,9 +36,10 @@ namespace astu {
         return vertices.at(idx);
     }
 
-    void SdlVertexBufferBuilderService2D::SetVertex(size_t idx, float x, float y)
+    VertexBufferBuilder2f& SdlVertexBufferBuilderService2D::SetVertex(size_t idx, float x, float y)
     {
         vertices.at(idx).Set(x, y);
+        return *this;
     }
 
     size_t SdlVertexBufferBuilderService2D::GetNumVertices() const
@@ -46,13 +47,13 @@ namespace astu {
         return vertices.size();
     }
 
-    VertexBufferBuilder2D& SdlVertexBufferBuilderService2D::Reset()
+    VertexBufferBuilder2f& SdlVertexBufferBuilderService2D::Reset()
     {
         vertices.clear();
         return *this;
     }
 
-    std::shared_ptr<VertexBuffer2D> SdlVertexBufferBuilderService2D::Build()
+    std::shared_ptr<VertexBuffer2f> SdlVertexBufferBuilderService2D::Build()
     {
         auto result = std::make_shared<SdlVertexBuffer2D>();
         result->vertices = vertices;

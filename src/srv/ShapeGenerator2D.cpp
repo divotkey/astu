@@ -26,13 +26,13 @@ namespace astu {
         Reset();
     }
 
-    ShapeGenerator2D& ShapeGenerator2D::VertexBufferBuilder(shared_ptr<VertexBufferBuilder2D> builder)
+    ShapeGenerator2D& ShapeGenerator2D::VertexBufferBuilder(shared_ptr<VertexBufferBuilder2f> builder)
     {
         vbBuilder = builder;
         return *this;
     }
 
-    shared_ptr<VertexBuffer2D> ShapeGenerator2D::GenCircle(float r, unsigned int n) const
+    shared_ptr<VertexBuffer2f> ShapeGenerator2D::GenCircle(float r, unsigned int n) const
     {   
         if (r <= 0) {
             throw domain_error(
@@ -54,7 +54,7 @@ namespace astu {
         return builder.Build();
     }
 
-    shared_ptr<VertexBuffer2D> ShapeGenerator2D::GenRectangle(float w, float h) const
+    shared_ptr<VertexBuffer2f> ShapeGenerator2D::GenRectangle(float w, float h) const
     {
         auto & builder = GetBuilder();
         builder.Reset();
@@ -69,7 +69,7 @@ namespace astu {
         return builder.Build();
     }
 
-    shared_ptr<VertexBuffer2D> ShapeGenerator2D::GenTriangle(float r, const Vector2f & d)
+    shared_ptr<VertexBuffer2f> ShapeGenerator2D::GenTriangle(float r, const Vector2f & d)
     {
         if (d.IsZero()) {
             throw domain_error(
@@ -97,7 +97,7 @@ namespace astu {
         return builder.Build();
     }
 
-    shared_ptr<VertexBuffer2D> ShapeGenerator2D::GenStar(float r, int n, const Vector2f & d)
+    shared_ptr<VertexBuffer2f> ShapeGenerator2D::GenStar(float r, int n, const Vector2f & d)
     {
         if (d.IsZero()) {
             throw domain_error(
@@ -136,7 +136,7 @@ namespace astu {
         return builder.Build();
     }
 
-    shared_ptr<VertexBuffer2D> ShapeGenerator2D::GenCross(float s, float th)
+    shared_ptr<VertexBuffer2f> ShapeGenerator2D::GenCross(float s, float th)
     {
         if (th <= 0 || th >= 1) {
             throw domain_error(
@@ -167,7 +167,7 @@ namespace astu {
         return builder.Build();
     }
 
-    shared_ptr<VertexBuffer2D> ShapeGenerator2D::GenArrow(float s, float th, const Vector2f & d)
+    shared_ptr<VertexBuffer2f> ShapeGenerator2D::GenArrow(float s, float th, const Vector2f & d)
     {
         auto & builder = GetBuilder();
         builder.Reset();
@@ -202,13 +202,13 @@ namespace astu {
         return *this;
     }
 
-    VertexBufferBuilder2D& ShapeGenerator2D::GetBuilder() const
+    VertexBufferBuilder2f& ShapeGenerator2D::GetBuilder() const
     {
         if (vbBuilder) {
             return *vbBuilder;
         }
 
-        return ASTU_SERVICE(VertexBufferBuilder2D);
+        return ASTU_SERVICE(VertexBufferBuilder2f);
     }
 
 } // end of namespace

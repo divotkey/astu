@@ -51,6 +51,9 @@ list(APPEND astulib_SOURCES
                     src/srv/CameraService2D.cpp
                     src/srv/CameraControlService2D.cpp
 
+                    src/Suite2D/SceneSystem.cpp
+                    src/Suite2D/AutoRotateSystem.cpp
+
                     src/AstUtils1.cpp)
 
 set(WITH_JACK false CACHE BOOL "Use JACK2")

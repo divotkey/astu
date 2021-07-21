@@ -5,8 +5,11 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+#pragma once
+
 // C++ Standard Library includes
 #include <algorithm>
+#include <iostream>
 
 namespace astu {
 
@@ -44,27 +47,54 @@ namespace astu {
         /**
          * Sets the start point and end point of this segment.
          * 
+         * If the start point is greater than the end point, the
+         * behaviour is undefined.
+         * 
          * @param x0    the start point
          * @param x1    the end point
          * @return reference to this segment for method chaining
          */
         Segment1& Set(T x0, T x1) {
+            assert(x0 < x1);
             x0 = x0;
             x1 = x1;
             return *this;
         }
 
         /**
-         * Sets the start point and end point of this segment.
-         * 
-         * @param x0    the start point
-         * @param x1    the end point
+         * Sets the start point and end point to the specified value.
+         *  
+         * @param x the new start and end point
          * @return reference to this segment for method chaining
          */
-        Segment1& SetSafe(T x0, T x1) {
-            x0 = std::min(x0, x1);
-            x1 = std::max(x0, x1);
+        Segment1& Set(T x) {
+            x0 = x1 = x;
             return *this;
+        }
+
+        /**
+         * Sets the start point and end point of this segment.
+         * 
+         * This setter will swap start and end point in case
+         * the start point is greater than the end point.
+         * 
+         * @param _x0    the start point
+         * @param _x1    the end point
+         * @return reference to this segment for method chaining
+         */
+        Segment1& SetSafe(T _x0, T _x1) {
+            x0 = std::min(_x0, _x1);
+            x1 = std::max(_x0, _x1);
+            return *this;
+        }
+
+        /**
+         * Returns the length of this segment.
+         * 
+         * @return the length
+         */
+        T Length() {
+            return x1 - x0;
         }
 
         /**
@@ -107,7 +137,7 @@ namespace astu {
          * @param other the other segment
          * @return `true` if the two segments intersect
          */
-        bool IsIntersecting(const Segment1<T> & other) {
+        bool IsIntersecting(const Segment1<T>& other) {
             return x1 >= other.x0 && other.x1 >= x0;
         }
 
@@ -117,12 +147,60 @@ namespace astu {
          * @param other the other segment
          * @return the overlap distance or zero there is no overlap
          */
-        T CalcOverlap(const Segment1<T> & other) {
+        T CalcOverlap(const Segment1<T>& other) {
             return std::max(
                 static_cast<T>(0), 
                 std::min(x1, other.x1) - std::max(x0, other.x0)
                 );
         }
+
+        /**
+         * Calculates the separation distance with respect to the other segment.
+         * 
+         * The returned distance is the distance this segment must be moved 
+         * forward in order to separate the two segments.
+         * 
+         * @param other the other segment
+         * @return the separation distance
+         */
+        T CalcSeparationDistance(const Segment1<T>& other) {
+            return other.x1 - x0;
+        }
+
+        /**
+         * Calculates the minimum separation distance to the specified segment.
+         * 
+         * The returned distance will always gerater or equal zero. 
+         * 
+         * @param other the other segment
+         * @return the separation distance
+         */
+        T CalcMinimumSeparationDistance(const Segment1<T>& other) {
+            if (!IsIntersecting(other)) {
+                return 0;
+            }
+
+            return std::min(std::abs(other.x0 - x1), std::abs(other.x1 - x0));
+        }
+
+        Segment1& Translate(T delta) {
+            x0 += delta;
+            x1 += delta;
+            return *this;
+        }
+
+        /**
+         * Compound assignment and addition operator.
+         *
+         * @param right     the right hand-side vector
+         * @return a reference to this vector
+         */
+       Segment1& operator+=(T delta)
+        {
+            x0 += delta;
+            x1 += delta;
+            return *this;
+        }        
 
     private:
         /** The start point of this segment. */
@@ -133,13 +211,19 @@ namespace astu {
     };
 
     /**
-     * Type alias for astu::Segment1 template using double as data type.
+     * Type alias for Segment1 template using double as data type.
      */
     using Segment1d = astu::Segment1<double>;    
 
     /**
-     * Type alias for astu::Segment1 template using float as data type.
+     * Type alias for Segment1 template using float as data type.
      */
     using Segment1f = astu::Segment1<float>;    
+
+    template<typename T>
+	inline std::ostream& operator<<(std::ostream& os, const Segment1<T> &seg) {
+		os << '{' << seg.GetX0() << ", " << seg.GetX1() << '}';
+		return os;
+	}    
 
 } // end of namespace

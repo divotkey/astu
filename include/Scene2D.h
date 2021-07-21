@@ -323,7 +323,7 @@ namespace astu {
          * 
          * @param vertexBuffer  the vertex data
          */
-        Polyline2D(std::shared_ptr<VertexBuffer2D> vertexBuffer);
+        Polyline2D(std::shared_ptr<VertexBuffer2f> vertexBuffer);
 
         void SetColor(const Color4f& c);
 
@@ -336,7 +336,7 @@ namespace astu {
          * 
          * @return the vertex buffer
          */
-        VertexBuffer2D& GetVertexBuffer() {
+        VertexBuffer2f& GetVertexBuffer() {
             return *vertexBuffer;
         }
 
@@ -346,7 +346,7 @@ namespace astu {
 
     private:
         /** The vertex buffer representing the vertex data of this polyline. */
-        std::shared_ptr<VertexBuffer2D> vertexBuffer;
+        std::shared_ptr<VertexBuffer2f> vertexBuffer;
 
         /** The color of this polyline. */
         Color4f color;
@@ -547,7 +547,7 @@ namespace astu {
          * @param vb    the vertex buffer
          * @return reference to this builder for method chaining
          */
-        PolylineBuilder2D& VertexBuffer(std::shared_ptr<VertexBuffer2D> vb) {
+        PolylineBuilder2D& VertexBuffer(std::shared_ptr<VertexBuffer2f> vb) {
             vertexBuffer = vb;
             return *this;
         }
@@ -583,7 +583,7 @@ namespace astu {
 
     private:
         /** The vertex buffer used to build the polyline. */
-        std::shared_ptr<VertexBuffer2D> vertexBuffer;    
+        std::shared_ptr<VertexBuffer2f> vertexBuffer;    
 
         /** The color of the polyline to build. */
         Color4f color;
