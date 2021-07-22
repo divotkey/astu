@@ -59,19 +59,20 @@ list(APPEND astulib_SOURCES
 
                     src/AstUtils1.cpp)
 
-set(WITH_JACK false CACHE BOOL "Use JACK2")
-if (WITH_JACK)
+OPTION(USE_JACK "Build the project with support for JACK Audio Connection Kit" OFF)
+#set(USE_JACK false CACHE BOOL "Use JACK2")
+if (USE_JACK)
     list(APPEND astulib_SOURCES 
         src/audio/JackErrorUtil.cpp
         src/audio/JackClient.cpp
         )
-endif(WITH_JACK) 
+endif(USE_JACK) 
 
 
-#OPTION(USE_SDL "Build the project with support for SDL2" OFF)
-set(WITH_SDL false CACHE BOOL "Use SDL")
+OPTION(USE_SDL "Build the project with support for SDL2" OFF)
+#set(WITH_SDL false CACHE BOOL "Use SDL")
 
-if(WITH_SDL)
+if(USE_SDL)
     list(APPEND astulib_SOURCES 
         src/SDL/SdlApplication.cpp
         src/SDL/Application.cpp
@@ -89,9 +90,9 @@ if(WITH_SDL)
         src/SuiteSDL/SdlSceneGraph2D.cpp
         src/SuiteSDL/SdlSceneRenderer2D.cpp
         )
-else(WITH_SDL)
-    list(APPEND astulib_SOURCES src/sdl/SdlApplicationDummy.cpp)
-endif(WITH_SDL)                 
+else(USE_SDL)
+    list(APPEND astulib_SOURCES src/SDL/SdlApplicationDummy.cpp)
+endif(USE_SDL)                 
 
 add_library(astu ${astulib_SOURCES})
 
@@ -101,7 +102,7 @@ list(APPEND astulib_INCLUDES
         astu PRIVATE "${PROJECT_SOURCE_DIR}/src"
         astu PUBLIC ${PROJECT_SOURCE_DIR}/include)
       
-if(WITH_SDL)
+if(USE_SDL)
     IF (WIN32)
         target_link_libraries(astu $ENV{SDL2_HOME}/lib/x64/SDL2.lib)
         list(APPEND astulib_INCLUDES astu PRIVATE $ENV{SDL2_HOME})
@@ -111,15 +112,15 @@ if(WITH_SDL)
     ELSE()
         target_link_libraries(astu SDL2)
     ENDIF()
-endif(WITH_SDL)                 
+endif(USE_SDL)                 
 
-if(WITH_JACK)
+if(USE_JACK)
     IF (WIN32)
         target_include_directories(astu PRIVATE $ENV{JACK2_HOME}/include)
         target_link_libraries(astu $ENV{JACK2_HOME}/lib/libjack64.lib)
     ELSE()
         target_link_libraries(astu jack)    
     ENDIF()
-endif(WITH_JACK)                 
+endif(USE_JACK)                 
 
 target_include_directories(${astulib_INCLUDES})
