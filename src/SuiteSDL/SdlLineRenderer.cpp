@@ -5,14 +5,15 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "SuiteSDL/SdlLineRenderer.h"
+
+// Simple Direct Layer (SDL) includes
+#include <SDL2/SDL.h>
+
 // C++ Standard Library includes
 #include <cassert>     
 
-// Simple Direct Layer includes
-#include <SDL2/SDL.h>
-
-// Local (AST-Utilities) includes
-#include "SdlLineRenderer.h"
 
 namespace astu {
 

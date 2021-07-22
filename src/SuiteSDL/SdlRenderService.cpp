@@ -5,16 +5,18 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local incluees
+#include "ServiceManager.h"
+#include "SuiteSDL/SdlVideoService.h"
+#include "SuiteSDL/SdlRenderService.h"
+
+// Simple Direct Layer (SDL) includes
+#include <SDL2/SDL.h>
+
 // C++ Standard LIbrary includes
 #include <cassert>
 #include <algorithm>
 #include <stdexcept>
-#include <SDL2/SDL.h>
-
-// Local incluees
-#include "ServiceManager.h"
-#include "SdlVideoService.h"
-#include "SdlRenderService.h"
 
 namespace astu {
 

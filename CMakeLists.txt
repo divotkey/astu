@@ -72,21 +72,21 @@ set(WITH_SDL false CACHE BOOL "Use SDL")
 
 if(WITH_SDL)
     list(APPEND astulib_SOURCES 
-        src/sdl/SdlApplication.cpp
-        src/sdl/Application.cpp
-        src/sdl/ApplicationImpl.cpp
+        src/SDL/SdlApplication.cpp
+        src/SDL/Application.cpp
+        src/SDL/ApplicationImpl.cpp
         
-        src/sdl/SdlService.cpp
-        src/sdl/SdlEventService.cpp
-        src/sdl/SdlKeyTable.cpp
-        src/sdl/SdlVideoService.cpp
-        src/sdl/SdlRenderService.cpp
-        src/sdl/SdlJoystickService.cpp
-        src/sdl/SdlAudioService.cpp
-        src/sdl/SdlTimeService.cpp
-        src/sdl/SdlLineRenderer.cpp
-        src/sdl/SdlSceneGraph2D.cpp
-        src/sdl/SdlSceneRenderer2D.cpp
+        src/SuiteSDL/SdlService.cpp
+        src/SuiteSDL/SdlEventService.cpp
+        src/SuiteSDL/SdlKeyTable.cpp
+        src/SuiteSDL/SdlVideoService.cpp
+        src/SuiteSDL/SdlRenderService.cpp
+        src/SuiteSDL/SdlJoystickService.cpp
+        src/SuiteSDL/SdlAudioService.cpp
+        src/SuiteSDL/SdlTimeService.cpp
+        src/SuiteSDL/SdlLineRenderer.cpp
+        src/SuiteSDL/SdlSceneGraph2D.cpp
+        src/SuiteSDL/SdlSceneRenderer2D.cpp
         )
 else(WITH_SDL)
     list(APPEND astulib_SOURCES src/sdl/SdlApplicationDummy.cpp)

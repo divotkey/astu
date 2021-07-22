@@ -5,14 +5,18 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-#include <stdexcept>
+#include "SuiteSDL/SdlAudioService.h"
+
+// Simple Direct Layer (SDL) includes
 #include <SDL2/SDL.h>
-#include "SdlAudioService.h"
+
+// C++ Standard Library includes
+#include <stdexcept>
 
 namespace astu {
 
     SdlAudioService::SdlAudioService()
-        : Service("SDL Audio")
+        : Service("SDL Audio Service")
     {
         // Intentionally left empty.
     }

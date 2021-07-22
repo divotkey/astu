@@ -7,9 +7,9 @@
 
 
 // Local includes
-#include "SdlJoystickService.h"
-#include "ISdlEventListener.h"
-#include "SdlEventService.h"
+#include "SuiteSDL/SdlJoystickService.h"
+#include "SuiteSDL/ISdlEventListener.h"
+#include "SuiteSDL/SdlEventService.h"
 #include "Keys.h"
 
 // SDL 2 includes

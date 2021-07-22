@@ -5,15 +5,15 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "SuiteSDL/SdlVideoService.h"
+#include "Events.h"
+
 // C++ Standard Library includes
 #include <stdexcept>
 
 // Simple Direct Layer (SDL) includes
 #include <SDL2/SDL.h>
-
-// Local includes
-#include "Events.h"
-#include "SdlVideoService.h"
 
 namespace astu {
 

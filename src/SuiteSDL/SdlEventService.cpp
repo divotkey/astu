@@ -6,17 +6,17 @@
  */
 
 // Local includes
-#include "SdlEventService.h"
+#include "SuiteSDL/SdlEventService.h"
 #include "ISdlEventListener.h"
 #include "SdlKeyTable.h"
+
+// Simple Direct Layer (SDL) includes
+#include <SDL2/SDL.h>
 
 // C++ Standard library includes
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
-
-// SDL 2 includes
-#include <SDL2/SDL.h>
 
 namespace astu {
 

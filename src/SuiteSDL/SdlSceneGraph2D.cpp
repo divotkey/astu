@@ -6,15 +6,14 @@
  */
 
 // Local includes
-#include "SdlSceneRenderer2D.h"
-#include "SdlSceneGraph2D.h"
+#include "SuiteSDL/SdlSceneRenderer2D.h"
+#include "SuiteSDL/SdlSceneGraph2D.h"
 
-// SDL2 includes
+// Simple Direct Layer (SDL) includes
 #include <SDL2/SDL.h>
 
 // C++ Standard Library includes
 #include <cassert>     
-
 
 namespace astu {
 
