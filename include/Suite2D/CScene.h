@@ -9,7 +9,7 @@
 
 // Local includes
 #include "EntityService.h"
-#include "Scene2D.h"
+#include "Scene.h"
 
 // C++ Standard Library includes
 #include <memory>
@@ -27,14 +27,14 @@ namespace astu::suite2d {
     class CScene : public astu::EntityComponent {
     public:
         /** Branch of the scene graph. */
-        std::shared_ptr<astu::Spatial2D> spatial;
+        std::shared_ptr<Spatial> spatial;
 
         /**
          * Constructor.
          * 
          * @param spatial   the scene node branch represending the entity
          */
-        CScene(std::shared_ptr<astu::Spatial2D> spatial)
+        CScene(std::shared_ptr<Spatial> spatial)
             : spatial(spatial)
         {
             // Intentionally left empty.

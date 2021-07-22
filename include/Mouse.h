@@ -7,13 +7,18 @@
 
 #pragma once
 
-#include <vector>
+// AST Utilities includes
 #include "Vector2.h"
+
+// C++ Standard Library includes
+#include <vector>
 
 namespace astu {
 
     // Forward declaration.
-    class Camera2D;
+    namespace suite2d {
+        class Camera;
+    }
 
     /**
      * Provides access to mouse input.
@@ -72,7 +77,7 @@ namespace astu {
          * @param camera    the camera used to transform screen space coords
          * @return the cursor position in world space
          */
-        Vector2f GetCursorInWorldspace(const Camera2D& camera);
+        Vector2f GetCursorInWorldspace(const suite2d::Camera& camera);
 
     private:
         /** Represents the state of the mouse buttons. */

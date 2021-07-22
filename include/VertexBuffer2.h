@@ -7,11 +7,11 @@
 
 #pragma once
 
-// C++ Standard Library includes
-#include <memory>
-
 // Local includes
 #include "Vector2.h"
+
+// C++ Standard Library includes
+#include <memory>
 
 namespace astu {
 
@@ -114,6 +114,5 @@ namespace astu {
 
     using VertexBufferBuilder2d = astu::VertexBufferBuilder2<double>;    
     using VertexBufferBuilder2f = astu::VertexBufferBuilder2<float>;    
-
 
 } // end of namespace

@@ -7,13 +7,13 @@
 
 #pragma once
 
+// Local includes
+#include "Service.h"
+#include "SignalService.h"
+#include "Events.h"
+
 // C++ Standard Library includes
 #include <stdexcept>
-
-// Local includes
-#include "SignalService.h"
-#include "Service.h"
-#include "Events.h"
 
 namespace astu {
 

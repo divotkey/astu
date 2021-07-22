@@ -11,10 +11,10 @@
 #include <vector>
 
 // Local includes
-#include "Scene2D.h"
+#include "Suite2D/Scene.h"
+#include "VertexBuffer2.h"
 #include "Vector2.h"
 #include "Matrix3.h"
-#include "VertexBuffer2D.h"
 
 // Forward declaration.
 struct SDL_Renderer;
@@ -26,7 +26,7 @@ namespace astu {
         std::vector<Vector2f> vertices;
     };
 
-    class SdlSceneRenderer2D : public SceneRenderer2D {
+    class SdlSceneRenderer2D : public suite2d::SceneRenderer2D {
     public:
 
         /**
@@ -60,7 +60,7 @@ namespace astu {
         }
 
         // Inherited via Scene2Renderer
-        virtual void Render(Polyline2D& polyline, float alpha) override;
+        virtual void Render(suite2d::Polyline& polyline, float alpha) override;
 
     private:
         /** The SDL renderer used for rendering. */

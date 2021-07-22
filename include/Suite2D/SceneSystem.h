@@ -10,7 +10,7 @@
 // Local includes
 #include "UpdateService.h"
 #include "EntitySystems.h"
-#include "Scene2D.h"
+#include "Scene.h"
 
 namespace astu::suite2d {
 
@@ -53,7 +53,7 @@ namespace astu::suite2d {
         virtual void OnEntityRemoved(std::shared_ptr<astu::Entity> entity) override;
 
         /** The root node where to attach the entities. */
-        std::shared_ptr<astu::Node2D> root;
+        std::shared_ptr<Node> root;
     };
 
 } // end of namespace

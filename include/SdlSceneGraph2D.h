@@ -7,19 +7,19 @@
 
 #pragma once
 
-// C++ Standard libraries includes
-#include <memory>
-#include <vector>
-
 // Local includes
-#include "Scene2D.h"
+#include "Suite2D/Scene.h"
+#include "Suite2D/CameraService.h"
 #include "Vector2.h"
 #include "Service.h"
 #include "ITimeManager.h"
 #include "UpdateService.h"
-#include "VertexBuffer2D.h"
-#include "CameraService2D.h"
+#include "VertexBuffer2.h"
 #include "SdlRenderService.h"
+
+// C++ Standard libraries includes
+#include <memory>
+#include <vector>
 
 namespace astu {
 
@@ -55,8 +55,8 @@ namespace astu {
         : public SdlRenderLayer 
         , public Updatable
         , public TimeClient
-        , public SceneGraph2D
-        , public CameraClient2D
+        , public suite2d::SceneGraph
+        , public suite2d::CameraClient
     {
     public:
 

@@ -16,6 +16,7 @@
 #include "SdlSceneRenderer2D.h"
 
 using namespace std;
+using namespace astu::suite2d;
 
 #define ASSERT_VBUF(a) assert(dynamic_cast<SdlVertexBuffer2D*>(&a))
 #define VBUF(a) static_cast<const SdlVertexBuffer2D&>(a)
@@ -32,7 +33,7 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    void SdlSceneRenderer2D::Render(Polyline2D& polyline, float alpha)
+    void SdlSceneRenderer2D::Render(Polyline& polyline, float alpha)
     {
         ASSERT_VBUF(polyline.GetVertexBuffer());
         assert(renderer);

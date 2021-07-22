@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "CameraControlService2D.h"
+#include "Suite2D/CameraControlService.h"
 #include "Mouse.h"
 #include "Events.h"
 #include "Keyboard.h"
@@ -18,10 +18,10 @@ using namespace std;
 
 #define ZOOM_STEP 1.1f
 
-namespace astu {
+namespace astu::suite2d {
 
-    CameraControlService2D::CameraControlService2D(int updatePriority)
-        : Service("Camera Control Service")
+    CameraControlService::CameraControlService(int updatePriority)
+        : Service("Camera 2D Control Service")
         , Updatable(updatePriority)
         , mouseButton(Mouse::Button::RIGHT)
         , homeKey(Keyboard::KEY_HOME)
@@ -29,18 +29,18 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    void CameraControlService2D::OnStartup()
+    void CameraControlService::OnStartup()
     {
         dragging = false;
         zoomLevel = 0;
     }
 
-    void CameraControlService2D::OnShutdown()
+    void CameraControlService::OnShutdown()
     {
         // Intentionally left empty.
     }
 
-    void CameraControlService2D::OnUpdate()
+    void CameraControlService::OnUpdate()
     {
         if (!dragging) {
             return;
@@ -50,7 +50,7 @@ namespace astu {
         UpdateCamera(mouse.GetCursorX(), mouse.GetCursorY());
     }
 
-    bool CameraControlService2D::OnKeyPressed(int keycode)
+    bool CameraControlService::OnKeyPressed(int keycode)
     {
         if (keycode == homeKey) {
             GetCamera().SetPosition(0, 0);
@@ -62,7 +62,7 @@ namespace astu {
         return false;
     }
 
-    bool CameraControlService2D::OnMouseButtonPressed(int button, int x, int y)
+    bool CameraControlService::OnMouseButtonPressed(int button, int x, int y)
     {
         if (button != mouseButton) {
             return false;
@@ -75,7 +75,7 @@ namespace astu {
         return true;
     }
 
-    bool CameraControlService2D::OnMouseButtonReleased(int button, int x, int y)
+    bool CameraControlService::OnMouseButtonReleased(int button, int x, int y)
     {
         if (button != mouseButton || !dragging) {
             return false;
@@ -86,14 +86,14 @@ namespace astu {
         return true;
     }
 
-    bool CameraControlService2D::OnMouseWheel(int amount)
+    bool CameraControlService::OnMouseWheel(int amount)
     {
         zoomLevel += amount;
         GetCamera().SetZoom( std::pow(ZOOM_STEP, zoomLevel) );
         return true;
     }
 
-    void CameraControlService2D::UpdateCamera(int screenX, int screenY)
+    void CameraControlService::UpdateCamera(int screenX, int screenY)
     {
         auto curScreenPos 
             = Vector2f(static_cast<float>(screenX), static_cast<float>(screenY));
@@ -106,4 +106,3 @@ namespace astu {
     }
 
 } // end of namespace
-

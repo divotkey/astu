@@ -180,6 +180,10 @@ namespace astu {
 		// Add entity.
 		entities.push_back(entity);
 
+        // Assign unique entity ID.
+        entity->id = ++idCounter;
+
+        // Inform entity listeners.
         firing = true;
 		for (auto it : listeners) {
 			if (it.first.IsMember(*entity)) {
@@ -187,9 +191,6 @@ namespace astu {
 			}
 		}
         firing = false;
-
-        // Assign unique entity ID.
-        entity->id = ++idCounter;
     }
 
     void EntityService::RemoveEntityInternally(shared_ptr<Entity> entity)

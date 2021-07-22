@@ -45,14 +45,16 @@ list(APPEND astulib_SOURCES
                     src/srv/Keyboard.cpp
                     src/srv/Controllable.cpp
                     src/srv/Controller.cpp
-                    src/srv/Scene2D.cpp
-                    src/srv/ShapeGenerator2D.cpp
-                    src/srv/DefaultVertexBuffer2D.cpp
-                    src/srv/CameraService2D.cpp
-                    src/srv/CameraControlService2D.cpp
 
+                    src/Service/ActionSignalService.cpp
+
+                    src/Suite2D/Scene.cpp
+                    src/Suite2D/CameraService.cpp
+                    src/Suite2D/CameraControlService.cpp
                     src/Suite2D/SceneSystem.cpp
                     src/Suite2D/AutoRotateSystem.cpp
+                    src/Suite2D/AutoRotateSystem.cpp
+                    src/Suite2D/ShapeGenerator.cpp
 
                     src/AstUtils1.cpp)
 

@@ -7,7 +7,7 @@
  */
 
 // Local includes
-#include "CameraService2D.h"
+#include "Suite2D/CameraService.h"
 #include "UpdateService.h"
 #include "Vector2.h"
 #include "Events.h"
@@ -15,19 +15,21 @@
 // C++ Standard Libraries
 #include <string>
 
-namespace astu {
+namespace astu::suite2d {
 
     /**
      * This service lets the user change the camera mode while the application 
      * is running.
+     * 
+     * @ingroup suite2d_group
      */
-    class CameraControlService2D 
-        : public astu::BaseService
-        , public astu::Updatable
-        , public astu::KeystrokeListener
-        , public astu::MouseButtonListener
-        , public astu::MouseWheelListener
-        , public astu::CameraClient2D
+    class CameraControlService 
+        : public BaseService
+        , public Updatable
+        , public KeystrokeListener
+        , public MouseButtonListener
+        , public MouseWheelListener
+        , public CameraClient
     {
     public:
 
@@ -36,7 +38,7 @@ namespace astu {
          * 
          * @param updatePriority the priority used to update this service
          */
-        CameraControlService2D(int updatePriority = astu::Priority::Normal);
+        CameraControlService(int updatePriority = astu::Priority::Normal);
 
         // Inherited via BaseService
         virtual void OnStartup() override;

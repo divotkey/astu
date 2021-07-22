@@ -411,7 +411,6 @@ namespace astu {
         virtual bool OnSignal(const ResizeEvent & signal) override {
            return OnResize(signal.width, signal.height);
         }
-    };    
-
+    };
 
 } // end of namespace

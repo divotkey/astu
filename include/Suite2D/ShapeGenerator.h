@@ -7,24 +7,26 @@
 
 #pragma once
 
+// Local includes
+#include "VertexBuffer2.h"
+
 // C++ Standard Library includes
 #include <memory>
 
-// Local includes
-#include "VertexBuffer2D.h"
-
-namespace astu {
+namespace astu::suite2d {
 
     /**
      * Utility class used to generate two-dimensional basic geometric shapes.
+     * 
+     * @ingroup suite2d_group
      */
-    class ShapeGenerator2D final {
+    class ShapeGenerator final {
     public:
 
         /**
          * Constructor.
          */
-        ShapeGenerator2D();
+        ShapeGenerator();
 
         /**
          * Specifies the vertex buffer builder to be used.
@@ -32,7 +34,7 @@ namespace astu {
          * @builder the vertex buffer builder to be used
          * @return reference to this generator for method chaining
          */
-        ShapeGenerator2D& VertexBufferBuilder(
+        ShapeGenerator& VertexBufferBuilder(
             std::shared_ptr<VertexBufferBuilder2f> builder);
 
         /**
@@ -41,7 +43,7 @@ namespace astu {
          * @param o the offset
          * @return reference to this generator for method chaining
          */
-        ShapeGenerator2D& Offset(const Vector2f o) {
+        ShapeGenerator& Offset(const Vector2f o) {
             offset = o;
             return *this;
         }
@@ -53,7 +55,7 @@ namespace astu {
          * @param oy    the y-coordinate of the offset
          * @return reference to this generator for method chaining
          */
-        ShapeGenerator2D& Offset(float ox, float oy) {
+        ShapeGenerator& Offset(float ox, float oy) {
             offset.Set(ox, oy);
             return *this;
         }
@@ -64,7 +66,7 @@ namespace astu {
          * Polyline mode will close the shaped by duplicating
          * the first vertex.
          */
-        ShapeGenerator2D& PolygoneMode() {
+        ShapeGenerator& PolygoneMode() {
             duplicateStartVertex = false;
             return *this;
         }
@@ -75,7 +77,7 @@ namespace astu {
          * Polyline mode asumes that the created polygone is closed
          * automatically.
          */
-        ShapeGenerator2D& PolylineMode() {
+        ShapeGenerator& PolylineMode() {
             duplicateStartVertex = true;
             return *this;
         }
@@ -173,7 +175,7 @@ namespace astu {
          * 
          * @return reference to this generator for method chaining
          */
-        ShapeGenerator2D& Reset();
+        ShapeGenerator& Reset();
 
     private:
         /** The vertex buffer builder used to generate the shapes. */

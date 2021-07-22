@@ -5,13 +5,16 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-// C++ Standard Library includes
-#include <cassert>     
-#include <SDL2/SDL.h>
-
 // Local includes
 #include "SdlSceneRenderer2D.h"
 #include "SdlSceneGraph2D.h"
+
+// SDL2 includes
+#include <SDL2/SDL.h>
+
+// C++ Standard Library includes
+#include <cassert>     
+
 
 namespace astu {
 

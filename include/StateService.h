@@ -7,14 +7,15 @@
 
 #pragma once
 
+// Local includes
+#include "Service.h"
+#include "SignalService.h"
+
 // C++ Standard Library includes
 #include <memory>
 #include <vector>
 #include <string>
 #include <map>
-
-// Local includes
-#include "Service.h"
 
 namespace astu {
 
@@ -28,7 +29,10 @@ namespace astu {
      * 
      * @ingroup srv_group
      */
-    class StateService final : public Service {
+    class StateService final 
+        : public BaseService 
+        , private SignalListener<std::string>
+    {
     public:
 
         /**
@@ -42,15 +46,37 @@ namespace astu {
         ~StateService() {}
 
         /**
+         * Enables or disables reenter mode.
+         * 
+         * If reenter mode is enabled, state switches to the current state
+         * will exit and re-enter the state. If reenter mode is disabled,
+         * state swichtes the to current state will be ignored.
+         * 
+         * @param b whether to enable reenter mode
+         * @return a reference to this service for method chaining
+         */
+        StateService& EnableReenterMode(bool b);
+
+        /**
+         * Returns whether reenter mode is enabled.
+         * 
+         * @return `true` if reenter mode is enabled
+         */
+        bool IsReenterMode() const {
+            return reenter;
+        }
+
+        /**
          * Adds a service to a state.
          * 
          * If the state does not yet exist, it will be created.
          * 
          * @param state the name of the state
          * @param srv   the service to add
+         * @return a reference to this service for method chaining
          * @throws std::logic_error in case the service has already been added
          */
-        void AddService(const std::string & state, std::shared_ptr<Service> srv);
+        StateService& AddService(const std::string & state, std::shared_ptr<Service> srv);
 
         /**
          * Tests whether a service has already been added to a state.
@@ -73,9 +99,10 @@ namespace astu {
          * Creates a new empty state.
          * 
          * @param state the name of the state
+         * @return a reference to this service for method chaining
          * @throws std::logic_error in case the state name is ambiguous
          */
-        void CreateState(const std::string & state);
+        StateService& CreateState(const std::string & state);
 
         /**
          * Switches to a certain state.
@@ -92,6 +119,23 @@ namespace astu {
          */
         const std::string & GetCurrentState() const;
 
+        // Due to the current implementation of ServiceManager, start-states
+        // do not work.
+
+        // /**
+        //  * Specifies a state to be used on startup.
+        //  * 
+        //  * @param state the name of the startup state
+        //  */
+        // void SetStartState(const std::string& state);
+
+        // /**
+        //  * Returns the state to be used on startup.
+        //  * 
+        //  * @return the name of the startup state
+        //  */
+        // const std::string& GetStartState() const;
+
     protected:
 
         // Inherited via Service
@@ -107,12 +151,21 @@ namespace astu {
         /** The current state. */
         std::string curState;
 
+        /** The state to be used on startup. */
+        std::string startState;
+
+        /** Whether switching to current state will re-enter the state. */
+        bool reenter;
+
 
         void ValidateStateName(const std::string & state) const;
         State & GetOrCreateState(const std::string & state);
 
         void RemoveServices(State & services);
         void AddServices(State & services);
+
+        // Inherited via SignalListener
+        virtual bool OnSignal(const std::string & signal) override;         
     };
 
 } // end of namespace

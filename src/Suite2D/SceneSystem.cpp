@@ -31,7 +31,7 @@ namespace astu::suite2d {
     void SceneSystem::OnStartup()
     {
         // TODO support configurable root elements.
-        root = ASTU_SERVICE(SceneGraph2D).GetRoot();
+        root = ASTU_SERVICE(SceneGraph).GetRoot();
     }
 
     void SceneSystem::OnShutdown()

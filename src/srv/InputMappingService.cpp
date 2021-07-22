@@ -217,6 +217,8 @@ namespace astu {
         auto it = actionBindings.find(binding->GetAction());
         if (it == actionBindings.end()) {
             actionBindings[binding->GetAction()].push_back(binding);
+        } else {
+            it->second.push_back(binding);
         }
 
         return binding; 
@@ -229,7 +231,7 @@ namespace astu {
             return;
         }
 
-        auto bindings = it->second;
+        auto& bindings = it->second;
         bindings.erase(remove(bindings.begin(), bindings.end(), binding), bindings.end());        
         if (it->second.empty()) {
             actionBindings.erase(it);
@@ -259,6 +261,8 @@ namespace astu {
         auto it = axisBindings.find(binding->GetAxis());
         if (it == axisBindings.end()) {
             axisBindings[binding->GetAxis()].push_back(binding);
+        } else {
+            it->second.push_back(binding);
         }
 
         return binding; 
@@ -271,7 +275,7 @@ namespace astu {
             return;
         }
 
-        auto bindings = it->second;
+        auto& bindings = it->second;
         bindings.erase(remove(bindings.begin(), bindings.end(), binding), bindings.end());        
         if (it->second.empty()) {
             axisBindings.erase(it);
@@ -301,7 +305,6 @@ namespace astu {
         keyState.pressed = value != 0;
         keyState.value = value;
     }
-
 
     void InputMappingService::EnsureKeyState(const Key& key)
     {
