@@ -9,7 +9,7 @@
 
 // Local includes
 #include "Service/SignalService.h"
-#include "Events.h"
+#include "Input/InputSignals.h"
 
 // C++ Standard Library includes
 #include <stdexcept>

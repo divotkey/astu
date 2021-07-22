@@ -7,7 +7,7 @@
 
 // Local includes
 #include "SuiteSDL/SdlVideoService.h"
-#include "Events.h"
+#include "Input/InputSignals.h"
 
 // C++ Standard Library includes
 #include <stdexcept>

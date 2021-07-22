@@ -12,7 +12,7 @@
 #include "Suite2D/CameraService.h"
 #include "Service/TimeService.h"
 #include "Service/UpdateService.h"
-#include "Vector2.h"
+#include "Math/Vector2.h"
 #include "VertexBuffer2.h"
 #include "SdlRenderService.h"
 

@@ -6,12 +6,11 @@
  */
 
 // Local includes
-#include "Keyboard.h"
+#include "Input/Keyboard.h"
 
 // C++ Standard Library includes
 #include <string>
 #include <stdexcept>
-
 
 namespace astu {
 

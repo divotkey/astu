@@ -7,8 +7,9 @@
 
 #pragma once
 
-#include "Vector2.h"
-#include "Matrix3.h"
+// Local includes
+#include "Math/Vector2.h"
+#include "Math/Matrix3.h"
 
 namespace astu {
 

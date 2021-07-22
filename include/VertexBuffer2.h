@@ -8,7 +8,7 @@
 #pragma once
 
 // Local includes
-#include "Vector2.h"
+#include "Math/Vector2.h"
 
 // C++ Standard Library includes
 #include <memory>

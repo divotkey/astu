@@ -10,9 +10,9 @@
 // Local includes
 #include "InputMappingService.h"
 #include "Service/UpdateService.h"
-#include "Keyboard.h"
-#include "Events.h"
-#include "Mouse.h"
+#include "Input/Keyboard.h"
+#include "Input/Mouse.h"
+#include "Input/InputSignals.h"
 
 namespace astu {
 

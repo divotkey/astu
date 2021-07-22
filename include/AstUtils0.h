@@ -12,7 +12,7 @@
  * @brief This file defines public functions offered by AST utilities API-Level 0.
  */
 
-#include "Vector2.h"
+#include "Math/Vector2.h"
 #include "SdlApplication.h"
 
 /////////////////////////////////////////////////

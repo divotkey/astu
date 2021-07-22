@@ -12,24 +12,26 @@
 
 /**
  * @file
- * @brief This file defines public functions, templates and classes, offered by the mathematics module of AST-Utilities.
+ * @brief This file defines public functions, templates and classes provided by input module.
  */
 
 #pragma once
 
-// ASTU Library includes
-#include "Vector2.h"
-#include "Matrix3.h"
+#include "Input/Mouse.h"
+#include "Input/Keyboard.h"
+#include "Input/Keys.h"
+#include "Input/InputSignals.h"
+// #include "Input/KeystrokeListener.h"
 
 namespace astu {
 
     /**
-     * @defgroup math_group Mathematics
-     * @brief This module contains classes and functions dedicated to graphics.
+     * @defgroup input_group Input
+     * @brief This module contains templates, classes and functions dedicated user input.
      * @{
      */
 
     /**@}*/
 
-
 } // end of namespace
+

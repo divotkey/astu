@@ -7,11 +7,13 @@
 
 #pragma once
 
-#include <map>
-
+// Local includes
+#include "Math/Vector2.h"
 #include "Color.h"
-#include "Vector2.h"
 #include "RenderQuality.h"
+
+// C++ Standard Library includes
+#include <map>
 
 namespace astu {
 

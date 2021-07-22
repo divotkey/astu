@@ -10,7 +10,7 @@
 #include "SuiteSDL/SdlJoystickService.h"
 #include "SuiteSDL/ISdlEventListener.h"
 #include "SuiteSDL/SdlEventService.h"
-#include "Keys.h"
+#include "Input/Keys.h"
 
 // SDL 2 includes
 #include <SDL2/SDL.h>

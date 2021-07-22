@@ -34,11 +34,12 @@ list(APPEND astulib_SOURCES
                     src/srv/EntityFactoryService.cpp
                     src/srv/IteratingEntitySystem.cpp
                     src/srv/InputMappingService.cpp
-                    src/srv/Keys.cpp
-                    src/srv/Mouse.cpp
-                    src/srv/Keyboard.cpp
                     src/srv/Controllable.cpp
                     src/srv/Controller.cpp
+
+                    src/Input/Keys.cpp
+                    src/Input/Mouse.cpp
+                    src/Input/Keyboard.cpp
 
                     src/Service/ServiceManager.cpp
                     src/Service/Service.cpp

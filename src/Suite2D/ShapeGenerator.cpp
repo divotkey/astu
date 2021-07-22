@@ -8,8 +8,8 @@
 // Local includes
 #include "Suite2D/ShapeGenerator.h"
 #include "Service/Service.h"
-#include "MathUtils.h"
-#include "Vector2.h"
+#include "Math/MathUtils.h"
+#include "Math/Vector2.h"
 
 // C++ Standard Library.
 #include <stdexcept>

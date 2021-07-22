@@ -12,14 +12,14 @@
 
 #pragma once
 
-// C++ Standard Library includes
-#include <memory>
-
-// ASTU Library includes
+// Local includes
 #include "RenderQuality.h"
 #include "Image.h"
 #include "Color.h"
-#include "Vector2.h"
+#include "Math/Vector2.h"
+
+// C++ Standard Library includes
+#include <memory>
 
 namespace astu {
 

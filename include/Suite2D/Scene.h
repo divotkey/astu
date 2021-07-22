@@ -16,9 +16,9 @@
 // Local includes
 #include "Controllable.h"
 #include "VertexBuffer2.h"
-#include "Transform2.h"
-#include "Vector2.h"
-#include "Matrix3.h"
+#include "Math/Vector2.h"
+#include "Math/Matrix3.h"
+#include "Math/Transform2.h"
 #include "Color.h"
 
 namespace astu::suite2d {

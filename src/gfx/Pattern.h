@@ -7,12 +7,15 @@
 
 #pragma once
 
-#include <memory>
-#include <vector>
-#include "Vector2.h"
-#include "Matrix3.h"
+// Local includes
+#include "Math/Vector2.h"
+#include "Math/Matrix3.h"
 #include "Color.h"
 #include "BoundingBox.h"
+
+// C++ Standard Library includes
+#include <memory>
+#include <vector>
 
 namespace astu {
 

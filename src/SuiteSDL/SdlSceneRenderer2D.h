@@ -13,8 +13,8 @@
 // Local includes
 #include "Suite2D/Scene.h"
 #include "VertexBuffer2.h"
-#include "Vector2.h"
-#include "Matrix3.h"
+#include "Math/Vector2.h"
+#include "Math/Matrix3.h"
 
 // Forward declaration.
 struct SDL_Renderer;

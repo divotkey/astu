@@ -8,7 +8,7 @@
 #pragma once
 
 #include "AstUtils.h"
-#include "Vector2.h"
+#include "Math/Vector2.h"
 #include "Color.h"
 
 namespace astu {

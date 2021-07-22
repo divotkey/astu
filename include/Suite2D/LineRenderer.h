@@ -10,8 +10,8 @@
 // Local includes
 #include "Service/Service.h"
 #include "Math/Polygon.h"
-#include "Vector2.h"
-#include "Matrix3.h"
+#include "Math/Vector2.h"
+#include "Math/Matrix3.h"
 #include "Color.h"
 
 // C++ Standard Library includes

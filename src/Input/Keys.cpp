@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "Keys.h"
+#include "Input/Keys.h"
 
 namespace astu {
 

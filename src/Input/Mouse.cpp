@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "Mouse.h"
+#include "Input/Mouse.h"
 #include "Suite2D/CameraService.h"
 
 // C++ Standard Library includes

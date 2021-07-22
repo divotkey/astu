@@ -7,9 +7,9 @@
 
 // Local includes
 #include "Suite2D/CameraControlService.h"
-#include "Mouse.h"
-#include "Events.h"
-#include "Keyboard.h"
+#include "Input/Mouse.h"
+#include "Input/Keyboard.h"
+#include "Input/InputSignals.h"
 
 // C++ Standard Library includes
 #include <iostream>

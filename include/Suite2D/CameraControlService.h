@@ -9,8 +9,8 @@
 // Local includes
 #include "Suite2D/CameraService.h"
 #include "Service/UpdateService.h"
-#include "Vector2.h"
-#include "Events.h"
+#include "Math/Vector2.h"
+#include "Input/InputSignals.h"
 
 // C++ Standard Libraries
 #include <string>

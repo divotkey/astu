@@ -9,7 +9,7 @@
 
 // Local includes
 #include "EntityService.h"
-#include "Transform2.h"
+#include "Math/Transform2.h"
 
 namespace astu::suite2d {
 

@@ -10,16 +10,18 @@
  *----------------------------------------------------------------------------
  */
 
-#include <stdexcept>
-#include <string>
 
+// Local includes
+#include "ImageRenderer.h"
 #include "gfx/PatternRenderer.h"
 #include "gfx/Quadtree.h"
 #include "gfx/Pattern.h"
-#include "Vector2.h"
-#include "MathUtils.h"
-#include "ImageRenderer.h"
+#include "Math/Vector2.h"
+#include "Math/MathUtils.h"
 
+// C++ Standard Library includes
+#include <stdexcept>
+#include <string>
 
 namespace astu {
 

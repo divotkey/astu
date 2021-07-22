@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "MathUtils.h"
+#include "Math/MathUtils.h"
 
 namespace astu {
 

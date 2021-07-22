@@ -13,8 +13,8 @@
 
 // Local includes
 #include "MathUtils.h"
-#include "Vector2.h"
-#include "Matrix3.h"
+#include "Math/Vector2.h"
+#include "Math/Matrix3.h"
 
 namespace astu {
 

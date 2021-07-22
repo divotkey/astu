@@ -17,7 +17,7 @@
 #include <SDL2/SDL.h>
 
 // Libary-Local includes
-#include "Vector2.h"
+#include "Math/Vector2.h"
 #include "AstUtils0.h"
 #include "SdlApplication.h"
 

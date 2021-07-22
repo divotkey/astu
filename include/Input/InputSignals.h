@@ -8,8 +8,8 @@
 #pragma once
 
 // Local includes
-#include "Mouse.h"
-#include "Keyboard.h"
+#include "Input/Mouse.h"
+#include "Input/Keyboard.h"
 #include "Service/SignalService.h"
 
 namespace astu {

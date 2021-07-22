@@ -7,8 +7,8 @@
 
 #pragma once
 
-// AST Utilities includes
-#include <Vector2.h>
+// Local includes
+#include "Math/Vector2.h"
 
 // C++ Standard Library includes
 #include <memory>

@@ -10,7 +10,6 @@
 // Local includes
 #include "InputMappingService.h"
 
-
 namespace astu {
 
     class Keys {

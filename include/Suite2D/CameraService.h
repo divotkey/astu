@@ -9,10 +9,10 @@
 
 // Local includes
 #include "Service/Service.h"
-#include "MathUtils.h"
-#include "Vector2.h"
-#include "Matrix3.h"
-#include "Events.h"
+#include "Math/Vector2.h"
+#include "Math/Matrix3.h"
+#include "Math/MathUtils.h"
+#include "Input/InputSignals.h"
 
 // C++ Standard includes
 #include <unordered_map>
