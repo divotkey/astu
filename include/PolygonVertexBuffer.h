@@ -32,7 +32,7 @@ namespace astu {
         }
 
         // Inherited via VertexBufferBuilder2D
-        virtual VertexBufferBuilder2& AddVertex(T x, T y) override {
+        virtual VertexBufferBuilder2<T>& AddVertex(T x, T y) override {
             vertices.push_back(Vector2<T>(x, y));
             return *this;
         }
@@ -45,12 +45,12 @@ namespace astu {
             return vertices.at(idx);
         }
 
-        virtual VertexBufferBuilder2& SetVertex(size_t idx, T x, T y) override {
+        virtual VertexBufferBuilder2<T>& SetVertex(size_t idx, T x, T y) override {
             vertices.at(idx) = Vector2<T>(x, y);
             return *this;
         }
 
-        virtual VertexBufferBuilder2& Reset() override {
+        virtual VertexBufferBuilder2<T>& Reset() override {
             vertices.clear();
             return *this;
         }

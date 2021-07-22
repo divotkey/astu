@@ -102,7 +102,7 @@ namespace astu::suite2d {
          * @return the view matrix
          */
         const Matrix3f& SetViewTransform() const {
-            return viewMatrix;
+            return viewTransform;
         }
 
         /**

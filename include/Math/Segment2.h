@@ -119,8 +119,8 @@ namespace astu {
             bool valid = Line2<T>::Intersect(
                 GetStartPoint(), 
                 GetDirection(),
-                ray.GetStartPoint()
-                ray.GetDirection()
+                ray.GetStartPoint(),
+                ray.GetDirection(),
                 s1,
                 s2);
 
@@ -141,7 +141,7 @@ namespace astu {
          *          intersect
          */
         std::optional<astu::Vector2<T>> Intersect(const Segment2<T>& other) const {
-            optional<Vector2<T>> result;
+            std::optional<Vector2<T>> result;
             Vector2<T> point;
 
             if (Intersect(other, point)) {
@@ -163,8 +163,8 @@ namespace astu {
             bool valid = Line2<T>::Intersect(
                 GetStartPoint(), 
                 GetDirection(),
-                other.GetStartPoint()
-                other.GetDirection()
+                other.GetStartPoint(),
+                other.GetDirection(),
                 s1,
                 s2);
 
