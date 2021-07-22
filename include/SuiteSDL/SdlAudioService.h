@@ -7,7 +7,8 @@
 
 #pragma once
 
-#include "Service.h"
+// Local includes
+#include "Service/Service.h"
 
 namespace astu {
 

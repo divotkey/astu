@@ -8,9 +8,8 @@
 #pragma once
 
 // Local includes
-#include "ListenerManager.h"
-#include "Service.h"
 #include "UpdateService.h"
+#include "Util/ListenerManager.h"
 
 // C++ Standard Library includes
 #include <array>

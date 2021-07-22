@@ -11,11 +11,10 @@
 #include <cstdint>
 
 // Local includes
-#include "UpdateService.h"
-#include "ITimeManager.h"
+#include "Service/UpdateService.h"
+#include "Service/TimeService.h"
 
 namespace astu {
-
 
     /**
      * Uses the SDL high performance timer to measure elapsed time.
@@ -25,7 +24,7 @@ namespace astu {
     class SdlTimeService final 
         : public virtual Service
         , private Updatable
-        , public ITimeManager
+        , public TimeService
     {
     public:
 
@@ -41,7 +40,7 @@ namespace astu {
          */
         virtual ~SdlTimeService() {}
 
-        // Inherited via ITimeManager
+        // Inherited via TimeService
         virtual double GetElapsedTime() const override;
         virtual double GetAbsoluteTime() const override;
 

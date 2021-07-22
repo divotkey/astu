@@ -20,13 +20,13 @@ namespace astu {
      * 
      * @ingroup srv_group
      */
-    class IWindowManager {
+    class WindowService {
     public:
 
         /**
          * Virtual destructor.
          */
-        virtual ~IWindowManager() {}
+        virtual ~WindowService() {}
 
         /**
          * Sets the dimension of the window.

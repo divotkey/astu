@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "TaskService.h"
+#include "Service/TaskService.h"
 
 namespace astu {
 

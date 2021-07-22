@@ -10,10 +10,9 @@
 // Local includes
 #include "Suite2D/Scene.h"
 #include "Suite2D/CameraService.h"
+#include "Service/TimeService.h"
+#include "Service/UpdateService.h"
 #include "Vector2.h"
-#include "Service.h"
-#include "ITimeManager.h"
-#include "UpdateService.h"
 #include "VertexBuffer2.h"
 #include "SdlRenderService.h"
 

@@ -9,7 +9,7 @@
 
 // Local includes
 #include "InputMappingService.h"
-#include "UpdateService.h"
+#include "Service/UpdateService.h"
 #include "Keyboard.h"
 #include "Events.h"
 #include "Mouse.h"

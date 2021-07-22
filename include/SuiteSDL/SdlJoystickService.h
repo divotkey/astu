@@ -8,7 +8,7 @@
 #pragma once
 
 // Local includes
-#include "Service.h"
+#include "Service/Service.h"
 #include "InputMappingService.h"
 
 // C++ Standard Library includes

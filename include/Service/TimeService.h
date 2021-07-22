@@ -8,8 +8,7 @@
 #pragma once
 
 // Local includes
-#include "Service.h"
-#include "SignalService.h"
+#include "Service/SignalService.h"
 #include "Events.h"
 
 // C++ Standard Library includes
@@ -18,17 +17,17 @@
 namespace astu {
 
     /**
-     * Interface for services which keeps track of time.
+     * Abstract base class for 
      * 
      * @ingroup srv_group
      */
-    class ITimeManager {
+    class TimeService {
     public:
 
         /**
          * Virtual destructor.
          */
-        virtual ~ITimeManager() {}
+        virtual ~TimeService() {}
 
         /**
          * Returns the elapsed time since the last update.
@@ -56,7 +55,7 @@ namespace astu {
          * Constructor.
          */
         TimeClient() {
-            AddStartupHook([this]() { timeSrv = ASTU_GET_SERVICE(ITimeManager); });
+            AddStartupHook([this]() { timeSrv = ASTU_GET_SERVICE(TimeService); });
             AddShutdownHook([this]() { timeSrv = nullptr; });
         }
 
@@ -94,7 +93,7 @@ namespace astu {
 
     private:
         /** The time manager used by this class. */
-        std::shared_ptr<ITimeManager> timeSrv;
+        std::shared_ptr<TimeService> timeSrv;
     };
 
 } // end of namespace

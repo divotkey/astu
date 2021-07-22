@@ -5,6 +5,11 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+/**
+ * @file
+ * @brief This file defines public functions, templates and classes related to Simple Direct Layer (SDL).
+ */
+
 #pragma once
 
 #include "SuiteSDL/SdlService.h"
@@ -16,3 +21,16 @@
 #include "SuiteSDL/SdlTimeService.h"
 #include "SuiteSDL/SdlLineRenderer.h"
 #include "SuiteSDL/SdlSceneGraph2D.h"
+
+namespace astu {
+
+    /**
+     * @defgroup sdl_group Simple Direct Layer
+     * @brief This module contains templates, classes and functions dedicated to Simple Direct Layer SDL.
+     * @{
+     */
+
+    /**@}*/
+
+} // end of namespace
+

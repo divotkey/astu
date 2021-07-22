@@ -28,7 +28,7 @@
 //         entityView = es.GetEntityView(iterateFamily);
 
 //         // Get pointer to time service.
-//         timeService = ASTU_GET_SERVICE(ITimeManager);
+//         timeService = ASTU_GET_SERVICE(TimeService);
 
 //         // Don't forget to call Startup on base service!
 //         BaseService::Startup();

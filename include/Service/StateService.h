@@ -8,7 +8,6 @@
 #pragma once
 
 // Local includes
-#include "Service.h"
 #include "SignalService.h"
 
 // C++ Standard Library includes

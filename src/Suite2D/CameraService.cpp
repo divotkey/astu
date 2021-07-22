@@ -7,7 +7,7 @@
 
  // Local includes
 #include "Suite2D/CameraService.h"
-#include "IWindowManager.h"
+#include "Service/WindowService.h"
 
  // C++ Standard includes
 #include <stdexcept>
@@ -217,7 +217,7 @@ namespace astu::suite2d {
         auto result = make_shared<Camera>();
         cameraMap[camName] = result;
 
-        const auto& wnd = ASTU_SERVICE(IWindowManager);
+        const auto& wnd = ASTU_SERVICE(WindowService);
         result->SetRenderTargetSize(wnd.GetWidth(), wnd.GetHeight());
         return result;
     }
@@ -239,7 +239,7 @@ namespace astu::suite2d {
 
     void CameraService::OnStartup()
     {
-        const auto& wnd = ASTU_SERVICE(IWindowManager);
+        const auto& wnd = ASTU_SERVICE(WindowService);
         OnResize(wnd.GetWidth(), wnd.GetHeight());
     }
 

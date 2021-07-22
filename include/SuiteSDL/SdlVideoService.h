@@ -8,8 +8,8 @@
 #pragma once
 
 // Local includes.
-#include "Service.h"
-#include "IWindowManager.h"
+#include "Service/Service.h"
+#include "Service/WindowService.h"
 
 // C++ Standard Library includes
 #include <string>
@@ -29,7 +29,7 @@ namespace astu {
      */
     class SdlVideoService final 
         : public Service
-        , public IWindowManager
+        , public WindowService
     {
     public:
 
@@ -69,7 +69,7 @@ namespace astu {
          */
         SdlVideoService& EnableVulkanSupport(bool b);
 
-        // Inherited via IWindowManager
+        // Inherited via WindowService
         virtual void SetSize(int width, int height) override;
         virtual int GetWidth() const override;
         virtual int GetHeight() const override;

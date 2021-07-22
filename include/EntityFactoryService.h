@@ -7,14 +7,13 @@
 
 #pragma once
 
+// Local includes
+#include "EntityService.h"
+
 // C++ Standard Libraries includes
 #include <memory>
 #include <string>
 #include <map>
-
-// Local includes
-#include "EntityService.h"
-#include "Service.h"
 
 namespace astu {
 

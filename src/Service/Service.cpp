@@ -6,8 +6,8 @@
  */
 
 // Local includes
-#include "Service.h"
-#include "ServiceManager.h"
+#include "Service/Service.h"
+#include "Service/ServiceManager.h"
 
 // C++ Standard Library includes
 #include <stdexcept>

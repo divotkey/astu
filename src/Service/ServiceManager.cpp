@@ -6,12 +6,11 @@
  */
 
 // Local includes
-#include "ServiceManager.h"
-#include "Service.h"
+#include "Service/ServiceManager.h"
+#include "Service/Service.h"
 
 // C++ Standard Library includes
 #include <algorithm>
-
 
 using namespace std;
 

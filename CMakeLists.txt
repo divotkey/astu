@@ -30,12 +30,6 @@ list(APPEND astulib_SOURCES
                     src/audio/WaveCodec.cpp
                     src/audio/AstAudio.cpp
 
-                    src/srv/ServiceManager.cpp
-                    src/srv/Service.cpp
-                    src/srv/UpdateService.cpp
-                    src/srv/TaskService.cpp
-                    src/srv/Tasks.cpp
-                    src/srv/StateService.cpp
                     src/srv/EntityService.cpp
                     src/srv/EntityFactoryService.cpp
                     src/srv/IteratingEntitySystem.cpp
@@ -46,7 +40,13 @@ list(APPEND astulib_SOURCES
                     src/srv/Controllable.cpp
                     src/srv/Controller.cpp
 
+                    src/Service/ServiceManager.cpp
+                    src/Service/Service.cpp
+                    src/Service/UpdateService.cpp
                     src/Service/ActionSignalService.cpp
+                    src/Service/StateService.cpp
+                    src/Service/TaskService.cpp
+                    src/Service/Tasks.cpp
 
                     src/Suite2D/Scene.cpp
                     src/Suite2D/CameraService.cpp

@@ -7,10 +7,10 @@
 
 #pragma once
 
-// AST Utilities includes
+// Local includes
 #include "Mouse.h"
 #include "Keyboard.h"
-#include "SignalService.h"
+#include "Service/SignalService.h"
 
 namespace astu {
 

@@ -6,7 +6,7 @@
  */
 
 // Local incluees
-#include "ServiceManager.h"
+#include "Service/ServiceManager.h"
 #include "SuiteSDL/SdlVideoService.h"
 #include "SuiteSDL/SdlRenderService.h"
 
@@ -62,7 +62,7 @@ namespace astu {
         LogRendererInfo();
 
         // Fire resize event.
-        auto & wm = ASTU_SERVICE(IWindowManager);
+        auto & wm = ASTU_SERVICE(WindowService);
         for (auto & layer : layers) {
             layer->OnResize(wm.GetWidth(), wm.GetHeight());
         }
@@ -126,7 +126,7 @@ namespace astu {
         std::sort(layers.begin(), layers.end(), compare);
 
         if (GetStatus() != Stopped) {
-            auto & wm = ASTU_SERVICE(IWindowManager);
+            auto & wm = ASTU_SERVICE(WindowService);
             layer.OnResize(wm.GetWidth(), wm.GetHeight());
         }
     }

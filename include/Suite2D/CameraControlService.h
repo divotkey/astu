@@ -8,7 +8,7 @@
 
 // Local includes
 #include "Suite2D/CameraService.h"
-#include "UpdateService.h"
+#include "Service/UpdateService.h"
 #include "Vector2.h"
 #include "Events.h"
 

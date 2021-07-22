@@ -8,9 +8,8 @@
 #pragma once
 
 // Local includes.
-#include "Service.h"
-#include "UpdateService.h"
-#include "ITimeManager.h"
+#include "Service/UpdateService.h"
+#include "TimeService.h"
 
 // C++ Standard Library includes.
 #include <algorithm>
@@ -177,8 +176,6 @@ namespace astu {
         virtual void OnStartup() override;
         virtual void OnShutdown() override;
         virtual void OnUpdate() override;
-
-
     };
 
 } // end of namespace

@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "StateService.h"
+#include "Service/StateService.h"
 
 // C++ Standard Library includes
 #include <cassert>

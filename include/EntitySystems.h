@@ -11,7 +11,6 @@
 #include <memory>
 
 // Local includes
-#include "Service.h"
 #include "EntityService.h"
 
 namespace astu {

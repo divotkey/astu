@@ -6,7 +6,7 @@
  */
 
 // Local includes.
-#include "UpdateService.h"
+#include "Service/UpdateService.h"
 
 namespace astu {
 

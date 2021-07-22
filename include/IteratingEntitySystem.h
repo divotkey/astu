@@ -8,7 +8,7 @@
 // #pragma once
 
 // #include <memory>
-// #include "ITimeManager.h"
+// #include "TimeService.h"
 // #include "UpdateService.h"
 // #include "EntityService.h"
 
@@ -84,7 +84,7 @@
 //         std::shared_ptr<EntityView> entityView;
 
 //         /** The time service used to offer elapsed delta time. */
-//         std::shared_ptr<ITimeManager> timeService;
+//         std::shared_ptr<TimeService> timeService;
 //     };
 
 // } // end of namespace

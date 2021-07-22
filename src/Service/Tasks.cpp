@@ -6,7 +6,7 @@
  */
 
 // Local includes.
-#include "Tasks.h"
+#include "Service/Tasks.h"
 
 // C++ Standard Library inlcudes
 #include <stdexcept>

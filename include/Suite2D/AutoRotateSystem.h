@@ -9,8 +9,8 @@
 
 // Local includes
 #include "EntitySystems.h"
-#include "UpdateService.h"
-#include "ITimeManager.h"
+#include "Service/UpdateService.h"
+#include "Service/TimeService.h"
 
 namespace astu::suite2d {
 

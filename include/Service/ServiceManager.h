@@ -105,8 +105,8 @@ namespace astu {
          * auto & sm = ServiceManager::GetInstance();
          * 
          * // Get (smart) pointer to a service which implements a certain interface,
-         * // in this case the ITimeManager interface.
-         * ITimeManager *pTimeSrv = sm.FindService<ITimeManager>();
+         * // in this case the TimeService interface.
+         * TimeService *pTimeSrv = sm.FindService<TimeService>();
          * 
          * // Use the time service.
          * double dt = timeSrv->GetElapsedTime();

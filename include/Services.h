@@ -12,13 +12,18 @@
 
 #pragma once
 
-#include "Service.h"
-#include "UpdateService.h" 
-#include "StateService.h"
-#include "SignalService.h"
-#include "ServiceManager.h"
-#include "ITimeService.h"
-#include "IWindowManager.h"
+#include "Service/Service.h"
+#include "Service/ServiceManager.h"
+#include "Service/UpdateService.h"
+#include "Service/UpdateService.h"
+#include "Service/SignalService.h"
+#include "Service/TaskService.h"
+#include "Service/Tasks.h"
+#include "Service/StateService.h"
+#include "Service/TimeService.h"
+#include "Service/WindowService.h"
+#include "Service/ActionSignalService.h"
+#include "Service/RenderService.h"
 
 namespace astu {
 
@@ -31,4 +36,3 @@ namespace astu {
     /**@}*/
 
 } // end of namespace
-

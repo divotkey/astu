@@ -7,6 +7,10 @@
 
 #pragma once
 
+// Local includes.
+#include "Service/UpdateService.h"
+#include "Util/CommandQueue.h"
+
 // C++ Standard Library includes
 #include <typeindex>
 #include <typeinfo>
@@ -15,10 +19,6 @@
 #include <memory>
 #include <vector>
 #include <set>
-
-// Local includes.
-#include "UpdateService.h"
-#include "CommandQueue.h"
 
 namespace astu {
 

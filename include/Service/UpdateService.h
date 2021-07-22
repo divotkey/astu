@@ -11,9 +11,9 @@
 #include <vector>
 
 // Local includes.
-#include "Priority.h"
-#include "ListenerManager.h"
 #include "Service.h"
+#include "Priority.h"
+#include "Util/ListenerManager.h"
 
 namespace astu {
 

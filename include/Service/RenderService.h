@@ -17,13 +17,13 @@ namespace astu {
      * 
      * @ingroup srv_group
      */
-    class IRenderService {
+    class RenderService {
     public:
 
         /**
          * Virtual destructor.
          */
-        virtual ~IRenderService() {}
+        virtual ~RenderService() {}
 
         /**
          * Returns the background color.

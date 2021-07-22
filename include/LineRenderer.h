@@ -7,8 +7,8 @@
 
 #pragma once
 
-// Local (AST-Utilities) includes
-#include "Service.h"
+// Local includes
+#include "Service/Service.h"
 #include "Vector2.h"
 #include "Matrix3.h"
 #include "Color.h"

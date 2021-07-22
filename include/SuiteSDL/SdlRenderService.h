@@ -12,8 +12,8 @@
 #include <vector>
 
 // Local includes
-#include "IRenderService.h"
-#include "UpdateService.h"
+#include "Service/UpdateService.h"
+#include "Service/RenderService.h"
 #include "Color.h"
 
 // Forward declaration.
@@ -76,7 +76,7 @@ namespace astu {
     class SdlRenderService final 
         : public virtual Service
         , private Updatable
-        , public IRenderService
+        , public RenderService
     {
     public:
 
@@ -114,7 +114,7 @@ namespace astu {
          */
         bool HasLayer(ISdlRenderLayer &layer);
 
-        // INherited via IRenderService
+        // INherited via RenderService
         virtual void SetBackgroundColor(const Color4f& bg) override;
         virtual const Color4f& GetBackgroundColor() const override;
 

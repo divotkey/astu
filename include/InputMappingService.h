@@ -8,11 +8,7 @@
 #pragma once
 
 // Local includes
-#include "Service.h"
-
-// AST Utilities includes
-#include "Service.h"
-#include "UpdateService.h"
+#include "Service/UpdateService.h"
 
 // C++ Standard Library includes
 #include <functional>
