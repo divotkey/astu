@@ -13,7 +13,7 @@
 
 // Local includes
 #include "SdlRenderService.h"
-#include "LineRenderer.h"
+#include "Suite2D/LineRenderer.h"
 
 namespace astu {
 
@@ -26,7 +26,7 @@ namespace astu {
      */
     class SdlLineRenderer final 
         : public SdlRenderLayer
-        , public ILineRenderer2f
+        , public suite2d::ILineRenderer2f
     {
     public:
 

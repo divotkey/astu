@@ -12,9 +12,11 @@
 #include "Suite2D/CScene.h"
 #include "Suite2D/CameraService.h"
 #include "Suite2D/CameraControlService.h"
+#include "Suite2D/LineRenderer.h"
+#include "Suite2D/ShapeGenerator.h"
+
 #include "Suite2D/SceneSystem.h"
 #include "Suite2D/CAutoRotate.h"
 #include "Suite2D/AutoRotateSystem.h"
-#include "Suite2D/ShapeGenerator.h"
 
 namespace astu2d = astu::suite2d;

@@ -9,20 +9,20 @@
 
 // Local includes
 #include "Service/Service.h"
+#include "Math/Polygon.h"
 #include "Vector2.h"
 #include "Matrix3.h"
 #include "Color.h"
-#include "Math/Polygon.h"
 
 // C++ Standard Library includes
 #include <stack>
 
-namespace astu {
+namespace astu::suite2d {
 
     /**
      * Base class for 2D line renderers.
      * 
-     * @ingroup gfx_group
+     * @ingroup suite2d_group
      */
     template <typename T>
     class LineRenderer {
