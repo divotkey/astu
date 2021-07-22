@@ -12,7 +12,7 @@
 #include "Math/Polygon.h"
 #include "Math/Vector2.h"
 #include "Math/Matrix3.h"
-#include "Color.h"
+#include "Graphics/Color.h"
 
 // C++ Standard Library includes
 #include <stack>

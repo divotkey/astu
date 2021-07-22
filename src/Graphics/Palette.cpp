@@ -5,10 +5,13 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "Graphics/Palette.h"
+
+// C++ Standard Library includes
 #include <cassert>
 #include <stdexcept>
 #include <algorithm>
-#include "Palette.h"
 
 namespace astu {
 

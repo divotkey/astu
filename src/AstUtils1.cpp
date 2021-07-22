@@ -8,8 +8,8 @@
 #include <cassert>
 #include <map>
 #include <iostream>
-#include "Image.h"
-#include "gfx/BmpCodec.h"
+#include "Graphics/Image.h"
+#include "Graphics/BmpCodec.h"
 #include "AstUtils1.h"
 
 namespace astu1 {

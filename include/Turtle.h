@@ -9,7 +9,7 @@
 
 #include "AstUtils.h"
 #include "Math/Vector2.h"
-#include "Color.h"
+#include "Graphics/Color.h"
 
 namespace astu {
 

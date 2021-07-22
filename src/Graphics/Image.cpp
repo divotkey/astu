@@ -5,9 +5,12 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "Graphics/Image.h"
+
+// C++ Standard Library includes
 #include <stdexcept>
 #include <string>
-#include "Image.h"
 
 namespace astu {
 

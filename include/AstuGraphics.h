@@ -22,13 +22,11 @@
 #include <memory>
 
 // ASTU Library includes
-#include "Color.h"
-#include "ColorHsv.h"
-#include "Vector2.h"
-#include "Palette.h"
-#include "Image.h"
-#include "ImageRenderer.h"
-#include "Turtle.h"
+#include "Graphics/Color.h"
+#include "Graphics/ColorHsv.h"
+#include "Graphics/Palette.h"
+#include "Graphics/Image.h"
+#include "Graphics/ImageRenderer.h"
 
 namespace astu {
 

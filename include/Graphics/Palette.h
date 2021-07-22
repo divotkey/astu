@@ -7,8 +7,11 @@
 
 #pragma once
 
+// Local includes
+#include "Graphics/Color.h"
+
+// C++ Standard Library includes
 #include <vector>
-#include "Color.h"
 
 namespace astu {
     

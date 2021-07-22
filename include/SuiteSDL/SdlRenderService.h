@@ -14,7 +14,7 @@
 // Local includes
 #include "Service/UpdateService.h"
 #include "Service/RenderService.h"
-#include "Color.h"
+#include "Graphics/Color.h"
 
 // Forward declaration.
 struct SDL_Renderer;

@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "Color.h"
-#include "Image.h"
+#include "Graphics/Color.h"
+#include "Graphics/Image.h"
 
 namespace astu1 {
 

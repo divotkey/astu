@@ -19,7 +19,7 @@
 #include "Math/Vector2.h"
 #include "Math/Matrix3.h"
 #include "Math/Transform2.h"
-#include "Color.h"
+#include "Graphics/Color.h"
 
 namespace astu::suite2d {
 

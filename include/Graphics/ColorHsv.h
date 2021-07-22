@@ -7,12 +7,14 @@
 
 #pragma once
 
+// Local includes
+#include "Graphics/Color.h"
+
+// C++ Standard Library includes
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
 #include <cmath>
-
-#include "Color.h"
 
 namespace astu {
 

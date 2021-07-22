@@ -10,7 +10,7 @@
 #include <string>
 #include <functional>
 #include <SDL2/SDL.h>
-#include "Color.h"
+#include "Graphics/Color.h"
 
 namespace astu {
 

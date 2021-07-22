@@ -10,7 +10,7 @@
 // Local includes
 #include "Math/Vector2.h"
 #include "Math/Matrix3.h"
-#include "Color.h"
+#include "Graphics/Color.h"
 #include "BoundingBox.h"
 
 // C++ Standard Library includes

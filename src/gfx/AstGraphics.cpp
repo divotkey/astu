@@ -9,9 +9,10 @@
  * Let it be / Be it so (Sanskrit), City (Ancient Greek)
  *----------------------------------------------------------------------------
  */
-    
-#include "gfx/BmpCodec.h"
-#include "AstGraphics.h"
+
+// Local includes    
+#include "AstuGraphics.h"
+#include "Graphics/BmpCodec.h"
 
 namespace astu {
 

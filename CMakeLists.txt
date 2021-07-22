@@ -13,16 +13,16 @@ list(APPEND astulib_SOURCES
                     src/math/MathUtils.cpp
 
                     src/gfx/AstGraphics.cpp
-
-                    src/gfx/Palette.cpp
-                    src/gfx/Image.cpp 
-                    src/gfx/BmpCodec.cpp
-                    src/gfx/Pattern.cpp
-                    src/gfx/BoundingBox.cpp
-                    src/gfx/Quadtree.cpp
-                    src/gfx/PatternRenderer.cpp
                     src/gfx/Turtle.cpp
-                    src/gfx/ImageRenderer.cpp
+
+                    src/Graphics/Palette.cpp
+                    src/Graphics/Image.cpp 
+                    src/Graphics/BmpCodec.cpp
+                    src/Graphics/Pattern.cpp
+                    src/Graphics/BoundingBox.cpp
+                    src/Graphics/Quadtree.cpp
+                    src/Graphics/PatternRenderer.cpp
+                    src/Graphics/ImageRenderer.cpp
 
                     src/io/AstIO.cpp
 

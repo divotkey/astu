@@ -9,8 +9,8 @@
 
 // Local includes
 #include "Math/Vector2.h"
-#include "Color.h"
-#include "RenderQuality.h"
+#include "Graphics/Color.h"
+#include "Graphics/RenderQuality.h"
 
 // C++ Standard Library includes
 #include <map>

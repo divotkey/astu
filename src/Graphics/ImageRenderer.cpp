@@ -12,10 +12,10 @@
 
 
 // Local includes
-#include "ImageRenderer.h"
-#include "gfx/PatternRenderer.h"
-#include "gfx/Quadtree.h"
-#include "gfx/Pattern.h"
+#include "Graphics/ImageRenderer.h"
+#include "Graphics/PatternRenderer.h"
+#include "Graphics/Quadtree.h"
+#include "Graphics/Pattern.h"
 #include "Math/Vector2.h"
 #include "Math/MathUtils.h"
 

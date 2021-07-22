@@ -11,7 +11,7 @@
 #include <vector>
 
 // Local includes
-#include "Color.h"
+#include "Graphics/Color.h"
 
 namespace astu {
 

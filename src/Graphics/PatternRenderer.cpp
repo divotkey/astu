@@ -5,14 +5,16 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "Graphics/PatternRenderer.h"
+#include "Graphics/Color.h"
+#include "Graphics/Image.h"
+#include "Graphics/Pattern.h"
+
+// C++ Standard Library includes
 #include <iostream>
 #include <iomanip>
 #include <stdexcept>
-
-#include "Color.h"
-#include "Image.h"
-#include "Pattern.h"
-#include "PatternRenderer.h"
 
 using namespace std;
 

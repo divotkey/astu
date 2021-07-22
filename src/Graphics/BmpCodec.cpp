@@ -5,16 +5,16 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "Graphics/BmpCodec.h"
+#include "Graphics/Color.h"
+#include "Graphics/Image.h"
+
 // C++ Standard Library includes
 #include <cassert>
 #include <fstream>
 #include <string>
 #include <stdexcept>
-
-// Local includes
-#include "Color.h"
-#include "Image.h"
-#include "BmpCodec.h"
 
 #define BI_RGB			0
 #define BI_RLE8			1

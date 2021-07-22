@@ -20,11 +20,11 @@
 #include "VersionInfo.h"
 #include "audio/WaveCodec.h"
 #include "audio/AudioBuffer.h"
-#include "Image.h"
-#include "gfx/BmpCodec.h"
-#include "gfx/Quadtree.h"
-#include "gfx/PatternRenderer.h"
-#include "math/Random.h"
+#include "Graphics/Image.h"
+#include "Graphics/BmpCodec.h"
+#include "Graphics/Quadtree.h"
+#include "Graphics/PatternRenderer.h"
+#include "Math/Random.h"
 
 #include "AstUtils0.h"
 

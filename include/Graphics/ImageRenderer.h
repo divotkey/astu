@@ -13,10 +13,10 @@
 #pragma once
 
 // Local includes
-#include "RenderQuality.h"
-#include "Image.h"
-#include "Color.h"
 #include "Math/Vector2.h"
+#include "Graphics/RenderQuality.h"
+#include "Graphics/Image.h"
+#include "Graphics/Color.h"
 
 // C++ Standard Library includes
 #include <memory>
