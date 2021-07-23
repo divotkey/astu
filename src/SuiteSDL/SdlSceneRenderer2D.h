@@ -11,10 +11,10 @@
 #include <vector>
 
 // Local includes
-#include "Suite2D/Scene.h"
-#include "VertexBuffer2.h"
 #include "Math/Vector2.h"
 #include "Math/Matrix3.h"
+#include "Suite2D/VertexBuffer2.h"
+#include "Suite2D/Scene.h"
 
 // Forward declaration.
 struct SDL_Renderer;

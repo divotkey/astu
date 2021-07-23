@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "InputMappingService.h"
+#include "Input/InputMappingService.h"
 
 // C++ Standard Library includes
 #include <algorithm>

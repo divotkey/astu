@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "EntityFactoryService.h"
+#include "ECS/EntityFactoryService.h"
 
 // C++ Standard Libraries includes
 #include <stdexcept>

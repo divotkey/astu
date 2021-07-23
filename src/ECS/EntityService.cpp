@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "EntityService.h"
+#include "ECS/EntityService.h"
 
 // C++ Standard Library includes.
 #include <iostream>

@@ -8,8 +8,8 @@
 #pragma once
 
 // Local includes
-#include "InputMappingService.h"
 #include "Service/UpdateService.h"
+#include "Input/InputMappingService.h"
 #include "Input/Keyboard.h"
 #include "Input/Mouse.h"
 #include "Input/InputSignals.h"

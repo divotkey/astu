@@ -10,7 +10,7 @@
 // Local includes
 #include "Service.h"
 #include "SignalService.h"
-#include "InputMappingService.h"
+#include "Input/InputMappingService.h"
 
 // C++ Standard Library includes
 #include <string>

@@ -30,7 +30,7 @@ namespace astu {
     using VertexBuffer2f = astu::VertexBuffer2<float>;    
 
     /**
-     * Abstract base class for vertex buffer buildes.
+     * Abstract base class for vertex buffer builders.
      */
     template <typename T>
     class VertexBufferBuilder2 {

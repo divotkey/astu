@@ -32,10 +32,9 @@ list(APPEND astulib_SOURCES
                     src/Audio/WaveCodec.cpp
                     src/Audio/AstuAudio.cpp
 
-                    src/srv/EntityService.cpp
-                    src/srv/EntityFactoryService.cpp
-                    src/srv/IteratingEntitySystem.cpp
-                    src/srv/InputMappingService.cpp
+                    src/ECS/EntityService.cpp
+                    src/ECS/EntityFactoryService.cpp
+                    src/Input/InputMappingService.cpp
 
                     src/Input/Keys.cpp
                     src/Input/Mouse.cpp

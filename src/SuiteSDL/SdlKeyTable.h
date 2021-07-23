@@ -8,7 +8,7 @@
 #pragma once
 
 // Local includes
-#include "InputMappingService.h"
+#include "Input/InputMappingService.h"
 
 // SDL 2 includes
 #include <SDL2/SDL.h>

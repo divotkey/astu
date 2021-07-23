@@ -9,7 +9,7 @@
 
 // Local includes
 #include "Service/Service.h"
-#include "InputMappingService.h"
+#include "Input/InputMappingService.h"
 
 // C++ Standard Library includes
 #include <memory>

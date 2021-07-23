@@ -9,7 +9,7 @@
 
 // Local includes
 #include "Service/UpdateService.h"
-#include "EntitySystems.h"
+#include "ECS/EntitySystems.h"
 #include "Scene.h"
 
 namespace astu::suite2d {

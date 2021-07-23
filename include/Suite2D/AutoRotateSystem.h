@@ -8,7 +8,7 @@
 #pragma once
 
 // Local includes
-#include "EntitySystems.h"
+#include "ECS/EntitySystems.h"
 #include "Service/UpdateService.h"
 #include "Service/TimeService.h"
 

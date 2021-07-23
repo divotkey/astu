@@ -8,7 +8,7 @@
 #pragma once
 
 // Local includes
-#include "EntityService.h"
+#include "ECS/EntityService.h"
 #include "Scene.h"
 
 // C++ Standard Library includes

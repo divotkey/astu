@@ -8,13 +8,13 @@
 #pragma once
 
 // Local includes
+#include "SdlRenderService.h"
+#include "Math/Vector2.h"
 #include "Suite2D/Scene.h"
+#include "Suite2D/VertexBuffer2.h"
 #include "Suite2D/CameraService.h"
 #include "Service/TimeService.h"
 #include "Service/UpdateService.h"
-#include "Math/Vector2.h"
-#include "VertexBuffer2.h"
-#include "SdlRenderService.h"
 
 // C++ Standard libraries includes
 #include <memory>

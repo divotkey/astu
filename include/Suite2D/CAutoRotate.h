@@ -8,7 +8,7 @@
 #pragma once
 
 // Local includes
-#include "EntityService.h"
+#include "ECS/EntityService.h"
 
 namespace astu::suite2d {
 
