@@ -14,8 +14,8 @@ list(APPEND astulib_SOURCES
                     src/Math/Random.cpp
                     src/Math/MathUtils.cpp
 
-                    src/gfx/AstGraphics.cpp
-                    src/gfx/Turtle.cpp
+                    src/Graphics/AstuGraphics.cpp
+                    src/Graphics/Turtle.cpp
 
                     src/Graphics/Palette.cpp
                     src/Graphics/Image.cpp 
@@ -26,7 +26,6 @@ list(APPEND astulib_SOURCES
                     src/Graphics/PatternRenderer.cpp
                     src/Graphics/ImageRenderer.cpp
 
-                    src/io/AstIO.cpp
 
                     src/Audio/AudioBuffer.cpp
                     src/Audio/WaveCodec.cpp
@@ -36,6 +35,7 @@ list(APPEND astulib_SOURCES
                     src/ECS/EntityFactoryService.cpp
                     src/Input/InputMappingService.cpp
 
+                    src/Input/AstuIO.cpp
                     src/Input/Keys.cpp
                     src/Input/Mouse.cpp
                     src/Input/Keyboard.cpp
@@ -62,8 +62,8 @@ OPTION(USE_JACK "Build the project with support for JACK Audio Connection Kit" O
 #set(USE_JACK false CACHE BOOL "Use JACK2")
 if (USE_JACK)
     list(APPEND astulib_SOURCES 
-        src/audio/JackErrorUtil.cpp
-        src/audio/JackClient.cpp
+        src/SuiteJack/JackErrorUtil.cpp
+        src/SuiteJack/JackClient.cpp
         )
 endif(USE_JACK) 
 

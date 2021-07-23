@@ -32,5 +32,4 @@ namespace astu {
         return bmpDecoder.Decode(filename.c_str());  
     }
 
-
 } // end of namespace

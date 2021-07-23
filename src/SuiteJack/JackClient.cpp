@@ -5,12 +5,16 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "SuiteJack/JackClient.h"
+#include "JackErrorUtil.h"
+
+
+// C++ Standard Library includes
 #include <iostream>
 #include <mutex> 
 #include <jack/jack.h>
 #include <cstring>
-#include "JackErrorUtil.h"
-#include "JackClient.h"
 
 namespace astu {
 
