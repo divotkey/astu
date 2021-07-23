@@ -9,6 +9,7 @@
 #include "Service/ServiceManager.h"
 #include "SuiteSDL/SdlVideoService.h"
 #include "SuiteSDL/SdlRenderService.h"
+#include "Graphics/WebColors.h"
 
 // Simple Direct Layer (SDL) includes
 #include <SDL2/SDL.h>
@@ -151,6 +152,10 @@ namespace astu {
 
     const Color4f& SdlRenderService::GetBackgroundColor() const {
         return backgroundColor;
+    }
+
+    size_t SdlRenderService::NumRenderLayers() const {
+        return layers.size();
     }
 
     /////////////////////////////////////////////////

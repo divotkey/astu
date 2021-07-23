@@ -9,6 +9,7 @@
 
 // Local includes
 #include "Graphics/Color.h"
+#include "Graphics/WebColors.h"
 
 // C++ Standard Library includes
 #include <vector>

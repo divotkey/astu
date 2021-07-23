@@ -81,6 +81,25 @@ namespace astu {
      * A template-based service which is used to transmit objects 
      * called "signals" to registered listeners.
      * 
+     * This template class is declared final and hence cannot be used
+     * as base class for other services.
+     * 
+     * **Example**
+     * 
+     * This example adds a new signal service to the service manager, which
+     * transmits objects of type std::string.
+     * 
+     * ```
+     * ASTU_CREATE_AND_ADD_SERVICE(SignalService<std::string>);
+     * ```
+     * 
+     * To transmit signals of type string the following example code can be
+     * used:
+     * 
+     * ```
+     * ASTU_SERVICE(SignalService<std::string>).QueueSignal("This is a signal");
+     * ```
+     * 
      * @ingroup srv_group
      */
     template <typename T>
@@ -229,6 +248,27 @@ namespace astu {
 
     /**
      * A template-based signal listener.
+     * 
+     * Service can derive from this class to become a signal listener of
+     * a certain type of signals.
+     * 
+     * **Example**
+     * 
+     * ```
+     * class MyService
+     *   : public BaseService
+     *   , private SignalListener<std::string>
+     * {
+     * public:
+     * 
+     *   // Constructor
+     *   MyService();
+     * 
+     * private:
+     *   // Inherited via SignalListener
+     *   virtual bool OnSignal(const std::string & signal) override;         
+     * };
+     * ```
      * 
      * @ingroup srv_group
      */

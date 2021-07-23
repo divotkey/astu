@@ -18,6 +18,11 @@
 
 namespace astu {
 
+    /**
+     * A affine transformation in two-dimensional space.
+     * 
+     * @ingroup math_group
+     */
     template <typename T>
     class Transform2 {
     public:

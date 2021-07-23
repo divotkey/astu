@@ -96,7 +96,9 @@ namespace astu {
     };
 
     /**
-     * Inherit from this class to get updated as a service.
+     * Services can derive from this class to get updated once each main cycle.
+     * 
+     * @ingroup srv_group
      */
     class Updatable : public virtual Service, private IUpdatable {
     public:

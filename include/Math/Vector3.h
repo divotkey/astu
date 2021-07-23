@@ -15,6 +15,8 @@ namespace astu {
 
     /**
 	 * A three dimensional vector. 
+     * 
+     * @ingroup math_group
 	 */
     template <typename T>
 	class Vector3 {

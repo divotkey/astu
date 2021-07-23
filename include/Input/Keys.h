@@ -12,6 +12,12 @@
 
 namespace astu {
 
+	/**
+	 * This class defines common input controls which are called Keys for the
+	 * sake of shortness.
+	 * 
+     * @ingroup input_group
+	 */
     class Keys {
     public:
 

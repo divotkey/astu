@@ -89,7 +89,12 @@ namespace astu {
             return vertices[idx];
         }
 
-
+        /**
+         * Returns the with the specified index as two-dimensional segment.
+         * 
+         * @param idx   the edge index
+         * @return the segment representing the edge
+         */
         Segment2<T> GetEdgeAsSegment(size_t idx) const {
             assert(idx < vertices.size() );
             return Segment2<T>(vertices[idx], vertices[(idx + 1) % vertices.size()]);

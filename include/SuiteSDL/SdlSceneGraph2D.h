@@ -26,6 +26,11 @@ namespace astu {
     class SdlVertexBuffer2D;
     class SdlSceneRenderer2D;
 
+    /**
+     * Required for the SdlSceneGraph2D service.
+     * 
+     * @ingroup sdl_group 
+     */
     class SdlVertexBufferBuilderService2D 
         : public Service
         , public VertexBufferBuilder2f
@@ -50,6 +55,11 @@ namespace astu {
         std::vector<astu::Vector2f> vertices;
     };
 
+    /**
+     * Provides a SDL-based implementation of the 2D scene graph.
+     * 
+     * @ingroup sdl_group 
+     */
     class SdlSceneGraph2D final 
         : public SdlRenderLayer 
         , public Updatable

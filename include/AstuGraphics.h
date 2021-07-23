@@ -24,6 +24,7 @@
 // ASTU Library includes
 #include "Graphics/Color.h"
 #include "Graphics/ColorHsv.h"
+#include "Graphics/WebColors.h"
 #include "Graphics/Palette.h"
 #include "Graphics/Image.h"
 #include "Graphics/ImageRenderer.h"

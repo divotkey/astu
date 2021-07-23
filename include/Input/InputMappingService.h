@@ -23,6 +23,14 @@ namespace astu {
     /////// Key
     /////////////////////////////////////////////////
 
+    /**
+     * Keys represent input controlls and are caleld Keys for the sake of shortness.
+     * A Key can be an actuall key on the keyboard but also a button on the 
+     * gamepad or mouse etc. Keys are used to define input mapping in the
+     * context of the InputMappingService.
+     * 
+     * @ingroup input_group
+     */
     class Key {
     public:
 
@@ -61,6 +69,9 @@ namespace astu {
     /////// KeyState
     /////////////////////////////////////////////////
 
+    /**
+     * Key states are used by the InputMappingService internally.
+     */
     class KeyState {
     public:
         KeyState() : pressed(false), value(0) {}
@@ -73,6 +84,11 @@ namespace astu {
     /////// ActionMapping
     /////////////////////////////////////////////////
 
+    /**
+     * Maps an action to a input control (Key).
+     * 
+     * @ingroup input_group
+     */
     class ActionMapping {
     public:
 
@@ -104,6 +120,11 @@ namespace astu {
     /////// ActionBinding
     /////////////////////////////////////////////////
 
+    /**
+     * Binds an action to a delegate.
+     * 
+     * @ingroup input_group
+     */
     class ActionBinding {
     public:
 
@@ -161,6 +182,11 @@ namespace astu {
     /////// AxisMapping
     /////////////////////////////////////////////////
 
+    /**
+     * Maps an axis to an input control (key.
+     * 
+     * @ingroup input_group
+     */
     class AxisMapping {
     public:
 
@@ -209,6 +235,11 @@ namespace astu {
     /////// AxisBinding
     /////////////////////////////////////////////////
 
+    /**
+     * Binds an axis to a delegate.
+     * 
+     * @ingroup input_group
+     */
     class AxisBinding {
     public:
 
@@ -268,6 +299,8 @@ namespace astu {
 
     /**
      * This service mapps input events to game actions or axis.
+     * 
+     * @ingroup input_group
      */
     class InputMappingService 
         : virtual public Service

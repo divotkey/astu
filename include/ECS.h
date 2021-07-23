@@ -7,7 +7,7 @@
 
 /**
  * @file
- * @brief This file defines public functions, templates and classes related to the Entity–component–system (ECS).
+ * @brief This file defines public functions, templates and classes offered by the entity component system (ECS).
  */
 
 #include "ECS/EntityService.h"
@@ -17,8 +17,8 @@
 namespace astu {
 
     /**
-     * @defgroup ecs_group Service
-     * @brief This module contains templates, classes and functions dedicated to the Entity–component–system (ECS).
+     * @defgroup ecs_group Entity component system
+     * @brief This module contains templates, classes and functions dedicated to the entity component system (ECS).
      * @{
      */
 

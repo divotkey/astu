@@ -16,6 +16,7 @@
 #include "Graphics/PatternRenderer.h"
 #include "Graphics/Quadtree.h"
 #include "Graphics/Pattern.h"
+#include "Graphics/WebColors.h"
 #include "Math/Vector2.h"
 #include "Math/MathUtils.h"
 

@@ -17,6 +17,9 @@
 
 namespace astu {
 
+    /**
+     * 
+     */
     SdlVideoService::SdlVideoService()
         : Service("SDL Video Service")
         , window(nullptr)

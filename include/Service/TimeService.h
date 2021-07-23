@@ -17,7 +17,7 @@
 namespace astu {
 
     /**
-     * Abstract base class for 
+     * This abstract base class allows to query the current time (absolute and elapsed).
      * 
      * @ingroup srv_group
      */
@@ -45,8 +45,9 @@ namespace astu {
     };
 
     /**
-     * Services can derive from this if access to elapsed and absolute time is 
-     * needed.
+     * Services can derive from this class to have easy access to time service.
+     * 
+     * @ingroup srv_group
      */
     class TimeClient : virtual Service {
     public:

@@ -114,9 +114,10 @@ namespace astu {
          */
         bool HasLayer(ISdlRenderLayer &layer);
 
-        // INherited via RenderService
+        // Inherited via RenderService
         virtual void SetBackgroundColor(const Color4f& bg) override;
         virtual const Color4f& GetBackgroundColor() const override;
+        virtual size_t NumRenderLayers() const override;
 
     private:
         /** The SDL renderer. */

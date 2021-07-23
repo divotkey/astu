@@ -1,0 +1,287 @@
+// Sword Script to create WebColors enumeration for AST-Utilities.
+// Copyright 2021 (c) Roman Divotkey. All rights reserved.
+
+Colors = [];
+Categories = [];
+
+DefineWebColors();
+EmitHeader();
+
+function EmitHeader()
+{
+	§:
+	/*
+ 	* ASTU - AST Utilities
+ 	* A collection of Utilities for Applied Software Techniques (AST).
+ 	* 
+ 	* Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
+ 	*/
+
+	#pragma once
+
+	namespace astu {
+
+    /**
+     * This enumeration defines values for color names according to 
+     * the W3C specification.
+     * 
+     * @ingroup gfx_group
+     */
+    enum WebColors {
+	:§
+
+	indent(+1);
+	for (i = 0; i < Categories.length; ++i) {
+		EmitCategoryHeader(Categories[i]);
+	}
+	indent(-1);
+
+	§:
+		};
+
+	} // end of namespace
+	:§
+}
+
+function EmitCategoryHeader(category)
+{
+	print "Emitting category \"" + category[0] + "\"";
+	s = "////////";
+	for (i = 0; i < category[0].length; ++i) {
+		s += "/";
+	}
+	s += "////////";
+	§:
+ 
+		§{s}
+		/////// §{category[0]} ///////
+		§{s}
+		
+	:§
+
+	for (i = 0; i < category[1].length; ++i) {
+		color = FindColor(category[1][i]);
+		if (color != undefined) {
+			EmitColorHeader(color);
+		} else {
+			messageBox("Color is unknown \"" + category[1][i] + "\"", "Create WebColors", 2);
+		}
+	}	
+}
+
+function EmitColorHeader(color)
+{
+	§:
+		/** Color constant for color *§{color[0]}* (0x§{color[1]}). */
+		§{color[0]} = 0x§{color[1]},
+
+	:§
+}
+
+function FindColor(name)
+{
+  for (i = 0; i < Colors.length; ++i) {
+		if (Colors[i][0] == name) {
+			return Colors[i];
+		}
+	}
+
+	return undefined;
+}
+
+function AddCategory(name, colorList)
+{
+	Categories.push([name, colorList]);
+}
+
+function AddColor(name, hexName)
+{
+	Colors.push([name, hexName]);
+}
+	
+function DefineWebColors()
+{
+	AddColor("AliceBlue", "f0f8ff");
+	AddColor("AntiqueWhite", "faebd7");
+	AddColor("Aqua", "00ffff");
+	AddColor("Aquamarine", "7fffd4");
+	AddColor("Azure", "f0ffff");
+	AddColor("Beige", "f5f5dc");
+	AddColor("Bisque", "ffe4c4");
+	AddColor("Black", "000000");
+	AddColor("BlanchedAlmond", "ffebcd");
+	AddColor("Blue", "0000ff");
+	AddColor("BlueViolet", "8a2be2");
+	AddColor("Brown", "a52a2a");
+	AddColor("Burlywood", "deb887");
+	AddColor("CadetBlue", "5f9ea0");
+	AddColor("Chartreuse", "7fff00");
+	AddColor("Chocolate", "d2691e");
+	AddColor("Coral", "ff7f50");
+	AddColor("CornflowerBlue", "6495ed");
+	AddColor("Cornsilk", "fff8dc");
+	AddColor("Crimson", "dc143c");
+	AddColor("Cyan", "00ffff");
+	AddColor("DarkBlue", "00008b");
+	AddColor("DarkCyan", "008b8b");
+	AddColor("DarkGoldenrod", "b8860b");
+	AddColor("DarkGray", "a9a9a9");
+	AddColor("DarkGreen", "006400");
+	AddColor("DarkGrey", "a9a9a9");
+	AddColor("DarkKhaki", "bdb76b");
+	AddColor("DarkMagenta", "8b008b");
+	AddColor("DarkOliveGreen", "556b2f");
+	AddColor("DarkOrange", "ff8c00");
+	AddColor("DarkOrchid", "9932cc");
+	AddColor("DarkRed", "8b0000");
+	AddColor("DarkSalmon", "e9967a");
+	AddColor("DarkSeaGreen", "8fbc8f");
+	AddColor("DarkSlateBlue", "483d8b");
+	AddColor("DarkSlateGray", "2f4f4f");
+	AddColor("DarkSlateGrey", "2f4f4f");
+	AddColor("DarkTurquoise", "00ced1");
+	AddColor("DarkViolet", "9400d3");
+	AddColor("DeepPink", "ff1493");
+	AddColor("DeepSkyBlue", "00bfff");
+	AddColor("DimGray", "696969");
+	AddColor("DimGrey", "696969");
+	AddColor("DodgerBlue", "1e90ff");
+	AddColor("Firebrick", "b22222");
+	AddColor("FloralWhite", "fffaf0");
+	AddColor("ForestGreen", "228b22");
+	AddColor("Fuchsia", "ff00ff");
+	AddColor("Gainsboro", "dcdcdc");
+	AddColor("GhostWhite", "f8f8ff");
+	AddColor("Gold", "ffd700");
+	AddColor("Goldenrod", "daa520");
+	AddColor("Gray", "808080");
+	AddColor("Green", "008000");
+	AddColor("GreenYellow", "adff2f");
+	AddColor("Grey", "808080");
+	AddColor("Honeydew", "f0fff0");
+	AddColor("HotPink", "ff69b4");
+	AddColor("IndianRed", "cd5c5c");
+	AddColor("Indigo", "4b0082");
+	AddColor("Ivory", "fffff0");
+	AddColor("Khaki", "f0e68c");
+	AddColor("Lavender", "e6e6fa");
+	AddColor("LavenderBlush", "fff0f5");
+	AddColor("LawnGreen", "7cfc00");
+	AddColor("LemonChiffon", "fffacd");
+	AddColor("LightBlue", "add8e6");
+	AddColor("LightCoral", "f08080");
+	AddColor("LightCyan", "e0ffff");
+	AddColor("LightGoldenrodYellow", "fafad2");
+	AddColor("LightGray", "d3d3d3");
+	AddColor("LightGreen", "90ee90");
+	AddColor("LightGrey", "d3d3d3");
+	AddColor("LightPink", "ffb6c1");
+	AddColor("LightSalmon", "ffa07a");
+	AddColor("LightSeaGreen", "20b2aa");
+	AddColor("LightSkyBlue", "87cefa");
+	AddColor("LightSlateGray", "778899");
+	AddColor("LightSlateGrey", "778899");
+	AddColor("LightSteelBlue", "b0c4de");
+	AddColor("LightYellow", "ffffe0");
+	AddColor("Lime", "00ff00");
+	AddColor("LimeGreen", "32cd32");
+	AddColor("Linen", "faf0e6");
+	AddColor("Magenta", "ff00ff");
+	AddColor("Maroon", "800000");
+	AddColor("MediumAquamarine", "66cdaa");
+	AddColor("MediumBlue", "0000cd");
+	AddColor("MediumOrchid", "ba55d3");
+	AddColor("MediumPurple", "9370db");
+	AddColor("MediumSeaGreen", "3cb371");
+	AddColor("MediumSlateBlue", "7b68ee");
+	AddColor("MediumSpringGreen", "00fa9a");
+	AddColor("MediumTurquoise", "48d1cc");
+	AddColor("MediumVioletRed", "c71585");
+	AddColor("MidnightBlue", "191970");
+	AddColor("MintCream", "f5fffa");
+	AddColor("MistyRose", "ffe4e1");
+	AddColor("Moccasin", "ffe4b5");
+	AddColor("NavajoWhite", "ffdead");
+	AddColor("Navy", "000080");
+	AddColor("OldLace", "fdf5e6");
+	AddColor("Olive", "808000");
+	AddColor("OliveDrab", "6b8e23");
+	AddColor("Orange", "ffa500");
+	AddColor("OrangeRed", "ff4500");
+	AddColor("Orchid", "da70d6");
+	AddColor("PaleGoldenrod", "eee8aa");
+	AddColor("PaleGreen", "98fb98");
+	AddColor("PaleTurquoise", "afeeee");
+	AddColor("PaleVioletRed", "db7093");
+	AddColor("PapayaWhip", "ffefd5");
+	AddColor("PeachPuff", "ffdab9");
+	AddColor("Peru", "cd853f");
+	AddColor("Pink", "ffc0cb");
+	AddColor("Plum", "dda0dd");
+	AddColor("PowderBlue", "b0e0e6");
+	AddColor("Purple", "800080");
+	AddColor("Red", "ff0000");
+	AddColor("RosyBrown", "bc8f8f");
+	AddColor("RoyalBlue", "4169e1");
+	AddColor("SaddleBrown", "8b4513");
+	AddColor("Salmon", "fa8072");
+	AddColor("SandyBrown", "f4a460");
+	AddColor("SeaGreen", "2e8b57");
+	AddColor("Seashell", "fff5ee");
+	AddColor("Sienna", "a0522d");
+	AddColor("Silver", "c0c0c0");
+	AddColor("SkyBlue", "87ceeb");
+	AddColor("SlateBlue", "6a5acd");
+	AddColor("SlateGray", "708090");
+	AddColor("SlateGrey", "708090");
+	AddColor("Snow", "fffafa");
+	AddColor("SpringGreen", "00ff7f");
+	AddColor("SteelBlue", "4682b4");
+	AddColor("Tan", "d2b48c");
+	AddColor("Teal", "008080");
+	AddColor("Thistle", "d8bfd8");
+	AddColor("Tomato", "ff6347");
+	AddColor("Turquoise", "40e0d0");
+	AddColor("Violet", "ee82ee");
+	AddColor("Wheat", "f5deb3");
+	AddColor("White", "ffffff");
+	AddColor("WhiteSmoke", "f5f5f5");
+	AddColor("Yellow", "ffff00");
+	AddColor("YellowGreen", "9acd32");
+
+	AddCategory("Pink colors", ["MediumVioletRed", "DeepPink", "PaleVioletRed", 
+							"HotPink", "LightPink", "Pink"]);
+	AddCategory("Red colors", ["DarkRed", "Red", "Firebrick", "Crimson", "IndianRed", 
+							"LightCoral", "Salmon", "DarkSalmon", "LightSalmon"]);
+	AddCategory("Orange colors", ["OrangeRed", "Tomato", "DarkOrange", "Coral", "Orange"]);
+	AddCategory("Yellow colors", ["DarkKhaki", "Gold", "Khaki", "PeachPuff", "Yellow", 
+							"PaleGoldenrod", "Moccasin", "PapayaWhip",
+ 							"LightGoldenrodYellow", "LemonChiffon", "LightYellow"]);
+	AddCategory("Brown colors", ["Maroon", "Brown", "SaddleBrown", "Sienna", 
+							"Chocolate", "DarkGoldenrod", "Peru", "RosyBrown", "Goldenrod",
+ 							"SandyBrown", "Tan", "Burlywood", "Wheat", "NavajoWhite", "Bisque", 
+							"BlanchedAlmond", "Cornsilk"]);
+	AddCategory("Green Colors", ["DarkGreen", "Green", "DarkOliveGreen", "ForestGreen", 
+							"SeaGreen", "Olive", "OliveDrab", "MediumSeaGreen", "LimeGreen", "Lime",
+							"SpringGreen", "MediumSpringGreen", "DarkSeaGreen", "MediumAquamarine", 
+							"YellowGreen", "LawnGreen", "Chartreuse", "LightGreen", "GreenYellow", 
+							"PaleGreen"]);
+	AddCategory("Cyan colors", ["Teal", "DarkCyan", "LightSeaGreen", "CadetBlue", 
+							"DarkTurquoise", "MediumTurquoise", "Turquoise", "Aqua", "Cyan", 
+							"Aquamarine", "PaleTurquoise", "LightCyan"]);
+	AddCategory("Blue colors", ["Navy", "DarkBlue", "MediumBlue", "Blue", "MidnightBlue", 
+							"RoyalBlue", "SteelBlue", "DodgerBlue", "DeepSkyBlue", "CornflowerBlue", 
+							"SkyBlue", "LightSkyBlue", "LightSteelBlue", "LightBlue", "PowderBlue"]);
+	AddCategory("Purple, violet, and magenta colors", ["Indigo", "Purple", "DarkMagenta", 
+							"DarkViolet", "DarkSlateBlue", "BlueViolet", "DarkOrchid", "Fuchsia", 
+							"Magenta", "SlateBlue", "MediumSlateBlue", "MediumOrchid", "MediumPurple", 
+							"Orchid", "Violet", "Plum", "Thistle", "Lavender"]);
+	AddCategory("White colors", ["MistyRose", "AntiqueWhite", "Linen", "Beige", "WhiteSmoke", 
+							"LavenderBlush", "OldLace", "AliceBlue", "Seashell", "GhostWhite", 
+							"Honeydew", "FloralWhite", "Azure", "MintCream", "Snow", 
+							"Ivory", "White"]);
+	AddCategory("Gray and black colors", ["Black", "DarkSlateGray", "DimGray", 
+							"SlateGray", "Gray", "LightSlateGray", "DarkGray", "Silver", 
+							"LightGray", "Gainsboro"]);
+
+}

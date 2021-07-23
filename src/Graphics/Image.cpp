@@ -7,6 +7,7 @@
 
 // Local includes
 #include "Graphics/Image.h"
+#include "Graphics/WebColors.h"
 
 // C++ Standard Library includes
 #include <stdexcept>

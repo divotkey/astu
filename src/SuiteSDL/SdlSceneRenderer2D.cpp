@@ -60,10 +60,10 @@ namespace astu {
             const auto p2 = tx.TransformPoint(*it);
             SDL_RenderDrawLine(
                 renderer, 
-                static_cast<int>(p1.x), 
-                static_cast<int>(p1.y), 
-                static_cast<int>(p2.x), 
-                static_cast<int>(p2.y)
+                static_cast<int>(p1.x + 0.5f), 
+                static_cast<int>(p1.y + 0.5f), 
+                static_cast<int>(p2.x + 0.5f), 
+                static_cast<int>(p2.y + 0.5f)
                 );
 
             p1 = p2;

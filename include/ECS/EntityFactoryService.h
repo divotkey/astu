@@ -20,6 +20,8 @@ namespace astu {
     /**
      * This entity factory is used to generate new entities, where entities are
      * defined by prototypes that are cloned when new entities are created. 
+     * 
+     * @ingroup ecs_group
      */
     class EntityFactoryService : public virtual Service {
     public:
@@ -60,20 +62,20 @@ namespace astu {
         void DeregisterAllPrototypes();
 
         /**
-         * Creates a new entity based on an registered prototype.
+         * Creates a new entity based on a registered prototype.
          * 
          * @param protoName the name of the prototype
          * @throws std::logic_error in case the given name is unknown
          */
         std::shared_ptr<Entity> CreateEntity(const std::string & protoName) const;
 
-        // Inherited via Service
-        virtual void OnStartup() override;
-        virtual void OnShutdown() override;
-
     private:
         /** The registered prototypes. */
         std::map<std::string, std::shared_ptr<Entity>> prototypes;
+
+        // Inherited via Service
+        virtual void OnStartup() override;
+        virtual void OnShutdown() override;
     };
 
 } // end of namespace

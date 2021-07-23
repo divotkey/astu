@@ -13,6 +13,7 @@
 #include "Math/Vector2.h"
 #include "Math/Matrix3.h"
 #include "Graphics/Color.h"
+#include "Graphics/WebColors.h"
 
 // C++ Standard Library includes
 #include <stack>
