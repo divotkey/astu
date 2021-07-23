@@ -8,9 +8,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(astulib_SOURCES )
 list(APPEND astulib_SOURCES
                     src/AstUtils0.cpp
-                    src/misc/VersionInfo.cpp
-                    src/math/Random.cpp
-                    src/math/MathUtils.cpp
+                    src/Util/VersionInfo.cpp
+                    src/Util/Controllable.cpp
+                    src/Util/Controller.cpp
+                    src/Math/Random.cpp
+                    src/Math/MathUtils.cpp
 
                     src/gfx/AstGraphics.cpp
                     src/gfx/Turtle.cpp
@@ -26,16 +28,14 @@ list(APPEND astulib_SOURCES
 
                     src/io/AstIO.cpp
 
-                    src/audio/AudioBuffer.cpp
-                    src/audio/WaveCodec.cpp
-                    src/audio/AstAudio.cpp
+                    src/Audio/AudioBuffer.cpp
+                    src/Audio/WaveCodec.cpp
+                    src/Audio/AstuAudio.cpp
 
                     src/srv/EntityService.cpp
                     src/srv/EntityFactoryService.cpp
                     src/srv/IteratingEntitySystem.cpp
                     src/srv/InputMappingService.cpp
-                    src/srv/Controllable.cpp
-                    src/srv/Controller.cpp
 
                     src/Input/Keys.cpp
                     src/Input/Mouse.cpp
@@ -73,10 +73,11 @@ OPTION(USE_SDL "Build the project with support for SDL2" OFF)
 #set(WITH_SDL false CACHE BOOL "Use SDL")
 
 if(USE_SDL)
+
     list(APPEND astulib_SOURCES 
-        src/SDL/SdlApplication.cpp
-        src/SDL/Application.cpp
-        src/SDL/ApplicationImpl.cpp
+        src/SuiteSDL/SdlApplication0.cpp
+        src/SuiteSDL/Application.cpp
+        src/SuiteSDL/ApplicationImpl.cpp
         
         src/SuiteSDL/SdlService.cpp
         src/SuiteSDL/SdlEventService.cpp
@@ -91,7 +92,7 @@ if(USE_SDL)
         src/SuiteSDL/SdlSceneRenderer2D.cpp
         )
 else(USE_SDL)
-    list(APPEND astulib_SOURCES src/SDL/SdlApplicationDummy.cpp)
+    list(APPEND astulib_SOURCES src/SuiteSDL/SdlApplicationDummy.cpp)
 endif(USE_SDL)                 
 
 add_library(astu ${astulib_SOURCES})

@@ -6,7 +6,7 @@
  */
 
 #include "AstUtilsConfig.h"
-#include "VersionInfo.h"
+#include "Util/VersionInfo.h"
 
 namespace astu {
 

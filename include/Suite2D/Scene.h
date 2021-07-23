@@ -14,7 +14,7 @@
 #include <string>
 
 // Local includes
-#include "Controllable.h"
+#include "Util/Controllable.h"
 #include "VertexBuffer2.h"
 #include "Math/Vector2.h"
 #include "Math/Matrix3.h"

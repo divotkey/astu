@@ -11,8 +11,7 @@
  * @file
  * @brief This file defines public functions offered by AST utilities API-Level 0.
  */
-
-#include "SdlApplication.h"
+#include "SuiteSDL/SdlApplication0.h"
 
 /////////////////////////////////////////////////
 /////// I/O Functions
@@ -1031,10 +1030,43 @@ void ClearImage();
  */
 int WriteImage(const char* filename);
 
+/**
+ * Sets the color used when drawing images.
+ * 
+ * @param r the red color channel [0, 255] 
+ * @param g the green color channel [0, 255] 
+ * @param b the blue color channel [0, 255] 
+ * @param a the transparency color channel [0, 255] 
+ */
 void SetDrawColor(int r, int g, int b, int a = 255);
+
+/**
+ * Sets the color used to clear images.
+ * 
+ * @param r the red color channel [0, 255] 
+ * @param g the green color channel [0, 255] 
+ * @param b the blue color channel [0, 255] 
+ */
 void SetClearColor(int r, int g, int b);
 
+/**
+ * Draws a line on the current image.
+ * 
+ * @param x0    the x-coordinate of the start point
+ * @param y0    the y-coordinate of the start point
+ * @param x1    the x-coordinate of the end point
+ * @param y1    the y-coordinate of the end point
+ * @param w     the line thickness
+ */
 void DrawLine(double x0, double y0, double x1, double y1, double w = 1);
+
+/**
+ * Draw a circle on the current image.
+ * 
+ * @param x the x-coordinate of the center of the circle
+ * @param y the y-coordinate of the center of the circle
+ * @param r the radius of the circle
+ */
 void DrawCircle(double x, double y, double r);
 
 /**@}*/
@@ -1146,10 +1178,10 @@ enum ErrorCode {
     /** The current state is invalid for this operation. */
     INVALID_STATE,
 
-    /** An error specifc to Simple Direct Layer. */
+    /** An error specific to Simple Direct Layer. */
     SDL_ERROR,
 
-    /** An error specifc to Simple Direct Layer. */
+    /** An error specific to Simple Direct Layer. */
     JACK_ERROR,
 
     /** Custom error code set by application. */

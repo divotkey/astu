@@ -5,8 +5,8 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-#include "ApplicationImpl.h"
-#include "Application.h"
+#include "SuiteSDL/Application.h"
+#include "SuiteSDL/ApplicationImpl.h"
 
 namespace astu {
 

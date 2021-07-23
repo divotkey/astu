@@ -7,7 +7,7 @@
 
 #include <stdexcept>
 #include <iostream>
-#include "VersionInfo.h"
+#include "Util/VersionInfo.h"
 #include "AstUtilsConfig.h"
 #include "ApplicationImpl.h"
 

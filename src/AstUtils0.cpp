@@ -5,8 +5,19 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Local includes
+#include "AstUtils0.h"
+#include "Math/Random.h"
+#include "Util/VersionInfo.h"
+#include "Graphics/Image.h"
+#include "Graphics/BmpCodec.h"
+#include "Graphics/Quadtree.h"
+#include "Graphics/PatternRenderer.h"
+#include "Audio/WaveCodec.h"
+#include "Audio/AudioBuffer.h"
+
+// C++ Standard Libryry includes
 #define _USE_MATH_DEFINES
- 
 #include <cassert>
 #include <cmath>
 #include <string>
@@ -17,16 +28,6 @@
 #include <algorithm>
 #include <memory>
 
-#include "VersionInfo.h"
-#include "audio/WaveCodec.h"
-#include "audio/AudioBuffer.h"
-#include "Graphics/Image.h"
-#include "Graphics/BmpCodec.h"
-#include "Graphics/Quadtree.h"
-#include "Graphics/PatternRenderer.h"
-#include "Math/Random.h"
-
-#include "AstUtils0.h"
 
 using namespace astu;
 using namespace std;

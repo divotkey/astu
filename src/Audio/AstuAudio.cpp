@@ -10,13 +10,16 @@
  *----------------------------------------------------------------------------
  */
 
+// Local includes
+#include "AstAudio.h"
+#include "Audio/WaveCodec.h"
+
+// C++ Standard Library includes
 #include <cassert>
 #include <stdexcept>
 #include <iostream>
 #include <fstream>
 #include <limits>
-#include "audio/WaveCodec.h"
-#include "AstAudio.h"
 
 namespace astu {
 

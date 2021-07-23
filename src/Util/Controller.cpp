@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "Controller.h"
+#include "Util/Controller.h"
 
 // C++ Standard Library includes
 #include <memory>

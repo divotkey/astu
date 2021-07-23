@@ -5,21 +5,21 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+// Libary-Local includes
+#include "Math/Vector2.h"
+#include "AstUtils0.h"
+#include "SuiteSDL/SdlApplication0.h"
+
+// SDL includes
+#include <array>
+#include <SDL2/SDL.h>
+
 // C++ Standard Library includes
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <algorithm>
 #include <sstream>
 #include <string>
-
-// SDL includes
-#include <array>
-#include <SDL2/SDL.h>
-
-// Libary-Local includes
-#include "Math/Vector2.h"
-#include "AstUtils0.h"
-#include "SdlApplication.h"
 
 #define FPS_UPDATE_INTERVAL 1.0
 #define NUM_MOUSE_BUTTONS   5

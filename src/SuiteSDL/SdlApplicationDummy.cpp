@@ -6,7 +6,7 @@
  */
 
 #include "AstUtils0.h"
-#include "SdlApplication.h"
+#include "SuiteSDL/SdlApplication0.h"
 
 int SetNoSDLSupportError()
 {

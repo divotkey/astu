@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "Controllable.h"
+#include "Util/Controllable.h"
 
 // C++ Standard Library includes
 #include <stdexcept>
