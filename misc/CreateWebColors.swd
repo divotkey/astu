@@ -4,7 +4,7 @@
 Colors = [];
 Categories = [];
 
-DefineWebColors();
+DefineColors();
 EmitHeader();
 
 function EmitHeader()
@@ -27,16 +27,19 @@ function EmitHeader()
      * 
      * @ingroup gfx_group
      */
-    enum WebColors {
+		class WebColors {
+		public:
+			enum {
 	:§
 
-	indent(+1);
+	indent(+2);
 	for (i = 0; i < Categories.length; ++i) {
 		EmitCategoryHeader(Categories[i]);
 	}
-	indent(-1);
+	indent(-2);
 
 	§:
+			};
 		};
 
 	} // end of namespace
@@ -99,7 +102,7 @@ function AddColor(name, hexName)
 	Colors.push([name, hexName]);
 }
 	
-function DefineWebColors()
+function DefineColors()
 {
 	AddColor("AliceBlue", "f0f8ff");
 	AddColor("AntiqueWhite", "faebd7");
