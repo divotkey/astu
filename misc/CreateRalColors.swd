@@ -1,0 +1,762 @@
+// Sword Script to create RalColors enumeration for AST-Utilities.
+// Copyright 2021 (c) Roman Divotkey. All rights reserved.
+
+Colors = [];
+Categories = [];
+
+DefineColors();
+EmitHeader();
+
+function EmitHeader()
+{
+	§:
+	/*
+ 	* ASTU - AST Utilities
+ 	* A collection of Utilities for Applied Software Techniques (AST).
+ 	* 
+ 	* Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
+ 	*/
+
+	#pragma once
+
+	namespace astu {
+		
+    /**
+     * This enumeration defines values for color names according to 
+     * the RAL colou standard.
+     * 
+     * @ingroup gfx_group
+     */
+		class RalColors {
+		public:
+
+			enum {
+
+	:§
+
+	indent(+2);
+	for (i = 0; i < Colors.length; ++i) {
+		EmitColorHeader(Colors[i]);
+	}
+	indent(-2);
+
+	§:
+			};
+		};
+
+	} // end of namespace
+	:§
+}
+
+function EmitCategoryHeader(category)
+{
+	print "Emitting category \"" + category[0] + "\"";
+	s = "////////";
+	for (i = 0; i < category[0].length; ++i) {
+		s += "/";
+	}
+	s += "////////";
+	§:
+ 
+		§{s}
+		/////// §{category[0]} ///////
+		§{s}
+		
+	:§
+
+	for (i = 0; i < category[1].length; ++i) {
+		color = FindColor(category[1][i]);
+		if (color != undefined) {
+			EmitColorHeader(color);
+		} else {
+			messageBox("Color is unknown \"" + category[1][i] + "\"", "Create WebColors", 2);
+		}
+	}	
+}
+
+function EmitColorHeader(color)
+{
+	§:
+		/** Color constant for color *§{color[0]}* (§{color[1]}). */
+		§{color[0]} = §{color[1]},
+
+	:§
+}
+
+function FindColor(name)
+{
+  for (i = 0; i < Colors.length; ++i) {
+		if (Colors[i][0] == name) {
+			return Colors[i];
+		}
+	}
+
+	return undefined;
+}
+
+function AddCategory(name, colorList)
+{
+	Categories.push([name, colorList]);
+}
+
+function AddColor(name, hexName)
+{
+	Colors.push([name, hexName]);
+}
+	
+function DefineColors()
+{
+	AddColor("GreenBeige", "0xBEBD7F"); 
+	AddColor("Beige", "0xC2B078"); 
+	AddColor("SandYellow", "0xC6A664"); 
+	AddColor("SignalYellow", "0xE5BE01"); 
+	AddColor("GoldenYellow", "0xCDA434"); 
+	AddColor("HoneyYellow", "0xA98307"); 
+	AddColor("MaizeYellow", "0xE4A010"); 
+	AddColor("DaffodilYellow", "0xDC9D00"); 
+	AddColor("BrownBeige", "0x8A6642"); 
+	AddColor("LemonYellow", "0xC7B446"); 
+	AddColor("OysterWhite", "0xEAE6CA"); 
+	AddColor("Ivory", "0xE1CC4F"); 
+	AddColor("LightIvory", "0xE6D690"); 
+	AddColor("SulfurYellow", "0xEDFF21"); 
+	AddColor("SaffronYellow", "0xF5D033"); 
+	AddColor("ZincYellow", "0xF8F32B"); 
+	AddColor("GreyBeige", "0x9E9764"); 
+	AddColor("OliveYellow", "0x999950"); 
+	AddColor("RapeYellow", "0xF3DA0B"); 
+	AddColor("TrafficYellow", "0xFAD201"); 
+	AddColor("OchreYellow", "0xAEA04B"); 
+	AddColor("LuminousYellow", "0xFFFF00"); 
+	AddColor("Curry", "0x9D9101"); 
+	AddColor("MelonYellow", "0xF4A900"); 
+	AddColor("BroomYellow", "0xD6AE01"); 
+	AddColor("DahliaYellow", "0xF3A505"); 
+	AddColor("PastelYellow", "0xEFA94A"); 
+	AddColor("PearlBeige", "0x6A5D4D"); 
+	AddColor("PearlGold", "0x705335"); 
+	AddColor("SunYellow", "0xF39F18"); 
+	AddColor("YellowOrange", "0xED760E"); 
+	AddColor("RedOrange", "0xC93C20"); 
+	AddColor("Vermilion", "0xCB2821"); 
+	AddColor("PastelOrange", "0xFF7514"); 
+	AddColor("PureOrange", "0xF44611"); 
+	AddColor("LuminousOrange", "0xFF2301"); 
+	AddColor("LuminousBrightOrange", "0xFFA420"); 
+	AddColor("BrightRedOrange", "0xF75E25"); 
+	AddColor("TrafficOrange", "0xF54021"); 
+	AddColor("SignalOrange", "0xD84B20"); 
+	AddColor("DeepOrange", "0xEC7C26"); 
+	AddColor("SalmonRange", "0xE55137"); 
+	AddColor("PearlOrange", "0xC35831"); 
+	AddColor("FlameRed", "0xAF2B1E"); 
+	AddColor("SignalRed", "0xA52019"); 
+	AddColor("CarmineRed", "0xA2231D"); 
+	AddColor("RubyRed", "0x9B111E"); 
+	AddColor("PurpleRed", "0x75151E"); 
+	AddColor("WineRed", "0x5E2129"); 
+	AddColor("BlackRed", "0x412227"); 
+	AddColor("OxideRed", "0x642424"); 
+	AddColor("BrownRed", "0x781F19"); 
+	AddColor("BeigeRed", "0xC1876B"); 
+	AddColor("TomatoRed", "0xA12312"); 
+	AddColor("AntiquePink", "0xD36E70"); 
+	AddColor("LightPink", "0xEA899A"); 
+	AddColor("CoralRed", "0xB32821"); 
+	AddColor("Rose", "0xE63244"); 
+	AddColor("StrawberryRed", "0xD53032"); 
+	AddColor("TrafficRed", "0xCC0605"); 
+	AddColor("SalmonPink", "0xD95030"); 
+	AddColor("LuminousRed", "0xF80000"); 
+	AddColor("LuminousBrightRed", "0xFE0000"); 
+	AddColor("RaspberryRed", "0xC51D34"); 
+	AddColor("PureRed", "0xCB3234"); 
+	AddColor("OrientRed", "0xB32428"); 
+	AddColor("PearlRubyRed", "0x721422"); 
+	AddColor("PearlPink", "0xB44C43"); 
+	AddColor("RedLilac", "0x6D3F5B"); 
+	AddColor("RedViolet", "0x922B3E"); 
+	AddColor("HeatherViolet", "0xDE4C8A"); 
+	AddColor("ClaretViolet", "0x641C34"); 
+	AddColor("BlueLilac", "0x6C4675"); 
+	AddColor("TrafficPurple", "0xA03472"); 
+	AddColor("PurpleViolet", "0x4A192C"); 
+	AddColor("SignalViolet", "0x924E7D"); 
+	AddColor("PastelViolet", "0xA18594"); 
+	AddColor("Telemagenta", "0xCF3476"); 
+	AddColor("PearlViolet", "0x8673A1"); 
+	AddColor("PearlBlackBerry", "0x6C6874"); 
+	AddColor("VioletBlue", "0x354D73"); 
+	AddColor("GreenBlue", "0x1F3438"); 
+	AddColor("UltramarineBlue", "0x20214F"); 
+	AddColor("SaphireBlue", "0x1D1E33"); 
+	AddColor("BlackBlue", "0x18171C"); 
+	AddColor("SignalBlue", "0x1E2460"); 
+	AddColor("BrillantBlue", "0x3E5F8A"); 
+	AddColor("GreyBlue", "0x26252D"); 
+	AddColor("AzureBlue", "0x025669"); 
+	AddColor("GentianBlue", "0x0E294B"); 
+	AddColor("SteelBlue", "0x231A24"); 
+	AddColor("LightBlue", "0x3B83BD"); 
+	AddColor("CobaltBlue", "0x1E213D"); 
+	AddColor("PigeonBlue", "0x606E8C"); 
+	AddColor("SkyBlue", "0x2271B3"); 
+	AddColor("TrafficBlue", "0x063971"); 
+	AddColor("TurquoiseBlue", "0x3F888F"); 
+	AddColor("CapriBlue", "0x1B5583"); 
+	AddColor("OceanBlue", "0x1D334A"); 
+	AddColor("WaterBlue", "0x256D7B"); 
+	AddColor("NightBlue", "0x252850"); 
+	AddColor("DistantBlue", "0x49678D"); 
+	AddColor("PastelBlue", "0x5D9B9B"); 
+	AddColor("PearlGentianBlue", "0x2A6478"); 
+	AddColor("PearlNightBlue", "0x102C54"); 
+	AddColor("PatinaGreen", "0x316650"); 
+	AddColor("EmeraldGreen", "0x287233"); 
+	AddColor("LeafGreen", "0x2D572C"); 
+	AddColor("OliveGreen", "0x424632"); 
+	AddColor("BlueGreen", "0x1F3A3D"); 
+	AddColor("MossGreen", "0x2F4538"); 
+	AddColor("GreyOlive", "0x3E3B32"); 
+	AddColor("BottleGreen", "0x343B29"); 
+	AddColor("BrownGreen", "0x39352A"); 
+	AddColor("FirGreen", "0x31372B"); 
+	AddColor("GrassGreen", "0x35682D"); 
+	AddColor("ResedaGreen", "0x587246"); 
+	AddColor("BlackGreen", "0x343E40"); 
+	AddColor("ReedGreen", "0x6C7156"); 
+	AddColor("YellowOlive", "0x47402E"); 
+	AddColor("BlackOlive", "0x3B3C36"); 
+	AddColor("TurquoiseGreen", "0x1E5945"); 
+	AddColor("MayGreen", "0x4C9141"); 
+	AddColor("YellowGreen", "0x57A639"); 
+	AddColor("PastelGreen", "0xBDECB6"); 
+	AddColor("ChromeGreen", "0x2E3A23"); 
+	AddColor("PaleGreen", "0x89AC76"); 
+	AddColor("OliveDrab", "0x25221B"); 
+	AddColor("TrafficGreen", "0x308446"); 
+	AddColor("FernGreen", "0x3D642D"); 
+	AddColor("OpalGreen", "0x015D52"); 
+	AddColor("LightGreen", "0x84C3BE"); 
+	AddColor("PineGreen", "0x2C5545"); 
+	AddColor("MintGreen", "0x20603D"); 
+	AddColor("SignalGreen", "0x317F43"); 
+	AddColor("MintTurquoise", "0x497E76"); 
+	AddColor("PastelTurquoise", "0x7FB5B5"); 
+	AddColor("PearlGreen", "0x1C542D"); 
+	AddColor("PearlOpalGreen", "0x193737"); 
+	AddColor("PureGreen", "0x008F39"); 
+	AddColor("LuminousGreen", "0x00BB2D"); 
+	AddColor("SquirrelGrey", "0x78858B"); 
+	AddColor("SilverGrey", "0x8A9597"); 
+	AddColor("OliveGrey", "0x7E7B52"); 
+	AddColor("MossGrey", "0x6C7059"); 
+	AddColor("SignalGrey", "0x969992"); 
+	AddColor("MouseGrey", "0x646B63"); 
+	AddColor("BeigeGrey", "0x6D6552"); 
+	AddColor("KhakiGrey", "0x6A5F31"); 
+	AddColor("GreenGrey", "0x4D5645"); 
+	AddColor("TarpaulinGrey", "0x4C514A"); 
+	AddColor("IronGrey", "0x434B4D"); 
+	AddColor("BasaltGrey", "0x4E5754"); 
+	AddColor("BrownGrey", "0x464531"); 
+	AddColor("SlateGrey", "0x434750"); 
+	AddColor("AnthraciteGrey", "0x293133"); 
+	AddColor("BlackGrey", "0x23282B"); 
+	AddColor("UmbraGrey", "0x332F2C"); 
+	AddColor("ConcreteGrey", "0x686C5E"); 
+	AddColor("GraphiteGrey", "0x474A51"); 
+	AddColor("GraniteGrey", "0x2F353B"); 
+	AddColor("StoneGrey", "0x8B8C7A"); 
+	AddColor("BlueGrey", "0x474B4E"); 
+	AddColor("PebbleGrey", "0xB8B799"); 
+	AddColor("CementGrey", "0x7D8471"); 
+	AddColor("YellowGrey", "0x8F8B66"); 
+	AddColor("LightGrey", "0xCBD0CC"); 
+	AddColor("PlatinumGrey", "0x7F7679"); 
+	AddColor("DustyGrey", "0x7D7F7D"); 
+	AddColor("AgateGrey", "0xB5B8B1"); 
+	AddColor("QuartzGrey", "0x6C6960"); 
+	AddColor("WindowGrey", "0x9DA1AA"); 
+	AddColor("TrafficGreyA", "0x8D948D"); 
+	AddColor("TrafficGreyB", "0x4E5452"); 
+	AddColor("SilkGrey", "0xCAC4B0"); 
+	AddColor("Telegrey1", "0x909090"); 
+	AddColor("Telegrey2", "0x82898F"); 
+	AddColor("Telegrey4", "0xD0D0D0"); 
+	AddColor("PearlMouseGrey", "0x898176"); 
+	AddColor("GreenBrown", "0x826C34"); 
+	AddColor("OchreBrown", "0x955F20"); 
+	AddColor("SignalBrown", "0x6C3B2A"); 
+	AddColor("ClayBrown", "0x734222"); 
+	AddColor("CopperBrown", "0x8E402A"); 
+	AddColor("FawnBrown", "0x59351F"); 
+	AddColor("OliveBrown", "0x6F4F28"); 
+	AddColor("NutBrown", "0x5B3A29"); 
+	AddColor("RedBrown", "0x592321"); 
+	AddColor("SepiaBrown", "0x382C1E"); 
+	AddColor("ChestnutBrown", "0x633A34"); 
+	AddColor("MahoganyBrown", "0x4C2F27"); 
+	AddColor("ChocolateBrown", "0x45322E"); 
+	AddColor("GreyBrown", "0x403A3A"); 
+	AddColor("BlackBrown", "0x212121"); 
+	AddColor("OrangeBrown", "0xA65E2E"); 
+	AddColor("BeigeBrown", "0x79553D"); 
+	AddColor("PaleBrown", "0x755C48"); 
+	AddColor("TerraBrown", "0x4E3B31"); 
+	AddColor("PearlCopper", "0x763C28"); 
+	AddColor("Cream", "0xFDF4E3"); 
+	AddColor("GreyWhite", "0xE7EBDA"); 
+	AddColor("SignalWhite", "0xF4F4F4"); 
+	AddColor("SignalBlack", "0x282828"); 
+	AddColor("JetBlack", "0x0A0A0A"); 
+	AddColor("WhiteAluminium", "0xA5A5A5"); 
+	AddColor("GreyAluminium", "0x8F8F8F"); 
+	AddColor("PureWhite", "0xFFFFFF"); 
+	AddColor("GraphiteBlack", "0x1C1C1C"); 
+	AddColor("TrafficWhite", "0xF6F6F6"); 
+	AddColor("TrafficBlack", "0x1E1E1E"); 
+	AddColor("PapyrusWhite", "0xCFD3CD"); 
+	AddColor("PearlLightGrey", "0x9C9C9C"); 
+	AddColor("PearlDarkGrey", "0x828282"); 
+}
+
+ColorNames = [];
+ColorValues = [];
+
+function AddColorName(name) { ColorNames.push(name); }
+function AddColorValue(value) { ColorValues.push(value); }
+
+AddColorName("Green_beige");
+AddColorName("Beige");
+AddColorName("Sand_yellow");
+AddColorName("Signal_yellow");
+AddColorName("Golden_yellow");
+AddColorName("Honey_yellow");
+AddColorName("Maize_yellow");
+AddColorName("Daffodil_yellow");
+AddColorName("Brown_beige");
+AddColorName("Lemon_yellow");
+AddColorName("Oyster_white");
+AddColorName("Ivory");
+AddColorName("Light_ivory");
+AddColorName("Sulfur_yellow");
+AddColorName("Saffron_yellow");
+AddColorName("Zinc_yellow");
+AddColorName("Grey_beige");
+AddColorName("Olive_yellow");
+AddColorName("Rape_yellow");
+AddColorName("Traffic_yellow");
+AddColorName("Ochre_yellow");
+AddColorName("Luminous_yellow");
+AddColorName("Curry");
+AddColorName("Melon_yellow");
+AddColorName("Broom_yellow");
+AddColorName("Dahlia_yellow");
+AddColorName("Pastel_yellow");
+AddColorName("Pearl_beige");
+AddColorName("Pearl_gold");
+AddColorName("Sun_yellow");
+AddColorName("Yellow_orange");
+AddColorName("Red_orange");
+AddColorName("Vermilion");
+AddColorName("Pastel_orange");
+AddColorName("Pure_orange");
+AddColorName("Luminous_orange");
+AddColorName("Luminous_bright_orange");
+AddColorName("Bright_red_orange");
+AddColorName("Traffic_orange");
+AddColorName("Signal_orange");
+AddColorName("Deep_orange");
+AddColorName("Salmon_range");
+AddColorName("Pearl_orange");
+AddColorName("Flame_red");
+AddColorName("Signal_red");
+AddColorName("Carmine_red");
+AddColorName("Ruby_red");
+AddColorName("Purple_red");
+AddColorName("Wine_red");
+AddColorName("Black_red");
+AddColorName("Oxide_red");
+AddColorName("Brown_red");
+AddColorName("Beige_red");
+AddColorName("Tomato_red");
+AddColorName("Antique_pink");
+AddColorName("Light_pink");
+AddColorName("Coral_red");
+AddColorName("Rose");
+AddColorName("Strawberry_red");
+AddColorName("Traffic_red");
+AddColorName("Salmon_pink");
+AddColorName("Luminous_red");
+AddColorName("Luminous_bright_red");
+AddColorName("Raspberry_red");
+AddColorName("Pure_red");
+AddColorName("Orient_red");
+AddColorName("Pearl_ruby_red");
+AddColorName("Pearl_pink");
+AddColorName("Red_lilac");
+AddColorName("Red_violet");
+AddColorName("Heather_violet");
+AddColorName("Claret_violet");
+AddColorName("Blue_lilac");
+AddColorName("Traffic_purple");
+AddColorName("Purple_violet");
+AddColorName("Signal_violet");
+AddColorName("Pastel_violet");
+AddColorName("Telemagenta");
+AddColorName("Pearl_violet");
+AddColorName("Pearl_black_berry");
+AddColorName("Violet_blue");
+AddColorName("Green_blue");
+AddColorName("Ultramarine_blue");
+AddColorName("Saphire_blue");
+AddColorName("Black_blue");
+AddColorName("Signal_blue");
+AddColorName("Brillant_blue");
+AddColorName("Grey_blue");
+AddColorName("Azure_blue");
+AddColorName("Gentian_blue");
+AddColorName("Steel_blue");
+AddColorName("Light_blue");
+AddColorName("Cobalt_blue");
+AddColorName("Pigeon_blue");
+AddColorName("Sky_blue");
+AddColorName("Traffic_blue");
+AddColorName("Turquoise_blue");
+AddColorName("Capri_blue");
+AddColorName("Ocean_blue");
+AddColorName("Water_blue");
+AddColorName("Night_blue");
+AddColorName("Distant_blue");
+AddColorName("Pastel_blue");
+AddColorName("Pearl_gentian_blue");
+AddColorName("Pearl_night_blue");
+AddColorName("Patina_green");
+AddColorName("Emerald_green");
+AddColorName("Leaf_green");
+AddColorName("Olive_green");
+AddColorName("Blue_green");
+AddColorName("Moss_green");
+AddColorName("Grey_olive");
+AddColorName("Bottle_green");
+AddColorName("Brown_green");
+AddColorName("Fir_green");
+AddColorName("Grass_green");
+AddColorName("Reseda_green");
+AddColorName("Black_green");
+AddColorName("Reed_green");
+AddColorName("Yellow_olive");
+AddColorName("Black_olive");
+AddColorName("Turquoise_green");
+AddColorName("May_green");
+AddColorName("Yellow_green");
+AddColorName("Pastel_green");
+AddColorName("Chrome_green");
+AddColorName("Pale_green");
+AddColorName("Olive_drab");
+AddColorName("Traffic_green");
+AddColorName("Fern_green");
+AddColorName("Opal_green");
+AddColorName("Light_green");
+AddColorName("Pine_green");
+AddColorName("Mint_green");
+AddColorName("Signal_green");
+AddColorName("Mint_turquoise");
+AddColorName("Pastel_turquoise");
+AddColorName("Pearl_green");
+AddColorName("Pearl_opal_green");
+AddColorName("Pure_green");
+AddColorName("Luminous_green");
+AddColorName("Squirrel_grey");
+AddColorName("Silver_grey");
+AddColorName("Olive_grey");
+AddColorName("Moss_grey");
+AddColorName("Signal_grey");
+AddColorName("Mouse_grey");
+AddColorName("Beige_grey");
+AddColorName("Khaki_grey");
+AddColorName("Green_grey");
+AddColorName("Tarpaulin_grey");
+AddColorName("Iron_grey");
+AddColorName("Basalt_grey");
+AddColorName("Brown_grey");
+AddColorName("Slate_grey");
+AddColorName("Anthracite_grey");
+AddColorName("Black_grey");
+AddColorName("Umbra_grey");
+AddColorName("Concrete_grey");
+AddColorName("Graphite_grey");
+AddColorName("Granite_grey");
+AddColorName("Stone_grey");
+AddColorName("Blue_grey");
+AddColorName("Pebble_grey");
+AddColorName("Cement_grey");
+AddColorName("Yellow_grey");
+AddColorName("Light_grey");
+AddColorName("Platinum_grey");
+AddColorName("Dusty_grey");
+AddColorName("Agate_grey");
+AddColorName("Quartz_grey");
+AddColorName("Window_grey");
+AddColorName("Traffic_grey_A");
+AddColorName("Traffic_grey_B");
+AddColorName("Silk_grey");
+AddColorName("Telegrey_1");
+AddColorName("Telegrey_2");
+AddColorName("Telegrey_4");
+AddColorName("Pearl_mouse_grey");
+AddColorName("Green_brown");
+AddColorName("Ochre_brown");
+AddColorName("Signal_brown");
+AddColorName("Clay_brown");
+AddColorName("Copper_brown");
+AddColorName("Fawn_brown");
+AddColorName("Olive_brown");
+AddColorName("Nut_brown");
+AddColorName("Red_brown");
+AddColorName("Sepia_brown");
+AddColorName("Chestnut_brown");
+AddColorName("Mahogany_brown");
+AddColorName("Chocolate_brown");
+AddColorName("Grey_brown");
+AddColorName("Black_brown");
+AddColorName("Orange_brown");
+AddColorName("Beige_brown");
+AddColorName("Pale_brown");
+AddColorName("Terra_brown");
+AddColorName("Pearl_copper");
+AddColorName("Cream");
+AddColorName("Grey_white");
+AddColorName("Signal_white");
+AddColorName("Signal_black");
+AddColorName("Jet_black");
+AddColorName("White_aluminium");
+AddColorName("Grey_aluminium");
+AddColorName("Pure_white");
+AddColorName("Graphite_black");
+AddColorName("Traffic_white");
+AddColorName("Traffic_black");
+AddColorName("Papyrus_white");
+AddColorName("Pearl_light_grey");
+AddColorName("Pearl_dark_grey");
+
+AddColorValue("0xBEBD7F");
+AddColorValue("0xC2B078");
+AddColorValue("0xC6A664");
+AddColorValue("0xE5BE01");
+AddColorValue("0xCDA434");
+AddColorValue("0xA98307");
+AddColorValue("0xE4A010");
+AddColorValue("0xDC9D00");
+AddColorValue("0x8A6642");
+AddColorValue("0xC7B446");
+AddColorValue("0xEAE6CA");
+AddColorValue("0xE1CC4F");
+AddColorValue("0xE6D690");
+AddColorValue("0xEDFF21");
+AddColorValue("0xF5D033");
+AddColorValue("0xF8F32B");
+AddColorValue("0x9E9764");
+AddColorValue("0x999950");
+AddColorValue("0xF3DA0B");
+AddColorValue("0xFAD201");
+AddColorValue("0xAEA04B");
+AddColorValue("0xFFFF00");
+AddColorValue("0x9D9101");
+AddColorValue("0xF4A900");
+AddColorValue("0xD6AE01");
+AddColorValue("0xF3A505");
+AddColorValue("0xEFA94A");
+AddColorValue("0x6A5D4D");
+AddColorValue("0x705335");
+AddColorValue("0xF39F18");
+AddColorValue("0xED760E");
+AddColorValue("0xC93C20");
+AddColorValue("0xCB2821");
+AddColorValue("0xFF7514");
+AddColorValue("0xF44611");
+AddColorValue("0xFF2301");
+AddColorValue("0xFFA420");
+AddColorValue("0xF75E25");
+AddColorValue("0xF54021");
+AddColorValue("0xD84B20");
+AddColorValue("0xEC7C26");
+AddColorValue("0xE55137");
+AddColorValue("0xC35831");
+AddColorValue("0xAF2B1E");
+AddColorValue("0xA52019");
+AddColorValue("0xA2231D");
+AddColorValue("0x9B111E");
+AddColorValue("0x75151E");
+AddColorValue("0x5E2129");
+AddColorValue("0x412227");
+AddColorValue("0x642424");
+AddColorValue("0x781F19");
+AddColorValue("0xC1876B");
+AddColorValue("0xA12312");
+AddColorValue("0xD36E70");
+AddColorValue("0xEA899A");
+AddColorValue("0xB32821");
+AddColorValue("0xE63244");
+AddColorValue("0xD53032");
+AddColorValue("0xCC0605");
+AddColorValue("0xD95030");
+AddColorValue("0xF80000");
+AddColorValue("0xFE0000");
+AddColorValue("0xC51D34");
+AddColorValue("0xCB3234");
+AddColorValue("0xB32428");
+AddColorValue("0x721422");
+AddColorValue("0xB44C43");
+AddColorValue("0x6D3F5B");
+AddColorValue("0x922B3E");
+AddColorValue("0xDE4C8A");
+AddColorValue("0x641C34");
+AddColorValue("0x6C4675");
+AddColorValue("0xA03472");
+AddColorValue("0x4A192C");
+AddColorValue("0x924E7D");
+AddColorValue("0xA18594");
+AddColorValue("0xCF3476");
+AddColorValue("0x8673A1");
+AddColorValue("0x6C6874");
+AddColorValue("0x354D73");
+AddColorValue("0x1F3438");
+AddColorValue("0x20214F");
+AddColorValue("0x1D1E33");
+AddColorValue("0x18171C");
+AddColorValue("0x1E2460");
+AddColorValue("0x3E5F8A");
+AddColorValue("0x26252D");
+AddColorValue("0x025669");
+AddColorValue("0x0E294B");
+AddColorValue("0x231A24");
+AddColorValue("0x3B83BD");
+AddColorValue("0x1E213D");
+AddColorValue("0x606E8C");
+AddColorValue("0x2271B3");
+AddColorValue("0x063971");
+AddColorValue("0x3F888F");
+AddColorValue("0x1B5583");
+AddColorValue("0x1D334A");
+AddColorValue("0x256D7B");
+AddColorValue("0x252850");
+AddColorValue("0x49678D");
+AddColorValue("0x5D9B9B");
+AddColorValue("0x2A6478");
+AddColorValue("0x102C54");
+AddColorValue("0x316650");
+AddColorValue("0x287233");
+AddColorValue("0x2D572C");
+AddColorValue("0x424632");
+AddColorValue("0x1F3A3D");
+AddColorValue("0x2F4538");
+AddColorValue("0x3E3B32");
+AddColorValue("0x343B29");
+AddColorValue("0x39352A");
+AddColorValue("0x31372B");
+AddColorValue("0x35682D");
+AddColorValue("0x587246");
+AddColorValue("0x343E40");
+AddColorValue("0x6C7156");
+AddColorValue("0x47402E");
+AddColorValue("0x3B3C36");
+AddColorValue("0x1E5945");
+AddColorValue("0x4C9141");
+AddColorValue("0x57A639");
+AddColorValue("0xBDECB6");
+AddColorValue("0x2E3A23");
+AddColorValue("0x89AC76");
+AddColorValue("0x25221B");
+AddColorValue("0x308446");
+AddColorValue("0x3D642D");
+AddColorValue("0x015D52");
+AddColorValue("0x84C3BE");
+AddColorValue("0x2C5545");
+AddColorValue("0x20603D");
+AddColorValue("0x317F43");
+AddColorValue("0x497E76");
+AddColorValue("0x7FB5B5");
+AddColorValue("0x1C542D");
+AddColorValue("0x193737");
+AddColorValue("0x008F39");
+AddColorValue("0x00BB2D");
+AddColorValue("0x78858B");
+AddColorValue("0x8A9597");
+AddColorValue("0x7E7B52");
+AddColorValue("0x6C7059");
+AddColorValue("0x969992");
+AddColorValue("0x646B63");
+AddColorValue("0x6D6552");
+AddColorValue("0x6A5F31");
+AddColorValue("0x4D5645");
+AddColorValue("0x4C514A");
+AddColorValue("0x434B4D");
+AddColorValue("0x4E5754");
+AddColorValue("0x464531");
+AddColorValue("0x434750");
+AddColorValue("0x293133");
+AddColorValue("0x23282B");
+AddColorValue("0x332F2C");
+AddColorValue("0x686C5E");
+AddColorValue("0x474A51");
+AddColorValue("0x2F353B");
+AddColorValue("0x8B8C7A");
+AddColorValue("0x474B4E");
+AddColorValue("0xB8B799");
+AddColorValue("0x7D8471");
+AddColorValue("0x8F8B66");
+AddColorValue("0xCBD0CC");
+AddColorValue("0x7F7679");
+AddColorValue("0x7D7F7D");
+AddColorValue("0xB5B8B1");
+AddColorValue("0x6C6960");
+AddColorValue("0x9DA1AA");
+AddColorValue("0x8D948D");
+AddColorValue("0x4E5452");
+AddColorValue("0xCAC4B0");
+AddColorValue("0x909090");
+AddColorValue("0x82898F");
+AddColorValue("0xD0D0D0");
+AddColorValue("0x898176");
+AddColorValue("0x826C34");
+AddColorValue("0x955F20");
+AddColorValue("0x6C3B2A");
+AddColorValue("0x734222");
+AddColorValue("0x8E402A");
+AddColorValue("0x59351F");
+AddColorValue("0x6F4F28");
+AddColorValue("0x5B3A29");
+AddColorValue("0x592321");
+AddColorValue("0x382C1E");
+AddColorValue("0x633A34");
+AddColorValue("0x4C2F27");
+AddColorValue("0x45322E");
+AddColorValue("0x403A3A");
+AddColorValue("0x212121");
+AddColorValue("0xA65E2E");
+AddColorValue("0x79553D");
+AddColorValue("0x755C48");
+AddColorValue("0x4E3B31");
+AddColorValue("0x763C28");
+AddColorValue("0xFDF4E3");
+AddColorValue("0xE7EBDA");
+AddColorValue("0xF4F4F4");
+AddColorValue("0x282828");
+AddColorValue("0x0A0A0A");
+AddColorValue("0xA5A5A5");
+AddColorValue("0x8F8F8F");
+AddColorValue("0xFFFFFF");
+AddColorValue("0x1C1C1C");
+AddColorValue("0xF6F6F6");
+AddColorValue("0x1E1E1E");
+AddColorValue("0xCFD3CD");
+AddColorValue("0x9C9C9C");
+AddColorValue("0x828282");
+
+/*
+for (i = 0; i < ColorNames.length; ++i) {
+	§:	AddColor("§{camelCase(ColorNames[i])}", "§{ColorValues[i]}"); :§
+}
+*/
