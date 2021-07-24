@@ -93,6 +93,10 @@ namespace astu {
             throw std::runtime_error(SDL_GetError());
         }
 
+        // if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN) != 0) {
+        //     SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't engage full-screen window: %s", SDL_GetError());        
+        // }
+
         auto resizeSrv = ASTU_GET_SERVICE_OR_NULL(ResizeEventService);
         if (resizeSrv) {
             resizeSrv->QueueSignal(ResizeEvent(winWidth, winHeight));
