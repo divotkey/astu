@@ -6,8 +6,8 @@
  */
 
 // Local includes
-#include "SuiteSDL/SdlSceneRenderer2D.h"
 #include "SuiteSDL/SdlSceneGraph2D.h"
+#include "SuiteSDL/SdlSceneRenderer2D.h"
 
 // Simple Direct Layer (SDL) includes
 #include <SDL2/SDL.h>
@@ -83,7 +83,9 @@ namespace astu {
     {
         sceneRenderer->SetViewMatrix( GetCamera().GetMatrix() );
         sceneRenderer->SetSdlRenderer( *renderer );
+        sceneRenderer->BeginFrame();
         GetRoot()->Render(*sceneRenderer, 1.0f);
+        sceneRenderer->EndFrame();
         sceneRenderer->ClearSdlRenderer();
     }
 

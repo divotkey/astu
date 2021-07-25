@@ -7,14 +7,14 @@
 
 #pragma once
 
-// C++ Standard libraries includes
-#include <vector>
-
 // Local includes
 #include "Math/Vector2.h"
 #include "Math/Matrix3.h"
 #include "Suite2D/VertexBuffer2.h"
 #include "Suite2D/Scene.h"
+
+// C++ Standard libraries includes
+#include <vector>
 
 // Forward declaration.
 struct SDL_Renderer;
@@ -62,7 +62,10 @@ namespace astu {
         // Inherited via Scene2Renderer
         virtual void Render(suite2d::Polyline& polyline, float alpha) override;
 
-    private:
+        virtual void BeginFrame() {}
+        virtual void EndFrame() {}
+
+    protected:
         /** The SDL renderer used for rendering. */
         SDL_Renderer *renderer;
 
