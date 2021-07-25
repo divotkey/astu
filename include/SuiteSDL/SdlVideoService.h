@@ -115,6 +115,16 @@ namespace astu {
         void CleanUp();
 
 
+        /**
+         * Activates fullscreen mode.
+         */
+        void EnableFullscreen();
+
+        /**
+         * Deactivates fullscreen mode.
+         */
+        void DisableFullscreen();
+
     };
 
 } 

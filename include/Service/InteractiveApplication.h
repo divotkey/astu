@@ -104,14 +104,28 @@ namespace astu {
          * 
          * @param res   the resolution
          */
-        void SetStartupResolution(Resolution res);
+        void SetResolution(Resolution res);
 
         /**
          * Returns the startup resolution.
          * 
          * @return the initial resolution of the application window
          */
-        Resolution GetStartupResolution() const;
+        Resolution GetResolution() const;
+
+        /**
+         * Defines whether the application should start in fullscreen mode.
+         * 
+         * @param startFullscreen   `true` to start in fullscreen mode
+         */
+        void SetFullscreen(bool startFullscreen);
+
+        /**
+         * Returns whether the application starts in fullscreen mode.
+         * 
+         * @return `true` if the application starts in fullscreen
+         */
+        bool IsFullscreen() const;
 
         /**
          * Sets the key used to toggle fullscreen mode.
@@ -126,6 +140,27 @@ namespace astu {
          * @return the key
          */
         int GetFullscreenToggleKey() const;
+
+        /**
+         * Sets the background color of the application window on startup.
+         * 
+         * If the application is already running, calling this method will
+         * not change the current background color of the application window.
+         * 
+         * @param color the background color
+         */
+        void SetBackgroundColor(const Color4f& color);
+
+        /**
+         * Returns the background color used on startup.
+         * 
+         * This method will not query the currently used background color of
+         * the application window but the background color to be used on 
+         * startup.
+         * 
+         * @return the background color
+         */
+        const Color4f& GetBackgroundColor() const;
 
         /**
          * Terminates the application at the beginning of the next main cycle.
@@ -179,9 +214,14 @@ namespace astu {
         /** The startup resolution of the application window. */
         Resolution startupResolution;
 
+        /** Whetehr the application should start in fullscreen mode. */
+        bool fullscreen;
+
         /** The key used to toggle fullscreen mode. */
         int fullScreenKey;
 
+        /** Whether the application is currently running. */
+        bool running;
 
         /**
          * Prints version information to the terminal.

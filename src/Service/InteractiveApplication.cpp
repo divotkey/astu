@@ -10,8 +10,10 @@
 #include "AstUtils.h"
 #include "Graphics/RalColors.h"
 #include "Service/UpdateService.h"
+#include "Service/TaskService.h"
 #include "Service/WindowService.h"
 #include "Service/RenderService.h"
+#include "Service/StateService.h"
 #include "Input/InputSignals.h"
 #include "Input/InputMappingService.h"
 #include "Input/Keyboard.h"
@@ -33,7 +35,9 @@ namespace astu {
         , terminateOnEscape(true)
         , printVersionInfo(true)
         , startupResolution(Resolution::HD_2)
+        , fullscreen(false)
         , fullScreenKey(Keyboard::Keycodes::KEY_F11)
+        , running(false)
     {
         AddCoreServices();
     }
@@ -88,14 +92,24 @@ namespace astu {
         return terminateOnEscape;
     }
 
-    void InteractiveApplication::SetStartupResolution(Resolution res)
+    void InteractiveApplication::SetResolution(Resolution res)
     {
         startupResolution = res;
     }
 
-    Resolution InteractiveApplication::GetStartupResolution() const
+    Resolution InteractiveApplication::GetResolution() const
     {
         return startupResolution;
+    }
+
+    void InteractiveApplication::SetFullscreen(bool startFullscreen)
+    {
+        fullscreen = startFullscreen;
+    }
+
+    bool InteractiveApplication::IsFullscreen() const
+    {
+        return fullscreen;
     }
 
     void InteractiveApplication::SetFullscreenToggleKey(int keycode)
@@ -108,12 +122,28 @@ namespace astu {
         return fullScreenKey;
     }
 
+    void InteractiveApplication::SetBackgroundColor(const Color4f& color)
+    {
+        backgroundColor = color;
+    }
+
+    const Color4f& InteractiveApplication::GetBackgroundColor() const
+    {
+        return backgroundColor;
+    }
+
     void InteractiveApplication::AddCoreServices()
     {
         // The update service functions as the central facility for things 
         // (services, systems, etc) that need to be updated once within the 
         // main application loop.
         ASTU_CREATE_AND_ADD_SERVICE( UpdateService );
+
+        // Manages different application states.
+        ASTU_CREATE_AND_ADD_SERVICE( StateService );
+
+        // Manages different application states.
+        ASTU_CREATE_AND_ADD_SERVICE( TaskService );
 
         // Receives and distributes mouse button signals.
         ASTU_CREATE_AND_ADD_SERVICE( MouseButtonEventService );
@@ -136,8 +166,8 @@ namespace astu {
         // Mapps game actions and input axis.
         ASTU_CREATE_AND_ADD_SERVICE( InputMappingService );
 
-        // Mapps game actions and input axis.
-        ASTU_CREATE_AND_ADD_SERVICE( InputMappingService );        
+        // Sends string signals, e.g, used to switch game states.
+        ASTU_CREATE_AND_ADD_SERVICE( SignalService<string> );
     }
 
     void InteractiveApplication::Run()
@@ -150,10 +180,12 @@ namespace astu {
         }
 
         auto & updater = ASTU_SERVICE(UpdateService);
+        running = true;
         while ( !terminated )
         {
             updater.UpdateAll();
         }
+        running = false;
 
         ASTU_SHUTDOWN_SERVICES();
     }
@@ -165,6 +197,7 @@ namespace astu {
         auto & wndSrv = ASTU_SERVICE(WindowService);
         wndSrv.SetTitle( GetInfoString() );
         wndSrv.SetSize(startupResolution);
+        wndSrv.SetFullscreen(fullscreen);
 
         // Configure background color
         ASTU_SERVICE(RenderService).SetBackgroundColor(backgroundColor);
