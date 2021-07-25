@@ -47,6 +47,7 @@ list(APPEND astulib_SOURCES
                     src/Service/StateService.cpp
                     src/Service/TaskService.cpp
                     src/Service/Tasks.cpp
+                    src/Service/InteractiveApplication.cpp
 
                     src/Suite2D/Scene.cpp
                     src/Suite2D/CameraService.cpp
@@ -89,6 +90,7 @@ if(USE_SDL)
         src/SuiteSDL/SdlLineRenderer.cpp
         src/SuiteSDL/SdlSceneGraph2D.cpp
         src/SuiteSDL/SdlSceneRenderer2D.cpp
+        src/SuiteSDL/SdlApplication.cpp
         )
 else(USE_SDL)
     list(APPEND astulib_SOURCES src/SuiteSDL/SdlApplicationDummy.cpp)

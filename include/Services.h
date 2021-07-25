@@ -21,9 +21,11 @@
 #include "Service/Tasks.h"
 #include "Service/StateService.h"
 #include "Service/TimeService.h"
+#include "Service/Resolution.h"
 #include "Service/WindowService.h"
 #include "Service/ActionSignalService.h"
 #include "Service/RenderService.h"
+#include "Service/InteractiveApplication.h"
 
 namespace astu {
 

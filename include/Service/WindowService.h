@@ -7,11 +7,12 @@
 
 #pragma once
 
+// Local includes
+#include "Service/Resolution.h"
+#include "Graphics/Color.h"
+
 // C++ Standard Libryry includes
 #include <string>
-
-// Local includes
-#include "Graphics/Color.h"
 
 namespace astu {
 
@@ -35,6 +36,62 @@ namespace astu {
          * @param height the height of the window in pixels
          */
         virtual void SetSize(int width, int height) = 0;
+
+        /**
+         * Sets the dimension of the window.
+         * 
+         * @param res   the window resolution
+         */
+        void SetSize(Resolution res) {
+            switch (res) {
+            case Resolution::SVGA:
+                SetSize(800, 600);
+                break;
+
+            case Resolution::XGA:
+                SetSize(1024, 768);
+                break;
+
+            case Resolution::WXGA:
+                SetSize(1280, 720);
+                break;
+
+            case Resolution::SXGA:
+                SetSize(1280, 1024);
+                break;
+
+            case Resolution::HD_1:
+                SetSize(1360, 768);
+                break;
+
+            case Resolution::HD_2:
+                SetSize(1366, 768);
+                break;
+
+            case Resolution::WXGA_PLUS:
+                SetSize(1440, 900);
+                break;
+
+            case Resolution::WSXGA_PLUS:
+                SetSize(1680, 1050);
+                break;
+
+            case Resolution::FHD:
+                SetSize(1920, 1080);
+                break;
+
+            case Resolution::QHD:
+                SetSize(2560, 1440);
+                break;
+
+            case Resolution::WIDE_SCREEN:
+                SetSize(3440, 1440);
+                break;
+
+            case Resolution::UHD_4K:
+                SetSize(3840, 2160);
+            }
+        }
 
         /**
          * Returns the width of the window in pixels.
@@ -77,6 +134,26 @@ namespace astu {
          * @return `true` if the window is resizeable
          */
         virtual bool IsResizeable() const = 0;
+    
+        /**
+         * Returns the number of available displays.
+         */
+        virtual int NumDisplays() const = 0;
+
+
+        /**
+         * Acivates or deactivates fullscreen mode.
+         * 
+         * @param enableFullscreen  set to `true` to activate fullscreen mode
+         */
+        virtual void SetFullscreen(bool enableFullscreen) = 0;
+
+        /**
+         * Returns whether fullscreen mode is currently activated.
+         * 
+         * @return `true` if fulscreen mode is activated
+         */
+        virtual bool IsFullscreen() const = 0;
     };
     
 } // end of namespace

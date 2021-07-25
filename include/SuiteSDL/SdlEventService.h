@@ -101,20 +101,23 @@ namespace astu {
         /** Used to map input events to actions and axis. */
         std::shared_ptr<InputMappingService> inputMapperSrv;
 
-        /** Used to transmit mouse button events. */
+        /** Used to transmit mouse button signals. */
         std::shared_ptr<MouseButtonEventService> mouseButtonSrv;
 
-        /** Used to transmit mouse wheel events. */
+        /** Used to transmit mouse wheel signals. */
         std::shared_ptr<MouseWheelEventService> mouseWheelSrv;
 
-        /** Used to transmit mouse move events. */
+        /** Used to transmit mouse move signals. */
         std::shared_ptr<MouseMoveEventService> mouseMoveSrv;
 
-        /** Used to transmit keystroke events. */
+        /** Used to transmit keystroke signals. */
         std::shared_ptr<KeystrokeEventService> keystrokeSrv;
 
-        /** Used to transmit keystroke events. */
+        /** Used to transmit keystroke signals. */
         std::shared_ptr<ResizeEventService> resizeSrv;
+
+        /** Used to transmit window state signals. */
+        std::shared_ptr<WindowStateService> windowStateSrv;
 
         /** The registered event listeners. */
         std::vector<ISdlEventListener*> eventListeners;

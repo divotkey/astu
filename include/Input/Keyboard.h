@@ -73,6 +73,18 @@ namespace astu {
             KEY_UP = 82,
             KEY_LCTRL = 224,
             KEY_RCTRL = 228,
+            KEY_F1 = 58, 
+            KEY_F2 = 59, 
+            KEY_F3 = 60, 
+            KEY_F4 = 61, 
+            KEY_F5 = 62, 
+            KEY_F6 = 63, 
+            KEY_F7 = 64, 
+            KEY_F8 = 65, 
+            KEY_F9 = 66, 
+            KEY_F10 = 67, 
+            KEY_F11 = 68, 
+            KEY_F12 = 69, 
             // KEY_MAX = 48
             };
 

@@ -21,6 +21,7 @@
 #include "SuiteSDL/SdlTimeService.h"
 #include "SuiteSDL/SdlLineRenderer.h"
 #include "SuiteSDL/SdlSceneGraph2D.h"
+#include "SuiteSDL/SdlApplication.h"
 
 namespace astu {
 

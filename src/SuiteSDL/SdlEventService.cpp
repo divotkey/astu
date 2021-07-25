@@ -45,11 +45,14 @@ namespace astu {
         mouseMoveSrv = ASTU_GET_SERVICE_OR_NULL(MouseMoveEventService);
         keystrokeSrv = ASTU_GET_SERVICE_OR_NULL(KeystrokeEventService);
         resizeSrv = ASTU_GET_SERVICE_OR_NULL(ResizeEventService);
+        windowStateSrv = ASTU_GET_SERVICE_OR_NULL(WindowStateService);
+        
         quit = false;
     }
 
     void SdlEventService::OnShutdown() 
     {
+        windowStateSrv = nullptr;
         resizeSrv = nullptr;
         keystrokeSrv = nullptr;
         mouseWheelSrv = nullptr;
@@ -72,6 +75,10 @@ namespace astu {
             switch (event.type) {
             case SDL_QUIT:
                 quit = true;
+                if (windowStateSrv) {
+                    windowStateSrv->QueueSignal(
+                        WindowState(WindowState::Type::CLOSE));
+                }
                 break;
 
             case SDL_MOUSEMOTION:
@@ -162,7 +169,29 @@ namespace astu {
                                 );
                     }
                     break;
+
+                case SDL_WINDOWEVENT_MINIMIZED:
+                    if (windowStateSrv) {
+                        windowStateSrv->QueueSignal(
+                            WindowState(WindowState::Type::MINIMIZED));
+                    }
+                    break;
+
+                case SDL_WINDOWEVENT_MAXIMIZED:
+                    if (windowStateSrv) {
+                        windowStateSrv->QueueSignal(
+                            WindowState(WindowState::Type::MAXIMIZED));
+                    }
+                    break;
+
+                case SDL_WINDOWEVENT_SHOWN:
+                    if (windowStateSrv) {
+                        windowStateSrv->QueueSignal(
+                            WindowState(WindowState::Type::SHOWN));
+                    }
+                    break;
                 }
+                
                 break;
 
             case SDL_TEXTINPUT:

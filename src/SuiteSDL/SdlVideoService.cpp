@@ -28,6 +28,7 @@ namespace astu {
         , winTitle("ASTU Window")
         , vulkanSupport(false)
         , resizeable(false)
+        , fullscreen(false)
     {
         // Intentionally left empty.
     }
@@ -58,6 +59,11 @@ namespace astu {
     bool SdlVideoService::IsResizeable() const
     {
         return resizeable;
+    }
+
+    int SdlVideoService::NumDisplays() const 
+    {
+        return SDL_GetNumVideoDisplays();
     }
 
     void SdlVideoService::OnStartup() 
@@ -93,13 +99,13 @@ namespace astu {
             throw std::runtime_error(SDL_GetError());
         }
 
-        // if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN) != 0) {
-        //     SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't engage full-screen window: %s", SDL_GetError());        
-        // }
-
         auto resizeSrv = ASTU_GET_SERVICE_OR_NULL(ResizeEventService);
         if (resizeSrv) {
             resizeSrv->QueueSignal(ResizeEvent(winWidth, winHeight));
+        }
+
+        if (fullscreen) {
+            SetFullscreen(true);
         }
     }
 
@@ -149,6 +155,79 @@ namespace astu {
     const std::string & SdlVideoService::GetTitle() const 
     {
         return winTitle;
+    }
+
+    void SdlVideoService::SetFullscreen(bool enableFullscreen)
+    {
+        if (fullscreen == enableFullscreen) {
+            return;
+        }
+
+        if (IsStarted()) {
+            if (enableFullscreen) {
+                SDL_DisplayMode wantedMode;
+                wantedMode.w = winWidth;
+                wantedMode.h = winHeight;
+                wantedMode.format = 0;
+                wantedMode.refresh_rate = 0;
+                wantedMode.driverdata = nullptr;
+
+                SDL_DisplayMode closestMode;
+                if (!SDL_GetClosestDisplayMode(0, &wantedMode, &closestMode)) {
+                    SDL_LogWarn(SDL_LOG_CATEGORY_VIDEO, 
+                        "Couldn't' find resolution for fullscreen mode: %s", 
+                        SDL_GetError());
+                    return;
+                }
+
+                if (closestMode.w == winWidth && closestMode.h == winHeight) {
+                    if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN) != 0) {
+                        SDL_LogError(SDL_LOG_CATEGORY_VIDEO, 
+                            "Couldn't engage full-screen window: %s", 
+                        SDL_GetError());
+
+                        return;
+                    }
+                    fullscreen = true;
+                } else {
+                    // Switch window size.
+                    SDL_SetWindowSize(window, closestMode.w, closestMode.h);
+                    if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN) != 0) {
+                        SDL_LogError(SDL_LOG_CATEGORY_VIDEO, 
+                            "Couldn't engage full-screen window: %s", 
+                        SDL_GetError());
+
+                        SDL_SetWindowSize(window, winWidth, winHeight);
+                        return;
+                    }
+                    fullscreen = true;
+                }
+
+            } else {
+                if (SDL_SetWindowFullscreen(window, 0) != 0) {
+                    SDL_LogError(SDL_LOG_CATEGORY_VIDEO, 
+                        "Couldn't disable full-screen window: %s", 
+                    SDL_GetError());
+                    return;
+                }
+                
+                int w, h;
+                SDL_GetWindowSize(window, &w, &h);
+
+                if (w != winWidth || h != winHeight) {
+                    SDL_SetWindowSize(window, winWidth, winHeight);
+                }
+                fullscreen = false;
+            }
+
+        } else {
+            fullscreen = enableFullscreen;
+        }
+    }
+
+    bool SdlVideoService::IsFullscreen() const
+    {
+        return fullscreen;        
     }
 
     SDL_Window* SdlVideoService::GetSdlWindow()

@@ -60,6 +60,8 @@ namespace astu {
 
     /**
      * Services can derive from this class to process key strokes.
+     * 
+     * @ingroup input_group
      */
     class MouseButtonListener : virtual public Service, private IMouseButtonListener {
     public:
@@ -144,6 +146,8 @@ namespace astu {
 
     /**
      * Services can derive from this class to process mouse wheel events.
+     * 
+     * @ingroup input_group
      */
     class MouseWheelListener : virtual public Service, private IMouseWheelListener {
     public:
@@ -223,6 +227,8 @@ namespace astu {
 
     /**
      * Services can derive from this class to process mouse wheel events.
+     * 
+     * @ingroup input_group
      */
     class MouseMoveListener : virtual public Service, private IMouseMoveListener {
     public:
@@ -355,6 +361,8 @@ namespace astu {
      * This event represents a change in window size
      * 
      * This event is supposed to be used in combination with the SignalService.
+     * 
+     * @ingroup input_group
      */
     class ResizeEvent {
     public:
@@ -371,6 +379,8 @@ namespace astu {
 
     /** 
      * Type definition for signal listeners which receive resize events.
+     * 
+     * @ingroup input_group
      */
     using IResizeListener = ISignalListener<ResizeEvent>;
 
@@ -383,6 +393,8 @@ namespace astu {
 
     /**
      * Services can derive from this class to process window resize events.
+     * 
+     * @ingroup input_group
      */
     class ResizeListener : virtual public Service, private IResizeListener {
     public:
@@ -412,5 +424,44 @@ namespace astu {
            return OnResize(signal.width, signal.height);
         }
     };
+
+    /**
+     * Window signals are generated if the state of the window changes.
+     * 
+     * Window state changes are e.g., closing, minimizing of maximizing of the
+     * application window.
+     * 
+     * @ingroup input_group
+     */
+    class WindowState {
+    public:
+    
+        /** The possile types of this window signal. */
+        enum class Type {CLOSE, MINIMIZED, MAXIMIZED, SHOWN};
+
+        /** The type if this window signal. */
+        Type type;
+
+        /**
+         * Constructor.
+         */
+        WindowState(Type type) : type(type) {}
+
+    };    
+
+    /** 
+     * Type definition for signal listeners which receive window signals.
+     * 
+     * @ingroup input_group
+     */
+    using IWindowStateListener = ISignalListener<WindowState>;
+
+    /** 
+     * Type definition for signal services used to transmit window signals.
+     *
+     * @ingroup input_group
+     */
+    using WindowStateService = SignalService<WindowState>;
+
 
 } // end of namespace

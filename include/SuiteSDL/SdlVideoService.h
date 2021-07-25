@@ -77,6 +77,9 @@ namespace astu {
         virtual const std::string & GetTitle() const override;
         virtual void SetResizeable(bool b) override;
         virtual bool IsResizeable() const override;
+        virtual int NumDisplays() const override;
+        virtual void SetFullscreen(bool b) override;
+        virtual bool IsFullscreen() const override;
 
     protected:
 
@@ -103,10 +106,15 @@ namespace astu {
         /** Whether the window should be resizable. */
         bool resizeable;
 
+        /** Whether full-screen mode is currently enabled. */
+        bool fullscreen;
+
         /**
          * Releases recources. 
          */
         void CleanUp();
+
+
     };
 
 } 
