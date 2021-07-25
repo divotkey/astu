@@ -14,7 +14,6 @@
 // C++ Standard Library includes
 #include <cassert>     
 
-
 namespace astu {
 
     SdlLineRenderer::SdlLineRenderer(int renderPriority)

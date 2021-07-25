@@ -28,7 +28,7 @@
 #include "Math/Segment1.h"
 #include "Math/Segment2.h"
 #include "Math/Random.h"
-// #include "Math/MathUtils.h"
+#include "Math/Interpolator.h"
 
 namespace astu {
 

@@ -349,7 +349,7 @@ int GetRandomInt(int minValue, int maxValue)
 
 bool GetRandomBool()
 {
-    return Random::GetInstance().NextInt(0, 2) == 1;    
+    return Random::GetInstance().NextBool();
 }
 
 void SetRandomSeed(unsigned int value)

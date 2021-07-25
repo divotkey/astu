@@ -43,7 +43,7 @@ namespace astu {
 
         /**
          * Returns a random number within the specified range.
-         * This function will generate a random number using a 
+         * This method will generate a random number using a 
          * pseudo random number generator.
          * 
          * The generated numbers are of type `double` and lie within the interval
@@ -67,7 +67,7 @@ namespace astu {
 
         /**
          * Returns a random number within the specified range.
-         * This function will generate a random number using a 
+         * This method will generate a random number using a 
          * pseudo random number generator.
          * 
          * The generated numbers are of type `float` and lie within the interval
@@ -91,7 +91,7 @@ namespace astu {
 
         /**
          * Returns a random number within the specified range.
-         * This function will generate a random number using a 
+         * This method will generate a random number using a 
          * pseudo random number generator.
          * 
          * The generated numbers are of type `int` and lie within the interval
@@ -105,6 +105,16 @@ namespace astu {
          * @return the new random number
          */
         int NextInt(int minValue, int maxValue);
+
+        /**
+         * Returns a random boolean value.
+         * This method will generate a random number using NextDouble method.
+         * 
+         * @return the new random boolean
+         */
+        bool NextBool() {
+            return NextDouble() > 0.5;
+        }
 
         /**
          * Returns a ranfom vector with the specified length.

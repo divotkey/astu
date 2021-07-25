@@ -8,8 +8,8 @@
 #pragma once
 
 // C++ Standard Library include
-#include <cmath>
 #include <stdexcept>
+#include <cmath>
 
 namespace astu {
 
@@ -20,7 +20,7 @@ namespace astu {
         /**
          * Constructor.
          * 
-         * @param initialValue  the initial value used for target and current value
+         * @param initialValue  used to initialize target and current value
          */
         Interpolator1(T initialValue) {
             Reset(initialValue);
@@ -101,7 +101,7 @@ namespace astu {
          * @param initialValue  the initial value of this interpolator
          */
         LinearInterpolator1(T speed = static_cast<T>(1), T initialValue = static_cast<T>(0))
-            : Interpolator1(initialValue)
+            : Interpolator1<T>(initialValue)
         {
             SetSpeed(speed);
         }
@@ -123,21 +123,21 @@ namespace astu {
 
         virtual T Update(T dt) override {
             // Calc difference (error) between current value and target value.
-            const T e = targetValue - currentValue;
+            const T e = Interpolator1<T>::targetValue - Interpolator1<T>::currentValue;
 
             // Determine velocity of value change.
             float v = (e == 0.0) ? 0.0f : std::copysignf(speed, e);
 
             // Update and current value.
-            currentValue += v * dt;
+            Interpolator1<T>::currentValue += v * dt;
 
             // Test is error has changed sign. If that happens we did overshoot
             // the target value.
-            if ((targetValue - currentValue) * e < 0) {
-                currentValue = targetValue;
+            if ((Interpolator1<T>::targetValue - Interpolator1<T>::currentValue) * e < 0) {
+                Interpolator1<T>::currentValue = Interpolator1<T>::targetValue;
             }
 
-            return currentValue;
+            return Interpolator1<T>::currentValue;
         }
 
     private:
