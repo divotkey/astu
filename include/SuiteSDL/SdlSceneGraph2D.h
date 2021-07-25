@@ -11,7 +11,7 @@
 #include "SdlRenderService.h"
 #include "Math/Vector2.h"
 #include "Suite2D/Scene.h"
-#include "Suite2D/VertexBuffer2.h"
+#include "Graphics/VertexBuffer2.h"
 #include "Suite2D/CameraService.h"
 #include "Service/TimeService.h"
 #include "Service/UpdateService.h"

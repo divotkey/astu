@@ -12,7 +12,7 @@
 #include "Segment1.h"
 #include "Segment2.h"
 #include "Transform2.h"
-#include "Suite2D/VertexBuffer2.h"
+#include "Graphics/VertexBuffer2.h"
 
 // C++ Standard Library includes
 #include <cassert>

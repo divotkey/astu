@@ -10,7 +10,7 @@
 // Local includes
 #include "Math/Polygon.h"
 #include "Math/Vector2.h"
-#include "Suite2D/VertexBuffer2.h"
+#include "Graphics/VertexBuffer2.h"
 
 // C++ Standard Library includes
 #include <vector>

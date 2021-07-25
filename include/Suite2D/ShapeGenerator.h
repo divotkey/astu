@@ -8,7 +8,7 @@
 #pragma once
 
 // Local includes
-#include "VertexBuffer2.h"
+#include "Graphics/VertexBuffer2.h"
 
 // C++ Standard Library includes
 #include <memory>

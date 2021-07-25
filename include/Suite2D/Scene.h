@@ -10,7 +10,7 @@
 // Local includes
 #include "Util/Controllable.h"
 #include "Graphics/WebColors.h"
-#include "VertexBuffer2.h"
+#include "Graphics/VertexBuffer2.h"
 #include "Math/Vector2.h"
 #include "Math/Matrix3.h"
 #include "Math/Transform2.h"

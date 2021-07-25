@@ -9,7 +9,6 @@
 
 #include "Graphics/RalColors.h"
 #include "Graphics/WebColors.h"
-#include "Suite2D/VertexBuffer2.h"
 #include "Suite2D/PolygonVertexBuffer.h"
 #include "Suite2D/Scene.h"
 #include "Suite2D/CPose.h"
