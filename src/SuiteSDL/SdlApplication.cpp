@@ -13,12 +13,24 @@
 #include "SuiteSDL/SdlEventService.h"
 #include "SuiteSDL/SdlJoystickService.h"
 #include "SuiteSDL/SdlTimeService.h"
+#include "SuiteSDL/SdlSceneGraph2D.h"
 
 namespace astu {
 
     SdlApplication::SdlApplication()
+        : add2DServices(true)
     {
         AddSdlServices();
+    }
+
+    void SdlApplication::AddServices2D(bool b)
+    {
+        add2DServices = b;
+    }
+
+    bool SdlApplication::IsServices2D() const
+    {
+        return add2DServices;
     }
 
     void SdlApplication::AddSdlServices()
@@ -40,6 +52,34 @@ namespace astu {
 
         // Provides an SDL-based implementation of the ITimeService interface.
         ASTU_CREATE_AND_ADD_SERVICE( SdlTimeService );
+    }
+
+    void SdlApplication::AddSdl2DServices()
+    {    
+        ASTU_CREATE_AND_ADD_SERVICE( SdlSceneGraph2D );    
+        ASTU_CREATE_AND_ADD_SERVICE( SdlVertexBufferBuilderService2D );
+    }
+
+    void SdlApplication::RemoveSdl2DServices()
+    {    
+        ASTU_REMOVE_SERVICE( SdlVertexBufferBuilderService2D );
+        ASTU_REMOVE_SERVICE( SdlSceneGraph2D );
+    }
+
+    void SdlApplication::ConfigureApplication()
+    {
+        InteractiveApplication::ConfigureApplication();
+        if (add2DServices) {
+            AddSdl2DServices();
+        }
+    }
+
+    void SdlApplication::Cleanup()
+    {
+        if (add2DServices) {
+            RemoveSdl2DServices();
+        }
+        InteractiveApplication::Cleanup();
     }
 
 } // end of namespace

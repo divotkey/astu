@@ -27,7 +27,7 @@
 #include "Suite2D/CAutoRotate.h"
 #include "Suite2D/AutoRotateSystem.h"
 
-// namespace astu2d = astu::suite2d;
+namespace astu2d = astu::suite2d;
 
 namespace astu {
 

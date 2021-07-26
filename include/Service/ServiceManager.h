@@ -178,8 +178,9 @@
  * 
  * @ingroup srv_group
  */
-
 #define ASTU_CREATE_AND_ADD_SERVICE(srvType, ...) if(!ASTU_HAS_SERVICE(srvType)) ASTU_ADD_SERVICE(std::make_shared<srvType>(__VA_ARGS__) )
+
+#define ASTU_REMOVE_SERVICE(srvType) ASTU_SERVICE_MANAGER().RemoveService(ASTU_GET_SERVICE_OR_NULL(srvType));
 
 namespace astu {
 

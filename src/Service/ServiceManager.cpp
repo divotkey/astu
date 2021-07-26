@@ -45,7 +45,7 @@ namespace astu {
     }
 
     void ServiceManager::RemoveService(shared_ptr<Service> service)
-    {
+    {        
         auto it = find(services.begin(), services.end(), service);
         if (it == services.end()) {
             // Silently ignore the fact that the service could not be found.

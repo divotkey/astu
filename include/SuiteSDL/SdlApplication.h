@@ -25,12 +25,45 @@ namespace astu {
          */
         SdlApplication();
 
+        /**
+         * Specifies whetehr to add services required for 2D renderings.
+         * 
+         * @param b set to `true` to add 2D services
+         */
+        void AddServices2D(bool b);
+
+        /**
+         * Returns whether services required for 2D renderings will be added.
+         *  
+         * @return `true` if 2D services will be added
+         */
+        bool IsServices2D() const;
+
+    protected:
+
+        // Inherited via InteractiveApplication
+        virtual void ConfigureApplication() override;
+        virtual void Cleanup() override;
+
+
     private:
+        /** Whether to add services required for 2D renderings. */
+        bool add2DServices;
 
         /**
          * Adds required SDL specific services.
          */
         void AddSdlServices();
+
+        /**
+         * Adds required SDL services specific for 2D rendering.
+         */
+        void AddSdl2DServices();
+
+        /**
+         * Removes required SDL services specific for 2D rendering.
+         */
+        void RemoveSdl2DServices();
     };
 
 } // end of namespace
