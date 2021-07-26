@@ -157,22 +157,22 @@ namespace astu {
         ASTU_CREATE_AND_ADD_SERVICE( TaskService );
 
         // Receives and distributes mouse button signals.
-        ASTU_CREATE_AND_ADD_SERVICE( MouseButtonEventService );
+        ASTU_CREATE_AND_ADD_SERVICE( MouseButtonSignalService );
 
         // Receives and distributes mouse wheel signals.
-        ASTU_CREATE_AND_ADD_SERVICE( MouseWheelEventService );
+        ASTU_CREATE_AND_ADD_SERVICE( MouseWheelSignalService );
 
         // Receives and distributes mouse move signals.
-        ASTU_CREATE_AND_ADD_SERVICE( MouseMoveEventService );
+        ASTU_CREATE_AND_ADD_SERVICE( MouseMoveSignalService );
 
         // Receives and distributes keystroke signals.
-        ASTU_CREATE_AND_ADD_SERVICE( KeystrokeEventService );
+        ASTU_CREATE_AND_ADD_SERVICE( KeystrokeSignalService );
 
         // Receives and distributes resize signals.
-        ASTU_CREATE_AND_ADD_SERVICE( ResizeEventService );
+        ASTU_CREATE_AND_ADD_SERVICE( ResizeSignalService );
 
        // Receives and distributes window state signals.
-        ASTU_CREATE_AND_ADD_SERVICE( WindowStateService );
+        ASTU_CREATE_AND_ADD_SERVICE( WindowStateSignalService );
 
         // Mapps game actions and input axis.
         ASTU_CREATE_AND_ADD_SERVICE( InputMappingService );
@@ -214,14 +214,14 @@ namespace astu {
         // Configure background color
         ASTU_SERVICE(RenderService).SetBackgroundColor(backgroundColor);
 
-        ASTU_SERVICE(WindowStateService).AddListener(*this);
-        ASTU_SERVICE(KeystrokeEventService).AddListener(*this);
+        ASTU_SERVICE(WindowStateSignalService).AddListener(*this);
+        ASTU_SERVICE(KeystrokeSignalService).AddListener(*this);
     }
 
     void InteractiveApplication::Cleanup()
     {
-        ASTU_SERVICE(KeystrokeEventService).RemoveListener(*this);
-        ASTU_SERVICE(WindowStateService).RemoveListener(*this);
+        ASTU_SERVICE(KeystrokeSignalService).RemoveListener(*this);
+        ASTU_SERVICE(WindowStateSignalService).RemoveListener(*this);
     }
 
     void InteractiveApplication::PrintVersionInfo()
@@ -249,7 +249,7 @@ namespace astu {
         return false;
     }
 
-    bool InteractiveApplication::OnSignal(const KeystrokeEvent& signal)
+    bool InteractiveApplication::OnSignal(const KeystrokeSignal& signal)
     {
         if (signal.pressed) {
             return false;

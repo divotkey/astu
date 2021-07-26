@@ -15,20 +15,18 @@
 namespace astu {
 
     /////////////////////////////////////////////////
-    /////// Mouse Events
+    /////// Mouse Signals
     /////////////////////////////////////////////////
 
     /**
-     * This event represents a mouse button event.
-     * 
-     * This event is supposed to be used in combination with the SignalService.
+     * This signal represents a mouse button event.
      * 
      * @ingroup input_group
      */
-    class MouseButtonEvent {
+    class MouseButtonSignal {
     public:
 
-        MouseButtonEvent(int button = 0, bool pressed = false, int x = 0, int y = 0)
+        MouseButtonSignal(int button = 0, bool pressed = false, int x = 0, int y = 0)
             : button(button), pressed(pressed), x(x), y(y) {}
 
         /** The button which has been pressed or released. */
@@ -45,39 +43,47 @@ namespace astu {
     };
 
     /** 
-     * Type definition for signal services used to transmit mouse button events.
+     * Type definition for signal services that transmit mouse button signals.
      *
      * @ingroup input_group
      */
-    using MouseButtonEventService = SignalService<MouseButtonEvent>;
+    using MouseButtonSignalService = SignalService<MouseButtonSignal>;
 
     /** 
-     * Type definition for signal listeners which receive mouse button events.
+     * Type definition for signal listeners which receive mouse button signals.
      *
      * @ingroup input_group
      */
-    using IMouseButtonListener = ISignalListener<MouseButtonEvent>;
+    using IMouseButtonListener = ISignalListener<MouseButtonSignal>;
 
     /**
-     * Services can derive from this class to process key strokes.
+     * Services can derive from this class to process mouse button signals.
      * 
      * @ingroup input_group
      */
-    class MouseButtonListener : virtual public Service, private IMouseButtonListener {
+    class MouseButtonListener 
+        : virtual public Service
+        , private IMouseButtonListener
+    {
     public:
 
         /**
          * Constructor.
          */
         MouseButtonListener() {
-            AddStartupHook([this](){ ASTU_SERVICE(MouseButtonEventService).AddListener(*this); });
-            AddShutdownHook([this](){ ASTU_SERVICE(MouseButtonEventService).RemoveListener(*this); });
+            AddStartupHook([this](){ 
+                ASTU_SERVICE(MouseButtonSignalService).AddListener(*this); 
+                });
+
+            AddShutdownHook([this](){ 
+                ASTU_SERVICE(MouseButtonSignalService).RemoveListener(*this); 
+                });
         }
 
     protected:
 
         /** 
-         * Called by this base class when a key has been pressed.
+         * Called by this base class when a mouse button has been pressed.
          * 
          * @param button    the button which has been pressed
          * @param x         the x-coordinate of the mouse course in screen space
@@ -88,7 +94,7 @@ namespace astu {
         }
 
         /** 
-         * Called by this base class when a key has been released.
+         * Called by this base class when a mouse button has been released.
          * 
          * @param button    the button which has been released
          * @param x         the x-coordinate of the mouse course in screen space
@@ -101,7 +107,7 @@ namespace astu {
     private:
 
         // Inherited via MouseButtonListener 
-        virtual bool OnSignal(const MouseButtonEvent & signal) {
+        virtual bool OnSignal(const MouseButtonSignal & signal) {
             if (signal.pressed) {
                 return OnMouseButtonPressed(signal.button, signal.x, signal.y);
             } else {
@@ -111,13 +117,11 @@ namespace astu {
     };
 
     /**
-     * This event represents a mouse wheel event.
-     * 
-     * This event is supposed to be used in combination with the SignalService.
+     * This signal represents a mouse wheel event.
      * 
      * @ingroup input_group
      */
-    class MouseWheelEvent {
+    class MouseWheelSignal {
     public:
 
         /**
@@ -125,31 +129,34 @@ namespace astu {
          *
          * @param amount the amount scrolled 
          */
-        MouseWheelEvent(int amount) : amount(amount) {}
+        MouseWheelSignal(int amount) : amount(amount) {}
 
         int amount;
     };
 
     /** 
-     * Type definition for signal services used to transmit mouse wheel events.
+     * Type definition for signal services used to transmit mouse wheel signals.
      *
      * @ingroup input_group
      */
-    using MouseWheelEventService = SignalService<MouseWheelEvent>;
+    using MouseWheelSignalService = SignalService<MouseWheelSignal>;
 
     /** 
-     * Type definition for signal listeners which receive mouse wheel events.
+     * Type definition for signal listeners which receive mouse wheel signals.
      *
      * @ingroup input_group
      */
-    using IMouseWheelListener = ISignalListener<MouseWheelEvent>;
+    using IMouseWheelListener = ISignalListener<MouseWheelSignal>;
 
     /**
-     * Services can derive from this class to process mouse wheel events.
+     * Services can derive from this class to process mouse wheel signals.
      * 
      * @ingroup input_group
      */
-    class MouseWheelListener : virtual public Service, private IMouseWheelListener {
+    class MouseWheelListener 
+        : virtual public Service
+        , private IMouseWheelListener
+    {
     public:
 
         /**
@@ -157,18 +164,18 @@ namespace astu {
          */
         MouseWheelListener() {
             AddStartupHook([this](){ 
-                    ASTU_SERVICE(MouseWheelEventService).AddListener(*this); 
+                    ASTU_SERVICE(MouseWheelSignalService).AddListener(*this); 
             });
 
             AddShutdownHook([this](){
-                ASTU_SERVICE(MouseWheelEventService).RemoveListener(*this); 
+                ASTU_SERVICE(MouseWheelSignalService).RemoveListener(*this); 
             });
         }
 
     protected:
 
         /** 
-         * Called by this base class when a mouse wheel event has occurred.
+         * Called by this base class when a mouse wheel signals has received.
          * 
          * @param amount    the amount scrolled 
          */
@@ -179,19 +186,17 @@ namespace astu {
     private:
 
         // Inherited via MouseButtonListener 
-        virtual bool OnSignal(const MouseWheelEvent & signal) {
+        virtual bool OnSignal(const MouseWheelSignal & signal) {
             return OnMouseWheel(signal.amount);
         }
     };
 
     /**
-     * This event represents a mouse movement event.
-     * 
-     * This event is supposed to be used in combination with the SignalService.
-     * 
+     * This signal represents a mouse movement event.
+     *      
      * @ingroup input_group
      */
-    class MouseMoveEvent {
+    class MouseMoveSignal {
     public:
 
         /**
@@ -200,7 +205,7 @@ namespace astu {
          * @param x the x-coordinate of the mouse cursor in screen coordinates
          * @param x the y-coordinate of the mouse cursor in screen coordinates
          */
-        MouseMoveEvent(int x = 0, int y = 0)
+        MouseMoveSignal(int x = 0, int y = 0)
             : x(x), y(y) {}
 
         /** The x-coordinate of the mouse cursor. */
@@ -211,26 +216,29 @@ namespace astu {
     };
 
     /** 
-     * Type definition for signal services used to transmit mouse wheel events.
+     * Type definition for signal services that transmit mouse wheel signals.
      *
      * @ingroup input_group
      */
-    using MouseMoveEventService = SignalService<MouseMoveEvent>;
+    using MouseMoveSignalService = SignalService<MouseMoveSignal>;
 
     /** 
-     * Type definition for signal listeners which receive mouse wheel events.
+     * Type definition for signal listeners which receive mouse wheel signals.
      *
      * @ingroup input_group
      */
-    using IMouseMoveListener = ISignalListener<MouseMoveEvent>;
+    using IMouseMoveListener = ISignalListener<MouseMoveSignal>;
 
 
     /**
-     * Services can derive from this class to process mouse wheel events.
+     * Services can derive from this class to process mouse wheel signals.
      * 
      * @ingroup input_group
      */
-    class MouseMoveListener : virtual public Service, private IMouseMoveListener {
+    class MouseMoveListener 
+        : virtual public Service
+        , private IMouseMoveListener
+    {
     public:
 
         /**
@@ -238,18 +246,18 @@ namespace astu {
          */
         MouseMoveListener() {
             AddStartupHook([this](){ 
-                    ASTU_SERVICE(MouseMoveEventService).AddListener(*this); 
+                    ASTU_SERVICE(MouseMoveSignalService).AddListener(*this); 
             });
 
             AddShutdownHook([this](){
-                ASTU_SERVICE(MouseMoveEventService).RemoveListener(*this); 
+                ASTU_SERVICE(MouseMoveSignalService).RemoveListener(*this); 
             });
         }
 
     protected:
 
         /** 
-         * Called by this base class when a mouse wheel event has occurred.
+         * Called by this base class when a mouse wheel signals has received.
          * 
          * @param x the x-coordinate of the mouse cursor in screen coordinates
          * @param x the y-coordinate of the mouse cursor in screen coordinates
@@ -261,27 +269,32 @@ namespace astu {
     private:
 
         // Inherited via MouseButtonListener 
-        virtual bool OnSignal(const MouseMoveEvent & signal) {
+        virtual bool OnSignal(const MouseMoveSignal & signal) {
             return OnMouseMove(signal.x, signal.y);
         }
     };
 
 
     /////////////////////////////////////////////////
-    /////// Key Events
+    /////// Keyboard signals
     /////////////////////////////////////////////////
 
     /**
-     * This event represents a keystroke event.
-     * 
-     * This event is supposed to be used in combination with the SignalService.
-     * 
+     * This signal represents a keystroke event.
+     *  
      * @ingroup input_group
      */
-    class KeystrokeEvent {
+    class KeystrokeSignal {
     public:
 
-        KeystrokeEvent(int keycode = 0, bool pressed = false)
+        /**
+         * Constructor.
+         * 
+         * @parma keycode   the keycode of the key
+         * @param pressed   `true` if the key has been pressed, `false` if the 
+         *                  key has been released
+         */
+        KeystrokeSignal(int keycode = 0, bool pressed = false)
             : keycode(keycode), pressed(pressed) {}
 
         /** The keycode of the event. */
@@ -292,23 +305,26 @@ namespace astu {
     };
 
     /** 
-     * Type definition for signal services used to transmit keystroke events.
+     * Type definition for signal services that transmit keystroke signals.
      *
      * @ingroup input_group
      */
-    using KeystrokeEventService = SignalService<KeystrokeEvent>;
+    using KeystrokeSignalService = SignalService<KeystrokeSignal>;
 
     /** 
-     * Type definition for signal listeners which receive keystroke events.
+     * Type definition for signal listeners which receive keystroke signals.
      *
      * @ingroup input_group
      */
-    using IKeystrokeListener = ISignalListener<KeystrokeEvent>;
+    using IKeystrokeListener = ISignalListener<KeystrokeSignal>;
 
     /**
      * Services can derive from this class to process key strokes.
      */
-    class KeystrokeListener : virtual public Service, private IKeystrokeListener {
+    class KeystrokeListener 
+        : virtual public Service
+        , private IKeystrokeListener
+    {
     public:
 
         /**
@@ -316,11 +332,11 @@ namespace astu {
          */
         KeystrokeListener() {
             AddStartupHook([this](){ 
-                ASTU_SERVICE(KeystrokeEventService).AddListener(*this);
+                ASTU_SERVICE(KeystrokeSignalService).AddListener(*this);
             });
 
             AddShutdownHook([this](){ 
-                ASTU_SERVICE(KeystrokeEventService).RemoveListener(*this);
+                ASTU_SERVICE(KeystrokeSignalService).RemoveListener(*this);
             });
         }
 
@@ -343,7 +359,7 @@ namespace astu {
     private:
 
         // Inherited via KeystrokeListener
-        virtual bool OnSignal(const KeystrokeEvent & signal) override {
+        virtual bool OnSignal(const KeystrokeSignal & signal) override {
             if (signal.pressed) {
                 return OnKeyPressed(signal.keycode);
             } else {
@@ -358,16 +374,20 @@ namespace astu {
     /////////////////////////////////////////////////
 
     /**
-     * This event represents a change in window size
-     * 
-     * This event is supposed to be used in combination with the SignalService.
-     * 
+     * This signal represents a change in window size
+     *  
      * @ingroup input_group
      */
-    class ResizeEvent {
+    class ResizeSignal {
     public:
 
-        ResizeEvent(int width, int height)
+        /**
+         * Constructor.
+         * 
+         * @param width     the new window width
+         * @param height    the new window height
+         */
+        ResizeSignal(int width, int height)
             : width(width), height(height) {}
 
         /** The current width of the application window. */
@@ -378,21 +398,21 @@ namespace astu {
     };
 
     /** 
-     * Type definition for signal listeners which receive resize events.
+     * Type definition for signal listeners which receive resize signals.
      * 
      * @ingroup input_group
      */
-    using IResizeListener = ISignalListener<ResizeEvent>;
+    using IResizeListener = ISignalListener<ResizeSignal>;
 
     /** 
-     * Type definition for signal services used to transmit resize events.
+     * Type definition for signal services that transmit resize signals.
      *
      * @ingroup input_group
      */
-    using ResizeEventService = SignalService<ResizeEvent>;
+    using ResizeSignalService = SignalService<ResizeSignal>;
 
     /**
-     * Services can derive from this class to process window resize events.
+     * Services can derive from this class to process window resize signals.
      * 
      * @ingroup input_group
      */
@@ -403,24 +423,31 @@ namespace astu {
          * Constructor.
          */
         ResizeListener() {
-            AddStartupHook([this](){ ASTU_SERVICE(ResizeEventService).AddListener(*this); });
-            AddShutdownHook([this](){ ASTU_SERVICE(ResizeEventService).RemoveListener(*this); });
+            AddStartupHook([this](){ 
+                ASTU_SERVICE(ResizeSignalService).AddListener(*this); 
+            });
+
+            AddShutdownHook([this](){ 
+                ASTU_SERVICE(ResizeSignalService).RemoveListener(*this);
+            });
         }
 
     protected:
 
         /** 
-         * Called by this base class when a resize event has occurred.
+         * Called by this base class when a resize signal has received.
          * 
          * @param width the new window width
          * @param height the new window height
          */
-        virtual bool OnResize(int width, int height) { return false; }
+        virtual bool OnResize(int width, int height) { 
+            return false;
+        }
 
     private:
 
         // Inherited via KeystrokeListener
-        virtual bool OnSignal(const ResizeEvent & signal) override {
+        virtual bool OnSignal(const ResizeSignal & signal) override {
            return OnResize(signal.width, signal.height);
         }
     };
@@ -461,7 +488,6 @@ namespace astu {
      *
      * @ingroup input_group
      */
-    using WindowStateService = SignalService<WindowState>;
-
+    using WindowStateSignalService = SignalService<WindowState>;
 
 } // end of namespace

@@ -128,22 +128,22 @@ namespace astu {
         std::shared_ptr<InputMappingService> inputMapperSrv;
 
         /** Used to transmit mouse button signals. */
-        std::shared_ptr<MouseButtonEventService> mouseButtonSrv;
+        std::shared_ptr<MouseButtonSignalService> mouseButtonSrv;
 
         /** Used to transmit mouse wheel signals. */
-        std::shared_ptr<MouseWheelEventService> mouseWheelSrv;
+        std::shared_ptr<MouseWheelSignalService> mouseWheelSrv;
 
         /** Used to transmit mouse move signals. */
-        std::shared_ptr<MouseMoveEventService> mouseMoveSrv;
+        std::shared_ptr<MouseMoveSignalService> mouseMoveSrv;
 
         /** Used to transmit keystroke signals. */
-        std::shared_ptr<KeystrokeEventService> keystrokeSrv;
+        std::shared_ptr<KeystrokeSignalService> keystrokeSrv;
 
         /** Used to transmit keystroke signals. */
-        std::shared_ptr<ResizeEventService> resizeSrv;
+        std::shared_ptr<ResizeSignalService> resizeSrv;
 
         /** Used to transmit window state signals. */
-        std::shared_ptr<WindowStateService> windowStateSrv;
+        std::shared_ptr<WindowStateSignalService> windowStateSrv;
 
         /** The registered event listeners. */
         std::vector<ISdlEventListener*> eventListeners;

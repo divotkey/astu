@@ -97,9 +97,9 @@ namespace astu {
             throw std::runtime_error(SDL_GetError());
         }
 
-        auto resizeSrv = ASTU_GET_SERVICE_OR_NULL(ResizeEventService);
+        auto resizeSrv = ASTU_GET_SERVICE_OR_NULL(ResizeSignalService);
         if (resizeSrv) {
-            resizeSrv->QueueSignal(ResizeEvent(winWidth, winHeight));
+            resizeSrv->QueueSignal(ResizeSignal(winWidth, winHeight));
         }
 
         if (fullscreen) {

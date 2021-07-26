@@ -41,12 +41,12 @@ namespace astu {
         }
 
         inputMapperSrv = ASTU_GET_SERVICE_OR_NULL(InputMappingService);
-        mouseButtonSrv = ASTU_GET_SERVICE_OR_NULL(MouseButtonEventService);
-        mouseWheelSrv = ASTU_GET_SERVICE_OR_NULL(MouseWheelEventService);
-        mouseMoveSrv = ASTU_GET_SERVICE_OR_NULL(MouseMoveEventService);
-        keystrokeSrv = ASTU_GET_SERVICE_OR_NULL(KeystrokeEventService);
-        resizeSrv = ASTU_GET_SERVICE_OR_NULL(ResizeEventService);
-        windowStateSrv = ASTU_GET_SERVICE_OR_NULL(WindowStateService);
+        mouseButtonSrv = ASTU_GET_SERVICE_OR_NULL(MouseButtonSignalService);
+        mouseWheelSrv = ASTU_GET_SERVICE_OR_NULL(MouseWheelSignalService);
+        mouseMoveSrv = ASTU_GET_SERVICE_OR_NULL(MouseMoveSignalService);
+        keystrokeSrv = ASTU_GET_SERVICE_OR_NULL(KeystrokeSignalService);
+        resizeSrv = ASTU_GET_SERVICE_OR_NULL(ResizeSignalService);
+        windowStateSrv = ASTU_GET_SERVICE_OR_NULL(WindowStateSignalService);
         
         quit = false;
     }
@@ -86,14 +86,14 @@ namespace astu {
                 mouse.SetCursor(event.motion.x, event.motion.y);
                 if (mouseMoveSrv) {
                     mouseMoveSrv->FireSignal(
-                        MouseMoveEvent(event.motion.x, event.motion.y));
+                        MouseMoveSignal(event.motion.x, event.motion.y));
                 }
                 break;
 
             case SDL_MOUSEWHEEL:
                 if (event.wheel.y != 0 && mouseWheelSrv) {
                     // std::cout << "mouse wheel vertical movement: " << event.wheel.y << std::endl;
-                    mouseWheelSrv->FireSignal(MouseWheelEvent(event.wheel.y));
+                    mouseWheelSrv->FireSignal(MouseWheelSignal(event.wheel.y));
                 }
                 if (event.wheel.x != 0) {
                     // std::cout << "mouse wheel horizontal movement" << std::endl;
@@ -104,7 +104,7 @@ namespace astu {
                 mouse.SetButton(event.button.button, true);
                 if(mouseButtonSrv) {
                     mouseButtonSrv->FireSignal(
-                            MouseButtonEvent(
+                            MouseButtonSignal(
                                 event.button.button, 
                                 true, 
                                 event.button.x, 
@@ -117,7 +117,7 @@ namespace astu {
                 mouse.SetButton(event.button.button, false);
                 if(mouseButtonSrv) {
                     mouseButtonSrv->FireSignal( 
-                        MouseButtonEvent(
+                        MouseButtonSignal(
                             event.button.button, 
                             false, 
                             event.button.x,
@@ -131,7 +131,7 @@ namespace astu {
                 // std::cout << "scancode: " << event.key.keysym.scancode << std::endl;
                 if (keystrokeSrv) {
                     keystrokeSrv->FireSignal( 
-                        KeystrokeEvent(event.key.keysym.scancode, true) );
+                        KeystrokeSignal(event.key.keysym.scancode, true) );
                 }
                 if (inputMapperSrv) {
                     inputMapperSrv->ProcessKey( 
@@ -145,7 +145,7 @@ namespace astu {
                 keyboard.SetKey(event.key.keysym.scancode, false);
                 if (keystrokeSrv) {
                     keystrokeSrv->FireSignal( 
-                            KeystrokeEvent(event.key.keysym.scancode, false) );
+                            KeystrokeSignal(event.key.keysym.scancode, false) );
                 }
                 if (inputMapperSrv) {
                     inputMapperSrv->ProcessKey( 
@@ -164,7 +164,7 @@ namespace astu {
                 case SDL_WINDOWEVENT_SIZE_CHANGED:
                     if (resizeSrv) {
                         resizeSrv->FireSignal( 
-                                ResizeEvent(
+                                ResizeSignal(
                                     event.window.data1, 
                                     event.window.data2)
                                 );

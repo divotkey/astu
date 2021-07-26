@@ -249,7 +249,7 @@ namespace astu {
         virtual bool OnSignal(const WindowState& signal) override;
 
         // Inherited via IKeystrokeListener
-        virtual bool OnSignal(const KeystrokeEvent& signal) override;        
+        virtual bool OnSignal(const KeystrokeSignal& signal) override;        
     };
 
 } // end of namespace
