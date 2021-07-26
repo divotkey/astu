@@ -22,10 +22,12 @@ namespace astu {
     /**
      * Base class for services.
      * 
-     * It is recommended not to derive own services directly from this base
-     * class, but to use BaseService instead. If this base class is used,
-     * it must be derived as public virtual.     
-     * */
+     * It is recommended not to derive custom services directly from this base
+     * class, but to use BaseService instead. However, if this base class is
+     * used directly, it must be derived as **public virtual**.     
+     *
+     * @ingroup srv_group
+     */
     class Service {
     public:
 
@@ -192,10 +194,22 @@ namespace astu {
 
     /**
      * Base class for new (custom) services.
+     * 
+     * The main purpose of this class is to make deriving a class from the
+     * Service class more convenient. Using the service class directly would
+     * make it necessary to make the virtual inheritance visible and derive the
+     * class with the keyword "virtual".
+     * 
+     * @ingroup srv_group
      */
     class BaseService : virtual public Service {
     public:
 
+        /**
+         * Constructor.
+         * 
+         * @param name  the name of this service
+         */
         BaseService(const std::string name = Service::DEFAULT_NAME)
             : Service(name)
         {

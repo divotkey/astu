@@ -6,8 +6,12 @@
  */
 
 /**
- * @file
- * @brief This file defines public functions, templates and classes offered by the entity component system (ECS).
+ * This file defines public functions, templates and classes offered 
+ * by the entity component system (ECS).
+ * 
+ * @file AstuECS.h
+ * @author Roman Divotkey
+ * @copyright MIT License
  */
 
 #include "ECS/EntityService.h"

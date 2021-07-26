@@ -135,6 +135,14 @@ namespace astu::suite2d {
         child->SetParent(nullptr);
     }
 
+    void Node::DetachAll()
+    {
+        for (auto & child : children) {
+            child->SetParent(nullptr);
+        }
+        children.clear();
+    }
+
     void Node::UpdateTransform(double dt)
     {
         Spatial::UpdateTransform(dt);
