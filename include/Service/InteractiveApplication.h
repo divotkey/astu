@@ -182,6 +182,20 @@ namespace astu {
         const Color4f& GetBackgroundColor() const;
 
         /**
+         * Defines whether application info will be printed to the terminal.
+         * 
+         * @param printInfo set to `true` ot print application information
+         */
+        void SetPrintApplicationInfo(bool printInfo);
+
+        /**
+         * Returns whether application info will be printed to the terminal.
+         * 
+         * @return `true` if application info will be printed
+         */
+        bool IsPrintApplicationInfo() const;
+
+        /**
          * Terminates the application at the beginning of the next main cycle.
          */
         void ScheduleTermination();

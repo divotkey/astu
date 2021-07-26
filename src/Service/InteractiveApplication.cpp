@@ -143,6 +143,16 @@ namespace astu {
         return backgroundColor;
     }
 
+    void InteractiveApplication::SetPrintApplicationInfo(bool printInfo)
+    {
+        printVersionInfo = printInfo;
+    }
+
+    bool InteractiveApplication::IsPrintApplicationInfo() const
+    {
+        return printVersionInfo;
+    }
+
     void InteractiveApplication::AddCoreServices()
     {
         // The update service functions as the central facility for things 
