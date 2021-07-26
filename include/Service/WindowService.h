@@ -122,24 +122,23 @@ namespace astu {
         virtual const std::string & GetTitle() const = 0;
 
         /***
-         * Specifies whether the window should be resizeable.
+         * Specifies whether the window should be resizable.
          * 
-         * @param b the `true` if the window should be resizeable
+         * @param b the `true` if the window should be resizable
          */
-        virtual void SetResizeable(bool b) = 0;
+        virtual void SetResizable(bool b) = 0;
 
         /**
-         * Returns whether the window is resizeable.
+         * Returns whether the window is resizable.
          * 
-         * @return `true` if the window is resizeable
+         * @return `true` if the window is resizable
          */
-        virtual bool IsResizeable() const = 0;
+        virtual bool IsResizable() const = 0;
     
         /**
          * Returns the number of available displays.
          */
         virtual int NumDisplays() const = 0;
-
 
         /**
          * Acivates or deactivates fullscreen mode.

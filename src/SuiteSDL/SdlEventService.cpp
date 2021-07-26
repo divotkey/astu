@@ -7,6 +7,7 @@
 
 // Local includes
 #include "SuiteSDL/SdlEventService.h"
+#include "SuiteSDL/ISdlResizeListener.h"
 #include "ISdlEventListener.h"
 #include "SdlKeyTable.h"
 
@@ -168,6 +169,11 @@ namespace astu {
                                     event.window.data2)
                                 );
                     }
+
+                    // Propagate event to registered listeners.
+                    for (auto listener : resizeListeners) {
+                        listener->OnResize(event.window.data1, event.window.data2);
+                    }
                     break;
 
                 case SDL_WINDOWEVENT_MINIMIZED:
@@ -241,8 +247,7 @@ namespace astu {
 
     bool SdlEventService::HasSdlEventListener(ISdlEventListener & listener) const
     {
-        return find(eventListeners.begin(), eventListeners.end(), &listener) 
-            != eventListeners.end();
+        return find(eventListeners.begin(), eventListeners.end(), &listener) != eventListeners.end();
     }
 
     void SdlEventService::AddSdlEventListener(ISdlEventListener & listener)
@@ -260,5 +265,27 @@ namespace astu {
             remove(eventListeners.begin(), eventListeners.end(), &listener),
             eventListeners.end());
     }
+
+    bool SdlEventService::HasSdlResizeListener(ISdlResizeListener & listener) const
+    {
+        return find(resizeListeners.begin(), resizeListeners.end(), &listener) != resizeListeners.end();
+    }
+
+    void SdlEventService::AddSdlResizeListener(ISdlResizeListener & listener)
+    {
+        if (HasSdlResizeListener(listener)) {
+            throw std::logic_error("SDL resize listener already added");
+        }
+
+        resizeListeners.push_back(&listener);
+    }
+
+    void SdlEventService::RemoveSdlResizeListener(ISdlResizeListener & listener)
+    {
+        resizeListeners.erase(
+            remove(resizeListeners.begin(), resizeListeners.end(), &listener),
+            resizeListeners.end());
+    }
+
 
 } // end of namespace

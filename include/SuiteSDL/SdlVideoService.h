@@ -10,6 +10,7 @@
 // Local includes.
 #include "Service/Service.h"
 #include "Service/WindowService.h"
+#include "SuiteSDL/ISdlResizeListener.h"
 
 // C++ Standard Library includes
 #include <string>
@@ -30,6 +31,7 @@ namespace astu {
     class SdlVideoService final 
         : public Service
         , public WindowService
+        , private ISdlResizeListener
     {
     public:
 
@@ -75,8 +77,8 @@ namespace astu {
         virtual int GetHeight() const override;
         virtual void SetTitle(const std::string & title) override;
         virtual const std::string & GetTitle() const override;
-        virtual void SetResizeable(bool b) override;
-        virtual bool IsResizeable() const override;
+        virtual void SetResizable(bool b) override;
+        virtual bool IsResizable() const override;
         virtual int NumDisplays() const override;
         virtual void SetFullscreen(bool b) override;
         virtual bool IsFullscreen() const override;
@@ -125,6 +127,8 @@ namespace astu {
          */
         void DisableFullscreen();
 
+        // Inherited via ISdlResizeListener
+        virtual void OnResize(int width, int height) override;
     };
 
 } 

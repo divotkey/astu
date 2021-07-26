@@ -7,6 +7,7 @@
 
 // Local includes
 #include "SuiteSDL/SdlVideoService.h"
+#include "SuiteSDL/SdlEventService.h"
 #include "Input/InputSignals.h"
 
 // C++ Standard Library includes
@@ -17,9 +18,6 @@
 
 namespace astu {
 
-    /**
-     * 
-     */
     SdlVideoService::SdlVideoService()
         : Service("SDL Video Service")
         , window(nullptr)
@@ -48,15 +46,15 @@ namespace astu {
         return *this;
     }
 
-    void SdlVideoService::SetResizeable(bool b)
+    void SdlVideoService::SetResizable(bool b)
     {
         if (GetStatus() != Stopped) {
-            throw std::logic_error("Resizeable window cannot be enabled/disabled while video service is running.");
+            throw std::logic_error("Resizability of window cannot be enabled/disabled while video service is running.");
         }
         resizeable = b;
     }
 
-    bool SdlVideoService::IsResizeable() const
+    bool SdlVideoService::IsResizable() const
     {
         return resizeable;
     }
@@ -107,10 +105,13 @@ namespace astu {
         if (fullscreen) {
             EnableFullscreen();
         }
+
+        ASTU_SERVICE(SdlEventService).AddSdlResizeListener(*this);
     }
 
     void SdlVideoService::CleanUp()
     {
+        ASTU_SERVICE(SdlEventService).RemoveSdlResizeListener(*this);
         if (window) {
             SDL_DestroyWindow(window);
             window = nullptr;
@@ -244,5 +245,12 @@ namespace astu {
 
         fullscreen = false;
     }
+
+    void SdlVideoService::OnResize(int width, int height)
+    {
+        winWidth = width;
+        winHeight = height;
+    }
+
 
 } // end of namespace

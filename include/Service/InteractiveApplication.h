@@ -128,6 +128,20 @@ namespace astu {
         bool IsFullscreen() const;
 
         /**
+         * Defines whether the main application window should be resizable.
+         * 
+         * @param resizable set to `true` if the window should be resizeable
+         */
+        void SetResizable(bool resizable);
+
+        /**
+         * Returns whether the main applicaiton window can be resized.
+         * 
+         * @return `true` if the application window can be resized
+         */
+        bool IsResizable() const;
+
+        /**
          * Sets the key used to toggle fullscreen mode.
          * 
          * @param keycode   the key
@@ -219,6 +233,9 @@ namespace astu {
 
         /** The key used to toggle fullscreen mode. */
         int fullScreenKey;
+
+        /** Whether the application window should be resizeable. */
+        bool resizable;
 
         /** Whether the application is currently running. */
         bool running;

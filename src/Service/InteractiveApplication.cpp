@@ -37,6 +37,7 @@ namespace astu {
         , startupResolution(Resolution::HD_2)
         , fullscreen(false)
         , fullScreenKey(Keyboard::Keycodes::KEY_F11)
+        , resizable(false)
         , running(false)
     {
         AddCoreServices();
@@ -100,6 +101,16 @@ namespace astu {
     Resolution InteractiveApplication::GetResolution() const
     {
         return startupResolution;
+    }
+
+    void InteractiveApplication::SetResizable(bool inResizable)
+    {
+        resizable = inResizable;
+    }
+
+    bool InteractiveApplication::IsResizable() const
+    {
+        return resizable;
     }
 
     void InteractiveApplication::SetFullscreen(bool startFullscreen)
@@ -198,6 +209,7 @@ namespace astu {
         wndSrv.SetTitle( GetInfoString() );
         wndSrv.SetSize(startupResolution);
         wndSrv.SetFullscreen(fullscreen);
+        wndSrv.SetResizable(resizable);
 
         // Configure background color
         ASTU_SERVICE(RenderService).SetBackgroundColor(backgroundColor);

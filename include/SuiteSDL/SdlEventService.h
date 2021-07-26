@@ -18,6 +18,7 @@ namespace astu {
 
     // Forward declaration
     class ISdlEventListener;
+    class ISdlResizeListener;
 
     /**
      * Initializes the SDL event submodule. 
@@ -55,7 +56,7 @@ namespace astu {
         void ClearQuit();
 
         /**
-         * Adds an event listener which listens to raw sdl events.
+         * Adds an event listener which listens to raw SDL events.
          * This method is for internal usage only.
          * 
          * @param listener  event listener to add
@@ -78,6 +79,31 @@ namespace astu {
          * @param listener  event listener to remove
          */
         bool HasSdlEventListener(ISdlEventListener & listener) const;
+
+        /**
+         * Adds an resize listener which listens to SDL resize events.
+         * This method is for internal usage only.
+         * 
+         * @param listener  event listener to add
+         * @throws std::logic_error in case the listener has already been added
+         */
+        void AddSdlResizeListener(ISdlResizeListener & listener);
+
+        /**
+         * Removes an resize listener.
+         * This method is for internal usage only.
+         * 
+         * @param listener  event listener to remove
+         */
+        void RemoveSdlResizeListener(ISdlResizeListener & listener);
+
+        /**
+         * Tests whether an resize listener has already been added.
+         * This method is for internal usage only.
+         * 
+         * @param listener  event listener to remove
+         */
+        bool HasSdlResizeListener(ISdlResizeListener & listener) const;
 
     protected:
 
@@ -121,6 +147,9 @@ namespace astu {
 
         /** The registered event listeners. */
         std::vector<ISdlEventListener*> eventListeners;
+
+        /** The registered event listeners. */
+        std::vector<ISdlResizeListener*> resizeListeners;
     };
 
 } 
