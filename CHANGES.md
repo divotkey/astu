@@ -1,6 +1,18 @@
 
 # Version History {#CHANGES}
 
+# Version 0.10.0
+*Date: 2021-07-28*
+
+This version has undergone extensive adjustments. The source code was
+restructured and many names were changed for better consistency and
+understanding. 
+
+- Added application classes which simplify configuration of services.
+- Renamed input events to input signals.
+- Added header files to include categories of features.
+- Improved documentation.
+
 # Version 0.9.3
 *Date: 2021-07-08*
 

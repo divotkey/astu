@@ -11,7 +11,7 @@
  */
 
 // Local includes
-#include "AstAudio.h"
+#include "AstuAudio.h"
 #include "Audio/WaveCodec.h"
 
 // C++ Standard Library includes
