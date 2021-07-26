@@ -51,6 +51,14 @@ namespace astu::suite2d {
     /////// Spatial
     /////////////////////////////////////////////////
 
+    /**
+     * A Spatial represents the basic scene graph element.
+     * The main property of a Spatial is that it contains a transformation, 
+     * that describes the position, orientation ans scaling of this scene
+     * graph element.
+     * 
+     * @ingroup suite2d_group
+     */
     class Spatial : public Controllable {
     public:
 
@@ -102,6 +110,13 @@ namespace astu::suite2d {
             return  localTransform;
         }
 
+        /**
+         * Returns the world transformation matrix of this spatial.
+         * The world transformation matrix is only valid after the Update()
+         * method has been called.
+         * 
+         * @return the world transformation matrix
+         */
         const Matrix3f& GetWorldMatrix() const {
             return worldMatrix;
         }
@@ -110,7 +125,7 @@ namespace astu::suite2d {
          * Updates the geometric state.
          * 
          * This method updates attached controllers, computes world
-         * transformations  etc.
+         * transformations etc.
          * 
          * @param dt    the elapsed time since the last update in seconds
          */
@@ -222,6 +237,11 @@ namespace astu::suite2d {
     /////// Node
     /////////////////////////////////////////////////
 
+    /**
+     * A node is a spatial scene graph element that manages children.
+     * 
+     * @ingroup suite2d_group
+     */
     class Node : public Spatial {
     public:
 
@@ -271,6 +291,11 @@ namespace astu::suite2d {
         }
 
         /**
+         * Removes all attached child nodes.
+         */
+        void DetachAll();
+
+        /**
          * Searches recursively for a child node with a specific name.
          * 
          * @param childName the name of the child node to search for
@@ -316,6 +341,17 @@ namespace astu::suite2d {
     /////// Polyline
     /////////////////////////////////////////////////
 
+    /**
+     * The polyline class represents a leaf element within the scene graph.
+     * It consists of contiguous lines that do not need to be closed. Thus, a
+     * polyline is not a polygon in which the last vertex is always connected
+     * to the first vertex.
+     * 
+     * If a polygon is to be represented using a polyline element, the first
+     * vertex must be duplicated in order to achieve a closed representation. 
+     * 
+     * @ingroup suite2d_group
+     */
     class Polyline final : public Spatial {
     public:
 
@@ -326,8 +362,18 @@ namespace astu::suite2d {
          */
         Polyline(std::shared_ptr<VertexBuffer2f> vertexBuffer);
 
-        void SetColor(const Color4f& c);
+        /**
+         * Sets the color of this polyline.
+         * 
+         * @param color the color
+         */
+        void SetColor(const Color4f& color);
 
+        /**
+         * Returns the color of this polyline.
+         * 
+         * @return this polyline's color
+         */
         const Color4f& GetColor() const {
             return color;
         }
@@ -359,6 +405,8 @@ namespace astu::suite2d {
 
     /**
      * Represents a scene graph in two-dimensional space.
+     * 
+     * @ingroup suite2d_group
      */
     class SceneGraph {
     public:
@@ -401,6 +449,11 @@ namespace astu::suite2d {
     /////// SpatialBuilder
     /////////////////////////////////////////////////
 
+    /**
+     * Base class for builders that create scene graph elements.
+     * 
+     * @ingroup suite2d_group
+     */
     template <typename T>
     class SpatialBuilder {
     public:
@@ -408,41 +461,91 @@ namespace astu::suite2d {
         /** Virtual destructor. */
         virtual ~SpatialBuilder() {}
 
-        T& Name(const std::string &spatialName) {
-            name = spatialName;
+        /**
+         * Specifies the name of the scene graph element to build.
+         * 
+         * @param inName    the name of the scene graph element
+         * @return reference to this builder for method chaining
+         */
+        T& Name(const std::string &inName) {
+            name = inName;
             return reinterpret_cast<T&>(*this);
         }
 
+        /**
+         * Specifies the translation of the scene graph element to build.
+         * 
+         * @param v the translation vector
+         * @return reference to this builder for method chaining
+         */
         T& Translation(const Vector2f& v) {
             localTransform.SetTranslation(v);
             return reinterpret_cast<T&>(*this);
         }
 
-        T& Translation(float x, float y) {
-            localTransform.SetTranslation(x, y);
+        /**
+         * Specifies the translation of the scene graph element to build.
+         * 
+         * @param vx    the x-coordinate of the translation vector
+         * @param vy    the y-coordinate of the translation vector
+         * @return reference to this builder for method chaining
+         */
+        T& Translation(float vx, float vy) {
+            localTransform.SetTranslation(vx, vy);
             return reinterpret_cast<T&>(*this);
         }
 
+        /**
+         * Specifies the scaling of the scene graph element to build.
+         * 
+         * @param s the scaling factor for x and y dimension
+         * @return reference to this builder for method chaining
+         */
         T& Scaling(float s) {
             localTransform.SetScaling(s, s);
             return reinterpret_cast<T&>(*this);
         }
 
-        T& Scaling(const Vector2f& s) {
-            localTransform.SetScaling(s);
+        /**
+         * Specifies the scaling of the scene graph element to build.
+         * 
+         * @param vs    the scaling vector
+         * @return reference to this builder for method chaining
+         */
+        T& Scaling(const Vector2f& vs) {
+            localTransform.SetScaling(vs);
             return reinterpret_cast<T&>(*this);
         }
 
+        /**
+         * Specifies the scaling of the scene graph element to build.
+         * 
+         * @param sx    the scaling factor for the x-dimension
+         * @param sy    the scaling factor for the y-dimension
+         * @return reference to this builder for method chaining
+         */
         T& Scaling(float sx, float sy) {
             localTransform.SetScaling(sx, sy);
             return reinterpret_cast<T&>(*this);
         }
 
+        /**
+         * Specifies the rotation of the scene graph element to build.
+         * 
+         * @param phi   the rotation angle in radians
+         * @return reference to this builder for method chaining
+         */
         T& Rotation(float phi) {
             localTransform.SetRotation(phi);
             return reinterpret_cast<T&>(*this);
         }
 
+        /**
+         * Specifies the rotation of the scene graph element to build.
+         * 
+         * @param phi   the rotation angle in degrees
+         * @return reference to this builder for method chaining
+         */
         T& RotationDeg(float phi) {
             localTransform.SetRotationDeg(phi);
             return reinterpret_cast<T&>(*this);
@@ -460,6 +563,11 @@ namespace astu::suite2d {
 
     protected:
 
+        /**
+         * Sets the spatial's parameters according to the current configuration.
+         * 
+         * @param spatial   the scene graph element
+         */
         void Build(Spatial& spatial) {
             spatial.SetLocalTransform(localTransform);
             spatial.SetName(name);
@@ -477,6 +585,11 @@ namespace astu::suite2d {
     /////// NodeBuilder
     /////////////////////////////////////////////////
 
+    /**
+     * This class is used to build new nodes for the scene graph.
+     * 
+     * @ingroup suite2d_group
+     */
     class NodeBuilder final : public SpatialBuilder<NodeBuilder> {
     public:
 
@@ -487,6 +600,12 @@ namespace astu::suite2d {
             Reset();
         }
 
+        /**
+         * Adds a new child to be attached to the node to create.
+         * 
+         * @param child the child
+         * @return reference to this builder for method chaining
+         */
         NodeBuilder&  AttachChild(std::shared_ptr<Spatial> child) {
             children.push_back(child);
             return *this;
@@ -504,7 +623,8 @@ namespace astu::suite2d {
 
         /**
          * Creates a new polyline according to the current configuration.
-         * 
+         *      * @ingroup suite2d_group
+
          * @return the newly created polyline
          */
         std::shared_ptr<Node> Build() {
@@ -527,6 +647,11 @@ namespace astu::suite2d {
     /////// PolylineBuilder
     /////////////////////////////////////////////////
 
+    /**
+     * This class is used to build new polyline scene graph elements.
+     * 
+     * @ingroup suite2d_group
+     */
     class PolylineBuilder final : public SpatialBuilder<PolylineBuilder> {
     public:
 
@@ -537,6 +662,12 @@ namespace astu::suite2d {
             Reset();
         }
 
+        /**
+         * Specifies the color used to build the new polyline.
+         * 
+         * @param c the color
+         * @return reference to this builder for method chaining
+         */
         PolylineBuilder& Color(const Color4f c) {
             color = c;
             return *this;
