@@ -14,6 +14,7 @@
 #include "SuiteSDL/SdlJoystickService.h"
 #include "SuiteSDL/SdlTimeService.h"
 #include "SuiteSDL/SdlSceneGraph2D.h"
+#include "SuiteSDL/SdlLineRenderer.h"
 
 namespace astu {
 
@@ -56,6 +57,8 @@ namespace astu {
 
     void SdlApplication::AddSdl2DServices()
     {    
+
+        ASTU_CREATE_AND_ADD_SERVICE( SdlLineRenderer );    
         ASTU_CREATE_AND_ADD_SERVICE( SdlSceneGraph2D );    
         ASTU_CREATE_AND_ADD_SERVICE( SdlVertexBufferBuilderService2D );
     }
@@ -64,6 +67,7 @@ namespace astu {
     {    
         ASTU_REMOVE_SERVICE( SdlVertexBufferBuilderService2D );
         ASTU_REMOVE_SERVICE( SdlSceneGraph2D );
+        ASTU_REMOVE_SERVICE( SdlLineRenderer );    
     }
 
     void SdlApplication::ConfigureApplication()
