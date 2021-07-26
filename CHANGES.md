@@ -12,6 +12,7 @@ understanding.
 - Renamed input events to input signals.
 - Added header files to include categories of features.
 - Improved documentation.
+- Added support for full-screen mode.
 
 # Version 0.9.3
 *Date: 2021-07-08*
