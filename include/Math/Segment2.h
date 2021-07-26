@@ -35,7 +35,7 @@ namespace astu {
          * Constructor.
          * 
          * @param p0    the start point of this line segment
-         * @param p0    the end point of this line segment
+         * @param p1    the end point of this line segment
          */
         Segment2(const Vector2<T>& p0, const Vector2<T>& p1)
             : p0(p0), p1(p1)

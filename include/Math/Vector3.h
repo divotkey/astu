@@ -305,7 +305,7 @@ namespace astu {
         /**
          * Binary subtraction operator for two vectors.
          *
-         * @param right the right hand-side vector
+         * @param rhs   the right hand-side vector
          * @return a new vector representing the result of the operation
          */
         const Vector3<T> operator-(const Vector3<T> & rhs) const {
@@ -315,7 +315,7 @@ namespace astu {
         /**
          * Compound assignment and subtraction operator for two vectors.
          *
-         * @param right the right hand-side vector
+         * @param rhs   the right hand-side vector
          * @return a reference to this vector
          */
         Vector3<T> & operator-=(const Vector3<T> & rhs) {

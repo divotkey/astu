@@ -192,7 +192,7 @@ namespace astu {
         /**
          * Compound assignment and addition operator.
          *
-         * @param right     the right hand-side vector
+         * @param delta the delta movement to the segment
          * @return a reference to this vector
          */
        Segment1& operator+=(T delta)

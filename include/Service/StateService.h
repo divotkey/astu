@@ -121,14 +121,14 @@ namespace astu {
         // Due to the current implementation of ServiceManager, start-states
         // do not work.
 
-        // /**
+        // /*
         //  * Specifies a state to be used on startup.
         //  * 
         //  * @param state the name of the startup state
         //  */
         // void SetStartState(const std::string& state);
 
-        // /**
+        // /*
         //  * Returns the state to be used on startup.
         //  * 
         //  * @return the name of the startup state

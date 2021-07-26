@@ -9,6 +9,11 @@
 
 namespace astu {
 
+    /**
+     * Priorities define the seqeuence services get started, updated, etc.
+     * 
+     * @ingroup srv_group
+     */
     enum Priority {
         VeryHigh = 0,
         High = 500,

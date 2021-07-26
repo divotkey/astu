@@ -82,52 +82,35 @@ namespace astu {
         /**
          * Sets the x and y components of this vector.
          *
-         * @param x the x-coordinate of the vector
-         * @param y the y-coordinate of the vector
+         * @param newX  the x-coordinate of the vector
+         * @param newY  the y-coordinate of the vector
          * @return reference to this vector for method chaining
          */
-        Vector2 & Set(T _x, T _y) {
-			x = _x;
-            y = _y;
+        Vector2 & Set(T newX, T newY) {
+			x = newX;
+            y = newY;
             return *this;
         }
-
-        // /**
-        //  * Sets the x and y components of this vector.
-        //  * 
-        //  * This version of the setter methods accepts arguments of type integer
-        //  * and is exists to avoid compiler warnings when initializing vectors
-        //  * with integer values to float vectors. 
-        //  * 
-        //  * @param x the x-coordinate of the vector
-        //  * @param y the y-coordinate of the vector
-        //  * @return reference to this vector for method chaining
-        //  */
-        // Vector2 & Set(int x, int y) {
-        //     this->x = static_cast<T>(x);
-        //     this->y = static_cast<T>(y);
-        //     return *this;
-        // }
-
+        
         /**
          * Sets the x component of this vector.
          *
-         * @param x the x-coordinate of the vector
+         * @param _x    the x-coordinate of the vector
          * @return reference to this vector for method chaining
          */
-        Vector2 & SetX(T x) {
-            this->x = x;
+        Vector2& SetX(T _x) {
+            x = _x;
             return *this;
         }
 
         /**
          * Sets the y component of this vector.
          *
-         * @param y the y-coordinate of the vector
+         * @param _y    the y-coordinate of the vector
          * @return reference to this vector for method chaining
          */
-        Vector2 & SetY(T y) {
-            this->y = y;
+        Vector2& SetY(T _y) {
+            y = _y;
             return *this;
         }
 

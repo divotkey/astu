@@ -26,6 +26,15 @@ namespace astu {
     class MouseButtonSignal {
     public:
 
+        /**
+         * Constructor.
+         * 
+         * @param button    the button which has been pressed or released
+         * @param pressed   `true` if the button has been pressed, `false` if
+         *                  the button has been released
+         * @param x         the x-coordinate of the mouse cursor
+         * @param y         the y-coordinate of the mouse cursor
+         */
         MouseButtonSignal(int button = 0, bool pressed = false, int x = 0, int y = 0)
             : button(button), pressed(pressed), x(x), y(y) {}
 
@@ -203,7 +212,7 @@ namespace astu {
          * Constructor.
          * 
          * @param x the x-coordinate of the mouse cursor in screen coordinates
-         * @param x the y-coordinate of the mouse cursor in screen coordinates
+         * @param y the y-coordinate of the mouse cursor in screen coordinates
          */
         MouseMoveSignal(int x = 0, int y = 0)
             : x(x), y(y) {}
@@ -260,7 +269,7 @@ namespace astu {
          * Called by this base class when a mouse wheel signals has received.
          * 
          * @param x the x-coordinate of the mouse cursor in screen coordinates
-         * @param x the y-coordinate of the mouse cursor in screen coordinates
+         * @param y the y-coordinate of the mouse cursor in screen coordinates
          */
         virtual bool OnMouseMove(int x, int y) { 
             return false;

@@ -43,7 +43,7 @@ namespace astu {
          */
         void SetDuration(double duration);
 
-        /***
+        /**
          * Returns the duration of this timed task.
          * 
          * @return the duration in seconds

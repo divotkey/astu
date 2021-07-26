@@ -12,6 +12,11 @@
 
 namespace astu {
 
+    /**
+     * Simplified the requried startup code for SDL-based interactive applications.
+     * 
+     * @ingroup sdl_group
+     */
     class SdlApplication : public InteractiveApplication {
     public:
 

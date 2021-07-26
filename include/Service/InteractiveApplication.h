@@ -20,6 +20,11 @@ namespace astu {
     // Forward declaration
     class UpdateService;
 
+    /**
+     * Base class for interactive applications.
+     * 
+     * @ingroup srv_group
+     */
     class InteractiveApplication 
         : public IWindowStateListener
         , public IKeystrokeListener

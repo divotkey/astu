@@ -121,7 +121,7 @@ namespace astu {
          */
         virtual const std::string & GetTitle() const = 0;
 
-        /***
+        /**
          * Specifies whether the window should be resizable.
          * 
          * @param b the `true` if the window should be resizable

@@ -131,7 +131,7 @@ namespace astu {
         /**
          * Returns whether this service has been started.
          * 
-         * @eturn `true` if this service has been started
+         * @return `true` if this service has been started
          */
         bool IsStarted() const {
             return GetStatus() == Status::Running 

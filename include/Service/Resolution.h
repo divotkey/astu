@@ -11,6 +11,8 @@ namespace astu {
 
     /**
      * Describes common resoutions for application windows.
+     * 
+     * @ingroup srv_group
      */
     enum class Resolution {
         /** Aspect ratio 4:3, pixels 800 x 600. */

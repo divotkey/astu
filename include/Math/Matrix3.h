@@ -129,7 +129,8 @@ namespace astu {
 		 * This method pre-multiplies a translation matrix 'Mt' with this
 		 * matrix and stores the result in this matrix.
 		 *
-		 * @param v	the translation vector
+		 * @param tx	x-component of the translation vector
+		 * @param ty	y-component of the translation vector
 		 * @return reference to this matrix for method chaining
 		 */
 		Matrix3<T>& Translate(T tx, T ty) {
@@ -142,10 +143,8 @@ namespace astu {
 		 * Applies a translation by the specified translation vector.
 		 *
 		 * This method pre-multiplies a translation matrix 'Mt' with this
-		 * matrix and stores the result in this matrix.
-		 *
-		 * @param tx	x-component of the translation vector
-		 * @param ty	y-component of the translation vector
+		 * matrix and stores the result in this matr		 * @param v	the translation vector
+
 		 * @return reference to this matrix for method chaining
 		 */
 		Matrix3<T>& Translate(const Vector2<T> & v) {
@@ -269,7 +268,8 @@ namespace astu {
 		 * multiplied from the right side. The missing fourth element
 		 * of the required four component vector is assumed to be one.
 		 *
-		 * @param p	the point to transform
+		 * @param x	the x-coordinate of the point
+		 * @param y	the y-coordinate of the point
 		 * @return the transformed point
 		 */
 		Vector2<T> TransformPoint(T x, T y) const {
@@ -286,8 +286,7 @@ namespace astu {
 		 * multiplied from the right side. The missing fourth element
 		 * of the required four component vector is assumed to be one.
 		 *
-		 * @param x	the x-coordinate of the point
-		 * @param y	the y-coordinate of the point
+		 * @param p	the point to transform
 		 * @return the transformed point
 		 */
 		Vector2<T> TransformPoint(const Vector2<T>& p) const {
@@ -301,7 +300,8 @@ namespace astu {
 		 * multiplied from the right side. The missing fourth element
 		 * of the required four component vector is assumed to be zero.
 		 *
-		 * @param v	the vector to transform
+		 * @param x	the x-coordinate of the vector
+		 * @param y	the y-coordinate of the vector
 		 * @return the transformed point
 		 */
 		Vector2<T> TransformVector(T x, T y) const {
@@ -318,8 +318,7 @@ namespace astu {
 		 * multiplied from the right side. The missing fourth element
 		 * of the required four component vector is assumed to be zero.
 		 *
-		 * @param x	the x-coordinate of the vector
-		 * @param y	the y-coordinate of the vector
+		 * @param v	the vector to transform
 		 * @return the transformed point
 		 */
 		Vector2<T> TransformVector(const Vector2<T> & v) const {
@@ -416,7 +415,7 @@ namespace astu {
 		/**
 		 * Binary equality operator comparing two matrices.
 		 *
-		 * @param the right hand side matrix
+		 * @param rhs	right hand side matrix
 		 * @return `true` if the specified matrix is equal to this matrix
 		 */
 		bool operator==(const Matrix3<T>& rhs) const {
