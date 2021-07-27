@@ -9,7 +9,7 @@
 #include "SdlRecordingSceneRenderer2D.h"
 #include "AstuGraphics.h"
 #include "AstuMath.h"
-#include "Services.h"
+#include "AstuServices.h"
 
 // C++ Standard Library includes
 #include <sstream>
@@ -74,7 +74,6 @@ namespace astu {
         string filepath = "/media/roman/Volume/Temp/breakout/frame";        
         cout << "Rendering #" << frames.size() << " frames" << endl;
 
-
         for (size_t i = 0; i < frames.size(); ++i) {
             std::stringstream ss;
             ss << filepath << std::setw(4) << std::setfill('0') << i << ".bmp";
@@ -91,12 +90,12 @@ namespace astu {
 
         for (const auto& line : frame) {
             imgRndr.SetDrawColor(TO_COLOR4D(line.color));
-            imgRndr.DrawLine(TO_VEC2D(line.p0), TO_VEC2D(line.p1));
+            imgRndr.DrawLine(TO_VEC2D(line.p0), TO_VEC2D(line.p1), 2);
         }
         
         auto& wndSrv = ASTU_SERVICE(WindowService);
         Image image(wndSrv.GetWidth(), wndSrv.GetHeight());
-        imgRndr.SetRenderQuality(RenderQuality::Beautiful);
+        imgRndr.SetRenderQuality(RenderQuality::Insane);
         cout << "Rendering frame #" << cnt << " (" << filename << ")" << endl;
         imgRndr.Render(image);
 

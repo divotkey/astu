@@ -648,7 +648,22 @@ namespace astu::suite2d {
     /////////////////////////////////////////////////
 
     /**
-     * This class is used to build new polyline scene graph elements.
+     * This fluent builder is used to build new polyline scene graph elements.
+     * 
+     * **Example**
+     * 
+     * ```
+     * std::shared_ptr<Node> node = ASTU_SERVICE(SceneGraph).GetRoot();
+     *  
+     * node->AttachChild(PolylineBuilder()
+     *     .Color(RalColors::TrafficWhite)
+     *     .Name("Triangle")
+     *     .Translation(100, 100)
+     *     .RotationDeg(45)
+     *     .VertexBuffer(ShapeGenerator().GenTriangle(100))
+     *     .Build()
+     *   );
+     * ```
      * 
      * @ingroup suite2d_group
      */

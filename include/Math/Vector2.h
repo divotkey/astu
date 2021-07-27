@@ -24,6 +24,10 @@ namespace astu {
     template <typename T>
     class Vector2 {
     public:
+		/** Zero vector to be used as convenient constant. */
+		static const inline Vector2<T> Zero 
+            = Vector2<T>(static_cast<T>(0), static_cast<T>(0));
+
         /** The x-coordinate of this vector. */
         T x;
 

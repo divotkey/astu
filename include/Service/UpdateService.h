@@ -98,6 +98,13 @@ namespace astu {
     /**
      * Services can derive from this class to get updated once each main cycle.
      * 
+     * 
+     * **Example Header-File for Updatable Services**
+     * @include MyUpdatableService.h
+     * 
+     * **Example Implementation for Updatable Services**
+     * @include MyUpdatableService.cpp
+     * 
      * @ingroup srv_group
      */
     class Updatable : public virtual Service, private IUpdatable {

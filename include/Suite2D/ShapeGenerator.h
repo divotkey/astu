@@ -31,7 +31,7 @@ namespace astu::suite2d {
         /**
          * Specifies the vertex buffer builder to be used.
          * 
-         * @builder the vertex buffer builder to be used
+         * @param   builder the vertex buffer builder to be used
          * @return reference to this generator for method chaining
          */
         ShapeGenerator& VertexBufferBuilder(
@@ -113,7 +113,7 @@ namespace astu::suite2d {
          * Generates an axis aligned rectangle.
          * 
          * @param w the width of the rectangle
-         * @param n the height of the rectangle
+         * @param h the height of the rectangle
          */
         std::shared_ptr<VertexBuffer2f> GenRectangle(float w, float h) const;
 
@@ -153,7 +153,7 @@ namespace astu::suite2d {
          * 
          * The thickness paramter must be within in the range (0, 1).
          * 
-         * @param r     the size of the cross
+         * @param s     the size of the cross
          * @param th    determines the thickness of the cross (0, 1)
          */
         std::shared_ptr<VertexBuffer2f> GenCross(float s, float th = 0.381967f);

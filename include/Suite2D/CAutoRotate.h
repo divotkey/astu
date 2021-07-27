@@ -25,7 +25,7 @@ namespace astu::suite2d {
         /**
          * Constructor.
          * 
-         * @param seed  the angular speed in radians per second
+         * @param speed the angular speed in radians per second
          */
         CAutoRotate(float speed) : speed(speed) {
             // Intentionally left empty.        

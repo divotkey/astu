@@ -90,6 +90,7 @@ if(USE_SDL)
         src/SuiteSDL/SdlLineRenderer.cpp
         src/SuiteSDL/SdlSceneGraph2D.cpp
         src/SuiteSDL/SdlSceneRenderer2D.cpp
+        src/SuiteSDL/SdlRecordingSceneRenderer2D.cpp
         src/SuiteSDL/SdlApplication.cpp
         )
 else(USE_SDL)

@@ -109,18 +109,18 @@ namespace astu::suite2d {
         /**
          * Draws a line between two points.
          * 
-         * @parma x1    the x-coordinate of the first point of the line
-         * @parma y1    the y-coordinate of the first point of the line
-         * @parma x2    the x-coordinate of the second point of the line
-         * @parma y2    the y-coordinate of the second point of the line
+         * @param x1    the x-coordinate of the first point of the line
+         * @param y1    the y-coordinate of the first point of the line
+         * @param x2    the x-coordinate of the second point of the line
+         * @param y2    the y-coordinate of the second point of the line
          */
         virtual void DrawLine(T x1, T y1, T x2, T y2) = 0;
 
         /**
          * Draws a line between two points.
          * 
-         * @parma p1    the first point of the line
-         * @parma p2    the second point of the line
+         * @param p1    the first point of the line
+         * @param p2    the second point of the line
          */
         void DrawLine(const Vector2<T> & p1, const Vector2<T> & p2) {
             DrawLine(p1.x, p1.y, p2.x, p2.y);
@@ -137,10 +137,25 @@ namespace astu::suite2d {
             DrawLine(cx + w / 2, cy + h / 2, cx - w / 2, cy + h / 2);
         }
 
+        /**
+         * Draws a circle.
+         * 
+         * @param c         the center of the circle
+         * @param r         the radius of the circle
+         * @param segments  the number of line segments used to draw the circle
+         */
         virtual void DrawCircle(Vector2<T> c, T r, unsigned int segments = 24) {
             DrawCircle(c.x, c.y, r, segments);
         }
 
+        /**
+         * Draws a circle.
+         * 
+         * @param cx        the x-coordinate of the center of the circle
+         * @param cy        the y-coordinate of the center of the circle
+         * @param r         the radius of the circle
+         * @param segments  the number of line segments used to draw the circle
+         */
         virtual void DrawCircle(T cx, T cy, T r, unsigned int segments = 24) {
             T da = static_cast<T>(MathUtils::PI2d) / segments;
 
@@ -318,6 +333,24 @@ namespace astu::suite2d {
             return lineRenderer->GetDrawColor();
         }
 
+        /**
+         * Draws a line between two points.
+         * 
+         * @param p1    the first point of the line
+         * @param p2    the second point of the line
+         */
+        virtual void DrawLine(const Vector2<T> & p1, const Vector2<T> & p2) {
+            lineRenderer->DrawLine(p1.x, p1.y, p2.x, p2.y);
+        }     
+
+        /**
+         * Draws a line between two points.
+         * 
+         * @param x1    the x-coordinate of the first point of the line
+         * @param y1    the y-coordinate of the first point of the line
+         * @param x2    the x-coordinate of the second point of the line
+         * @param y2    the y-coordinate of the second point of the line
+         */
         void DrawLine(T x1, T y1, T x2, T y2) {
             lineRenderer->DrawLine(x1, y1, x2, y2);
         }
@@ -326,10 +359,25 @@ namespace astu::suite2d {
             lineRenderer->DrawRectangle(cx, cy, w, h);
         }
 
+        /**
+         * Draws a circle.
+         * 
+         * @param cx        the x-coordinate of the center of the circle
+         * @param cy        the y-coordinate of the center of the circle
+         * @param r         the radius of the circle
+         * @param segments  the number of line segments used to draw the circle
+         */
         void DrawCircle(T cx, T cy, T r, unsigned int segments = 24) {
             lineRenderer->DrawCircle(cx, cy, r, segments);
         }
 
+        /**
+         * Draws a circle.
+         * 
+         * @param c         the center of the circle
+         * @param r         the radius of the circle
+         * @param segments  the number of line segments used to draw the circle
+         */
         void DrawCircle(const Vector2<T>& c, T r, unsigned int segments = 24) {
             DrawCircle(c.x, c.y, r, segments);
         }
@@ -345,10 +393,6 @@ namespace astu::suite2d {
         void DrawPolygonNormals(const Polygon<T>& poly, T normalScale) {
             lineRenderer->DrawPolygonNormals(poly, normalScale);
         }
-
-        virtual void DrawLine(const Vector2<T> & p1, const Vector2<T> & p2) {
-            lineRenderer->DrawLine(p1.x, p1.y, p2.x, p2.y);
-        }     
 
     private:
         /** The line renderer. */

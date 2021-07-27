@@ -8,6 +8,7 @@
 // Local includes
 #include "SuiteSDL/SdlSceneGraph2D.h"
 #include "SuiteSDL/SdlSceneRenderer2D.h"
+#include "SuiteSDL/SdlRecordingSceneRenderer2D.h"
 
 // Simple Direct Layer (SDL) includes
 #include <SDL2/SDL.h>
@@ -97,6 +98,7 @@ namespace astu {
     void SdlSceneGraph2D::OnStartup()
     {
         sceneRenderer = std::make_unique<SdlSceneRenderer2D>();
+        // sceneRenderer = std::make_unique<SdlRecordingSceneRenderer2D>();
     }
 
     void SdlSceneGraph2D::OnShutdown()

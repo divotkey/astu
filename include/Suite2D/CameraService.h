@@ -108,6 +108,20 @@ namespace astu::suite2d {
         }
 
         /**
+         * Returns the current visible width in world space.
+         * 
+         * @return the visible width in world space
+         */
+        Vector2f GetViewWidth() const;
+
+        /**
+         * Returns the current visible height in world space.
+         * 
+         * @return the visible height in world space
+         */
+        Vector2f GetViewHeight() const;
+
+        /**
          * Switches the camera to screen space mode.
          * 
          * The camera shows the section of the world that is visible based on
