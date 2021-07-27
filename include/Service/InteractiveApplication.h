@@ -196,6 +196,13 @@ namespace astu {
         bool IsPrintApplicationInfo() const;
 
         /**
+         * Set the title of the application window.
+         * 
+         * @param title the application window title
+         */
+        void SetWindowTitle(const std::string & title);
+
+        /**
          * Terminates the application at the beginning of the next main cycle.
          */
         void ScheduleTermination();
@@ -231,6 +238,9 @@ namespace astu {
 
         /** The name of this application. */
         std::string appName;
+
+        /** The initial title of the application window. */
+        std::string windowTitle;
 
         /** The background color of this application. */
         Color4f backgroundColor;

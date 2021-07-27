@@ -5,7 +5,7 @@
 
 class MyUpdatableService 
     : public astu::BaseService
-    , public astu::Updatable
+    , private astu::Updatable
 {
 public:
     

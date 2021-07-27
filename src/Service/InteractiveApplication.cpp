@@ -73,6 +73,11 @@ namespace astu {
         terminated = true;
     }
 
+    void InteractiveApplication::SetWindowTitle(const std::string & title)
+    {
+        windowTitle = title;
+    }
+
     void InteractiveApplication::EnableTerminateOnClose(bool b)
     {
         terminateOnClose = b;
@@ -216,7 +221,12 @@ namespace astu {
     {
         // Configure application main window.
         auto & wndSrv = ASTU_SERVICE(WindowService);
-        wndSrv.SetTitle( GetInfoString() );
+        if (windowTitle.empty()) {
+            wndSrv.SetTitle( windowTitle );
+        } else {
+            wndSrv.SetTitle( GetInfoString() );
+        }
+
         wndSrv.SetSize(startupResolution);
         wndSrv.SetFullscreen(fullscreen);
         wndSrv.SetResizable(resizable);
