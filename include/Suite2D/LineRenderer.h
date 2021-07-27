@@ -126,10 +126,24 @@ namespace astu::suite2d {
             DrawLine(p1.x, p1.y, p2.x, p2.y);
         }
 
+        /**
+         * Draws an axis-aligned rectangle.
+         * 
+         * @param c the center of the rectangle
+         * @param s the dimensions of the rectangle
+         */
         void DrawRectangle(const Vector2<T>& c, const Vector2<T>& s) {
             DrawRectangle(c.x, c.y, s.x, s.y);
         }
 
+        /**
+         * Draws an axis-aligned rectangle.
+         * 
+         * @param cx    the x-coordinate of the center of the rectangle
+         * @param cy    the y-coordinate of the center of the rectangle
+         * @param w     the width of the rectangle
+         * @param w     the height of the rectangle
+         */
         virtual void DrawRectangle(T cx, T cy, T w, T h) {
             DrawLine(cx - w / 2, cy - h / 2, cx + w / 2, cy - h / 2);
             DrawLine(cx - w / 2, cy - h / 2, cx - w / 2, cy + h / 2);
@@ -228,6 +242,12 @@ namespace astu::suite2d {
             }
             return mv;
         }
+        /**
+         * Draws an axis-aligned rectangle.
+         * 
+         * @param c the center of the rectangle
+         * @param s the dimensions of the rectangle
+         */
 
     private:
         /** The current color used for rendering. */
@@ -262,7 +282,13 @@ namespace astu::suite2d {
                 lineRenderer = ASTU_GET_SERVICE(LineRenderer<T>); 
             });
 
-            AddShutdownHook([this](){ lineRenderer = nullptr; });
+            AddShutdownHook([this](){ lineRenderer = nullptr;        /**
+         * Draws an axis-aligned rectangle.
+         * 
+         * @param c the center of the rectangle
+         * @param s the dimensions of the rectangle
+         */
+ });
         }
 
     protected:
@@ -355,8 +381,26 @@ namespace astu::suite2d {
             lineRenderer->DrawLine(x1, y1, x2, y2);
         }
 
+        /**
+         * Draws an axis-aligned rectangle.
+         * 
+         * @param cx    the x-coordinate of the center of the rectangle
+         * @param cy    the y-coordinate of the center of the rectangle
+         * @param w     the width of the rectangle
+         * @param w     the height of the rectangle
+         */
         void DrawRectangle(T cx, T cy, T w, T h) {
             lineRenderer->DrawRectangle(cx, cy, w, h);
+        }
+
+        /**
+         * Draws an axis-aligned rectangle.
+         * 
+         * @param c the center of the rectangle
+         * @param s the dimensions of the rectangle
+         */
+        void DrawRectangle(const Vector2<T>& c, const Vector2<T>& s) {
+            lineRenderer->DrawRectangle(c, s);
         }
 
         /**
@@ -380,10 +424,6 @@ namespace astu::suite2d {
          */
         void DrawCircle(const Vector2<T>& c, T r, unsigned int segments = 24) {
             DrawCircle(c.x, c.y, r, segments);
-        }
-
-        void DrawRectangle(const Vector2<T>& c, const Vector2<T>& s) {
-            lineRenderer->DrawRectangle(c, s);
         }
 
         void DrawPolygon(const Polygon<T>& poly) {

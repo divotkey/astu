@@ -110,16 +110,18 @@ namespace astu::suite2d {
         /**
          * Returns the current visible width in world space.
          * 
+         * @param includeZoom   whether to consider the current zoom factor
          * @return the visible width in world space
          */
-        Vector2f GetViewWidth() const;
+        float GetViewWidth(bool includeZoom = false) const;
 
         /**
          * Returns the current visible height in world space.
          * 
+         * @param includeZoom   whether to consider the current zoom factor
          * @return the visible height in world space
          */
-        Vector2f GetViewHeight() const;
+        float GetViewHeight(bool includeZoom = false) const;
 
         /**
          * Switches the camera to screen space mode.
@@ -169,10 +171,10 @@ namespace astu::suite2d {
         /**
          * Switches the camera to fitting view mode.
          * 
-         * The camera will show the specified height of the game world
-         * independently from the aspect ratio of the output window.
+         * The camera will show the specified height of the game world 
+         * independently from the aspect ratio of the output window. 
          * Empty areas on the top and bottom or on the left and right side 
-         * of the screen might appear.
+         * of the screen might appear. 
          * 
          * @param size  vector containing width and height in world units
          */
@@ -183,8 +185,9 @@ namespace astu::suite2d {
         /**
          * Switches the camera to filling view mode.
          * 
-         * The camera will show the specified height of the game world
+         * The camera will show the specified height of the game world 
          * independently from the aspect ratio of the output window.
+         * 
          * If the aspect ratio of the output window does not match the
          * aspect ratio of the visible world area, parts of the game world
          * might not be cut off.
@@ -197,11 +200,11 @@ namespace astu::suite2d {
         /**
          * Switches the camera to filling view mode.
          * 
-         * The camera will show the specified height of the game world
-         * independently from the aspect ratio of the output window.
-         * If the aspect ratio of the output window does not match the
-         * aspect ratio of the visible world area, parts of the game world
-         * might not be cut off.
+         * The camera will show the specified height of the game world 
+         * independently from the aspect ratio of the output window. 
+         * If the aspect ratio of the output window does not match the 
+         * aspect ratio of the visible world area, parts of the game world 
+         * might not be cut off. 
          * 
          * @param size  vector containing width and height in world units
          */

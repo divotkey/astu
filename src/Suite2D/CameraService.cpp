@@ -62,14 +62,22 @@ namespace astu::suite2d {
         return orientation;
     }
 
-    Vector2f Camera::GetViewWidth() const
+    float Camera::GetViewWidth(bool includeZoom) const
     {
-        return targetWidth * scaling * zoom;
+        if (includeZoom) {
+            return targetWidth / (scaling.x * zoom);        
+        } else{
+            return targetWidth / scaling.x;        
+        }
     }
 
-    Vector2f Camera::GetViewHeight() const
+    float Camera::GetViewHeight(bool includeZoom) const
     {
-        return targetHeight * scaling * zoom;        
+        if (includeZoom) {
+            return targetHeight / (scaling.y * zoom);        
+        } else{
+            return targetHeight / scaling.y;        
+        }
     }
 
     const Matrix3f& Camera::GetMatrix() const
