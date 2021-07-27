@@ -222,9 +222,9 @@ namespace astu {
         // Configure application main window.
         auto & wndSrv = ASTU_SERVICE(WindowService);
         if (windowTitle.empty()) {
-            wndSrv.SetTitle( windowTitle );
-        } else {
             wndSrv.SetTitle( GetInfoString() );
+        } else {
+            wndSrv.SetTitle( windowTitle );
         }
 
         wndSrv.SetSize(startupResolution);
