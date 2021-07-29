@@ -17,6 +17,20 @@ namespace astu {
 
     /**
      * A system which processes one family of entities.
+     * 
+     * **Example Iterating Entity-System**
+     * 
+     * This example shows how to build your own entity system that iterates
+     * over a single family of entities. 
+     * 
+     * Header file
+     * 
+     * @include MyOnyFamilySystem.h
+     * 
+     * Implementation file
+     * @include MyOnyFamilySystem.cpp
+     * 
+     * @ingroup ecs_group
      */
     class OneFamilyEntitySystem : public virtual Service {
     public:
@@ -91,6 +105,12 @@ namespace astu {
         std::shared_ptr<EntityService> entityService;
     };
 
+    /**
+     * Services can derive from this class to get informed when an entity
+     * of a certain family is added or remove to the entity service.
+     * 
+     * @ingroup ecs_group
+     */
     class EntityListener : public virtual Service, private IEntityListener {
     public:
 

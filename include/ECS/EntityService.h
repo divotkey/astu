@@ -32,6 +32,9 @@ namespace astu {
     /**
      * Base class for all entity components.
      * 
+     * **Example Header-File for custom entity components**
+     * @include MyEntityComponent.h
+     * 
      * @ingroup ecs_group
      */
     class EntityComponent {
