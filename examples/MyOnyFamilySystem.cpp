@@ -1,5 +1,4 @@
 #include "MyOnyFamilySystem.h"
-#include "CAutoDestruct.h"
 
 using namespace astu;
 using namespace std;
