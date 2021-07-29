@@ -25,8 +25,7 @@ namespace astu {
     class Vector2 {
     public:
 		/** Zero vector to be used as convenient constant. */
-		static const inline Vector2<T> Zero 
-            = Vector2<T>(static_cast<T>(0), static_cast<T>(0));
+		static const Vector2<T> Zero; 
 
         /** The x-coordinate of this vector. */
         T x;
@@ -544,5 +543,15 @@ namespace astu {
      * Convenient type alias for astu::Vector2 template using float as data type.
      */
     using Vector2f = astu::Vector2<float>;    
+
+    /**
+     * Defines the Zero-Constant für Vector2 templates.
+     * (For some reasons, MS C++ compiler does not work with template inline
+     * keyword.)
+     * 
+     * @param tparam    the numerical type of the vector
+     */
+	template <typename T>
+	Vector2<T> const Vector2<T>::Zero = Vector2<T>(0, 0);
 
 } // end of namespace

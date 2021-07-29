@@ -7,9 +7,6 @@
 
 #pragma once
 
-// Simple Direct Layer (SDL) includes
-#include <SDL2/SDL.h>
-
 namespace astu {
 
     /**

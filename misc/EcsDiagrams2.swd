@@ -1,0 +1,84 @@
+// SWORD Script:	Used to generate ByteLight scripts that create diagrams to 
+//								visualize entity component systems.
+// Copyright (c) 2021 Roman Divotkey. All rights reserved.
+
+include "Commons.swd";
+include "Scene.swd";
+include "Box.swd";
+include "TextBlock.swd";
+include "HLayout.swd";
+include "VList.swd";
+include "HList.swd";
+
+Font = "Sigmar One";
+
+function MakeComponent(name, attributes, col, is)
+{
+		if (is == undefined) {
+			is = false;
+		}
+
+		VList {
+			MainColor(col);
+			InnerShadow(is);
+			DefaultWidth(0.3);
+			FrameWidth(0.005);
+			th = 0.03;			
+			Gap(0.02);
+			AutoMargin();
+
+			TextBlock {
+				FontName(Font);
+				Text(name);
+				Color("White");
+				Height(th);
+			}
+
+			for (j = 0; j < attributes.length; ++j) {
+				TextBlock {
+					FontName("Lucida Console");
+					Text(attributes[j]);
+					Color("TrafficWhite");
+					Height(th * 0.5);
+				}
+
+			}
+		}
+}
+
+Scene {
+
+	AddColor("White",	"|1.00, 1.00, 1.00|");
+	AddColor("TrafficWhite",	"|0.95, 0.94, 0.92|");
+	AddColor("TrafficBlack", 	"|0.16, 0.16, 0.16|");
+	AddColor("TrafficGreyA", 	"|0.56, 0.57, 0.57|");
+	AddColor("TrafficGreyB", 	"|0.31, 0.32, 0.31|");
+
+	AddColor("TrafficRed",		"|0.73, 0.12, 0.06|");
+	AddColor("TrafficYellow", "|0.97, 0.71, 0.00|");
+	AddColor("TrafficBlue", 	"|0.00, 0.36, 0.55|");
+	AddColor("TrafficGreen", 	"|0.00, 0.51, 0.32|");	
+	AddColor("TrafficOrange", "|0.87, 0.33, 0.03|");	
+
+	AddColor("DefaultColor", "BLACK");
+	AddColor("ShadowColor", "|0, 0, 0, 1|");
+	AddColor("FrameColor", "TrafficBlack");
+	AddColor("MainColor", "RED");
+	AddColor("SecondaryColor", "TrafficWhite");
+	AddColor("BackgroundColor",		"|1, 1, 1, 0|");
+
+
+	DropShadow(false);
+	ShadowOffset(0.005, -0.005);
+	textHeight = 0.035;
+	is = true;
+
+	HLayout {
+		MakeComponent("CPose", ["Position: Vector2f", "Orientation: float"], "TrafficRed", is);
+		MakeComponent("CScene", ["Spatial: shared_ptr<Spatial>"], "TrafficBlue", is);
+		MakeComponent("CBody", ["velocity: Vector2f", "angularVelocity: float", "netForce: Vector2f", "netTorque: float"], "TrafficOrange", is);
+		MakeComponent("CAutoRotate", ["Speed: float"], "TrafficGreen", is);
+		MakeComponent("CAutoDestruct", ["duration: float", "ttl: float"], "TrafficYellow", is);
+	}
+
+}

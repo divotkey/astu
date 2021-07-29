@@ -5,6 +5,8 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+#define _USE_MATH_DEFINES
+
 // Local includes
 #include "AstUtils0.h"
 #include "Math/Random.h"
@@ -18,8 +20,8 @@
 
 // C++ Standard Libryry includes
 #define _USE_MATH_DEFINES
-#include <cassert>
 #include <cmath>
+#include <cassert>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -27,7 +29,6 @@
 #include <limits>
 #include <algorithm>
 #include <memory>
-
 
 using namespace astu;
 using namespace std;
