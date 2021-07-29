@@ -1,0 +1,144 @@
+// SWORD Script:	Used to generate ByteLight scripts that create diagrams to 
+//								visualize entity component systems.
+// Copyright (c) 2021 Roman Divotkey. All rights reserved.
+
+include "Commons.swd";
+include "Scene.swd";
+include "Box.swd";
+include "TextBlock.swd";
+include "HLayout.swd";
+include "VList.swd";
+include "HList.swd";
+
+BallEntity = [["CBall"], ["CPose"], ["CBody"], ["CScene"], ["CCircleCollider"]];
+PaddleEntity = [["CPaddle"], ["CPose"], ["CBody"], ["CScene"], ["CPolygonCollider"]];
+BrickEntity = [["CBrick"], ["CPose"], ["CBody"], ["CScene"], ["CPolygonCollider"]];
+SpecialBrickEntity = [["CAutoRotate"], ["CPose"], ["CBody"], ["CScene"], ["CPolygonCollider"]];
+
+EntityA = [["Comp A", 1], ["Comp B", 2], ["Comp C", 3]];
+EntityB = [["Comp B", 2], ["Comp C", 3]];
+EntityC = [["Comp A", 1], ["Comp C", 3], ["Comp D", 4]];
+EntityD = [["Comp B", 2], ["Comp C", 3], ["Comp D", 4]];
+EntityE = [["Comp A", 1], ["Comp D", 4]];
+EntityF = [["Comp A", 1], ["Comp B", 2], ["Comp D", 4], ["Comp E", 5]];
+
+function MakeView(entities, family) {
+	result = [];
+
+	for (i = 0; i < entities.length; ++i) {
+		if (IsInFamily(entities[i], family)) {
+			result.push(entities[i]);
+		}
+	}
+
+	return result;
+}
+
+function IsInFamily(entity, family) {
+	for (i = 0; i< family.length; ++i) {
+		if (!HasComponent(entity, family[i])) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function HasComponent(entity, comp) {
+	for (i = 0; i < entity.length; ++i) {
+		if (entity[i][0] == comp) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function CreateEntity(entity, is)
+{
+		VList {
+			MainColor("TrafficGreyA");
+			MainColor("TrafficWhite");
+			InnerShadow(is);
+			AutoMargin();
+			DefaultWidth(0.1);
+			FrameWidth(0.005);
+			th = 0.03;			
+
+			for (j = 0; j < entity.length; ++j) {
+				TextBlock {
+					FontName("DejaVu Sans");
+					FontName("FreeSans");
+					Text(entity[j][0]);
+					Color("TrafficWhite");
+					switch (entity[j][1]) {
+						case 1:
+							Color("TrafficRed");						
+							break;
+						case 2:
+							Color("TrafficBlue");						
+							break;
+						case 3:
+							Color("TrafficYellow");						
+							break;
+						case 4:
+							Color("TrafficGreen");						
+							break;
+						case 5:
+							Color("TrafficOrange");						
+							break;
+
+						default:
+							Color("TrafficBlack");
+					}
+					Height(th);
+				}
+			}
+		}
+}
+
+Scene {
+
+	AddColor("TrafficWhite",	"|0.95, 0.94, 0.92|");
+	AddColor("TrafficBlack", 	"|0.16, 0.16, 0.16|");
+	AddColor("TrafficGreyA", 	"|0.56, 0.57, 0.57|");
+	AddColor("TrafficGreyB", 	"|0.31, 0.32, 0.31|");
+
+	AddColor("TrafficRed",		"|0.73, 0.12, 0.06|");
+	AddColor("TrafficYellow", "|0.97, 0.71, 0.00|");
+	AddColor("TrafficBlue", 	"|0.00, 0.36, 0.55|");
+	AddColor("TrafficGreen", 	"|0.00, 0.51, 0.32|");	
+	AddColor("TrafficOrange", "|0.87, 0.33, 0.03|");	
+
+	AddColor("DefaultColor", "BLACK");
+	AddColor("ShadowColor", "|0, 0, 0, 1|");
+	AddColor("FrameColor", "TrafficBlack");
+	AddColor("MainColor", "RED");
+	AddColor("SecondaryColor", "TrafficWhite");
+	AddColor("BackgroundColor",		"WHITE");
+
+
+	DropShadow(false);
+	ShadowOffset(0.005, -0.005);
+	textHeight = 0.035;
+	is = false;
+
+
+	allEntities = [EntityA, EntityB, EntityF, EntityC, EntityA, EntityD, EntityF, EntityE];
+	HList {
+		Gap(0.045);
+		AutoMargin();
+		DefaultWidth(0.25);
+		FrameWidth(0.0075);
+		InnerShadow(false);
+		TopAlignment();
+	
+		view = allEntities;
+		view = MakeView(allEntities, ["Comp A", "Comp B"]);
+
+		for (i = 0; i < view.length; ++i) {
+			CreateEntity(view[i], is);
+		}
+	}
+
+}
