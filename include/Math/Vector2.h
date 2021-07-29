@@ -546,6 +546,8 @@ namespace astu {
 
     /**
      * Defines the Zero-Constant für Vector2 templates.
+     * (For some reasons, MS C++ compiler does not work with template inline
+     * keyword.)
      * 
      * @param tparam    the numerical type of the vector
      */
