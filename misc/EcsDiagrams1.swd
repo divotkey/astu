@@ -10,6 +10,9 @@ include "HLayout.swd";
 include "VList.swd";
 include "HList.swd";
 
+Font = "Verdana";
+Font = "Sigmar One";
+
 BallEntity = [["CBall"], ["CPose"], ["CBody"], ["CScene"], ["CCircleCollider"]];
 PaddleEntity = [["CPaddle"], ["CPose"], ["CBody"], ["CScene"], ["CPolygonCollider"]];
 BrickEntity = [["CBrick"], ["CPose"], ["CBody"], ["CScene"], ["CPolygonCollider"]];
@@ -60,15 +63,16 @@ function CreateEntity(entity, is)
 			MainColor("TrafficGreyA");
 			MainColor("TrafficWhite");
 			InnerShadow(is);
-			AutoMargin();
 			DefaultWidth(0.1);
 			FrameWidth(0.005);
 			th = 0.03;			
+			Gap(0.01);
+			AutoMargin();
 
 			for (j = 0; j < entity.length; ++j) {
 				TextBlock {
 					FontName("DejaVu Sans");
-					FontName("FreeSans");
+					FontName(Font);
 					Text(entity[j][0]);
 					Color("TrafficWhite");
 					switch (entity[j][1]) {
@@ -115,7 +119,7 @@ Scene {
 	AddColor("FrameColor", "TrafficBlack");
 	AddColor("MainColor", "RED");
 	AddColor("SecondaryColor", "TrafficWhite");
-	AddColor("BackgroundColor",		"WHITE");
+	AddColor("BackgroundColor",		"|1, 1, 1, 0|");
 
 
 	DropShadow(false);
@@ -135,6 +139,10 @@ Scene {
 	
 		view = allEntities;
 		view = MakeView(allEntities, ["Comp A", "Comp B"]);
+		view = MakeView(allEntities, ["Comp A", "Comp D"]);
+		view = MakeView(allEntities, ["Comp C", "Comp D"]);
+		view = MakeView(allEntities, ["Comp C", "Comp D"]);
+		view = MakeView(allEntities, ["Comp A", "Comp B",  "Comp D"]);
 
 		for (i = 0; i < view.length; ++i) {
 			CreateEntity(view[i], is);
