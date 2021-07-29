@@ -402,7 +402,7 @@ namespace astu::suite2d {
      */
     class CameraService final 
         : public virtual Service
-        , public astu::ResizeListener
+        , public ResizeListener
     {
     public:
 
@@ -445,7 +445,7 @@ namespace astu::suite2d {
         /**
          * Retrieves a camera with the specified name or creates it.
          * 
-         * @param name  the name of the camera
+         * @param camName   the name of the camera
          * @return the retrieved or newly created camera
          */
         std::shared_ptr<Camera> GetOrCreateCamera(const std::string & camName) {
@@ -465,7 +465,7 @@ namespace astu::suite2d {
         virtual void OnStartup() override;
         virtual void OnShutdown() override;
 
-        // Inherited via ReslizeListener
+        // Inherited via ResizeListener
         virtual bool OnResize(int width, int height) override;
 
     private:

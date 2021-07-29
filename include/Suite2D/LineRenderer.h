@@ -82,6 +82,9 @@ namespace astu::suite2d {
             return modelTransform;
         }
 
+        /**
+         * Resetns the current transfomation to identity.
+         */
         void ResetTransform() {
             modelTransform.SetToIdentity();
             mvDirty = true;
@@ -97,12 +100,12 @@ namespace astu::suite2d {
             mvDirty = true;
         }
 
-        /***
+        /**
          * Returns the view matrix.
          * 
          * @return the view matrix
          */
-        const Matrix3f& SetViewTransform() const {
+        const Matrix3f& GetViewTransform() const {
             return viewTransform;
         }
 
@@ -142,7 +145,7 @@ namespace astu::suite2d {
          * @param cx    the x-coordinate of the center of the rectangle
          * @param cy    the y-coordinate of the center of the rectangle
          * @param w     the width of the rectangle
-         * @param w     the height of the rectangle
+         * @param h     the height of the rectangle
          */
         virtual void DrawRectangle(T cx, T cy, T w, T h) {
             DrawLine(cx - w / 2, cy - h / 2, cx + w / 2, cy - h / 2);
@@ -206,10 +209,10 @@ namespace astu::suite2d {
         /**
          * Draws a polygon.
          * 
-         * @param poly  the polygon to draw
-         * @param scale the scaling factor used to render the normals
+         * @param poly          the polygon to draw
+         * @param normalScale   the scaling factor used to render the normals
          */
-        virtual void DrawPolygonNormals(const Polygon<T>& poly, T scale)  {
+        virtual void DrawPolygonNormals(const Polygon<T>& poly, T normalScale)  {
             if (poly.NumVertices() < 3) { 
                 // Degenerated polygon
                 return;
@@ -217,7 +220,7 @@ namespace astu::suite2d {
 
             for (size_t i = 0; i < poly.NumEdges(); ++i) {
                 const auto& p = poly.GetEdgeCenter(i);
-                DrawLine(p, p + poly.GetEdgeNormal(i) * scale);
+                DrawLine(p, p + poly.GetEdgeNormal(i) * normalScale);
             }
         }
 
@@ -267,9 +270,24 @@ namespace astu::suite2d {
 
     };
 
-    using ILineRenderer2f = LineRenderer<float>;
+    /**
+     * Type alias for ILineRenderer2f template using double as data type.
+     */
     using ILineRenderer2d = LineRenderer<double>;
 
+    /**
+     * Type alias for ILineRenderer2f template using float as data type.
+     */
+    using ILineRenderer2f = LineRenderer<float>;
+
+    /**
+     * Serices can derive from this class to use a line renderer in a 
+     * convenient way. This class fetches a line renderer and also 
+     * replicates its method for convenient usage. It also provides a 
+     * matrix transformation stack.
+     * 
+     * @tparam T    the numerical data type used for rendering
+     */
     template <typename T>
     class LineRendererClient : public virtual Service {
     public:
@@ -282,13 +300,8 @@ namespace astu::suite2d {
                 lineRenderer = ASTU_GET_SERVICE(LineRenderer<T>); 
             });
 
-            AddShutdownHook([this](){ lineRenderer = nullptr;        /**
-         * Draws an axis-aligned rectangle.
-         * 
-         * @param c the center of the rectangle
-         * @param s the dimensions of the rectangle
-         */
- });
+            AddShutdownHook([this](){ lineRenderer = nullptr;
+            });
         }
 
     protected:
@@ -302,59 +315,116 @@ namespace astu::suite2d {
             return *lineRenderer;
         }
 
+
+        /**
+         * Sets the view tranformation. 
+         * 
+         * The view transformation matrix is typically provieded by a camera.
+         * 
+         * @param m the view transformation matrix
+         */
         void SetViewTransform(const Matrix3<T>& m) {
             lineRenderer->SetViewTransform(m);
         }
 
+        /**
+         * Resetns the current transfomation to identity.
+         */
         void ResetTransform() {
             lineRenderer->ResetTransform();
         }
 
+        /**
+         * Sets the transformation matrix.
+         * 
+         * @param m the transformation matrix to become the current one
+         */
         void SetTransform(const Matrix3<T>& m) {
             lineRenderer->SetTransform(m);
         }
 
+        /**
+         * Returns the current transformation matrix.
+         * 
+         * @return the transformation matrix currently used.
+         */
         const Matrix3<T>& GetTransform() const {
             return lineRenderer->GetTransform();
         }
 
+        /**
+         * Adds a translation to the current transfromation.
+         * 
+         * @param delta the delta movement
+         */
         void Translate(const Vector2<T>& delta) {
             auto tx = lineRenderer->GetTransform();
             tx.Translate(delta);
             lineRenderer->SetTransform(tx);
         }
 
+        /**
+         * Adds a rotation to the current transfromation.
+         * 
+         * @param deltaPhi  the rotation angle in radians
+         */
         void Rotate(const Vector2<T>& deltaPhi) {
             auto tx = lineRenderer->GetTransform();
             tx.Rotate(deltaPhi);
             lineRenderer->SetTransform(tx);
         }
 
+        /**
+         * Adds a rotation to the current transfromation.
+         * 
+         * @param deltaPhi  the rotation angle in degrees
+         */
         void RotateDeg(const Vector2<T>& deltaPhi) {
             auto tx = lineRenderer->GetTransform();
             tx.RotateDeg(deltaPhi);
             lineRenderer->SetTransform(tx);
         }
 
+        /**
+         * Adds a scaling to the corrent transformation.
+         * 
+         * @param deltaScale    the scaling factors in x and y dimensions
+         */
         void Scale(const Vector2<T>& deltaScale) {
             auto tx = lineRenderer->GetTransform();
             tx.Scale(deltaScale);
             lineRenderer->SetTransform(tx);
         }
 
+        /**
+         * Pushes the current transform on the transfomation stack.
+         */
         void PushTransform() {
             transformStack.push(lineRenderer->GetTransform());
         }
 
+        /**
+         * Restores the last pushed transform from the transformation stack.
+         */
         void PopTransform() {
             lineRenderer->SetTransform(transformStack.top());
             transformStack.pop();
         }
 
+        /**
+         * Sets the current drawing color used for all subsequent drawing calls.
+         * 
+         * @param c the new drawing color 
+         */
         void SetDrawColor(const Color<T> & c) {
             lineRenderer->SetDrawColor(c);
         }
 
+        /**
+         * Returns the current draw color.
+         * 
+         * @return the current draw color
+         */
         const Color<T>& GetDrawColor() {
             return lineRenderer->GetDrawColor();
         }
@@ -387,7 +457,7 @@ namespace astu::suite2d {
          * @param cx    the x-coordinate of the center of the rectangle
          * @param cy    the y-coordinate of the center of the rectangle
          * @param w     the width of the rectangle
-         * @param w     the height of the rectangle
+         * @param h     the height of the rectangle
          */
         void DrawRectangle(T cx, T cy, T w, T h) {
             lineRenderer->DrawRectangle(cx, cy, w, h);
@@ -426,10 +496,21 @@ namespace astu::suite2d {
             DrawCircle(c.x, c.y, r, segments);
         }
 
+        /**
+         * Draws a polygon.
+         * 
+         * @param poly  the polygon to draw
+         */
         void DrawPolygon(const Polygon<T>& poly) {
             lineRenderer->DrawPolygon(poly);
         }
 
+        /**
+         * Draws the normals of a polygon.
+         * 
+         * @param poly          the polygon
+         * @param normalScale   the scaling factor used to render the normals
+         */
         void DrawPolygonNormals(const Polygon<T>& poly, T normalScale) {
             lineRenderer->DrawPolygonNormals(poly, normalScale);
         }
@@ -442,7 +523,14 @@ namespace astu::suite2d {
         std::stack<Matrix3<T>> transformStack;
     };
 
+    /**
+     * Type alias for LineRendererClient template using float as data type.
+     */
     using LineRendererClient2f = LineRendererClient<float>;
+
+    /**
+     * Type alias for LineRendererClient template using double as data type.
+     */
     using LineRendererClient2d = LineRendererClient<double>;
     
 } // end of namespace

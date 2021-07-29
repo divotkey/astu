@@ -148,14 +148,14 @@ namespace astu {
     protected:
 
         /**
-         * The base class calls this method on startup.
+         * Called by the service base class on startup.
          * 
          * Derived can override this method for initialization purposes.
          */
         virtual void OnStartup() {}
 
         /**
-         * This base class calls this method on shutdown.
+         * Called by the service base method on shutdown.
          * 
          * Derived can override this method for de-initialization purposes,
          * e.g., releasing resources, etc.

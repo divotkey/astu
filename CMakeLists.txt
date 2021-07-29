@@ -15,7 +15,6 @@ list(APPEND astulib_SOURCES
                     src/Math/MathUtils.cpp
 
                     src/Graphics/AstuGraphics.cpp
-                    src/Graphics/Turtle.cpp
 
                     src/Graphics/Palette.cpp
                     src/Graphics/Image.cpp 
