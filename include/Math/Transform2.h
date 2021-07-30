@@ -307,7 +307,7 @@ namespace astu {
          */
         Vector2<T> TransformVector(T vx, T vy) const {
             return Vector2<T>(vx, vy)
-                .Scale(x, y)
+                .Scale(vx, vy)
                 .Rotate(rotation);
         }
 
@@ -331,7 +331,7 @@ namespace astu {
             outM.SetToScale(scaling);
             outM.Rotate(rotation);
             outM.Translate(translation);
-            return m;
+            return outM;
         }
 
         /**
