@@ -207,6 +207,8 @@ namespace astu {
      * for classes that do exist in other dimensions on the one hand and 
      * on the other hand it helps to separate the `d` postfix from the 
      * class name.
+     * 
+     * @ingroup math_group
      */
     using Polygon2d = astu::Polygon<double>;    
 
@@ -218,6 +220,8 @@ namespace astu {
      * for classes that do exist in other dimensions on the one hand and 
      * on the other hand it helps to separate the `f` postfix from the 
      * class name.
+     * 
+     * @ingroup math_group
      */
     using Polygon2f = astu::Polygon<float>;    
 

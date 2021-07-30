@@ -21,6 +21,7 @@ namespace astu {
     class Keyboard {
     public:
 
+        /** The enumeration of keycodes. */
         enum Keycodes {
             KEY_UNKNOWN = 0,
             KEY_A = 4,

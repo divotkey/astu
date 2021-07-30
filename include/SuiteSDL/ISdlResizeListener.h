@@ -14,13 +14,15 @@ namespace astu {
      */
     class ISdlResizeListener {
     public:
+    
         /** Virtual destructor. */
         virtual ~ISdlResizeListener() {}
 
         /**
          * Called to handle an SDL resize event.
          * 
-         * @param   the SDL resize event
+         * @param width the new width of the application window
+         * @param height the new height of the application window
          */
         virtual void OnResize(int width, int height) = 0;
     };

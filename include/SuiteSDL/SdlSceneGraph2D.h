@@ -33,7 +33,7 @@ namespace astu {
      */
     class SdlVertexBufferBuilderService2D 
         : public Service
-        , public VertexBufferBuilder2f
+        , public VertexBufferBuilder2<float>
     {
     public:
 

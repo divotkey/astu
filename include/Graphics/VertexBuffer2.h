@@ -17,6 +17,9 @@ namespace astu {
 
     /**
      * Abstract base class for vertex buffers.
+     * 
+     * @tparam t    the numerical type of this vertex buffer
+     * @ingroup gfx_group
      */
     template <typename T>
     class VertexBuffer2 {
@@ -26,11 +29,25 @@ namespace astu {
         virtual ~VertexBuffer2() {}
     };
     
+    /**
+     * Type alias for VertexBuffer2 template using double as data type.
+     * 
+     * @ingroup gfx_group
+     */
     using VertexBuffer2d = astu::VertexBuffer2<double>;    
+
+    /**
+     * Type alias for VertexBuffer2 template using float as data type.
+     * 
+     * @ingroup gfx_group
+     */
     using VertexBuffer2f = astu::VertexBuffer2<float>;    
 
     /**
      * Abstract base class for vertex buffer builders.
+     * 
+     * @tparam t    the numerical type of this vertex buffer
+     * @ingroup gfx_group
      */
     template <typename T>
     class VertexBufferBuilder2 {
@@ -112,7 +129,18 @@ namespace astu {
         virtual std::shared_ptr<VertexBuffer2<T>> Build() = 0;        
     };
 
+    /**
+     * Type alias for VertexBufferBuilder2 template using double as data type.
+     * 
+     * @ingroup gfx_group
+     */
     using VertexBufferBuilder2d = astu::VertexBufferBuilder2<double>;    
+
+    /**
+     * Type alias for VertexBufferBuilder2 template using float as data type.
+     * 
+     * @ingroup gfx_group
+     */
     using VertexBufferBuilder2f = astu::VertexBufferBuilder2<float>;    
 
 } // end of namespace

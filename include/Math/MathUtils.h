@@ -36,11 +36,21 @@ namespace astu {
         /** Constant for PI times two with single precision. */
         const static float PI2f;
 
+        /**
+         * Converts from degrees to radians.
+         * 
+         * @param phi   the angle in degrees
+         */
         template <typename T>
         static T ToRadians(T phi) {
             return phi * static_cast<T>(3.14159265358979323846 / 180.0);
         }
 
+        /**
+         * Converts from radians to degrees.
+         * 
+         * @param phi   the angle in radians
+         */
         template <typename T>
         static T ToDegrees(T phi) {
             return phi * static_cast<T>(180.0 / 3.14159265358979323846);

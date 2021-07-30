@@ -140,6 +140,7 @@ namespace astu {
          */
         MouseWheelSignal(int amount) : amount(amount) {}
 
+        /** The amount the mouse-wheel has been moved. */
         int amount;
     };
 
@@ -299,7 +300,7 @@ namespace astu {
         /**
          * Constructor.
          * 
-         * @parma keycode   the keycode of the key
+         * @param keycode   the keycode of the key
          * @param pressed   `true` if the key has been pressed, `false` if the 
          *                  key has been released
          */

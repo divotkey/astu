@@ -351,24 +351,24 @@ namespace astu {
         /**
          * Binary subtraction operator for two colors.
          *
-         * @param rhs the right-hand side color
+         * @param rhs   the right-hand side color
          * @return a new color representing the result of the operation
          */
-        Color<T> operator-(const Color<T> & o) const {
-            return Color(r - o.r, g - o.g, b - o.b, a - o.a);
+        Color<T> operator-(const Color<T> & rhs) const {
+            return Color(r - rhs.r, g - rhs.g, b - rhs.b, a - rhs.a);
         }
 
         /**
          * Compound assignment and subtraction operator for two colors.
          *
-         * @param rhs the right-hand side color
+         * @param rhs   the right-hand side color
          * @return a reference to this color
          */
-        Color<T>& operator-=(const Color<T> & o) {
-            r -= o.r;
-            g -= o.g;
-            b -= o.b;
-            a -= o.a;
+        Color<T>& operator-=(const Color<T> & rhs) {
+            r -= rhs.r;
+            g -= rhs.g;
+            b -= rhs.b;
+            a -= rhs.a;
             return *this;
         }
 
@@ -449,7 +449,7 @@ namespace astu {
          * This operator is required to have colors as keys within
          * std::map containers and in order to be able to 'sort' colors.
          * 
-         * @param o	the right-hand side color
+         * @param rhs   the right-hand side color
          * @return `true` if this color evaluates as 'less than' compared to the right-hand side color
          */
         bool operator<(const Color<T> & rhs) const {

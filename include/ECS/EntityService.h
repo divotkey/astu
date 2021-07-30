@@ -312,6 +312,13 @@ namespace astu {
     class EntityFamily {
     public:
 
+
+        /**
+         * Tests whether a certain entity is a member of this family.
+         * 
+         * @param entity    the entity to test
+         * @return `true` if the is a member of this family
+         */
         bool IsMember(const Entity & entity) const
         {
             for (const auto & type : types) {
@@ -386,6 +393,13 @@ namespace astu {
     /////// EntityView
     /////////////////////////////////////////////////
 
+    /**
+     * Type alias that represents an entity view.
+     * 
+     * An entity view is a vector to (shared) pointers to entities.
+     * 
+     * @ingroup ecs_group
+     */
     using EntityView = std::vector<std::shared_ptr<astu::Entity>>;
 
     /////////////////////////////////////////////////
@@ -412,14 +426,14 @@ namespace astu {
          * 
          * @param entity    the entity which has been added
          */
-        virtual void OnEntityAdded(std::shared_ptr<Entity> entity) = 0;
+        virtual void OnEntityAdded(std::shared_ptr<astu::Entity> entity) = 0;
 
         /**
          * Called when an entity has been removed.
          * 
          * @param entity    the entity which has been removed
          */
-        virtual void OnEntityRemoved(std::shared_ptr<Entity> entity) = 0;
+        virtual void OnEntityRemoved(std::shared_ptr<astu::Entity> entity) = 0;
     };
 
 
@@ -466,10 +480,10 @@ namespace astu {
 		/**
 		 * Removes an entity from this service.
 		 *
-		 * @param entity	the entity to remove
+		 * @param entity    the entity to remove
 		 */
-        void RemoveEntity(Entity & e) {
-            RemoveEntity(e.shared_from_this());
+        void RemoveEntity(Entity & entity) {
+            RemoveEntity(entity.shared_from_this());
         }
 
         /**

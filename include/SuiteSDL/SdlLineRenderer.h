@@ -23,10 +23,12 @@ namespace astu {
      * This service is a SDL render layer and uses the command design pattern
      * to store the render calls and replays them when the render layer should
      * be rendered.
+     * 
+     * @ingroup sdl_group 
      */
     class SdlLineRenderer final 
         : public SdlRenderLayer
-        , public suite2d::ILineRenderer2f
+        , public suite2d::LineRenderer<float>
     {
     public:
 

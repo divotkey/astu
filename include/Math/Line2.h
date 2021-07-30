@@ -43,8 +43,8 @@ namespace astu {
          * 
          * @param pA    the origin of the first line
          * @param vA    the diretion of the first line
-         * @param pA    the origin of the second line
-         * @param vA    the diretion of the second line
+         * @param pB    the origin of the second line
+         * @param vB    the diretion of the second line
          * @param outS1 receives the scaling factor for the first line
          * @param outS2 receives the scaling factor for the second line
          * @return  `true` if the two lines intersect or false if the two lines 
@@ -159,11 +159,15 @@ namespace astu {
 
     /**
      * Type alias for Line2 template using double as data type.
+     * 
+     * @ingroup math_group
      */
     using Line2d = astu::Line2<double>;    
 
     /**
      * Type alias for Segment1 template using float as data type.
+     * 
+     * @ingroup math_group
      */
     using Line2f = astu::Line2<float>;    
 

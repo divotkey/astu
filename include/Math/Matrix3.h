@@ -44,16 +44,15 @@ namespace astu {
 		 * 
 		 * Initializes the matrix with the specified values.
 		 *
-		 * @param m00 the first value
-		 * @param m01 the second value
-		 * @param m02 the third value
-		 * @param m03 the fourth value
-		 * @param m04 the fifth value
-		 * @param m05 the sixth value
-		 * @param m06 the seventh value
-		 * @param m07 the eighth value
-		 * @param m08 the ninth value
-		 * @param m09 the tenth value
+		 * @param m0	the first value
+		 * @param m1	the second value
+		 * @param m2	the third value
+		 * @param m3	the fourth value
+		 * @param m4	the fifth value
+		 * @param m5	the sixth value
+		 * @param m6	the seventh value
+		 * @param m7	the eighth value
+		 * @param m8	the ninth value
 		 */
 		Matrix3(T m0, T m1, T m2,
 				 T m3, T m4, T m5,
@@ -65,16 +64,15 @@ namespace astu {
 		/**
 		 * Sets this matrix to the specified values.
 		 *
-		 * @param m00 the first value
-		 * @param m01 the second value
-		 * @param m02 the third value
-		 * @param m03 the fourth value
-		 * @param m04 the fifth value
-		 * @param m05 the sixth value
-		 * @param m06 the seventh value
-		 * @param m07 the eighth value
-		 * @param m08 the ninth value
-		 * @param m09 the tenth value
+		 * @param m0	the first value
+		 * @param m1	the second value
+		 * @param m2	the third value
+		 * @param m3	the fourth value
+		 * @param m4	the fifth value
+		 * @param m5	the sixth value
+		 * @param m6	the seventh value
+		 * @param m7	the eighth value
+		 * @param m8	the ninth value
 		 * @return reference to this matrix for method chaining
 		 */
 		Matrix3<T>& Set(T m0, T m1, T m2,
@@ -428,7 +426,7 @@ namespace astu {
 		/**
 		 * Binary non-equality operator comparing two matrices.
 		 *
-		 * @param the right hand side matrix
+		 * @param rhs	the right hand side matrix
 		 * @return `true` if the specified matrix is not equal to this matrix
 		 */
 		bool operator!=(const Matrix3<T> rhs) const {

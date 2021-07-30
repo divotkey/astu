@@ -98,7 +98,7 @@ namespace astu {
         /**
          * Constructor.
          * 
-         * @param the maximum recursion depth of the scene quad tree
+         * @param maxDepth  the maximum recursion depth of the scene quad tree
          */
         ImageRenderer(unsigned int maxDepth = 10);
 
@@ -244,7 +244,7 @@ namespace astu {
          * 
          * @param depth the depth of the scene quadtree.
          */
-        void SetQuadtreeDepth(unsigned int);
+        void SetQuadtreeDepth(unsigned int depth);
 
         /**
          * Renders the image.

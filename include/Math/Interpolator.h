@@ -71,7 +71,7 @@ namespace astu {
          */
         virtual T Update(T dt) = 0;
 
-        /***
+        /**
          * Convenient method to set the target value and update the current value.
          * 
          * @param targetValue   the new target value

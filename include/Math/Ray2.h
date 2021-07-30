@@ -85,11 +85,15 @@ namespace astu {
 
     /**
      * Type alias for Ray2 template using double as data type.
+     * 
+     * @ingroup math_group
      */
     using Ray2d = astu::Ray2<double>;    
 
     /**
      * Type alias for Ray2 template using float as data type.
+     * 
+     * @ingroup math_group
      */
     using Ray2f = astu::Ray2<float>;    
 

@@ -111,7 +111,10 @@ namespace astu {
      * 
      * @ingroup ecs_group
      */
-    class EntityListener : public virtual Service, private IEntityListener {
+    class EntityListener 
+        : public virtual Service 
+        , private IEntityListener
+    {
     public:
 
         /**

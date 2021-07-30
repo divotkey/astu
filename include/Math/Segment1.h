@@ -183,6 +183,12 @@ namespace astu {
             return std::min(std::abs(other.x0 - x1), std::abs(other.x1 - x0));
         }
 
+        /**
+         * Translates this segment.
+         * 
+         * @param delta the delta movement
+         * @return reference to this segment for method chaining
+         */
         Segment1& Translate(T delta) {
             x0 += delta;
             x1 += delta;
@@ -212,11 +218,15 @@ namespace astu {
 
     /**
      * Type alias for Segment1 template using double as data type.
+     * 
+     * @ingroup math_group
      */
     using Segment1d = astu::Segment1<double>;    
 
     /**
      * Type alias for Segment1 template using float as data type.
+     * 
+     * @ingroup math_group
      */
     using Segment1f = astu::Segment1<float>;    
 

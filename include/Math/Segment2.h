@@ -186,11 +186,15 @@ namespace astu {
 
     /**
      * Type alias for Segment2 template using double as data type.
+     * 
+     * @ingroup math_group
      */
     using Segment2d = astu::Segment2<double>;    
 
     /**
      * Type alias for Segment1 template using float as data type.
+     * 
+     * @ingroup math_group
      */
     using Segment2f = astu::Segment2<float>;    
 

@@ -34,6 +34,11 @@ namespace astu {
     class Key {
     public:
 
+        /**
+         * Constructor.
+         * 
+         * @param name  the name of this key
+         */
         Key(const std::string & name = "UNKNOWN");
 
         /**
@@ -74,9 +79,16 @@ namespace astu {
      */
     class KeyState {
     public:
+
+        /**
+         * Constructor.
+         */
         KeyState() : pressed(false), value(0) {}
 
+        /** Whether the key is pressed. */
         bool pressed;
+
+        /** The value of an axis. */
         float value;
     };
 
@@ -377,14 +389,19 @@ namespace astu {
         /**
          * Creates a new axis binding.
          * 
-         * @param actionName    the name of the axis to bind to
-         * @param delegate      the delegate function of the action binding
+         * @param axisName  the name of the axis to bind to
+         * @param delegate  the delegate function of the action binding
          * @return the action binding
          */
         std::shared_ptr<AxisBinding> BindAxis(
             const std::string &axisName, 
             AxisBinding::Delegate delegate = nullptr);
 
+        /**
+         * Removes an axis binding.
+         * 
+         * @param binding   the binding to remove
+         */
         void RemoveAxisBinding(std::shared_ptr<AxisBinding> binding);
 
         /**
