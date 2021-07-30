@@ -8,9 +8,8 @@ using namespace std;
 
 const EntityFamily MyOnyFamilySystem::FAMILY = EntityFamily::Create<>();
 
-MyOnyFamilySystem::MyOnyFamilySystem(int updatePriority)
-    : BaseService("My Ony-Family System")
-    , Updatable(updatePriority)
+MyOnyFamilySystem::MyOnyFamilySystem()
+    : BaseService("My One-Family System")
     , OneFamilyEntitySystem(FAMILY)    
 {
     // Intentionally left empty.
@@ -24,14 +23,4 @@ void MyOnyFamilySystem::OnStartup()
 void MyOnyFamilySystem::OnShutdown()
 {
     // Intentionally left empty.
-}
-
-void MyOnyFamilySystem::OnUpdate()
-{
-    ProcessEntities();
-} 
-
-void MyOnyFamilySystem::ProcessEntity(Entity & entity)
-{
-    // Process entity    
 }

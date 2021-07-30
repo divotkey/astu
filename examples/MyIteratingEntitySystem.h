@@ -1,17 +1,16 @@
 #pragma once
 
-
 // AST Utilities includes
 #include <AstuECS.h>
 
-class MyOnyFamilySystem 
+class MyIteratingEntitySystem 
     : public astu::BaseService
-    , private astu::OneFamilyEntitySystem
+    , private astu::IteratingEntitySystem
 {
 public:
 
     // Constructor.
-    MyOnyFamilySystem();
+    MyIteratingEntitySystem(int updatePriority = astu::Priority::Normal);
 
 private:
     // The family of entities this system processes
@@ -20,4 +19,7 @@ private:
     // Inherited via BaseService
     virtual void OnStartup() override;
     virtual void OnShutdown() override;
+
+    // Inherited via IteratingEntitySystem
+    virtual void ProcessEntity(astu::Entity& entity) override;
 };
