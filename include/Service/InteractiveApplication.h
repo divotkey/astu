@@ -209,8 +209,10 @@ namespace astu {
     
         /**
          * Starts all services and runs the main loop of this application.
+         * 
+         * @return zero if the application has terminated successfully
          */
-        virtual void Run();
+        virtual int Run();
 
     protected:
         /**

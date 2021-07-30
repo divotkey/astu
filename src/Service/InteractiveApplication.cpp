@@ -17,6 +17,7 @@
 #include "Input/InputSignals.h"
 #include "Input/InputMappingService.h"
 #include "Input/Keyboard.h"
+#include "Util/MessageBox.h"
 
 
 // C++ Standard Library includes
@@ -196,24 +197,40 @@ namespace astu {
         ASTU_CREATE_AND_ADD_SERVICE( SignalService<string> );
     }
 
-    void InteractiveApplication::Run()
+    int InteractiveApplication::Run()
     {
-        ConfigureApplication();
+        try {
+            ConfigureApplication();
 
-        ASTU_STARTUP_SERVICES();
-        if (printVersionInfo) {
-            PrintVersionInfo();
+            ASTU_STARTUP_SERVICES();
+            if (printVersionInfo) {
+                PrintVersionInfo();
+            }
+
+            auto & updater = ASTU_SERVICE(UpdateService);
+            running = true;
+            while ( !terminated )
+            {
+                updater.UpdateAll();
+            }
+            running = false;
+
+            ASTU_SHUTDOWN_SERVICES();
+        }
+        catch (const runtime_error & e) {
+            cerr << e.what() << endl;
+            MessageBox::ShowErrorMessage(e.what(), GetApplicationName() 
+                + ": Runtime Error");
+            return -1;
+        }
+        catch (const logic_error & e) {
+            cerr << "programmer error: " << e.what() << endl;
+            MessageBox::ShowErrorMessage(e.what(), GetApplicationName() 
+                + ": Internal Error");
+            return -1;
         }
 
-        auto & updater = ASTU_SERVICE(UpdateService);
-        running = true;
-        while ( !terminated )
-        {
-            updater.UpdateAll();
-        }
-        running = false;
-
-        ASTU_SHUTDOWN_SERVICES();
+        return 0;
     }
 
     // Configures services according to application settings and configuration.

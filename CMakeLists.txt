@@ -25,7 +25,6 @@ list(APPEND astulib_SOURCES
                     src/Graphics/PatternRenderer.cpp
                     src/Graphics/ImageRenderer.cpp
 
-
                     src/Audio/AudioBuffer.cpp
                     src/Audio/WaveCodec.cpp
                     src/Audio/AstuAudio.cpp
@@ -91,9 +90,10 @@ if(USE_SDL)
         src/SuiteSDL/SdlSceneRenderer2D.cpp
         src/SuiteSDL/SdlRecordingSceneRenderer2D.cpp
         src/SuiteSDL/SdlApplication.cpp
+        src/SuiteSDL/SdlMessageBox.cpp
         )
 else(USE_SDL)
-    list(APPEND astulib_SOURCES src/SuiteSDL/SdlApplicationDummy.cpp)
+    list(APPEND astulib_SOURCES src/SuiteSDL/SdlApplicationDummy.cpp src/Util/DefaultMessageBox.cpp)
 endif(USE_SDL)                 
 
 add_library(astu ${astulib_SOURCES})
