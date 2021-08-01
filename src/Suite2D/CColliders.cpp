@@ -32,7 +32,7 @@ namespace astu::suite2d {
     }
 
     CPolygonColliderBuilder::CPolygonColliderBuilder(std::shared_ptr<CPolygonColliderFactory> factory)
-        : colliderFactory(colliderFactory)
+        : colliderFactory(factory)
     {
         if (!factory) {
             colliderFactory = ASTU_GET_SERVICE(CPolygonColliderFactory);
