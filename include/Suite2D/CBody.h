@@ -133,7 +133,7 @@ namespace astu::suite2d {
          * @param damping   the damping for linear movement
          */
         virtual void SetLinearDamping(float damping) {
-            linearDamping = linearDamping;
+            linearDamping = damping;
         }
 
         /**
@@ -151,7 +151,7 @@ namespace astu::suite2d {
          * @param damping   the damping for rotational movement
          */
         virtual void SetAngularDamping(float damping) {
-            angularDamping = angularDamping;
+            angularDamping = damping;
         }
 
         /**
