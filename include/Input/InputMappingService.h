@@ -104,6 +104,12 @@ namespace astu {
     class ActionMapping {
     public:
 
+        /**
+         * Constructor.
+         * 
+         * @param name  the name of this mapping
+         * @param key   the input control used for this mapping
+         */
         ActionMapping(const std::string & name, const Key & key);
 
         /**
@@ -140,6 +146,9 @@ namespace astu {
     class ActionBinding {
     public:
 
+        /**
+         * Type alias for delegate functions.
+         */
         using Delegate = std::function<void (ActionBinding &)>;
 
         /**
@@ -255,6 +264,9 @@ namespace astu {
     class AxisBinding {
     public:
 
+        /**
+         * Type alias for delegate functions.
+         */
         using Delegate = std::function<void (AxisBinding &)>;
 
         /**

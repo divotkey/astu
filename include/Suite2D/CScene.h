@@ -32,7 +32,7 @@ namespace astu::suite2d {
         /**
          * Constructor.
          * 
-         * @param spatial   the scene node branch represending the entity
+         * @param spatial   the scene node branch representing the entity
          */
         CScene(std::shared_ptr<Spatial> spatial)
             : spatial(spatial)

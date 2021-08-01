@@ -32,7 +32,8 @@ namespace astu {
      * @ingroup sdl_group 
      */
     class SdlVertexBufferBuilderService2D 
-        : public Service
+        : virtual public Service
+        , private TimeClient
         , public VertexBufferBuilder2<float>
     {
     public:

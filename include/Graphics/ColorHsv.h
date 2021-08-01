@@ -125,6 +125,11 @@ namespace astu {
             return *this;
         }
 
+        /**
+         * Converts this HSV color to an RGB color.
+         * 
+         * @return the corresponding RGB color.
+         */
         Color4d ToRgb() const {
             int i;
             if (s == 0) { 

@@ -28,6 +28,7 @@ namespace astu {
     /**
      * @defgroup sdl_group Simple Direct Layer
      * @brief This module contains templates, classes and functions dedicated to Simple Direct Layer SDL.
+     *   
      * @{
      */
 

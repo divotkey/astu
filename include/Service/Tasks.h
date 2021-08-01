@@ -21,6 +21,13 @@ namespace astu {
     /////// TimedTask
     /////////////////////////////////////////////////
 
+    /**
+     * Base class for timed tasks.
+     * 
+     * Timed tasks are tasks that last only a certain amount of time.
+     * 
+     * @ingroup srv_group     
+     */
     class TimedTask : public Task {
     public:
 
@@ -77,6 +84,9 @@ namespace astu {
     class DelegateTask : public Task, public Pooled<DelegateTask> {
     public:
 
+        /**
+         * Type alias for delegate functions.
+         */
         using Delegate = std::function<void (void)>;
 
         /**
@@ -119,6 +129,11 @@ namespace astu {
         DelegateTask(Delegate delegate, double delay);
     };
 
+    /**
+     * Builder for DelegateTask instances.
+     * 
+     * @ingroup srv_group     
+     */
     class DelegateTaskBuilder final : public TaskBuilder<DelegateTaskBuilder> {
     public:
 

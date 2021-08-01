@@ -200,6 +200,12 @@ namespace astu {
      * make it necessary to make the virtual inheritance visible and derive the
      * class with the keyword "virtual".
      * 
+     * **Example Header-File for basic Services**
+     * @include MyService.h
+     * 
+     * **Example Implementation for basic Services**
+     * @include MyService.cpp
+     * 
      * @ingroup srv_group
      */
     class BaseService : virtual public Service {

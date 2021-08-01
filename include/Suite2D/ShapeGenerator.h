@@ -12,6 +12,7 @@
 
 // C++ Standard Library includes
 #include <memory>
+#include <vector>
 
 namespace astu::suite2d {
 
@@ -105,24 +106,60 @@ namespace astu::suite2d {
          * 
          * @param r the radius of the circle
          * @param n the number of segments
+         * @return the generated vertices
          */
-        std::shared_ptr<VertexBuffer2f> GenCircle(
-            float r, unsigned int n = 24) const;
+        std::shared_ptr<VertexBuffer2f> 
+            GenCircleVb(float r, unsigned int n = 24) const {
+            return GetBuilder().Reset().AddVertices(GenCircle(r, n)).Build();
+        }
+
+        /**
+         * Generates a circle.
+         * 
+         * @param r the radius of the circle
+         * @param n the number of segments
+         * @return the generated vertices
+         */
+        const std::vector<Vector2f>& 
+            GenCircle(float r, unsigned int n = 24) const;
 
         /**
          * Generates an axis aligned rectangle.
          * 
          * @param w the width of the rectangle
          * @param h the height of the rectangle
+         * @return vertex buffer containing the generated vertices
          */
-        std::shared_ptr<VertexBuffer2f> GenRectangle(float w, float h) const;
+        std::shared_ptr<VertexBuffer2f> GenRectangleVb(float w, float h) const {
+            return GetBuilder().Reset().AddVertices(GenRectangle(w, h)).Build();
+        }
+
+        /**
+         * Generates an axis aligned rectangle.
+         * 
+         * @param w the width of the rectangle
+         * @param h the height of the rectangle
+         * @return the generated vertices
+         */
+        const std::vector<Vector2f>& GenRectangle(float w, float h) const;
 
         /**
          * Generates an axis aligned rectangle.
          * 
          * @param a the side length of the square.
+         * @return vertex buffer containing the generated vertices
          */
-        std::shared_ptr<VertexBuffer2f> GenSquare(float a) const {
+        std::shared_ptr<VertexBuffer2f> GenSquareVb(float a) const {
+            return GetBuilder().Reset().AddVertices(GenSquare(a)).Build();
+        }
+
+        /**
+         * Generates an axis aligned rectangle.
+         * 
+         * @param a the side length of the square.
+         * @return the generated vertices
+         */
+        const std::vector<Vector2f>& GenSquare(float a) const {
             return GenRectangle(a, a);
         }
 
@@ -131,8 +168,22 @@ namespace astu::suite2d {
          * 
          * @param r the radius of the equilateral triangle
          * @param d the direction in which the triangle points
+         * @return vertex buffer containing the generated vertices
          */
-        std::shared_ptr<VertexBuffer2f> GenTriangle(
+        std::shared_ptr<VertexBuffer2f> GenTriangleVb(
+            float r, const Vector2f & d = Vector2f(0, -1))
+        {
+            return GetBuilder().Reset().AddVertices(GenTriangle(r, d)).Build();
+        }
+
+        /**
+         * Generates an equilateral triangle.
+         * 
+         * @param r the radius of the equilateral triangle
+         * @param d the direction in which the triangle points
+         * @return vertex buffer containing the generated vertices
+         */
+        const std::vector<Vector2f>& GenTriangle(
             float r, const Vector2f & d = Vector2f(0, -1));
 
         /**
@@ -141,8 +192,26 @@ namespace astu::suite2d {
          * @param r the radius of the star.
          * @param n determines the number of point the star should have
          * @param d the direction in which the star points
+         * @return vertex buffer containing the generated vertices
          */
-        std::shared_ptr<VertexBuffer2f> GenStar(
+        std::shared_ptr<VertexBuffer2f> GenStarVb(
+            float r, 
+            int n = 5, 
+            const Vector2f & d = Vector2f(0, -1)
+        )
+        {
+            return GetBuilder().Reset().AddVertices(GenStar(r, n, d)).Build();
+        }
+
+        /**
+         * Generates a star.
+         * 
+         * @param r the radius of the star.
+         * @param n determines the number of point the star should have
+         * @param d the direction in which the star points
+         * @return vertex buffer containing the generated vertices
+         */
+        const std::vector<Vector2f>& GenStar(
             float r, 
             int n = 5, 
             const Vector2f & d = Vector2f(0, -1)
@@ -155,8 +224,22 @@ namespace astu::suite2d {
          * 
          * @param s     the size of the cross
          * @param th    determines the thickness of the cross (0, 1)
+         * @return vertex buffer containing the generated vertices
          */
-        std::shared_ptr<VertexBuffer2f> GenCross(float s, float th = 0.381967f);
+        std::shared_ptr<VertexBuffer2f> GenCrossVb(float s, float th = 0.381967f) {
+            return GetBuilder().Reset().AddVertices(GenCross(s, th)).Build();
+        }
+
+        /**
+         * Generates a cross.
+         * 
+         * The thickness paramter must be within in the range (0, 1).
+         * 
+         * @param s     the size of the cross
+         * @param th    determines the thickness of the cross (0, 1)
+         * @return vertex buffer containing the generated vertices
+         */
+        const std::vector<Vector2f>& GenCross(float s, float th = 0.381967f);
 
         /**
          * Generates an arrow.
@@ -166,9 +249,27 @@ namespace astu::suite2d {
          * @param l     the length of the arrow
          * @param th    determines the thickness of the arrow (0, 1)
          * @param d     the direction in which the arrow points
+         * @return vertex buffer containing the generated vertices
          */
-        std::shared_ptr<VertexBuffer2f> GenArrow(
+        std::shared_ptr<VertexBuffer2f> GenArrowVb(
+            float l, float th = 0.381967f, const Vector2f & d = Vector2f(1, 0))
+        {
+            return GetBuilder().Reset().AddVertices(GenArrow(l, th, d)).Build();            
+        }
+
+        /**
+         * Generates an arrow.
+         * 
+         * The thickness paramter must be within in the range (0, 1).
+         * 
+         * @param l     the length of the arrow
+         * @param th    determines the thickness of the arrow (0, 1)
+         * @param d     the direction in which the arrow points
+         * @return vertex buffer containing the generated vertices
+         */
+        const std::vector<Vector2f>& GenArrow(
             float l, float th = 0.381967f, const Vector2f & d = Vector2f(1, 0));
+
 
         /**
          * Resets this generator to its initial configuration.
@@ -178,6 +279,9 @@ namespace astu::suite2d {
         ShapeGenerator& Reset();
 
     private:
+        /** Static temporal storages for vertices. */
+        static std::vector<Vector2f> tempVertices;
+
         /** The vertex buffer builder used to generate the shapes. */
         std::shared_ptr<VertexBufferBuilder2f> vbBuilder;
 

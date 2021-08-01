@@ -35,7 +35,7 @@ namespace astu {
         // Inherited via Scene2Renderer
         virtual void Render(suite2d::Polyline& polyline, float alpha) override;
 
-        virtual void BeginFrame() override;
+        virtual void BeginFrame(double time) override;
         virtual void EndFrame() override;
 
     private:
@@ -47,12 +47,19 @@ namespace astu {
                 : color(c), p0(p0), p1(p1) {}
         };
 
-        using Frame = std::vector<Line>;
+        struct Frame {
+            std::vector<Line> lines;
+            double timeStamp;
+
+            Frame(double t) : timeStamp(t) {}
+        };
+
         std::vector<Frame> frames;
         Frame *curFrame;
 
-        void RenderFrames();
-        void RenderFrame(const Frame& frame, size_t cnt, const std::string& filename);
+        void RenderFrames(double frameRate = 25);
+        void RenderFrame(int cnt, std::vector<Frame*>&, const std::string& filename);
+        // void RenderFrame(const Frame& frame, size_t cnt, const std::string& filename);
     };
 
 } // end of namespace

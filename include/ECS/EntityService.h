@@ -98,7 +98,7 @@ namespace astu {
         }
 
     private:
-        /** The entity this component belonts to. */
+        /** The entity this component belongs to. */
         std::weak_ptr<Entity> parent;
 
         friend class Entity;
@@ -219,6 +219,7 @@ namespace astu {
 		 * @throws std::logic_error in case the requested component does not exist
 		 */
 		template<typename T> T& GetComponent() {
+			// return reinterpret_cast<T&>( GetComponent( typeid(T) ) );
 			return static_cast<T&>( GetComponent( typeid(T) ) );
 		}
 

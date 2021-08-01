@@ -85,7 +85,7 @@ namespace astu {
          * 
          * @param priority    the priority used to update this service
          */
-        SdlRenderService(int priority = Priority::Normal);
+        SdlRenderService(int priority = Priority::VeryLow);
 
         /**
          * Virtual destructor.

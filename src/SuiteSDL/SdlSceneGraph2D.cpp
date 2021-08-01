@@ -84,7 +84,7 @@ namespace astu {
     {
         sceneRenderer->SetViewMatrix( GetCamera().GetMatrix() );
         sceneRenderer->SetSdlRenderer( *renderer );
-        sceneRenderer->BeginFrame();
+        sceneRenderer->BeginFrame(GetAbsoluteTime());
         GetRoot()->Render(*sceneRenderer, 1.0f);
         sceneRenderer->EndFrame();
         sceneRenderer->ClearSdlRenderer();

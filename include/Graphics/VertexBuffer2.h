@@ -12,6 +12,7 @@
 
 // C++ Standard Library includes
 #include <memory>
+#include <vector>
 
 namespace astu {
 
@@ -73,6 +74,19 @@ namespace astu {
          */
         VertexBufferBuilder2& AddVertex(const Vector2<T>& vertex) {
             return AddVertex(vertex.x, vertex.y);
+        }
+
+        /**
+         * Adds the specified vertices.
+         * 
+         * @param vertices  the vertices to add
+         * @return reference to this builder for method chaining
+         */
+        VertexBufferBuilder2& AddVertices(const std::vector<Vector2<T>>& vertices) {
+            for (const auto& vertex : vertices) {
+                AddVertex(vertex);
+            }
+            return *this;
         }
 
         /**

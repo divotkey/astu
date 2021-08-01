@@ -98,7 +98,6 @@ namespace astu {
     /**
      * Services can derive from this class to get updated once each main cycle.
      * 
-     * 
      * **Example Header-File for Updatable Services**
      * @include MyUpdatableService.h
      * 

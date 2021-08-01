@@ -17,7 +17,9 @@ namespace astu {
     class ApplicationImpl;
 
     /**
-     * 
+     * SDL-based applications can be developed with the help of this class.
+     * This implementation represents an intermediate step between
+     * AST-Utilities API Level 0 and Full-API.
      */
     class Application {
     public:
@@ -70,7 +72,7 @@ namespace astu {
         /**
          * Returns the background color for the application window.
          * 
-         * @param the current background color
+         * @return the current background color
          */
         Color4d GetBackgroundColor() const;
 
@@ -84,7 +86,7 @@ namespace astu {
         /**
          * Returns the draw color for the application window.
          * 
-         * @param the current draw color
+         * @return the current draw color
          */
         Color4d GetDrawColor() const;
 

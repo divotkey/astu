@@ -117,7 +117,7 @@ namespace astu {
          * @param tv    a vector defining the delta movement
          * @return reference of this transform for method chaining
          */
-        Transform2<T> & Translate(const Vector2<T> & tv) {
+        Transform2<T>& Translate(const Vector2<T> & tv) {
             translation += tv;
             dirty = true;
             return *this;
@@ -128,8 +128,26 @@ namespace astu {
          * 
          * @return the translation vector
          */
-        const Vector2<T> & GetTranslation() const {
+        const Vector2<T>& GetTranslation() const {
             return translation;
+        }
+
+        /**
+         * Returns the translation on the x-axis.
+         * 
+         * @return the x-translation
+         */
+        float GetTranslationX() const {
+            return translation.x;
+        }
+
+        /**
+         * Returns the translation on the x-axis.
+         * 
+         * @return the x-translation
+         */
+        float GetTranslationY() const {
+            return translation.y;
         }
 
         /**
@@ -362,6 +380,21 @@ namespace astu {
          */
         Transform2<T> & ClearDirty() {
             dirty = false;
+            return *this;
+        }
+
+        /**
+         * Assignment operator for a transformation.
+         * 
+         * @param rhs   the right hand side transform
+         * @return reference to this transform
+         */
+        Transform2& operator= (const Transform2<T>& rhs)
+        {
+            translation = rhs.translation;
+            scaling = rhs.scaling;
+            rotation = rhs.rotation;
+            dirty = true;
             return *this;
         }
 

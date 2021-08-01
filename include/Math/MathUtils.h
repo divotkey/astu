@@ -22,6 +22,11 @@ namespace astu {
         return phi * static_cast<T>(180.0 / 3.14159265358979323846);
     }
 
+    /**
+     * This class provides a collection of auxiliary mathematical functions and constants.
+     * 
+     * @ingroup math_group
+     */
     class MathUtils final {
     public:
         /** Constant for PI with double precision. */

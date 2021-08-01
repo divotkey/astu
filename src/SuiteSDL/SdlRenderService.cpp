@@ -45,7 +45,8 @@ namespace astu {
         renderer = SDL_CreateRenderer(
             ASTU_SERVICE(SdlVideoService).GetSdlWindow(),
             -1, 
-            SDL_RENDERER_ACCELERATED  | SDL_RENDERER_PRESENTVSYNC 
+            // SDL_RENDERER_ACCELERATED  | SDL_RENDERER_PRESENTVSYNC 
+            SDL_RENDERER_ACCELERATED 
             );
 
         if (!renderer) {

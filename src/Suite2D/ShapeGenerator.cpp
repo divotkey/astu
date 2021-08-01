@@ -17,7 +17,13 @@
 
 using namespace std;
 
+#define RESET_VERTICES() tempVertices.clear()
+#define ADD_VERTEX(v) tempVertices.push_back(v)
+#define GET_VERTICES() tempVertices
+
 namespace astu::suite2d {
+
+    std::vector<Vector2f> ShapeGenerator::tempVertices;
 
     ShapeGenerator::ShapeGenerator()
     {
@@ -30,44 +36,43 @@ namespace astu::suite2d {
         return *this;
     }
 
-    shared_ptr<VertexBuffer2f> ShapeGenerator::GenCircle(float r, unsigned int n) const
+    const std::vector<Vector2f>& ShapeGenerator::GenCircle(float r, unsigned int n) const
     {   
         if (r <= 0) {
             throw domain_error(
                 "Unable to generate circle, radius is less or equal zero");
         }
 
-        auto & builder = GetBuilder();
-        builder.Reset();
+        RESET_VERTICES();
 
         for (unsigned int i = 0; i < n; ++i) {
             Vector2f p(r, 0);
             p.Rotate(i * -MathUtils::PI2f / n);
-            builder.AddVertex(p + offset);
+            ADD_VERTEX(p + offset);
         }
         if (duplicateStartVertex) {
-            builder.AddVertex(Vector2f(r, 0) + offset);
+            ADD_VERTEX(Vector2f(r, 0) + offset);
         }
-        
-        return builder.Build();
+
+        return GET_VERTICES();
     }
 
-    shared_ptr<VertexBuffer2f> ShapeGenerator::GenRectangle(float w, float h) const
+    const std::vector<Vector2f>& ShapeGenerator::GenRectangle(float w, float h) const
     {
-        auto & builder = GetBuilder();
-        builder.Reset();
-        builder.AddVertex(Vector2f(-w / 2, -h / 2) + offset);
-        builder.AddVertex(Vector2f(-w / 2, h / 2) + offset);
-        builder.AddVertex(Vector2f(w / 2, h / 2) + offset);
-        builder.AddVertex(Vector2f(w / 2, -h / 2) + offset);
+        RESET_VERTICES();
+
+        ADD_VERTEX(Vector2f(-w / 2, -h / 2) + offset);
+        ADD_VERTEX(Vector2f(-w / 2, h / 2) + offset);
+        ADD_VERTEX(Vector2f(w / 2, h / 2) + offset);
+        ADD_VERTEX(Vector2f(w / 2, -h / 2) + offset);
         if (duplicateStartVertex) {
-            builder.AddVertex(Vector2f(-w / 2, -h / 2) + offset);
+            ADD_VERTEX(Vector2f(-w / 2, -h / 2) + offset);
         }
 
-        return builder.Build();
+        return GET_VERTICES();
     }
 
-    shared_ptr<VertexBuffer2f> ShapeGenerator::GenTriangle(float r, const Vector2f & d)
+    const std::vector<Vector2f>& ShapeGenerator::GenTriangle(float r, const Vector2f & d)
     {
         if (d.IsZero()) {
             throw domain_error(
@@ -78,24 +83,23 @@ namespace astu::suite2d {
                 "Unable to generate triangle, radius is less or equal zero");
         }
 
-        auto & builder = GetBuilder();
-        builder.Reset();
+        RESET_VERTICES();
 
         Vector2f ref = d;
         ref.SetLength(r);
         for (unsigned int i = 0; i < 3; ++i) {
             Vector2f p = ref;
             p.Rotate(i * -MathUtils::PI2f / 3);
-            builder.AddVertex(p + offset);
+            ADD_VERTEX(p + offset);
         }
         if (duplicateStartVertex) {
-            builder.AddVertex(ref + offset);
+            ADD_VERTEX(ref + offset);
         }
         
-        return builder.Build();
+        return GET_VERTICES();
     }
 
-    shared_ptr<VertexBuffer2f> ShapeGenerator::GenStar(float r, int n, const Vector2f & d)
+    const std::vector<Vector2f>& ShapeGenerator::GenStar(float r, int n, const Vector2f & d)
     {
         if (d.IsZero()) {
             throw domain_error(
@@ -112,9 +116,7 @@ namespace astu::suite2d {
                 "Unable to generate star, number of points musst be greater or equal four");
         }
 
-
-        auto & builder = GetBuilder();
-        builder.Reset();
+        RESET_VERTICES();
 
         Vector2f ref = d;
         ref.SetLength(r);
@@ -125,50 +127,49 @@ namespace astu::suite2d {
                 p *= 0.5f;
             }
             p.Rotate(i * -MathUtils::PI2f / steps);
-            builder.AddVertex(p + offset);
+            ADD_VERTEX(p + offset);
         }
         if (duplicateStartVertex) {
-            builder.AddVertex(ref + offset);
+            ADD_VERTEX(ref + offset);
         }
         
-        return builder.Build();
+        return GET_VERTICES();
     }
 
-    shared_ptr<VertexBuffer2f> ShapeGenerator::GenCross(float s, float th)
+    const std::vector<Vector2f>& ShapeGenerator::GenCross(float s, float th)
     {
         if (th <= 0 || th >= 1) {
             throw domain_error(
                 "Unable to generate cross, thickness parameter is out of range (0, 1)");
         }
-        auto & builder = GetBuilder();
-        builder.Reset();
+
+        RESET_VERTICES();
 
         float s2 = s * 0.5f;
         float s4 = s2 * th;
-        builder.AddVertex(Vector2f(-s2, -s4) + offset);
-        builder.AddVertex(Vector2f(-s2,  s4) + offset);
-        builder.AddVertex(Vector2f(-s4,  s4) + offset);
-        builder.AddVertex(Vector2f(-s4,  s2) + offset);
-        builder.AddVertex(Vector2f( s4,  s2) + offset);
-        builder.AddVertex(Vector2f( s4,  s4) + offset);
-        builder.AddVertex(Vector2f( s2,  s4) + offset);
-        builder.AddVertex(Vector2f( s2, -s4) + offset);
-        builder.AddVertex(Vector2f( s4, -s4) + offset);
-        builder.AddVertex(Vector2f( s4, -s2) + offset);
-        builder.AddVertex(Vector2f(-s4, -s2) + offset);
-        builder.AddVertex(Vector2f(-s4, -s4) + offset);
+        ADD_VERTEX(Vector2f(-s2, -s4) + offset);
+        ADD_VERTEX(Vector2f(-s2,  s4) + offset);
+        ADD_VERTEX(Vector2f(-s4,  s4) + offset);
+        ADD_VERTEX(Vector2f(-s4,  s2) + offset);
+        ADD_VERTEX(Vector2f( s4,  s2) + offset);
+        ADD_VERTEX(Vector2f( s4,  s4) + offset);
+        ADD_VERTEX(Vector2f( s2,  s4) + offset);
+        ADD_VERTEX(Vector2f( s2, -s4) + offset);
+        ADD_VERTEX(Vector2f( s4, -s4) + offset);
+        ADD_VERTEX(Vector2f( s4, -s2) + offset);
+        ADD_VERTEX(Vector2f(-s4, -s2) + offset);
+        ADD_VERTEX(Vector2f(-s4, -s4) + offset);
  
         if (duplicateStartVertex) {
-            builder.AddVertex(Vector2f(-s2, -s4) + offset);
+            ADD_VERTEX(Vector2f(-s2, -s4) + offset);
         }
 
-        return builder.Build();
+        return GET_VERTICES();
     }
 
-    shared_ptr<VertexBuffer2f> ShapeGenerator::GenArrow(float s, float th, const Vector2f & d)
+    const std::vector<Vector2f>& ShapeGenerator::GenArrow(float s, float th, const Vector2f & d)
     {
-        auto & builder = GetBuilder();
-        builder.Reset();
+        RESET_VERTICES();
 
         float w2 = s * 0.5f;
         float a = s * th;
@@ -177,19 +178,19 @@ namespace astu::suite2d {
         float h2 = h * 0.5f;
         float y2 = a2 * 0.618033f;
 
-        builder.AddVertex(Vector2f(-w2, -y2) + offset);
-        builder.AddVertex(Vector2f(-w2, y2) + offset);
-        builder.AddVertex(Vector2f(w2 - h, y2) + offset);
-        builder.AddVertex(Vector2f(w2 - h, a2) + offset);
-        builder.AddVertex(Vector2f(w2, 0) + offset);
-        builder.AddVertex(Vector2f(w2 - h, -a2) + offset);
-        builder.AddVertex(Vector2f(w2 - h, -y2) + offset);
+        ADD_VERTEX(Vector2f(-w2, -y2) + offset);
+        ADD_VERTEX(Vector2f(-w2, y2) + offset);
+        ADD_VERTEX(Vector2f(w2 - h, y2) + offset);
+        ADD_VERTEX(Vector2f(w2 - h, a2) + offset);
+        ADD_VERTEX(Vector2f(w2, 0) + offset);
+        ADD_VERTEX(Vector2f(w2 - h, -a2) + offset);
+        ADD_VERTEX(Vector2f(w2 - h, -y2) + offset);
 
         if (duplicateStartVertex) {
-            builder.AddVertex(Vector2f(-w2, -y2) + offset);
+            ADD_VERTEX(Vector2f(-w2, -y2) + offset);
         }
 
-        return builder.Build();
+        return GET_VERTICES();
     }
 
     ShapeGenerator& ShapeGenerator::Reset()

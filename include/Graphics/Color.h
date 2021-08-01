@@ -337,14 +337,14 @@ namespace astu {
         /**
          * Compound assignment and addition operator for two colors.
          *
-         * @param rhs the right-hand side color
+         * @param rhs   the right-hand side color
          * @return a reference to this color
          */
-        Color<T>& operator+=(const Color<T> & o) {
-            r += o.r;
-            g += o.g;
-            b += o.b;
-            a += o.a;
+        Color<T>& operator+=(const Color<T> & rhs) {
+            r += rhs.r;
+            g += rhs.g;
+            b += rhs.b;
+            a += rhs.a;
             return *this;
         }
 

@@ -53,14 +53,14 @@ namespace astu {
         auto c = polyline.GetColor() * alpha;
         while (++it != vertices.cend()) {
             const auto p2 = tx.TransformPoint(*it);
-            curFrame->push_back(Line(c, p1, p2));
+            curFrame->lines.push_back(Line(c, p1, p2));
             p1 = p2;
         }
     }
 
-    void SdlRecordingSceneRenderer2D::BeginFrame()
+    void SdlRecordingSceneRenderer2D::BeginFrame(double time)
     {
-        frames.push_back(Frame());
+        frames.push_back(Frame(time));
         curFrame = &frames.back();      
     }
 
@@ -69,38 +69,83 @@ namespace astu {
         curFrame = nullptr;
     }
 
-    void SdlRecordingSceneRenderer2D::RenderFrames()
+    void SdlRecordingSceneRenderer2D::RenderFrames(double frameRate)
     {
         string filepath = "/media/roman/Volume/Temp/breakout/frame";        
         cout << "Rendering #" << frames.size() << " frames" << endl;
 
-        for (size_t i = 0; i < frames.size(); ++i) {
-            std::stringstream ss;
-            ss << filepath << std::setw(4) << std::setfill('0') << i << ".bmp";
-            RenderFrame(frames[i], i, ss.str());
+        double duration = 1.0 / frameRate;
+        double time = 0.0;
+        int frameCnt = 0;
+       
+        vector<Frame*> oneFrame;
+        time += duration;
+        for (auto& frame : frames) {
+            if (frame.timeStamp < time) {
+                oneFrame.push_back(&frame);
+            } else if (!oneFrame.empty()){
+                std::stringstream ss;
+                ss << filepath << std::setw(4) << std::setfill('0') 
+                    << frameCnt << ".bmp";
+
+                RenderFrame(++frameCnt, oneFrame, ss.str());
+                oneFrame.clear();
+                time += duration;
+            }
         }
+
+        // for (size_t i = 0; i < frames.size(); ++i) {
+        //     std::stringstream ss;
+        //     ss << filepath << std::setw(4) << std::setfill('0') << i << ".bmp";
+
+        //     RenderFrame(frames[i], i, ss.str());
+        // }
     }
 
-    void SdlRecordingSceneRenderer2D::RenderFrame(const Frame& frame, size_t cnt, const std::string& filename)
+    void SdlRecordingSceneRenderer2D::RenderFrame(int cnt, std::vector<Frame*>& oneFrame, const std::string& filename)
     {
         ImageRenderer imgRndr;
 
         auto bgCol = TO_COLOR4D(ASTU_SERVICE(RenderService).GetBackgroundColor());
         imgRndr.SetBackgroundColor(bgCol);
 
-        for (const auto& line : frame) {
-            imgRndr.SetDrawColor(TO_COLOR4D(line.color));
-            imgRndr.DrawLine(TO_VEC2D(line.p0), TO_VEC2D(line.p1), 2);
+        for( auto pFrame : oneFrame) {
+            for (const auto& line : pFrame->lines) {
+                imgRndr.SetDrawColor(TO_COLOR4D(Color4f(line.color).SetAlpha(1.0 / oneFrame.size())));
+                imgRndr.DrawLine(TO_VEC2D(line.p0), TO_VEC2D(line.p1), 2);
+            }
         }
-        
+
         auto& wndSrv = ASTU_SERVICE(WindowService);
         Image image(wndSrv.GetWidth(), wndSrv.GetHeight());
-        imgRndr.SetRenderQuality(RenderQuality::Insane);
-        cout << "Rendering frame #" << cnt << " (" << filename << ")" << endl;
+        imgRndr.SetRenderQuality(RenderQuality::Good);
+        cout << "Rendering frame #" << cnt << " (" << oneFrame.size() << ") :" << filename << endl;
         imgRndr.Render(image);
 
         StoreImage(image, filename);
     }
+
+    // void SdlRecordingSceneRenderer2D::RenderFrame(const Frame& frame, size_t cnt, const std::string& filename)
+    // {
+    //     ImageRenderer imgRndr;
+
+    //     auto bgCol = TO_COLOR4D(ASTU_SERVICE(RenderService).GetBackgroundColor());
+    //     imgRndr.SetBackgroundColor(bgCol);
+
+
+    //     for (const auto& line : frame) {
+    //         imgRndr.SetDrawColor(TO_COLOR4D(line.color));
+    //         imgRndr.DrawLine(TO_VEC2D(line.p0), TO_VEC2D(line.p1), 2);
+    //     }
+        
+    //     auto& wndSrv = ASTU_SERVICE(WindowService);
+    //     Image image(wndSrv.GetWidth(), wndSrv.GetHeight());
+    //     imgRndr.SetRenderQuality(RenderQuality::Good);
+    //     cout << "Rendering frame #" << cnt << " (" << filename << ")" << endl;
+    //     imgRndr.Render(image);
+
+    //     StoreImage(image, filename);
+    // }
 
 
 

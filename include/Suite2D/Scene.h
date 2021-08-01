@@ -8,9 +8,10 @@
 #pragma once
 
 // Local includes
+#include "Service/Service.h"
+#include "Graphics/VertexBuffer2.h"
 #include "Util/Controllable.h"
 #include "Graphics/WebColors.h"
-#include "Graphics/VertexBuffer2.h"
 #include "Math/Vector2.h"
 #include "Math/Matrix3.h"
 #include "Math/Transform2.h"
@@ -32,6 +33,13 @@ namespace astu::suite2d {
     /////// SceneRenderer2D
     /////////////////////////////////////////////////
 
+    /**
+     * Base class for scene renderers.
+     * 
+     * Scene renderers are used to render leaf elements of the scene graph. 
+     * 
+     * @ingroup suite2d_group
+     */
     class SceneRenderer2D {
     public:
 
@@ -622,9 +630,8 @@ namespace astu::suite2d {
         }
 
         /**
-         * Creates a new polyline according to the current configuration.
-         *      * @ingroup suite2d_group
-
+         * Creates a new node according to the current configuration.
+         *      
          * @return the newly created polyline
          */
         std::shared_ptr<Node> Build() {
@@ -697,6 +704,19 @@ namespace astu::suite2d {
         PolylineBuilder& VertexBuffer(std::shared_ptr<VertexBuffer2f> vb) {
             vertexBuffer = vb;
             return *this;
+        }
+
+        /**
+         * Specifies the vertices used to create the polyline.
+         * 
+         * @param vtx   the vertices
+         * @return reference to this builder for method chaining
+         */
+        PolylineBuilder& VertexBuffer(const std::vector<astu::Vector2f>& vtx) {
+            return VertexBuffer(
+                ASTU_SERVICE(VertexBufferBuilder2f)
+                    .Reset().AddVertices(vtx).Build()
+            );
         }
 
         /**

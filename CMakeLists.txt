@@ -54,6 +54,8 @@ list(APPEND astulib_SOURCES
                     src/Suite2D/AutoRotateSystem.cpp
                     src/Suite2D/AutoRotateSystem.cpp
                     src/Suite2D/ShapeGenerator.cpp
+                    src/Suite2D/CBody.cpp
+                    src/Suite2D/CColliders.cpp
 
                     src/AstUtils1.cpp)
 

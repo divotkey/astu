@@ -62,7 +62,7 @@ namespace astu {
         // Inherited via Scene2Renderer
         virtual void Render(suite2d::Polyline& polyline, float alpha) override;
 
-        virtual void BeginFrame() {}
+        virtual void BeginFrame(double time) {}
         virtual void EndFrame() {}
 
     protected:

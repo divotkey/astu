@@ -20,6 +20,8 @@ namespace astu {
 
     /**
      * Base class for tasks.
+     * 
+     * @ingroup srv_group     
      */
     class Task {
     public:
@@ -96,6 +98,12 @@ namespace astu {
         template <typename T> friend class TaskBuilder;
     };
 
+
+    /**
+     * Base class for task builders.
+     * 
+     * @ingroup srv_group     
+     */
     template <typename T>
     class TaskBuilder {
     public:
@@ -135,6 +143,11 @@ namespace astu {
         std::string taskName;
     };
 
+    /**
+     * This service executes is the main facility for Tasks.
+     * 
+     * @ingroup srv_group     
+     */
     class TaskService 
         : virtual public Service
         , private Updatable

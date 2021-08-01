@@ -13,6 +13,12 @@
 
 namespace astu {
 
+    /**
+     * Interface for interpolators for one-dimensional values.
+     * 
+     * @tparam T    the numerical type used for the values to interpolate
+     * @ingroup math_group
+     */
     template<typename T>
     class Interpolator1 {
     public:
@@ -90,6 +96,12 @@ namespace astu {
         T targetValue;
     };
 
+    /**
+     * Interpolates between two one-dimensional values linearily.
+     * 
+     * @tparam T    the numerical type used for the values to interpolate
+     * @ingroup math_group
+     */
     template<typename T>
     class LinearInterpolator1 : public Interpolator1<T>  {
     public:

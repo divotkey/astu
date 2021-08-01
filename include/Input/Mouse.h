@@ -31,7 +31,7 @@ namespace astu {
     public:
 
         /** Enum constants for mouse buttons. */
-        enum Button {LEFT = 1, MIDDLE = 2, RIGHT = 3};
+        enum Button {LEFT = 1, MIDDLE = 2, RIGHT = 3, SIDE_1 = 4, SIDE_2 = 5};
 
         /**
          * Sets the state of a button.

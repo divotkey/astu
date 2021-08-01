@@ -20,6 +20,11 @@
 
 namespace astu {
 
+    /**
+     * This service receives actions and converts them into signals.
+     * 
+     * @ingroup srv_group     
+     */
     class ActionSignalService : public astu::BaseService
     {
     public:
