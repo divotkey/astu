@@ -197,7 +197,7 @@ namespace astu::suite2d {
     {
         vbBuilder = nullptr;
         offset.SetZero();
-        duplicateStartVertex = true;
+        duplicateStartVertex = false;
         return *this;
     }
 

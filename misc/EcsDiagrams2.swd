@@ -1,5 +1,5 @@
-// SWORD Script:	Used to generate ByteLight scripts that create diagrams to 
-//								visualize entity component systems.
+// SWORD Script: Used to generate ByteLight scripts that create diagrams to 
+// visualize entity component systems.
 // Copyright (c) 2021 Roman Divotkey. All rights reserved.
 
 include "Commons.swd";
