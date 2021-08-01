@@ -10,7 +10,7 @@ const EntityFamily MyIteratingEntitySystem::FAMILY = EntityFamily::Create<>();
 
 MyIteratingEntitySystem::MyIteratingEntitySystem(int updatePriority)
     : BaseService("My Iterating-Entity System")
-    , MyIteratingEntitySystem(FAMILY, updatePriority)    
+    , IteratingEntitySystem(FAMILY, updatePriority)    
 {
     // Intentionally left empty.
 }

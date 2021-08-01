@@ -154,6 +154,11 @@ namespace astu::suite2d {
             angularDamping = angularDamping;
         }
 
+        /**
+         * 
+         * @param torque
+         */
+        virtual void ApplyTorque(float torque) = 0;
 
     private:
         /** The type of this body. */

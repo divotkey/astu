@@ -1,0 +1,516 @@
+// Sword Script to create AST-Utilities Game Boilerplate Code
+// Copyright 2021 (c) Roman Divotkey. All rights reserved.
+
+// Configure Code Creation
+GAME_NAME 		= "Game Boilerplate";
+GAME_AUTHOR 	= "Roman Divotkey";
+GAME_VERSION	= "1.0.0";
+USE_BOX2D			= true;
+
+// Internal Constants and Variables
+OUTPUT_DIR = DetermineOutputDirectory();
+
+EmitCMake(OUTPUT_DIR + "CMakeLists.txt");
+EmitConstants(OUTPUT_DIR + "Constants");
+EmitGameMode(OUTPUT_DIR + "GameModeService");
+EmitPrototypes(OUTPUT_DIR + "EntityPrototypeService");
+EmitMain(OUTPUT_DIR + "main.cpp");
+EmitEntityComponent(OUTPUT_DIR + "CMyComponent");
+EmitComponentSystem(OUTPUT_DIR + "MyIteratingEntitySystem");
+EmitCMakeLine(GAME_NAME);
+
+function EmitCMakeLine(project)
+{
+	§:
+	add_subdirectory(${PROJECT_SOURCE_DIR}/§{GetDirectory(OUTPUT_DIR)} §{lowerCase(SaveName(project))})
+	:§
+}
+
+function EmitComponentSystem(filename)
+{
+	EmitHeader();
+	§:
+	#pragma once
+
+	// AST Utilities includes
+	#include <AstuECS.h>
+
+	class MyIteratingEntitySystem 
+		  : public astu::BaseService
+		  , private astu::IteratingEntitySystem
+	{
+	public:
+
+		  // Constructor.
+		  MyIteratingEntitySystem(int updatePriority = astu::Priority::Normal);
+
+	private:
+		  // The family of entities this system processes
+		  static const astu::EntityFamily FAMILY;
+
+		  // Inherited via BaseService
+		  virtual void OnStartup() override;
+		  virtual void OnShutdown() override;
+
+		  // Inherited via IteratingEntitySystem
+		  virtual void ProcessEntity(astu::Entity& entity) override;
+	};
+	:§
+	store(0, filename + ".h");
+	clearChannel(0);
+
+	EmitHeader();
+	§:
+	// Local includes
+	#include "MyIteratingEntitySystem.h"
+	#include "CMyComponent.h"
+
+	// AST Utilities includes
+	#include <AstuSuite2D.h>
+
+
+	using namespace astu2d;
+	using namespace astu;
+	using namespace std;
+
+	// TODO add types of entity components to the family e.g.,
+	// EntityFamily::Create<astu2d::CPose, astu2d::CBody>();
+
+	const EntityFamily MyIteratingEntitySystem::FAMILY = EntityFamily::Create<CMyComponent>();
+
+	MyIteratingEntitySystem::MyIteratingEntitySystem(int updatePriority)
+		  : BaseService("My Iterating-Entity System")
+		  , IteratingEntitySystem(FAMILY, updatePriority)    
+	{
+		  // Intentionally left empty.
+	}
+
+	void MyIteratingEntitySystem::OnStartup()
+	{
+		  // Intentionally left empty.
+	}
+
+	void MyIteratingEntitySystem::OnShutdown()
+	{
+		  // Intentionally left empty.
+	}
+
+	void MyIteratingEntitySystem::ProcessEntity(Entity & entity)
+	{
+		  // Process entity    
+	}
+	:§
+	store(0, filename + ".cpp");
+	clearChannel(0);
+}
+
+function EmitEntityComponent(filename)
+{
+	EmitHeader();
+	§:
+	// AST Utilities includes
+	#include <AstuECS.h>
+
+	class CMyComponent : public astu::EntityComponent {
+	public: 
+		// TODO add data members
+
+		/**
+		 * Constructor.
+		 */
+		CMyComponent() {
+			// Intentionally left empty.
+		}
+
+		// Inherited via EntityComponent
+		virtual std::shared_ptr<EntityComponent> Clone() override {
+			// Create copy using copy-constructor.
+			return std::make_shared<CMyComponent>(*this);
+		}    
+	};
+	:§
+	store(0, filename + ".h");
+	clearChannel(0);
+}
+
+function EmitPrototypes(filename)
+{
+	EmitHeader();
+	§:
+	#pragma once
+
+	// AST-Utilities includes
+	#include <AstuServices.h>
+	#include <AstuECS.h>
+
+	class EntityPrototypeService : public astu::BaseService
+	{
+	public:
+
+		  // Constructor.
+		  EntityPrototypeService(bool debug = false);
+
+	private:
+		  // Whether debug mode is activated.
+		  bool debug;
+
+		  // Inherited via BaseService
+		  virtual void OnStartup() override;
+		  virtual void OnShutdown() override;
+
+		  std::shared_ptr<astu::Entity> CreateBoundaryPrototype(float w, float h);
+	};
+	:§
+	store(0, filename + ".h");
+	clearChannel(0);
+
+	EmitHeader();
+	§:
+	// Local includes
+	#include "EntityPrototypeService.h"
+	#include "Constants.h"
+
+	// AST-Utilities includes
+	#include <AstuSuite2D.h>
+
+	using namespace astu2d;
+	using namespace astu;
+	using namespace std;
+
+	EntityPrototypeService::EntityPrototypeService(bool debug)
+		  : BaseService("Entity Prototype Service")
+		  , debug(debug)
+	{
+		  // Intentionally left empty.    
+	}
+
+	void EntityPrototypeService::OnStartup()
+	{
+		  // Create and register entity prototypes.
+		  auto &entityFactory = ASTU_SERVICE(EntityFactoryService);
+
+		  // Register boundary entity prototypes.
+		  entityFactory.RegisterPrototype("HBoundary", CreateBoundaryPrototype(VIEW_WIDTH, BOUNDARY_THICKNESS));
+		  entityFactory.RegisterPrototype("VBoundary", CreateBoundaryPrototype(BOUNDARY_THICKNESS, VIEW_HEIGHT));
+
+		  // TODO register entity prototypes.
+	}
+
+	void EntityPrototypeService::OnShutdown()
+	{
+		  // Cleanup.
+		  ASTU_SERVICE(EntityFactoryService).DeregisterAllPrototypes();
+	}
+
+	shared_ptr<Entity> EntityPrototypeService::CreateBoundaryPrototype(float w, float h)
+	{
+		  auto entity = make_shared<Entity>();
+		  entity->AddComponent(make_shared<CPose>());
+
+		  if (debug) {
+		      entity->AddComponent(make_shared<CScene>(PolylineBuilder()
+		          .Color(BOUNDARY_COLOR)
+		          .VertexBuffer(ShapeGenerator().GenRectangle(w, h))
+		          .Build()));
+		  }
+
+		  entity->AddComponent(CBodyBuilder()
+		      .Type(CBody::Type::Static)
+		      .Build());
+
+		  entity->AddComponent(CPolygonColliderBuilder()
+		      .Polygon(ShapeGenerator().GenRectangle(w, h))
+		      .Friction(0)
+		      .Restitution(1)
+		      .Build());
+
+		  return entity;
+	}
+	:§
+
+	store(0, filename + ".cpp");
+	clearChannel(0);
+}
+
+function EmitGameMode(filename)
+{
+	EmitHeader();
+
+	§:
+	#pragma once
+
+	// AST-Utilities includes
+	#include <AstuServices.h>
+	#include <AstuSuite2D.h>
+	#include <AstuECS.h>
+
+	class GameModeService 
+		  : public astu::BaseService
+		  , private astu2d::CameraClient
+	{
+	public:
+			
+			/**
+			 * Constructor.
+			 */
+		  GameModeService();
+
+	private:
+
+		  /**
+		   * Adds an entity to the game world.
+		   * 
+		   * @param proto     the name of the entity prototype
+		   * @param x         the x-coordinate of the spawn point
+		   * @param y         the y-coordinate of the spawn point
+		   * @param phiDeg    the orientation angle in degrees
+		   * @return the newly added entity
+		   */
+		  std::shared_ptr<astu::Entity> AddEntity(
+		      const std::string& proto, 
+		      float x, 
+		      float y, 
+		      float phiDeg = 0); 
+
+		  // Inherited via BaseService
+		  virtual void OnStartup() override;
+		  virtual void OnShutdown() override;
+	};
+
+	:§
+	store(0, filename + ".h");
+	clearChannel(0);
+
+	EmitHeader();
+	§:
+	// Local includes
+	#include "GameModeService.h"
+	#include "Constants.h"
+
+	using namespace astu2d;
+	using namespace astu;
+	using namespace std;
+
+	GameModeService::GameModeService()
+		  : BaseService("Game Mode Service")
+	{
+		  // Intentionally left empty.    
+	}
+
+	void GameModeService::OnStartup()
+	{
+		  // Configure camera.
+		  GetCamera().ShowFitting(VIEW_WIDTH, VIEW_HEIGHT);
+
+		  // Add world boundaries.
+		  float vRadius = VIEW_HEIGHT / 2 + BOUNDARY_THICKNESS / 2;
+		  float hRadius = VIEW_WIDTH / 2 + BOUNDARY_THICKNESS / 2;
+		  AddEntity("HBoundary", 0, -vRadius);
+		  AddEntity("HBoundary", 0, vRadius);
+		  AddEntity("VBoundary", -hRadius, 0);
+		  AddEntity("VBoundary", hRadius, 0);
+
+		  // Add initial entities.
+	}
+
+	void GameModeService::OnShutdown()
+	{
+		  ASTU_SERVICE(EntityService).RemoveAll();
+	}
+
+	shared_ptr<Entity> GameModeService::AddEntity(const string& proto, float x, float y, float phiDeg)
+	{
+		  auto entity = ASTU_SERVICE(EntityFactoryService).CreateEntity(proto);
+		  auto& pose = entity->GetComponent<CPose>();
+		  pose.transform.SetTranslation(x, y);
+		  if (phiDeg != 0) {
+		      pose.transform.SetRotationDeg(phiDeg);
+		  }
+
+		  ASTU_SERVICE(EntityService).AddEntity(entity);
+		  return entity;
+	}
+
+	:§
+	store(0, filename + ".cpp");
+	clearChannel(0);
+}
+
+function EmitCMake(filename)
+{
+	projectName = SaveName(GAME_NAME);
+	targetName = SaveName(GAME_NAME);
+	libs = "astu";
+	if (USE_BOX2D)
+		libs += " astu_box2d";
+	§:
+	cmake_minimum_required(VERSION 3.1)
+
+	# set the project name
+	project(§{projectName})
+
+	# specify the C++ standard
+	set(CMAKE_CXX_STANDARD 17)
+
+	# add executable
+	file(GLOB SOURCES "*.cpp")
+	add_executable(§{targetName} ${SOURCES})
+
+	# specify required libraries
+	target_link_libraries(§{targetName} §{libs})
+
+	:§
+	store(0, filename);
+	clearChannel(0);
+}
+
+function EmitConstants(filename)
+{
+	EmitHeader();
+	§:
+	#pragma once
+
+	// AST Utilities includes
+	#include <AstuGraphics.h>
+	#include <AstuInput.h>
+
+	/////////////////////////////////////////////////
+	/////// General constants
+	/////////////////////////////////////////////////
+	#define VIEW_WIDTH                  16.0f
+	#define VIEW_HEIGHT                 9.0f
+	#define BOUNDARY_THICKNESS          0.5f
+	#define BACKGROUND_COLOR            RalColors::TrafficBlack
+	#define BOUNDARY_COLOR              RalColors::TrafficGreen
+
+	/////////////////////////////////////////////////
+	/////// Constants for game entities
+	/////////////////////////////////////////////////
+
+	:§
+	store(0, filename + ".h");
+	clearChannel(0);
+}
+
+function EmitMain(filename)
+{
+	EmitHeader();
+	§:
+	// Local includes
+	#include "EntityPrototypeService.h"	
+	#include "GameModeService.h"
+
+	// ASTU/Box2D includes
+	#include <AstuBox2D.h>
+
+	// AST-Utilities includes
+	#include <AstuSuiteSDL.h>
+	#include <AstuInput.h>
+	#include <AstuECS.h>
+	#include <AstuSuite2D.h>
+
+	using namespace astu2d;
+	using namespace astu;
+	using namespace std;
+
+	// Main entry point of the application.
+	int main()
+	{
+		SdlApplication app;
+
+		// Cameras do the world-to-screen transform and used by the scene graph.
+		ASTU_CREATE_AND_ADD_SERVICE(CameraService);
+		ASTU_CREATE_AND_ADD_SERVICE(CameraControlService);
+
+		// Add Services and Systems required ECS.
+		ASTU_CREATE_AND_ADD_SERVICE(EntityService);
+		ASTU_CREATE_AND_ADD_SERVICE(EntityFactoryService);
+		ASTU_CREATE_AND_ADD_SERVICE(Box2DPhysicsSystem);
+		ASTU_CREATE_AND_ADD_SERVICE(CollisionSignalService);
+		ASTU_CREATE_AND_ADD_SERVICE(SceneSystem);
+
+		// Let's add our main service that runs the application.
+		ASTU_CREATE_AND_ADD_SERVICE(EntityPrototypeService);
+		ASTU_CREATE_AND_ADD_SERVICE(GameModeService);
+
+		// Configure physics environment.
+		ASTU_SERVICE(PhysicsSystem).SetGravityVector(0, 0);
+
+		// Configure input controls (Axis and Actions)
+		// ASTU_SERVICE(InputMappingService).AddAxisMapping("Paddle", Keys::Left, -1.0f);
+		// ASTU_SERVICE(InputMappingService).AddAxisMapping("Paddle", Keys::Right, 1.0f);
+		// ASTU_SERVICE(InputMappingService).AddAxisMapping("Paddle", Keys::GamepadLeftThumbstickX);
+
+		// Configure application.
+		app.SetApplicationName("§{GAME_NAME}");
+		app.SetVersionString("§{GAME_VERSION}");
+		app.SetResolution(Resolution::WXGA);
+		app.SetFullscreen(false);
+
+		// Run the application.
+		return app.Run();
+	} 
+
+	:§
+
+	store(0, filename);
+	clearChannel(0);
+}
+
+function EmitHeader()
+{
+	§:
+	/*
+	 * §{GAME_NAME}
+	 * 
+	 * Copyright (c) §{year()} §{GAME_AUTHOR}. All rights reserved.
+	 */
+
+	:§
+}
+
+function SaveName(name)
+{
+	s = "";
+	for (i = 0; i < name.length; ++i) {
+		if (name[i] != " ") {
+			s += name[i];
+		}
+	}
+
+	return s;
+}
+
+function DetermineOutputDirectory() {
+	//Uncomment to clear stored output directory
+	//memorize("outdir", undefined);
+	outputDir = recall("outdir");
+	if (outputDir == undefined) {
+		result = selectSaveDir("test", "Select Boilerplate Code Output Directory");
+		if (!result.approved) {
+			exit;
+		}
+		memorize("outdir", result.file);
+	}
+
+	return outputDir + filePathSeparator();
+}
+
+function GetDirectory(filepath) {
+	i = filepath.length - 1;
+	if (filepath[i] == filePathSeparator()) {
+		--i;
+	}
+
+	dir = "";
+	while (i >= 0) {
+		if (OUTPUT_DIR[i] != filePathSeparator()) {
+			dir = OUTPUT_DIR[i] + dir;
+		} else {
+			break;
+		}
+		--i;
+	}
+
+	return dir;
+}
