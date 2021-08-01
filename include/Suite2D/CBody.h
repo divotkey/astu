@@ -155,10 +155,95 @@ namespace astu::suite2d {
         }
 
         /**
+         * Converts a vector from local space to world space.
          * 
-         * @param torque
+         * @param localVector   the vector in local space
+         * @return the tranformed vector in world space
+         */
+        Vector2f GetWorldVector(const Vector2f& localVector) {
+            return GetWorldVector(localVector.x, localVector.y);
+        }
+
+        /**
+         * Converts a vector from local space to world space.
+         * 
+         * @param lvx   the x-componnent of the vector in local space
+         * @param lvy   the y-componnent of the vector in local space
+         * @return the tranformed vector in world space
+         */
+        virtual Vector2f GetWorldVector(float lvx, float lvy) = 0;
+
+        /**
+         * Converts a point from local space to world space.
+         * 
+         * @param localPoint   the point in local space
+         * @return the tranformed point in world space
+         */
+        Vector2f GetWorldPoint(const Vector2f& localPoint) {
+            return GetWorldPoint(localPoint.x, localPoint.y);
+        }
+
+        /**
+         * Converts a point from local space to world space.
+         * 
+         * @param lpx   the x-componnent of the point in local space
+         * @param lpy   the y-componnent of the point in local space
+         * @return the tranformed point in world space
+         */
+        virtual Vector2f GetWorldPoint(float lpx, float lpy) = 0;
+
+        /**
+         * Converts a vector from world space to local space.
+         * 
+         * @param worldVector   the vector in world space
+         * @return the tranformed vector in local space
+         */
+        Vector2f GetLocalVector(const Vector2f& worldVector) {
+            return GetLocalVector(worldVector.x, worldVector.y);
+        }
+
+        /**
+         * Converts a vector from world space to local space.
+         * 
+         * @param wvx   the x-componnent of the vector in world space
+         * @param wvy   the y-componnent of the vector in world space
+         * @return the tranformed vector in local space
+         */
+        virtual Vector2f GetLocalVector(float wvx, float wvy) = 0;
+
+        /**
+         * Converts a point from world space to local space.
+         * 
+         * @param worldPoint    the point in world space
+         * @return the tranformed point in local space
+         */
+        Vector2f GetLocalPoint(const Vector2f& worldPoint) {
+            return GetLocalPoint(worldPoint.x, worldPoint.y);
+        }
+
+        /**
+         * Converts a point from world space to local space.
+         * 
+         * @param wpx   the x-componnent of the point in world space
+         * @param wpy   the y-componnent of the point in world space
+         * @return the tranformed point in local space
+         */
+        virtual Vector2f GetLocalPoint(float wpx, float wpy) = 0;
+
+        /**
+         * Applies a torque to this body.
+         * 
+         * @param torque the torque to apply, usually in N-m.
          */
         virtual void ApplyTorque(float torque) = 0;
+
+        /**
+         * Applies a force at the center of mass.
+         * 
+         * @param force the force vector in world space, usually in Newtons
+         */
+        virtual void ApplyForce(const Vector2f& force) = 0;
+
 
     private:
         /** The type of this body. */
