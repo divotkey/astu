@@ -111,7 +111,7 @@ namespace astu {
 
         for( auto pFrame : oneFrame) {
             for (const auto& line : pFrame->lines) {
-                imgRndr.SetDrawColor(TO_COLOR4D(Color4f(line.color).SetAlpha(1.0 / oneFrame.size())));
+                imgRndr.SetDrawColor(TO_COLOR4D(Color4f(line.color).SetAlpha(1.0f / oneFrame.size())));
                 imgRndr.DrawLine(TO_VEC2D(line.p0), TO_VEC2D(line.p1), 2);
             }
         }
