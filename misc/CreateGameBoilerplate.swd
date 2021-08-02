@@ -1,11 +1,11 @@
 // Sword Script to create AST-Utilities Game Boilerplate Code
 // Copyright 2021 (c) Roman Divotkey. All rights reserved.
 
-// Configure Code Creation
-GAME_NAME 		= "Game Boilerplate";
-GAME_AUTHOR 	= "Roman Divotkey";
+// Configure Parameters for Code Creation
+GAME_NAME 		= "MyGame";
+GAME_AUTHOR 	= "Jane Doe";
 GAME_VERSION	= "1.0.0";
-USE_BOX2D			= true;
+USE_BOX2D		= true;
 
 // Internal Constants and Variables
 OUTPUT_DIR = DetermineOutputDirectory();
@@ -485,13 +485,13 @@ function DetermineOutputDirectory() {
 	//memorize("outdir", undefined);
 	outputDir = recall("outdir");
 
-	//if (outputDir == undefined) {
-		result = selectSaveDir(outputDir, "Select Boilerplate Code Output Directory");
-		if (!result.approved) {
-			exit;
-		}
-		memorize("outdir", result.file);
-	//}
+	result = selectSaveDir(outputDir, "Select Boilerplate Code Output Directory");
+	if (!result.approved) {
+		exit;
+	}
+	
+	memorize("outdir", result.file);
+	outputDir = result.file;
 
 	return outputDir + filePathSeparator();
 }

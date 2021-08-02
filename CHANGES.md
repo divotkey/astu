@@ -2,7 +2,7 @@
 # Version History {#CHANGES}
 
 # Version 0.10.0
-*Date: 2021-07-28*
+*Date: 2021-08-02*
 
 This version has undergone extensive adjustments. The source code was
 restructured and many names were changed for better consistency and
@@ -13,6 +13,8 @@ understanding.
 - Added header files to include categories of features.
 - Improved documentation.
 - Added support for full-screen mode.
+- Extended functiuonality `LineRenderer'.
+- Polyline scene graph objects can now be closed (e.g., polygons) or open.
 - Changed order of include files to mach Unreal Engine requirements.
 
 # Version 0.9.3
