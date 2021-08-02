@@ -1,5 +1,5 @@
 # ASTU - AST Utilities
-*A collection of utilities for Applied Software Techniques (AST)*
+**A collection of utilities for Applied Software Techniques (AST)**
 
 This library is intended to be used in combination with the lectures **Applied Software Technique**, **Interaction and Game Programming** and **Game Architecture** from the course Media Technology and Design (bachelor program) and Interactive Media (master program) at the University of Applied Sciences Upper Austria.
 
