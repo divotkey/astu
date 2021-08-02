@@ -101,6 +101,37 @@ namespace astu::suite2d {
             return !duplicateStartVertex;
         }
 
+
+        /**
+         * Generats a line.
+         * 
+         * @param x1    the x-coordinate of the start point
+         * @param y1    the y-coordinate of the start point
+         * @param x2    the x-coordinate of the start point
+         * @param y2    the y-coordinate of the start point
+         * @return the generated vertices
+         */
+        std::shared_ptr<VertexBuffer2f> 
+            GenLineVb(float x1, float y1, float x2, float y2) const
+        {
+            return GetBuilder()
+                .Reset()
+                .AddVertices(GenLine(x1, y1, x2, y2))
+                .Build();
+        }
+
+        /**
+         * Generats a line.
+         * 
+         * @param x1    the x-coordinate of the start point
+         * @param y1    the y-coordinate of the start point
+         * @param x2    the x-coordinate of the start point
+         * @param y2    the y-coordinate of the start point
+         * @return the generated vertices
+         */
+        const std::vector<Vector2f>& 
+            GenLine(float x1, float y1, float x2, float y2) const;
+
         /**
          * Generates a circle.
          * 

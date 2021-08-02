@@ -351,12 +351,7 @@ namespace astu::suite2d {
 
     /**
      * The polyline class represents a leaf element within the scene graph.
-     * It consists of contiguous lines that do not need to be closed. Thus, a
-     * polyline is not a polygon in which the last vertex is always connected
-     * to the first vertex.
-     * 
-     * If a polygon is to be represented using a polyline element, the first
-     * vertex must be duplicated in order to achieve a closed representation. 
+     * It consists of contiguous lines that do not need to be closed.  
      * 
      * @ingroup suite2d_group
      */
@@ -387,6 +382,22 @@ namespace astu::suite2d {
         }
 
         /**
+         * Returns whether the polyline is rendered as closed shape.
+         * 
+         * @return `true` if the polyline si rendered as closed shape
+         */
+        bool IsClosed() const {
+            return closed;
+        }
+
+        /**
+         * Defines whether the polyline is renderer as line or as closed shape.
+         * 
+         * @param b set to `true` to render the polyline as closed shape
+         */
+        void SetClosed(bool b);
+
+        /**
          * Returns the vertex buffer of this polyline.
          * 
          * @return the vertex buffer
@@ -402,6 +413,9 @@ namespace astu::suite2d {
     private:
         /** The vertex buffer representing the vertex data of this polyline. */
         std::shared_ptr<VertexBuffer2f> vertexBuffer;
+
+        /** Whether the polyline should be rendered as closed shape. */
+        bool closed;
 
         /** The color of this polyline. */
         Color4f color;
@@ -720,6 +734,17 @@ namespace astu::suite2d {
         }
 
         /**
+         * Specifies whether the polyline is rendered as closed shape.
+         * 
+         * @param b set to `true` to render the polyline closed
+         * @return reference to this builder for method chaining
+         */
+        PolylineBuilder& Closed(bool b) {
+            closed = b;
+            return *this;
+        }
+
+        /**
          * Resets this builder to its initial configuration.
          * 
          * @return reference to this builder for method chaining
@@ -728,6 +753,7 @@ namespace astu::suite2d {
             SpatialBuilder::Reset();
             vertexBuffer = nullptr;
             color = WebColors::Aqua;
+            closed = true;
             return *this;
         }
 
@@ -744,6 +770,7 @@ namespace astu::suite2d {
             auto result = std::make_shared<Polyline>(vertexBuffer);
             SpatialBuilder::Build(*result);
             result->SetColor(color);
+            result->SetClosed(closed);
 
             return result;
         }
@@ -751,6 +778,9 @@ namespace astu::suite2d {
     private:
         /** The vertex buffer used to build the polyline. */
         std::shared_ptr<VertexBuffer2f> vertexBuffer;    
+
+        /** Whethe to polyline is closed. */
+        bool closed;
 
         /** The color of the polyline to build. */
         Color4f color;

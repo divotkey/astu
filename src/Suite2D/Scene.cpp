@@ -189,6 +189,11 @@ namespace astu::suite2d {
         color = c;
     }
 
+    void Polyline::SetClosed(bool b)
+    {
+        closed = b;
+    }
+
     std::shared_ptr<Spatial> Polyline::Clone() const
     {
         return std::make_shared<Polyline>(*this);

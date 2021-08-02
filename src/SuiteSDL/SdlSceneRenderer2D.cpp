@@ -54,7 +54,8 @@ namespace astu {
 
         const auto & tx = viewMatrix * polyline.GetWorldMatrix();
         auto it = vertices.cbegin();
-        auto p1 = tx.TransformPoint(*it);
+        auto first = tx.TransformPoint(*it);
+        auto p1 = first;
 
         while (++it != vertices.cend()) {
             const auto p2 = tx.TransformPoint(*it);
@@ -67,6 +68,16 @@ namespace astu {
                 );
 
             p1 = p2;
+        }
+
+        if (polyline.IsClosed()) {
+            SDL_RenderDrawLine(
+                renderer, 
+                static_cast<int>(p1.x + 0.5f), 
+                static_cast<int>(p1.y + 0.5f), 
+                static_cast<int>(first.x + 0.5f), 
+                static_cast<int>(first.y + 0.5f)
+                );
         }
     }
 

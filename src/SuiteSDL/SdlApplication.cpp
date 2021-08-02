@@ -57,8 +57,8 @@ namespace astu {
 
     void SdlApplication::AddSdl2DServices()
     {    
-        ASTU_CREATE_AND_ADD_SERVICE( SdlLineRenderer );    
         ASTU_CREATE_AND_ADD_SERVICE( SdlSceneGraph2D );    
+        ASTU_CREATE_AND_ADD_SERVICE( SdlLineRenderer );    
         ASTU_CREATE_AND_ADD_SERVICE( SdlVertexBufferBuilderService2D );
     }
 

@@ -74,6 +74,17 @@ namespace astu {
             return std::sqrt(width * width + height * height);
         }
 
+        /**
+         * Snaps the specified value to a grid with given width.
+         * 
+         * @param value     the value to snap
+         * @param gridWidth the width of the grid
+         */
+        template <typename T>
+        static T Snap(T value, T gridWidth) {
+            return std::round(value / gridWidth) * gridWidth;
+        }
+
     };
 
 } // end of namespace

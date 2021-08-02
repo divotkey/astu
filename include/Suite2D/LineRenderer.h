@@ -17,6 +17,7 @@
 
 // C++ Standard Library includes
 #include <stack>
+#include <vector>
 
 namespace astu::suite2d {
 
@@ -127,6 +128,21 @@ namespace astu::suite2d {
          */
         void DrawLine(const Vector2<T> & p1, const Vector2<T> & p2) {
             DrawLine(p1.x, p1.y, p2.x, p2.y);
+        }
+
+        /**
+         * Draw a series of connected lines.
+         * 
+         * @param vertices  the points along the lines
+         */
+        void DrawLines(const std::vector<Vector2<T>>& vertices) {
+            if (vertices.size() < 2) 
+                return;
+
+            auto p0 = vertices.begin();
+            for (auto p1 = vertices.begin() + 1; p1 < vertices.end(); ++p0, ++p1) {
+                DrawLine(*p0, *p1);
+            }
         }
 
         /**
@@ -449,6 +465,15 @@ namespace astu::suite2d {
          */
         void DrawLine(T x1, T y1, T x2, T y2) {
             lineRenderer->DrawLine(x1, y1, x2, y2);
+        }
+
+        /**
+         * Draw a series of connected lines.
+         * 
+         * @param vertices  the points along the lines
+         */
+        void DrawLines(const std::vector<Vector2<T>>& vertices) {
+            lineRenderer->DrawLines(vertices);
         }
 
         /**

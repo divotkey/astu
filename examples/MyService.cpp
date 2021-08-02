@@ -1,6 +1,8 @@
 // Local includes
 #include "MyService.h"
 
+using namespace astu;
+
 MyService::MyService()
     : BaseService("My Service")
 {

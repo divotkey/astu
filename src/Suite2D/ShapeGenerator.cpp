@@ -23,7 +23,7 @@ using namespace std;
 
 namespace astu::suite2d {
 
-    std::vector<Vector2f> ShapeGenerator::tempVertices;
+    vector<Vector2f> ShapeGenerator::tempVertices;
 
     ShapeGenerator::ShapeGenerator()
     {
@@ -36,7 +36,15 @@ namespace astu::suite2d {
         return *this;
     }
 
-    const std::vector<Vector2f>& ShapeGenerator::GenCircle(float r, unsigned int n) const
+    const vector<Vector2f>& ShapeGenerator::GenLine(float x1, float y1, float x2, float y2) const
+    {
+        RESET_VERTICES();
+        ADD_VERTEX(Vector2f(x1, y1) + offset);
+        ADD_VERTEX(Vector2f(x2, y2) + offset);
+        return GET_VERTICES();
+    }
+
+    const vector<Vector2f>& ShapeGenerator::GenCircle(float r, unsigned int n) const
     {   
         if (r <= 0) {
             throw domain_error(
@@ -57,7 +65,7 @@ namespace astu::suite2d {
         return GET_VERTICES();
     }
 
-    const std::vector<Vector2f>& ShapeGenerator::GenRectangle(float w, float h) const
+    const vector<Vector2f>& ShapeGenerator::GenRectangle(float w, float h) const
     {
         RESET_VERTICES();
 
@@ -72,7 +80,7 @@ namespace astu::suite2d {
         return GET_VERTICES();
     }
 
-    const std::vector<Vector2f>& ShapeGenerator::GenTriangle(float r, const Vector2f & d)
+    const vector<Vector2f>& ShapeGenerator::GenTriangle(float r, const Vector2f & d)
     {
         if (d.IsZero()) {
             throw domain_error(
@@ -99,7 +107,7 @@ namespace astu::suite2d {
         return GET_VERTICES();
     }
 
-    const std::vector<Vector2f>& ShapeGenerator::GenStar(float r, int n, const Vector2f & d)
+    const vector<Vector2f>& ShapeGenerator::GenStar(float r, int n, const Vector2f & d)
     {
         if (d.IsZero()) {
             throw domain_error(
@@ -136,7 +144,7 @@ namespace astu::suite2d {
         return GET_VERTICES();
     }
 
-    const std::vector<Vector2f>& ShapeGenerator::GenCross(float s, float th)
+    const vector<Vector2f>& ShapeGenerator::GenCross(float s, float th)
     {
         if (th <= 0 || th >= 1) {
             throw domain_error(
@@ -167,7 +175,7 @@ namespace astu::suite2d {
         return GET_VERTICES();
     }
 
-    const std::vector<Vector2f>& ShapeGenerator::GenArrow(float s, float th, const Vector2f & d)
+    const vector<Vector2f>& ShapeGenerator::GenArrow(float s, float th, const Vector2f & d)
     {
         RESET_VERTICES();
 
