@@ -585,20 +585,11 @@ namespace astu::suite2d {
         /**
          * Sets the polygon of the polygon collider to build.
          * 
-         * @param poly  the polygon of the collider
+         * @param vertices  the vertices that make up the polygon
          * @return reference to this builder for method chaining
          */
         CPolygonColliderBuilder& Polygon(const std::vector<Vector2f>& vertices) {
             polygon = std::make_shared<Polygon2f>(vertices);
-            return *this;
-        }
-
-        CPolygonColliderBuilder& Polygon(std::shared_ptr<const VertexBuffer2f> polyBuf) {
-            auto poly = std::dynamic_pointer_cast<const Polygon2f>(polyBuf);
-            if (!poly) {
-                throw std::logic_error("Vertex buffer is not of type polygon");
-            }
-            polygon = poly;
             return *this;
         }
 
