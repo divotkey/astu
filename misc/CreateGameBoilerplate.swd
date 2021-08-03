@@ -3,7 +3,7 @@
 
 // Configure Parameters for Code Creation
 GAME_NAME 		= "MyGame";
-GAME_AUTHOR 	= "Jane Doe";
+GAME_AUTHOR 	= "Roman Divotkey";
 GAME_VERSION	= "1.0.0";
 USE_BOX2D		= true;
 

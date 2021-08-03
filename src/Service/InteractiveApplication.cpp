@@ -130,6 +130,16 @@ namespace astu {
         return fullscreen;
     }
 
+    void InteractiveApplication::SetVSync(bool enableVsync)
+    {
+        vsync = enableVsync;
+    }
+
+    bool InteractiveApplication::IsVsync() const
+    {
+        return vsync;
+    }
+
     void InteractiveApplication::SetFullscreenToggleKey(int keycode)
     {
         fullScreenKey = keycode;
