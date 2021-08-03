@@ -282,7 +282,7 @@ namespace astu::suite2d {
          * @param bits  the category bits
          * @return reference to this builder for method chaining
          */
-        T& SetCategoryBits(uint16_t bits) {
+        T& CategoryBits(uint16_t bits) {
             categoryBits = bits;
             return static_cast<T&>(*this);
         }
@@ -296,7 +296,7 @@ namespace astu::suite2d {
          * @param bits  the mask bits
          * @return reference to this builder for method chaining
          */
-        T& SetMaskBits(uint16_t bits) {
+        T& MaskBits(uint16_t bits) {
             maskBits = bits;
             return static_cast<T&>(*this);
         }
