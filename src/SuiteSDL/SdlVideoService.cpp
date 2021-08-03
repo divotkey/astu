@@ -27,6 +27,7 @@ namespace astu {
         , vulkanSupport(false)
         , resizeable(false)
         , fullscreen(false)
+        , displayIdx(0)
     {
         // Intentionally left empty.
     }
@@ -34,6 +35,12 @@ namespace astu {
     bool SdlVideoService::IsVulkanSupportEnabled() const
     {
         return vulkanSupport;
+    }
+
+    SdlVideoService& SdlVideoService::SetDisplay(int idx)
+    {
+        displayIdx = idx;
+        return *this;
     }
 
     SdlVideoService& SdlVideoService::EnableVulkanSupport(bool b)
@@ -82,10 +89,13 @@ namespace astu {
             flags |= SDL_WINDOW_RESIZABLE;
         }
 
+        int posX, posY;
+        DetermineWindowPositoin(posX, posY);
+
         window = SDL_CreateWindow(
             winTitle.c_str(),
-            SDL_WINDOWPOS_UNDEFINED, 
-            SDL_WINDOWPOS_UNDEFINED,
+            posX, 
+            posY,
             winWidth,
             winHeight,
             flags
@@ -124,6 +134,17 @@ namespace astu {
     {
         SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Shutting down SDL video service");
         CleanUp();
+    }
+
+    void SdlVideoService::DetermineWindowPositoin(int& outX, int& outY)
+    {
+        if (displayIdx == 0 || displayIdx >= SDL_GetNumVideoDisplays()) {
+            outX = SDL_WINDOWPOS_UNDEFINED;
+            outY = SDL_WINDOWPOS_UNDEFINED;
+        } else {
+            outX = SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayIdx);
+            outY = SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayIdx);
+        }
     }
 
     void SdlVideoService::SetSize(int width, int height) 

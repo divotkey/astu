@@ -133,6 +133,20 @@ namespace astu {
         bool IsFullscreen() const;
 
         /**
+         * Enables or disables vertical synchronization.
+         * 
+         * @param vsync set to `true` to enable vertical synchronization
+         */
+        void SetVSync(bool vsync);
+
+        /**
+         * Returns whether vertical synchronization is enabled.
+         * 
+         * @return `true` if vertical synchronization is enabled
+         */
+        bool IsVsync() const;
+
+        /**
          * Defines whether the main application window should be resizable.
          * 
          * @param resizable set to `true` if the window should be resizeable
@@ -259,11 +273,14 @@ namespace astu {
         /** The startup resolution of the application window. */
         Resolution startupResolution;
 
-        /** Whetehr the application should start in fullscreen mode. */
+        /** Whether the application should start in fullscreen mode. */
         bool fullscreen;
 
         /** The key used to toggle fullscreen mode. */
         int fullScreenKey;
+
+        /** Whether the application should start with vsync enabled. */
+        bool vsync;
 
         /** Whether the application window should be resizeable. */
         bool resizable;

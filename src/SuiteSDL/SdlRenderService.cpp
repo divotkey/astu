@@ -34,33 +34,17 @@ namespace astu {
         , Updatable(priority)
         , renderer(nullptr)
         , backgroundColor(WebColors::Black)
+        , vsync(true)
     {
         // Intentionally left empty.
     }
 
     void SdlRenderService::OnStartup() 
     {
-        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Starting up SDL render service");
+        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, 
+            "Starting up SDL render service");
 
-        renderer = SDL_CreateRenderer(
-            ASTU_SERVICE(SdlVideoService).GetSdlWindow(),
-            -1, 
-            // SDL_RENDERER_ACCELERATED  | SDL_RENDERER_PRESENTVSYNC 
-            SDL_RENDERER_ACCELERATED 
-            );
-
-        if (!renderer) {
-            SDL_LogError(SDL_LOG_CATEGORY_RENDER, "Couldn't create SDL render: %s", SDL_GetError());        
-            throw std::runtime_error(SDL_GetError());
-        }
-
-        if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)) {
-            SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't set blend mode for SDL Renderer: %s", SDL_GetError());        
-            auto && lastError = SDL_GetError();
-            SDL_DestroyRenderer(renderer);
-            throw std::runtime_error(lastError);
-        }            
-
+        CreateRenderer();
         LogRendererInfo();
 
         // Fire resize event.
@@ -95,6 +79,39 @@ namespace astu {
         }
         
         SDL_RenderPresent(renderer);
+    }
+
+    void SdlRenderService::CreateRenderer()
+    {
+        if (renderer) {
+            SDL_DestroyRenderer(renderer);
+            renderer = nullptr;
+        }
+
+        uint32_t flags = SDL_RENDERER_ACCELERATED;
+        if (vsync) {
+            flags |= SDL_RENDERER_PRESENTVSYNC;
+        }
+
+        renderer = SDL_CreateRenderer(
+            ASTU_SERVICE(SdlVideoService).GetSdlWindow(),
+            -1, 
+            flags 
+            );
+
+        if (!renderer) {
+            SDL_LogError(SDL_LOG_CATEGORY_RENDER, 
+                "Couldn't create SDL render: %s", SDL_GetError());        
+            throw std::runtime_error(SDL_GetError());
+        }
+
+        if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)) {
+            SDL_LogError(SDL_LOG_CATEGORY_VIDEO, 
+                "Couldn't set blend mode for SDL Renderer: %s", SDL_GetError());        
+            auto && lastError = SDL_GetError();
+            SDL_DestroyRenderer(renderer);
+            throw std::runtime_error(lastError);
+        }            
     }
 
     void SdlRenderService::LogRendererInfo()
@@ -157,6 +174,23 @@ namespace astu {
 
     size_t SdlRenderService::NumRenderLayers() const {
         return layers.size();
+    }
+
+    void SdlRenderService::SetVSync(bool b)
+    {
+        if (vsync == b) {
+            return;
+        }
+
+        vsync = b;
+        if (renderer) {
+            CreateRenderer();
+        }
+    }
+
+    bool SdlRenderService::IsVsync() const 
+    {
+        return vsync;
     }
 
     /////////////////////////////////////////////////

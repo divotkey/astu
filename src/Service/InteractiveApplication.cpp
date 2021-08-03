@@ -38,6 +38,7 @@ namespace astu {
         , startupResolution(Resolution::HD_2)
         , fullscreen(false)
         , fullScreenKey(Keyboard::Keycodes::KEY_F11)
+        , vsync(true)
         , resizable(false)
         , running(false)
     {
@@ -248,8 +249,10 @@ namespace astu {
         wndSrv.SetFullscreen(fullscreen);
         wndSrv.SetResizable(resizable);
 
-        // Configure background color
-        ASTU_SERVICE(RenderService).SetBackgroundColor(backgroundColor);
+        // Configure background color and vertical synchronization.
+        auto& rndSrv = ASTU_SERVICE(RenderService);
+        rndSrv.SetVSync(vsync);
+        rndSrv.SetBackgroundColor(backgroundColor);
 
         ASTU_SERVICE(WindowStateSignalService).AddListener(*this);
         ASTU_SERVICE(KeystrokeSignalService).AddListener(*this);

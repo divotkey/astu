@@ -52,6 +52,20 @@ namespace astu {
          */
         virtual size_t NumRenderLayers() const = 0;
 
+        /**
+         * Enables or disables vertical synchronization.
+         * 
+         * @param vsync set to `true` to enable vertical synchronization
+         */
+        virtual void SetVSync(bool vsync) = 0;
+
+        /**
+         * Returns whether vertical synchronization is enabled.
+         * 
+         * @return `true` if vertical synchronization is enabled
+         */
+        virtual bool IsVsync() const = 0;
+
     };
     
 } // end of namespace

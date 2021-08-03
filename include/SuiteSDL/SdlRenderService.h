@@ -118,6 +118,8 @@ namespace astu {
         virtual void SetBackgroundColor(const Color4f& bg) override;
         virtual const Color4f& GetBackgroundColor() const override;
         virtual size_t NumRenderLayers() const override;
+        virtual void SetVSync(bool vsync) override;
+        virtual bool IsVsync() const override;
 
     private:
         /** The SDL renderer. */
@@ -128,6 +130,9 @@ namespace astu {
 
         /** The background color. */
         Color4f backgroundColor;
+
+        /** Whether to use vertical synchronization. */
+        bool vsync;
 
         /**
          * Logs some additional information about the used renderer.
@@ -140,6 +145,11 @@ namespace astu {
 
         // Inherited via Updatable
         virtual void OnUpdate() override;
+
+        /**
+         * Creates the SDL renderer.
+         */
+        void CreateRenderer();
     };
 
     /**

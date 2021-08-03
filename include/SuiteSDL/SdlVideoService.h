@@ -71,6 +71,14 @@ namespace astu {
          */
         SdlVideoService& EnableVulkanSupport(bool b);
 
+        /**
+         * Sets the index of the display used to open the window.
+         * 
+         * @param idx   the index of the display.
+         * @return reference to this service for method chaining
+         */
+        SdlVideoService& SetDisplay(int idx);
+
         // Inherited via WindowService
         virtual void SetSize(int width, int height) override;
         virtual int GetWidth() const override;
@@ -111,11 +119,13 @@ namespace astu {
         /** Whether full-screen mode is currently enabled. */
         bool fullscreen;
 
+        /** The index of the display used to open the application window. */
+        int displayIdx;
+
         /**
-         * Releases recources. 
+         * Releases resources. 
          */
         void CleanUp();
-
 
         /**
          * Activates fullscreen mode.
@@ -126,6 +136,14 @@ namespace astu {
          * Deactivates fullscreen mode.
          */
         void DisableFullscreen();
+
+        /**
+         * Determines the position for the application window.
+         * 
+         * @param outX  receives the x-coordinate of the window
+         * @param outY  receives the y-coordinate of the window
+         */
+        void DetermineWindowPositoin(int& outX, int& outY);
 
         // Inherited via ISdlResizeListener
         virtual void OnResize(int width, int height) override;

@@ -141,7 +141,7 @@ namespace astu {
         virtual int NumDisplays() const = 0;
 
         /**
-         * Acivates or deactivates fullscreen mode.
+         * Activates or deactivates fullscreen mode.
          * 
          * @param enableFullscreen  set to `true` to activate fullscreen mode
          */
@@ -153,6 +153,7 @@ namespace astu {
          * @return `true` if fulscreen mode is activated
          */
         virtual bool IsFullscreen() const = 0;
+        
     };
     
 } // end of namespace
