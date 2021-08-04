@@ -1,0 +1,224 @@
+// Sword script to generate SDL/ASTU Key lookup table.
+
+entries = [];
+maxCode = 257;
+
+specialEntries = [];
+
+AddKey(4, "A");
+AddKey(5, "B");
+AddKey(6, "C");
+AddKey(7, "D");
+AddKey(8, "E");
+AddKey(9, "F");
+AddKey(10, "G");
+AddKey(11, "H");
+AddKey(12, "I");
+AddKey(13, "J");
+AddKey(14, "K");
+AddKey(15, "L");
+AddKey(16, "M");
+AddKey(17, "N");
+AddKey(18, "O");
+AddKey(19, "P");
+AddKey(20, "Q");
+AddKey(21, "R");
+AddKey(22, "S");
+AddKey(23, "T");
+AddKey(24, "U");
+AddKey(25, "V");
+AddKey(26, "W");
+AddKey(27, "X");
+AddKey(28, "Y");
+AddKey(29, "Z");
+
+AddKey(30, "One");
+AddKey(31, "Two");
+AddKey(32, "Three");
+AddKey(33, "Four");
+AddKey(34, "Five");
+AddKey(35, "Six");
+AddKey(36, "Seven");
+AddKey(37, "Eight");
+AddKey(38, "Nine");
+AddKey(39, "Zero");
+
+
+AddKey(58, "F1");
+AddKey(59, "F2");
+AddKey(60, "F3");
+AddKey(61, "F4");
+AddKey(62, "F5");
+AddKey(63, "F6");
+AddKey(64, "F7");
+AddKey(65, "F8");
+AddKey(66, "F9");
+AddKey(67, "F10");
+AddKey(68, "F11");
+AddKey(69, "F12");
+
+
+AddKey(40, "Return");
+AddKey(41, "Escape");
+AddKey(42, "Backspace");
+AddKey(43, "Tab");
+AddKey(44, "SpaceBar");
+
+AddKey(74, "Home");
+AddKey(75, "PageUp");
+AddKey(76, "Delete");
+AddKey(77, "End");
+AddKey(78, "PageDown");
+AddKey(79, "Right");
+AddKey(80, "Left");
+AddKey(81, "Down");
+AddKey(82, "Up");
+
+AddKey(224, "LeftControl");
+AddKey(225, "LeftShift");
+AddKey(226, "LeftAlt");
+AddKey(227, "LeftGui");
+
+AddKey(228, "RightControl");
+AddKey(229, "RightShift");
+AddKey(230, "RightAlt");
+AddKey(231, "RightGui");
+
+AddSpecialKey("Unknown", "Unknown key");
+AddSpecialKey("GamepadFaceButtonBottom", "Gamepad Face Button Bottom");
+AddSpecialKey("GamepadFaceButtonTop", "Gamepad Face Button Top");
+AddSpecialKey("GamepadFaceButtonRight", "Gamepad Face Button Right");
+AddSpecialKey("GamepadFaceButtonLeft", "Gamepad Face Button Left");
+
+AddSpecialKey("GamepadLeftThumbstickX", "Gamepad Left Thumbstick x-Achis");
+AddSpecialKey("GamepadLeftThumbstickY", "Gamepad Left Thumbstick Y-Achis");
+AddSpecialKey("GamepadRightThumbstickX", "Gamepad Right Thumbstick X-Achis");
+AddSpecialKey("GamepadRightThumbstickY", "Gamepad Right Thumbstick Y-Achis");
+AddSpecialKey("GamepadLeftShoulder", "Gamepad Keft Shoulder");
+AddSpecialKey("GamepadRightShoulder", "Gamepad Right Shoulder");
+
+//EmitTableCode();
+//EmitKeysHeaderCode();
+EmitKeysCode();
+
+function AddKey(scancode, keyname)
+{
+	entries.push([scancode, keyname]);
+}
+
+function AddSpecialKey(keyname, comment)
+{
+	specialEntries.push([keyname, comment]);
+}
+
+function FindEntry(scancode) {
+
+	for (i = 0; i < entries.length; ++i) {
+		if (entries[i][0] == scancode) {
+			return entries[i][1];
+		}
+	}
+
+	return "UNKNOWN";
+}
+
+function EmitKeysHeaderCode()
+{
+	§:
+    class Keys {
+    public:
+
+	:§
+
+	§:
+			/////////////////////////////////////////////////
+			/////// Keyboard Keys
+			/////////////////////////////////////////////////
+
+	:§
+
+
+	for (i = 0; i < maxCode; ++i) {
+		entry = FindEntry(i);
+		if (entry != "UNKNOWN") {
+			§:
+					/** Constant for key '§{entry}' */
+					static const Key §{entry};
+
+			:§
+		}
+	}
+
+	§:
+			/////////////////////////////////////////////////
+			/////// Special Keys
+			/////////////////////////////////////////////////
+
+	:§
+
+	for (i = 0; i < specialEntries.length; ++i) {
+		§:
+				/** Constant for '§{specialEntries[i][1]}' */
+				static const Key §{specialEntries[i][0]};
+
+		:§
+	}
+
+	§:
+		};
+	:§
+
+}
+
+function EmitKeysCode()
+{
+	§:
+
+			// Keyboard keys.
+	:§
+	for (i = 0; i < maxCode; ++i) {
+		entry = FindEntry(i);
+		if (entry != "UNKNOWN") {
+			§:
+					const Key Keys::§{entry} = Key("§{entry}");
+			:§
+		}
+	}
+
+	§:
+
+			// Special keys.
+	:§
+	for (i = 0; i < specialEntries.length; ++i) {
+		§:
+				const Key Keys::§{specialEntries[i][0]} = Key("§{specialEntries[i][0]}");
+		:§
+	}
+
+
+}
+
+function EmitTableCode()
+{
+	§:
+    array<Key, SDL_Scancode::SDL_NUM_SCANCODES> SdlKeyTable::table = {
+	:§
+
+	i = 0; itemsPerLine = 4;
+	for (i = 0; i < maxCode; i += itemsPerLine) {
+		s = "";
+		for (j = 0; (j < itemsPerLine) && (j + i < maxCode); ++j) {
+			s += "Key(\"" + FindEntry(i + j) + "\")";
+			if (i < maxCode - 1) {
+				s += ", ";
+			}
+		}
+		§:		§{s}:§		
+	}
+
+	§:
+		};
+	:§
+}
+
+
