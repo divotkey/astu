@@ -75,6 +75,8 @@ namespace astu {
      * - astu::suite2d::CPolygonCollider
      * - astu::suite2d::CPolygonColliderFactory
      * - astu::suite2d::CPolygonColliderBuilder
+     * - astu::suite2d::CollisionSignal
+     * - astu::suite2d::CollisionListener
      * 
      * @section logic_sect Logic
      * - astu::suite2d::CPose

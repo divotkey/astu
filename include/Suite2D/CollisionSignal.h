@@ -16,7 +16,7 @@ namespace astu::suite2d {
     /**
      * This signal represents a collision between two entities.
      * 
-     * @ingroup input_group
+     * @ingroup suite2d_group
      */
     class CollisionSignal {
     public:
@@ -46,21 +46,21 @@ namespace astu::suite2d {
     /** 
      * Type definition for signal services that transmit collision signals.
      *
-     * @ingroup input_group
+     * @ingroup suite2d_group
      */
     using CollisionSignalService = SignalService<CollisionSignal>;
 
     /** 
      * Type definition for signal listeners which receive collision signals.
      *
-     * @ingroup input_group
+     * @ingroup suite2d_group
      */
     using ICollisionListener = ISignalListener<CollisionSignal>;
 
     /**
      * Services can derive from this class to process mouse wheel signals.
      * 
-     * @ingroup input_group
+     * @ingroup suite2d_group
      */
     class CollisionListener 
         : virtual public Service
