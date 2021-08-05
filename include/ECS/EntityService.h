@@ -8,8 +8,8 @@
 #pragma once
 
 // Local includes.
+#include "Service/Service.h"
 #include "Service/UpdateService.h"
-#include "Util/CommandQueue.h"
 
 // C++ Standard Library includes
 #include <typeindex>

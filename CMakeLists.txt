@@ -31,6 +31,7 @@ list(APPEND astulib_SOURCES
 
                     src/ECS/EntityService.cpp
                     src/ECS/EntityFactoryService.cpp
+                    src/ECS/AutoDestructSystem.cpp
                     src/Input/InputMappingService.cpp
 
                     src/Input/AstuIO.cpp

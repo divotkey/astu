@@ -1,6 +1,11 @@
 
 # Version History {#CHANGES}
 
+# Version 0.10.1
+*Date: 2021-08-05*
+
+- Added AutoDestruct entity component and system.
+
 # Version 0.10.0
 *Date: 2021-08-02*
 
@@ -13,7 +18,7 @@ understanding.
 - Added header files to include categories of features.
 - Improved documentation.
 - Added support for full-screen mode.
-- Extended functiuonality `LineRenderer'.
+- Extended functionality `LineRenderer`.
 - Polyline scene graph objects can now be closed (e.g., polygons) or open.
 - Changed order of include files to mach Unreal Engine requirements.
 

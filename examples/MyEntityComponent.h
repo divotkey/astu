@@ -12,7 +12,7 @@ public:
     }
 
     // Inherited via EntityComponent
-    virtual std::shared_ptr<EntityComponent> Clone() override {
+    virtual std::shared_ptr<astu::EntityComponent> Clone() override {
         // Create copy using copy-constructor.
         return std::make_shared<CMyComponent>(*this);
     }    
