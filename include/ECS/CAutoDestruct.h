@@ -5,6 +5,8 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+#pragma once
+
 // Local includes
 #include "ECS/EntityService.h"
 #include "AstuECS.h"

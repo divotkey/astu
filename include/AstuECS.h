@@ -6,6 +6,8 @@
  * 
  */
 
+#pragma once
+
 /**
  * This file defines public functions, templates and classes offered 
  * by the entity component system (ECS).
@@ -18,6 +20,8 @@
 #include "ECS/EntityService.h"
 #include "ECS/EntityFactoryService.h"
 #include "ECS/EntitySystems.h"
+#include "ECS/AutoDestructSystem.h"
+#include "ECS/CAutoDestruct.h"
 
 namespace astu {
 

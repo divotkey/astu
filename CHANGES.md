@@ -5,6 +5,8 @@
 *Date: 2021-08-05*
 
 - Added AutoDestruct entity component and system.
+- Added EntityFactoryClient class.
+- Fixed some minor bugs.
 
 # Version 0.10.0
 *Date: 2021-08-02*

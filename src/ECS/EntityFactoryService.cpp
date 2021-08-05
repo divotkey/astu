@@ -7,6 +7,7 @@
 
 // Local includes
 #include "ECS/EntityFactoryService.h"
+#include "Suite2D/CPose.h"
 
 // C++ Standard Libraries includes
 #include <stdexcept>
@@ -14,6 +15,10 @@
 using namespace std;
 
 namespace astu {
+
+    /////////////////////////////////////////////////
+    /////// EntityFactoryService
+    /////////////////////////////////////////////////
 
     EntityFactoryService::EntityFactoryService()
         : Service("Entity Factory Service")
@@ -47,7 +52,7 @@ namespace astu {
         prototypes[protoName] = proto;
     }
 
-    void EntityFactoryService::DeregisterPrototype(const std::string & protoName)
+    void EntityFactoryService::DeregisterPrototype(const string & protoName)
     {
         auto it = prototypes.find(protoName);
         if (it != prototypes.end()) {
@@ -69,6 +74,20 @@ namespace astu {
         }
 
         return it->second->Clone();
+    }
+
+    /////////////////////////////////////////////////
+    /////// EntityFactoryClient
+    /////////////////////////////////////////////////
+
+    shared_ptr<Entity> EntityFactoryClient::CreateEntity(const string & protoName, float posX, float posY, float phi)
+    {
+        auto entity = factoryService->CreateEntity(protoName);
+        entity->GetComponent<astu::suite2d::CPose>()
+            .transform.SetTranslation(posX, posY)
+            .SetRotation(phi);
+
+        return entity;
     }
 
 } // end of namespace
