@@ -189,7 +189,9 @@ namespace astu {
             float posY, 
             float phi = 0)
         {
-            return AddEntity(protoName, posX, posY, phi);
+            auto entity = CreateEntity(protoName, posX, posX, phi);
+            entityService->AddEntity(entity);
+            return entity;
         }
 
         /**
@@ -210,11 +212,8 @@ namespace astu {
             const Vector2f& pos, 
             float phi = 0)
         {
-            auto entity = CreateEntity(protoName, pos.x, pos.y, phi);
-            entityService->AddEntity(entity);
-            return entity;
+            return AddEntity(protoName, pos.x, pos.y, phi);
         }
-
 
     private:
         /** The entity service used to add entities. */
