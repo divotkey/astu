@@ -189,7 +189,7 @@ namespace astu {
             float posY, 
             float phi = 0)
         {
-            auto entity = CreateEntity(protoName, posX, posX, phi);
+            auto entity = CreateEntity(protoName, posX, posY, phi);
             entityService->AddEntity(entity);
             return entity;
         }
