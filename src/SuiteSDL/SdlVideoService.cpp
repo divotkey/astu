@@ -27,6 +27,7 @@ namespace astu {
         , vulkanSupport(false)
         , resizeable(false)
         , fullscreen(false)
+        , cursorVisible(true)
         , displayIdx(0)
     {
         // Intentionally left empty.
@@ -116,6 +117,10 @@ namespace astu {
             EnableFullscreen();
         }
 
+        if (!cursorVisible) {
+            SDL_ShowCursor(SDL_DISABLE);
+        }
+
         ASTU_SERVICE(SdlEventService).AddSdlResizeListener(*this);
     }
 
@@ -199,6 +204,25 @@ namespace astu {
     bool SdlVideoService::IsFullscreen() const
     {
         return fullscreen;        
+    }
+
+    void SdlVideoService::ShowCursor(bool b)
+    {
+        if (cursorVisible == b) {
+            return;
+        }
+
+        cursorVisible = b;
+        if (SDL_ShowCursor(cursorVisible ? SDL_ENABLE : SDL_DISABLE) < 0) {
+            cursorVisible = !b;
+            SDL_LogError(SDL_LOG_CATEGORY_VIDEO, 
+                "Couldn't set visibility of mouse cursor: %s", SDL_GetError());        
+        }
+    }
+
+    bool SdlVideoService::IsCursorVisible() const
+    {
+        return cursorVisible;
     }
 
     SDL_Window* SdlVideoService::GetSdlWindow()

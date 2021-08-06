@@ -154,6 +154,20 @@ namespace astu {
          */
         virtual bool IsFullscreen() const = 0;
         
+        /**
+         * Shows or hides the mouse cursor.
+         * 
+         * @param b the set to `true` to show the cursor
+         */
+        virtual void ShowCursor(bool b) = 0;
+
+        /**
+         * Returns whether the mouse cursor is currently set to visible.
+         * 
+         * @return `true` if the mouse cursor is visible
+         */
+        virtual bool IsCursorVisible() const = 0;
+
     };
     
 } // end of namespace

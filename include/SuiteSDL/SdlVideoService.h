@@ -90,6 +90,8 @@ namespace astu {
         virtual int NumDisplays() const override;
         virtual void SetFullscreen(bool b) override;
         virtual bool IsFullscreen() const override;
+        virtual void ShowCursor(bool b) override;
+        virtual bool IsCursorVisible() const override;
 
     protected:
 
@@ -118,6 +120,9 @@ namespace astu {
 
         /** Whether full-screen mode is currently enabled. */
         bool fullscreen;
+
+        /** Whether the mouse cursor is currently visible. */
+        bool cursorVisible;
 
         /** The index of the display used to open the application window. */
         int displayIdx;

@@ -2,11 +2,12 @@
 # Version History {#CHANGES}
 
 # Version 0.10.1
-*Date: 2021-08-05*
+*Date: 2021-08-06*
 
 - Added AutoDestruct entity component and system.
 - Added EntityFactoryClient class.
 - Fixed some minor bugs.
+- Added option to hide mouse cursor.
 
 # Version 0.10.0
 *Date: 2021-08-02*
