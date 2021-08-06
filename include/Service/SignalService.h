@@ -291,4 +291,71 @@ namespace astu {
         virtual bool OnSignal(const T & signal) override { return false; };        
     };
 
+    /**
+     * A template-based signal listener emitter.
+     * 
+     * Service can derive from this class to easily emit a signal listener of
+     * a certain type of signals.
+     * 
+     * @tparam T    the type of signal to emit
+     * @ingroup srv_group
+     */
+    template <typename T>
+    class SignalEmitter : virtual public Service {
+    public:
+
+        SignalEmitter(bool fire = false) : fireSignals(fire) {
+            AddStartupHook([this]() { 
+                signalService = ASTU_GET_SERVICE(SignalService<T>);
+            });
+
+            AddShutdownHook([this]() {
+                signalService = nullptr;
+            });
+        }
+        
+    protected:
+
+        /**
+         * Emits the specified signal.
+         * 
+         * The fire flag defines whether the signal gets fired or queued.
+         * 
+         * @param signal    the signal to emit
+         */
+        void EmitSignal(const T & signal) const {
+            if (fireSignals) {
+                signalService->FireSignal(signal);
+            } else {
+            signalService->QueueSignal(signal);
+            }
+        }
+
+        /**
+         * Fires the specified signal.
+         * 
+         * @param signal    the signal to emit
+         */
+        void FireSignal(const T & signal) const {
+            signalService->FireSignal(signal);
+        }
+
+        /**
+         * Queues the specified signal.
+         * 
+         * @param signal    the signal to emit
+         */
+        void QueueSignal(const T & signal) const {
+            signalService->QueueSignal(signal);
+        }
+
+    private:
+        /** The signal service used to emit signals. */
+        std::shared_ptr<SignalService<T>> signalService;
+        
+        /** Whether to fire signals by default. */
+        bool fireSignals;
+    };
+
+
 } // end of namespace

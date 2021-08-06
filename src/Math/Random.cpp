@@ -15,7 +15,7 @@ namespace astu {
 
     std::unique_ptr<Random> Random::theInstance;
 
-    Random & Random::GetInstance()
+    Random& Random::GetInstance()
     {
         if (theInstance == nullptr) {
             theInstance = std::unique_ptr<Random>(new Random());

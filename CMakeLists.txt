@@ -11,6 +11,7 @@ list(APPEND astulib_SOURCES
                     src/Util/VersionInfo.cpp
                     src/Util/Controllable.cpp
                     src/Util/Controller.cpp
+                    src/Util/Memento.cpp
                     src/Math/Random.cpp
                     src/Math/MathUtils.cpp
 
@@ -57,6 +58,10 @@ list(APPEND astulib_SOURCES
                     src/Suite2D/ShapeGenerator.cpp
                     src/Suite2D/CBody.cpp
                     src/Suite2D/CColliders.cpp
+
+                    src/Ai/Quantizer.cpp
+                    src/Ai/StateUtil.cpp
+                    src/Ai/QTable.cpp
 
                     src/AstUtils1.cpp)
 
