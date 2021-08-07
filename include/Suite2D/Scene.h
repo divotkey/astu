@@ -384,7 +384,7 @@ namespace astu::suite2d {
         /**
          * Returns whether the polyline is rendered as closed shape.
          * 
-         * @return `true` if the polyline si rendered as closed shape
+         * @return `true` if the polyline is rendered as closed shape
          */
         bool IsClosed() const {
             return closed;

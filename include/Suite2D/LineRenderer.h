@@ -46,7 +46,7 @@ namespace astu::suite2d {
         ~LineRenderer() {}
 
         /**
-         * Sets the current drawing color used for all subsequent drawing calls.
+         * Sets the current drawing color used for all subsequent draw calls.
          * 
          * @param c the new drawing color 
          */
@@ -351,6 +351,13 @@ namespace astu::suite2d {
         }
 
         /**
+         * Sets the transformation to the identity.
+         */
+        void Identity() {
+            lineRenderer->SetTransform(Matrix3<T>());
+        }
+
+        /**
          * Sets the transformation matrix.
          * 
          * @param m the transformation matrix to become the current one
@@ -366,6 +373,38 @@ namespace astu::suite2d {
          */
         const Matrix3<T>& GetTransform() const {
             return lineRenderer->GetTransform();
+        }
+
+        /**
+         * Sets the transformation a translation.
+         * 
+         * @param x the x-coordinate of the translation
+         * @param y the y-coordinate of the translation
+         */
+        void SetTranslation(float x, float y) {
+            lineRenderer->SetTransform(Matrix3f().SetToTranslate(x, y));
+        }
+
+        /**
+         * Sets the transformation a translation.
+         * 
+         * @param x the x-coordinate of the translation
+         * @param y the y-coordinate of the translation
+         */
+        void SetTranslation(const Vector2<T>& t) {
+            lineRenderer->SetTransform(Matrix3f().SetToTranslate(t));
+        }
+
+        /**
+         * Adds a translation to the current transfromation.
+         * 
+         * @param dx    the delta movment on the x-axis
+         * @param dy    the delta movment on the y-axis
+         */
+        void Translate(float dx, float dy) {
+            auto tx = lineRenderer->GetTransform();
+            tx.Translate(dx, dy);
+            lineRenderer->SetTransform(tx);
         }
 
         /**
@@ -428,7 +467,7 @@ namespace astu::suite2d {
         }
 
         /**
-         * Sets the current drawing color used for all subsequent drawing calls.
+         * Sets the current drawing color used for all subsequent draw calls.
          * 
          * @param c the new drawing color 
          */
