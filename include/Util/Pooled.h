@@ -26,6 +26,12 @@
 
 namespace astu {
 
+	/**
+	 * A template for pooled objects.
+	 * 
+	 * @tparam T	the type of the object to be pooled
+	 * @ingroup misc_group
+	 */
 	template<typename T>
 	class Pooled {
 	public:

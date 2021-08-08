@@ -19,6 +19,11 @@
 
 namespace astu {
 
+	/**
+	 * An implementation of the memeoty software design pattern.
+	 * 
+	 * @ingroup misc_group
+	 */
 	class Memento {
 	public:
 
@@ -30,7 +35,7 @@ namespace astu {
 		/**
 		 * Constructor.
 		 * 
-		 * @param data	of this memento
+		 * @param data	the data of this memento
 		 */
 		Memento(const std::vector<unsigned char> & data);
 

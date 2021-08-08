@@ -1,0 +1,34 @@
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ * 
+ * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * 
+ */
+
+#pragma once
+
+/**
+ * This file defines public functions, templates and classes offered 
+ * by the "miscellaneous" module.
+ * 
+ * @file AstuMisc.h
+ * @author Roman Divotkey
+ * @copyright MIT License
+ */
+
+#include "Util/Memento.h"
+#include "Util/Pooled.h"
+#include "Util/VersionInfo.h"
+
+namespace astu {
+
+    /**
+     * @defgroup misc_group Miscellaneous
+     * @brief This module contains templates, classes and functions which did not fit into any other module.
+     * @{
+     */
+
+    /**@}*/
+
+} // end of namespace
