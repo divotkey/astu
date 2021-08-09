@@ -20,7 +20,7 @@
 namespace astu {
 
 	/**
-	 * An implementation of the memeoty software design pattern.
+	 * An implementation of the software design pattern Memento.
 	 * 
 	 * @ingroup misc_group
 	 */
@@ -39,33 +39,33 @@ namespace astu {
 		 */
 		Memento(const std::vector<unsigned char> & data);
 
-		Memento & operator<<(const std::vector<unsigned char> & data);
+		Memento& operator<<(const std::vector<unsigned char> & data);
 
-		Memento & operator<<(const int64_t & value);
+		Memento& operator<<(const int64_t & value);
 		const Memento& operator>>(int64_t & value) const;
 
-		Memento & operator<<(const int & value);
+		Memento& operator<<(const int & value);
 		const Memento& operator>>(int & value) const;
 
-		Memento & operator<<(const unsigned int & value);
+		Memento& operator<<(const unsigned int & value);
 		const Memento& operator>>(unsigned int & value) const;
 
-		Memento & operator<<(const size_t & value);
+		Memento& operator<<(const size_t & value);
 		const Memento& operator>>(size_t & value) const;
 
-		Memento & operator<<(const float & value);
+		Memento& operator<<(const float & value);
 		const Memento& operator>>(float & value) const;
 
-		Memento & operator<<(const double & value);
+		Memento& operator<<(const double & value);
 		const Memento& operator>>(double & value) const;
 
-		Memento & operator<<(const std::string & s);
+		Memento& operator<<(const std::string & s);
 		const Memento& operator>>(std::string & s) const;
 
-		Memento & operator<<(const Vector2f & v);
+		Memento& operator<<(const Vector2f & v);
 		const Memento& operator>>(Vector2f & v) const;
 
-		Memento & operator<<(const Color4f & c);
+		Memento& operator<<(const Color4f & c);
 		const Memento& operator>>(Color4f & c) const;
 
 		/**
@@ -74,7 +74,7 @@ namespace astu {
 		 * @param bytes	pointer to the byte array
 		 * @param the number of bytes to write
 		 */
-		Memento & Write(const unsigned char * bytes, size_t count);
+		Memento& Write(const unsigned char * bytes, size_t count);
 
 		/**
 		 * Reads raw bytes from this memento.
@@ -83,27 +83,28 @@ namespace astu {
 		 * @param the number of bytes to read
 		 * @return reference to this memento for method chaining
 		 */
-		const Memento & Read(unsigned char * bytes, size_t count) const;
+		const Memento& Read(unsigned char * bytes, size_t count) const;
 
 		/**
 		 * Rewinds this memento.
+		 * 
 		 * The reading position is set to zero.		 
 		 */
-		const Memento & Rewind() const;
+		const Memento& Rewind() const;
 
 		/**
 		 * Releases all data of this memento.
 		 *
 		 * @return reference to this memento for method chaining
 		 */
-		Memento & Reset();
+		Memento& Reset();
 
 		/**
 		 * Returns the raw data stored in this memento.
 		 *
 		 * @return this memento's data
 		 */
-		const std::vector<unsigned char> GetData() const {
+		const std::vector<unsigned char>& GetData() const {
 			return data;
 		}
 
