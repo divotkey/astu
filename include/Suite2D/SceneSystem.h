@@ -32,7 +32,7 @@ namespace astu::suite2d {
          * 
          * @param updatePriority    the priority used to update this system
          */
-        SceneSystem(int updatePriority = 0);
+        SceneSystem(int updatePriority = Priority::Low);
 
     private:
         /** The entity family this system processes. */
