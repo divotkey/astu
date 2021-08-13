@@ -25,6 +25,9 @@
 
 #pragma pack(push, 1)
 
+// TODO: use streambuffers instead if file stream.
+// https://gcc.gnu.org/onlinedocs/libstdc++/manual/streambufs.html
+
 // Note: Bitmap file format uses Little-endian. This code does assume that
 // the machine executing this code is using Little-endian as well.
 

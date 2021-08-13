@@ -12,6 +12,7 @@ list(APPEND astulib_SOURCES
                     src/Util/Controllable.cpp
                     src/Util/Controller.cpp
                     src/Util/Memento.cpp
+                    src/Util/StringUtils.cpp
                     src/Math/Random.cpp
                     src/Math/MathUtils.cpp
 
@@ -62,6 +63,18 @@ list(APPEND astulib_SOURCES
                     src/Ai/Quantizer.cpp
                     src/Ai/StateUtil.cpp
                     src/Ai/QTable.cpp
+
+                    src/Velox/VeloxScanner.cpp
+                    src/Velox/VeloxAst.cpp
+                    src/Velox/VeloxItem.cpp
+                    src/Velox/VeloxScope.cpp
+                    src/Velox/VeloxParser.cpp
+                    src/Velox/VeloxInterpreter.cpp
+                    src/Velox/StringCharStream.cpp
+                    src/Velox/VeloxHook.cpp
+                    src/Velox/VeloxScript.cpp
+                    src/Velox/VeloxService.cpp
+                    src/Velox/FileCharStream.cpp
 
                     src/AstUtils1.cpp)
 
