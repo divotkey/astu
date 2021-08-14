@@ -10,6 +10,7 @@
 // Local includes.
 #include "Service/Service.h"
 #include "Velox/FileCharStream.h"
+#include "Velox/StringCharStream.h"
 
 // C++ Standard Library includes.
 #include <string>
@@ -33,16 +34,27 @@ namespace astu {
         /**
          * Loads and executes a velox script.
          * 
-         * @param filename  the name of the velox script
+         * @param filename  the filename including path of the velox script
          */
-        void RunScript(const std::string& filename);
+        void RunScriptFromFile(const std::string& filename);
+
+        /**
+         * Loads and executes a velox script.
+         * 
+         * @param script    the script as string
+         */
+        void RunScriptFromString(const std::string& script);
+
 
     private:
         /** The parser used to convert script source AST. */
         std::unique_ptr<VeloxParser> parser;
 
         /** Used to read the input file. */
-        std::shared_ptr<FileCharStream> cs;
+        std::shared_ptr<FileCharStream> fcs;
+
+        /** Used to hold scripts. */
+        std::shared_ptr<StringCharStream> scs;
     };
 
 } // end of namespace

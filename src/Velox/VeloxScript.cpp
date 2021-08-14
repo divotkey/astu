@@ -27,8 +27,8 @@ namespace astu {
 		: m_node(node), m_sourcePath(sourcePath)
 	{
 		PREPARE_POOLING();
-		m_interpreter = VeloxInterpreter::Obtain();
-		m_interpreter->setScript(shared_from_this());
+		m_interpreter = VeloxInterpreter::Obtain(node, sourcePath);
+		m_interpreter->setPrintFunc([](const std::string& s){ cout << s << endl;});
 	}
 
 	VeloxScript::~VeloxScript()

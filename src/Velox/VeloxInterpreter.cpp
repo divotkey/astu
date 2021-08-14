@@ -5,13 +5,10 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-// REMOVE WHEN REFACTORING IS DONE
-using Real = float;
-
 // Local includes
 #include "Velox/VeloxInterpreter.h"
 #include "Velox/VeloxAst.h"
-// #include "Velox/StandardVeloxHooks.h"
+#include "Velox/StandardVeloxHooks.h"
 #include "Velox/VeloxScope.h"
 #include "Velox/VeloxItem.h"
 #include "Velox/VeloxHook.h"
@@ -63,19 +60,19 @@ namespace astu {
 
 	VeloxInterpreter::VeloxInterpreter()
 	{
-		// addHook(std::make_shared<SqrtVeloxHook>());
-		// addHook(std::make_shared<CosVeloxHook>());
-		// addHook(std::make_shared<SinVeloxHook>());
-		// addHook(std::make_shared<TanVeloxHook>());
-		// addHook(std::make_shared<AtanVeloxHook>());
-		// addHook(std::make_shared<Atan2VeloxHook>());
-		// addHook(std::make_shared<FloorVeloxHook>());
-		// addHook(std::make_shared<ToDegreesVeloxHook>());
-		// addHook(std::make_shared<ToRadiansVeloxHook>());
-		// addHook(std::make_shared<CeilVeloxHook>());
-		// addHook(std::make_shared<PowVeloxHook>());
-		// addHook(std::make_shared<RealVeloxHook>());
-		// addHook(std::make_shared<IntVeloxHook>());
+		addHook(std::make_shared<SqrtVeloxHook>());
+		addHook(std::make_shared<CosVeloxHook>());
+		addHook(std::make_shared<SinVeloxHook>());
+		addHook(std::make_shared<TanVeloxHook>());
+		addHook(std::make_shared<AtanVeloxHook>());
+		addHook(std::make_shared<Atan2VeloxHook>());
+		addHook(std::make_shared<FloorVeloxHook>());
+		addHook(std::make_shared<ToDegreesVeloxHook>());
+		addHook(std::make_shared<ToRadiansVeloxHook>());
+		addHook(std::make_shared<CeilVeloxHook>());
+		addHook(std::make_shared<PowVeloxHook>());
+		addHook(std::make_shared<RealVeloxHook>());
+		addHook(std::make_shared<IntVeloxHook>());
 
 		VeloxParser parser;
 		m_functions["max"] = parser.parseSingleStatement("function max(a, b) { if (a > b) return a; return b; }");
@@ -1059,7 +1056,7 @@ namespace astu {
 		funcScope->setParent(std::move(m_scope));
 		m_scope = std::move(funcScope);
 
-		auto result = item.getHook().invoke(m_script.lock(), *m_scope);
+		auto result = item.getHook().invoke(m_rootNode, *m_scope);
 		closeScope();
 		return result;
 	}

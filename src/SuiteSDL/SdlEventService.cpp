@@ -47,7 +47,10 @@ namespace astu {
         keystrokeSrv = ASTU_GET_SERVICE_OR_NULL(KeystrokeSignalService);
         resizeSrv = ASTU_GET_SERVICE_OR_NULL(ResizeSignalService);
         windowStateSrv = ASTU_GET_SERVICE_OR_NULL(WindowStateSignalService);
+        dropSrv = ASTU_GET_SERVICE_OR_NULL(DropSignalService);
         
+        textAccumulator.clear();
+        dropping = false;
         quit = false;
     }
 
@@ -60,6 +63,8 @@ namespace astu {
         mouseButtonSrv = nullptr;
         mouseMoveSrv = nullptr;
         inputMapperSrv = nullptr;
+        dropSrv = nullptr;
+
         SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, 
             "Shutting down SDL event service");
         SDL_QuitSubSystem(SDL_INIT_EVENTS);
@@ -210,18 +215,37 @@ namespace astu {
 
             case SDL_DROPTEXT:
                 // std::cout << "drop text" << std::endl;
+                // std::cout << "text: '" << event.drop.file << "'" << std::endl;
+                if (!textAccumulator.empty()) {
+                    textAccumulator += '\n';
+                }
+                textAccumulator += event.drop.file;
+                SDL_free(event.drop.file);
                 break;
 
             case SDL_DROPBEGIN:
                 // std::cout << "drop begin" << std::endl;
+                dropping = true;
                 break;
 
             case SDL_DROPCOMPLETE:
                 // std::cout << "drop complete" << std::endl;
+                dropping = false;
+                if (!textAccumulator.empty()) {
+                    if (dropSrv) {
+                        dropSrv->QueueSignal(
+                            DropSignal(DropSignal::Text, textAccumulator));
+                    }
+                    textAccumulator.clear();
+                }
                 break;
 
             case SDL_DROPFILE:
                 // std::cout << "file dropped: '" << event.drop.file << "'" << std::endl;
+                if (dropSrv) {
+                    dropSrv->QueueSignal(
+                        DropSignal(DropSignal::File, event.drop.file));
+                }
                 SDL_free(event.drop.file);
                 break;
 

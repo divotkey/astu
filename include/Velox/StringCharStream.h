@@ -8,7 +8,7 @@
 #pragma once
 
 // Local includes
-#include "ICharStream.h"
+#include "Velox/ICharStream.h"
 
 // C++ Standard Library includes
 #include <string>
@@ -17,9 +17,15 @@ namespace astu {
 
 	class StringCharStream : public ICharStream {
 	public:
-		StringCharStream(const std::string & s);
 
-		void reset(const std::string & s);
+		/**
+		 * Constructor.
+		 * 
+		 * @param s	the initial string
+		 */
+		StringCharStream(const std::string & s = "");
+
+		void reset(const std::string & s = "");
 
 		// Inherited via ICharStream
 		virtual bool isEos() const override;

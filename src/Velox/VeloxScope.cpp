@@ -6,9 +6,6 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-// REMOVE WHEN REFACTORING IS DONE
-using Real = float;
-
 // Local includes
 #include "Velox/VeloxScope.h"
 #include "Velox/VeloxInterpreterException.h"

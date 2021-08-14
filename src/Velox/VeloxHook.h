@@ -42,10 +42,10 @@ namespace astu {
 		/**
 		 * Invokes this hook function.
 		 *
-		 * @pram script		the script calling this hook
+		 * @pram root		the root node of the velox AST calling this hook
 		 * @pram scope		the scope of this hook, containing parameters etc.
 		 */
-		virtual std::shared_ptr<VeloxItem> invoke(std::shared_ptr<VeloxScript> script, VeloxScope & scope) = 0;
+		virtual std::shared_ptr<VeloxItem> invoke(std::shared_ptr<VeloxNode> root, VeloxScope & scope) = 0;
 
 		/**
 		 * Returns an iterator pointing to the first formal parameter.
@@ -151,7 +151,7 @@ namespace astu {
 	class FunctionVeloxHook final : public VeloxHook {
 	public:
 
-		using InvokeFunc = std::function<std::shared_ptr<VeloxItem>(std::shared_ptr<VeloxScript> script, VeloxScope & scope)>;
+		using InvokeFunc = std::function<std::shared_ptr<VeloxItem>(std::shared_ptr<VeloxNode> root, VeloxScope & scope)>;
 
 		FunctionVeloxHook(const std::string & name, InvokeFunc funk)
 			: VeloxHook(name), m_func(funk)
@@ -159,8 +159,8 @@ namespace astu {
 			// Intentionally left empty.
 		}
 
-		virtual std::shared_ptr<VeloxItem> invoke(std::shared_ptr<VeloxScript> script, VeloxScope & scope) override {
-			 return m_func(script, scope);
+		virtual std::shared_ptr<VeloxItem> invoke(std::shared_ptr<VeloxNode> root, VeloxScope & scope) override {
+			 return m_func(root, scope);
 		}
 
 	private:

@@ -74,6 +74,8 @@ list(APPEND astulib_SOURCES
                     src/Velox/VeloxHook.cpp
                     src/Velox/VeloxScript.cpp
                     src/Velox/VeloxService.cpp
+                    src/Velox/StandardVeloxHooks.cpp
+                    src/Velox/VeloxDragAndDropService.cpp
                     src/Velox/FileCharStream.cpp
 
                     src/AstUtils1.cpp)

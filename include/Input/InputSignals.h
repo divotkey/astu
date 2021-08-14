@@ -284,7 +284,6 @@ namespace astu {
         }
     };
 
-
     /////////////////////////////////////////////////
     /////// Keyboard signals
     /////////////////////////////////////////////////
@@ -499,5 +498,54 @@ namespace astu {
      * @ingroup input_group
      */
     using WindowStateSignalService = SignalService<WindowState>;
+
+
+    /////////////////////////////////////////////////
+    /////// Drag and Drop
+    /////////////////////////////////////////////////
+
+    /**
+     * This signal represents a drag and drop operation.
+     *  
+     * @ingroup input_group
+     */
+    class DropSignal {
+    public:
+
+        /** The types of dropped content. */
+        enum Type {File, Text};
+
+        /**
+         * Constructor.
+         * 
+         * @param t     the type of the dropped content
+         * @param cnt   the content of the drop signal
+         */
+        DropSignal(Type t, const std::string& cnt)
+            : type(t), content(cnt) {}
+
+        /** The type of the dropped content. */
+        Type type;
+
+        /** The file or text of the drop signal. */
+        std::string content;
+
+    };
+
+    /** 
+     * Type definition for signal listeners which receive drop signals.
+     * 
+     * @ingroup input_group
+     */
+    using DropListener = ISignalListener<DropSignal>;
+
+    /** 
+     * Type definition for signal services used to transmit drop signals.
+     *
+     * @ingroup input_group
+     */
+    using DropSignalService = SignalService<DropSignal>;
+
+
 
 } // end of namespace

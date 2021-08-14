@@ -18,7 +18,8 @@ namespace astu {
     VeloxService::VeloxService()
         : Service("Velox Service")
         , parser(make_unique<VeloxParser>())
-        , cs(make_shared<FileCharStream>())
+        , fcs(make_shared<FileCharStream>())
+        , scs(make_shared<StringCharStream>())
     {
         // Intentionally left empty.
     }
@@ -29,13 +30,35 @@ namespace astu {
     }
 
 
-    void VeloxService::RunScript(const std::string& filename)
+    void VeloxService::RunScriptFromFile(const std::string& filename)
     {
-        cs->Open(filename);
-        auto node = parser->parse(cs);
-        cs->Close();
+        std::shared_ptr<VeloxNode> node;
+        try {
+            fcs->Open(filename);
+            node = parser->parse(fcs);
+            fcs->Close();
+        } catch (...) {
+            fcs->Close();
+            throw;
+        }
 
         auto script = VeloxScript::create(node, filename);
+        script->execute();
+    }
+
+    void VeloxService::RunScriptFromString(const std::string& scriptString)
+    {
+        std::shared_ptr<VeloxNode> node;
+        try {
+            scs->reset(scriptString);
+            node = parser->parse(scs);
+            scs->reset();
+        } catch (...) {
+            scs->reset();
+            throw;
+        }
+
+        auto script = VeloxScript::create(node);
         script->execute();
     }
 

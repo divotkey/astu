@@ -18,6 +18,7 @@ namespace astu {
 
     FileCharStream::FileCharStream()
     {
+        // Intentionally left empty.
     }
 
     FileCharStream::~FileCharStream()
@@ -29,11 +30,11 @@ namespace astu {
 
     void FileCharStream::Open(const std::string& filename)
     {
-        ifs.open(filename);
+        ifs.open(filename, ios::in);
 
         if (!ifs) {
-            throw std::runtime_error(std::string("unable to open file file '") 
-				+ filename + "' for reading '");
+            throw std::runtime_error(std::string("Unable to open file '") 
+				+ filename + "' for reading.");
         }
     }
 
@@ -44,7 +45,7 @@ namespace astu {
 
     bool FileCharStream::FileCharStream::isEos() const
     {
-        return ifs.good();
+        return !ifs.good();
     }
 
     char FileCharStream::FileCharStream::nextChar()

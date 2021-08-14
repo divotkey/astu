@@ -8,7 +8,7 @@
 #pragma once
 
 // Local includes
-#include "ICharStream.h"
+#include "Velox/ICharStream.h"
 
 // C++ Standard Library includes
 #include <fstream>

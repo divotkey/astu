@@ -124,6 +124,12 @@ namespace astu {
         /** Used to transfer keyboard events to keyboard states. */
         Keyboard keyboard;
 
+        /** Used to collect contents of text drop events. */
+        std::string textAccumulator;
+
+        /** Whether a drag and drop operation is currently in progress. */
+        bool dropping;
+
         /** Used to map input events to actions and axis. */
         std::shared_ptr<InputMappingService> inputMapperSrv;
 
@@ -144,6 +150,9 @@ namespace astu {
 
         /** Used to transmit window state signals. */
         std::shared_ptr<WindowStateSignalService> windowStateSrv;
+
+        /** Used to transmit drag and drop signals. */
+        std::shared_ptr<DropSignalService> dropSrv;
 
         /** The registered event listeners. */
         std::vector<ISdlEventListener*> eventListeners;

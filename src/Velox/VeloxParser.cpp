@@ -6,10 +6,10 @@
  */
 
 // Local includes
-#include "VeloxParser.h"
-#include "VeloxAst.h"
-#include "VeloxScanner.h"
-#include "StringCharStream.h"
+#include "Velox/VeloxParser.h"
+#include "Velox/VeloxAst.h"
+#include "Velox/VeloxScanner.h"
+#include "Velox/StringCharStream.h"
 
 // C++ Standard Library includes
 #include <cassert>
