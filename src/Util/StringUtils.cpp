@@ -193,29 +193,29 @@ namespace astu {
 		return s.size() >= 1 && s[0] == ch;
 	}
 
-	string StringUtils::extractPath(const string & s)
-	{
-		filesystem::path path(s);
-		return path.parent_path().string();
-	}
+	// string StringUtils::extractPath(const string & s)
+	// {
+	// 	filesystem::path path(s);
+	// 	return path.parent_path().string();
+	// }
 
-    string StringUtils::extractFilename(const string & s)
-	{
-		filesystem::path path(s);
-		return path.filename().string();
-	}
+    // string StringUtils::extractFilename(const string & s)
+	// {
+	// 	filesystem::path path(s);
+	// 	return path.filename().string();
+	// }
 
-	string StringUtils::extractStem(const string & s)
-	{
-		filesystem::path path(s);
-		return path.stem().string();
-	}
+	// string StringUtils::extractStem(const string & s)
+	// {
+	// 	filesystem::path path(s);
+	// 	return path.stem().string();
+	// }
 
-	string StringUtils::extractExtension(const string & s)
-	{
-		filesystem::path path(s);
-		return path.extension().string();
-	}
+	// string StringUtils::extractExtension(const string & s)
+	// {
+	// 	filesystem::path path(s);
+	// 	return path.extension().string();
+	// }
 
 	char StringUtils::pathSeparator()
 	{

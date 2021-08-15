@@ -163,37 +163,37 @@ namespace astu {
 		 */
 		static bool startsWith(const std::string & s, char ch);
 
-		/**
-		 * Extracts the path from the specified string.
-		 *
-		 * @param s	a filename including the full path
-		 * @return the extracted file path
-		 */
-		static std::string extractPath(const std::string & s);
+		// /**
+		//  * Extracts the path from the specified string.
+		//  *
+		//  * @param s	a filename including the full path
+		//  * @return the extracted file path
+		//  */
+		// static std::string extractPath(const std::string & s);
 
-		/**
-		 * Extracts the filename from the specified string.
-		 *
-		 * @param s	a filename including the full path
-		 * @return the extracted filename
-		 */
-		static std::string extractFilename(const std::string & s);
+		// /**
+		//  * Extracts the filename from the specified string.
+		//  *
+		//  * @param s	a filename including the full path
+		//  * @return the extracted filename
+		//  */
+		// static std::string extractFilename(const std::string & s);
 
-		/**
-		 * Extracts the filename stripped of its extension.
-		 *
-		 * @param s	a filename including the full path
-		 * @return the stem of the filename
-		 */
-		static std::string extractStem(const std::string & s);
+		// /**
+		//  * Extracts the filename stripped of its extension.
+		//  *
+		//  * @param s	a filename including the full path
+		//  * @return the stem of the filename
+		//  */
+		// static std::string extractStem(const std::string & s);
 
-		/**
-		 * Extracts the extension of the filename.
-		 *
-		 * @param s	a filename including the full path
-		 * @return the extension of the filename
-		 */
-		static std::string extractExtension(const std::string & s);
+		// /**
+		//  * Extracts the extension of the filename.
+		//  *
+		//  * @param s	a filename including the full path
+		//  * @return the extension of the filename
+		//  */
+		// static std::string extractExtension(const std::string & s);
 
 		/**
 		 * Returns the OS specific file path separator.
