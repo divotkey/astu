@@ -11,6 +11,7 @@
 
 // C++ Standard Library includes
 #include <stdexcept>
+#include <algorithm>
 #include <string>
 #include <limits>
 #include <sstream>
@@ -26,6 +27,7 @@ namespace astu {
 		, avgVisits(0)
 		, alpha(0.05)
 		, gamma(0.9)
+		, statsDirty(true)
 	{
 		m_entries = std::make_unique<Entry[]>(numStates * numActions);
 	}
@@ -67,6 +69,7 @@ namespace astu {
 		entry.value = value;
 		++entry.visited;
 		++numUpdates;
+		statsDirty = true;
 	}
 
 	size_t QTable::Update(size_t state, size_t action, double reward, size_t nextState)
@@ -78,6 +81,13 @@ namespace astu {
 		UpdateValue(state, action, newValue);
 
 		return bestAction;
+	}
+
+	void QTable::Update(size_t state, size_t action, double reward)
+	{
+		auto prevValue = GetValue(state, action);
+		double newValue = (1 - alpha) * prevValue + alpha * reward;
+		UpdateValue(state, action, newValue);
 	}
 
 	size_t QTable::GetMaxAction(size_t state) const
@@ -144,9 +154,134 @@ namespace astu {
 			ptr->RestoreFromMemento(m);
 		}
 
+		statsDirty = true;
 	}
 
-	void QTable::UpdateStats()
+	double QTable::GetAverageValue(size_t state) const
+	{
+		Entry* pEntry = &m_entries[GetIndex(state, 0)];
+
+		size_t numUpdates = 0;
+		double sum = 0.0;
+		for (int i = 0; i < numActions; ++i) {
+			sum += pEntry->value;
+			++pEntry;
+		}
+
+		return sum / numActions;
+	}
+
+	double QTable::GetStandardDeviationValue(size_t state) const
+	{
+		double avg = GetAverageValue(state);
+
+		Entry* pEntry = &m_entries[GetIndex(state, 0)];
+
+		double deviation = 0.0;
+		for (int i = 0; i < numActions; ++i) {
+			double e = pEntry->value - avg;
+			deviation += e * e;
+			++pEntry;
+		}
+
+		return sqrt(deviation);
+	}
+
+	double QTable::GetMaxStandardDeviationValue() const
+	{
+		double result = 0;
+		for (size_t i = 0; i < numStates; ++i) {
+			double stdDev = GetStandardDeviationValue(i);
+			if (stdDev > result) {
+				result = stdDev;
+			}
+		}
+
+		return result;
+	}
+
+	size_t QTable::GetStateUpdates(size_t state) const
+	{
+		Entry* pEntry = &m_entries[GetIndex(state, 0)];
+
+		size_t numUpdates = 0;
+		for (int i = 0; i < numActions; ++i) {
+			numUpdates += pEntry->visited;
+			++pEntry;
+		}
+
+		return numUpdates;
+	}
+
+	size_t QTable::GetMaxUpdates(size_t idx) const
+	{
+		if (statsDirty) {
+			UpdateStats();
+		}
+
+		return updateList.at(idx).numUpdates;
+	}
+
+	size_t QTable::GetMinUpdates() const
+	{
+		if (statsDirty) {
+			UpdateStats();
+		}
+
+		return minUpdates;
+	}
+
+	double QTable::GetAvgUpdates() const
+	{
+		return static_cast<double>(numUpdates) / numStates;
+	}
+
+	double QTable::GetMedianUpdates() const
+	{
+		if (statsDirty) {
+			UpdateStats();
+		}
+
+		if (updateList.size() % 2 == 0) {
+			size_t idx = updateList.size() / 2;
+			return (static_cast<double>(updateList[idx - 1].numUpdates) + updateList[idx].numUpdates) / 2;
+		} else {
+			return static_cast<double>(updateList[updateList.size() / 2].numUpdates);
+		}
+	}
+
+	size_t QTable::CountStatesWithLimitedUpdates(size_t maxUpdates) const
+	{
+		size_t result = 0;
+		for (size_t i = 0; i < numStates; ++i) {
+			size_t stateUpdates = GetStateUpdates(i);
+			if (GetStateUpdates(i) <= maxUpdates) {
+				++result;
+			}
+		}
+
+		return result;
+	}
+
+
+	const std::vector<QTable::StateEntry>& QTable::GetUpdateDistribution() const
+	{
+		if (statsDirty) {
+			UpdateStats();
+		}
+
+		return updateList;
+	}
+
+	size_t QTable::GetVisits(size_t entryIdx) const
+	{
+		if (entryIdx >= NumEntries()) {
+			throw std::out_of_range("invalid entry index");
+		}
+		return m_entries[entryIdx].visited;
+	}
+
+	void QTable::UpdateStats() const
 	{
 		minVisits = std::numeric_limits<unsigned int>::max();
 		maxVisits = 0;
@@ -166,6 +301,26 @@ namespace astu {
 			sumVisits += e.visited;
 		}
 		avgVisits = static_cast<double>(sumVisits) / n;
+
+		// Calculate statistics per state.
+		maxUpdates = 0;
+		minUpdates = std::numeric_limits<size_t>::max();
+		updateList.clear();
+		for (size_t i = 0; i < numStates; ++i) {
+			size_t stateUpdates = GetStateUpdates(i);
+			updateList.push_back(StateEntry(i, stateUpdates));
+
+			if (stateUpdates > maxUpdates) {
+				maxUpdates = stateUpdates;
+			}
+
+			if (stateUpdates < minUpdates) {
+				minUpdates = stateUpdates;
+			}
+		}
+
+		std::sort(updateList.begin(), updateList.end(), std::greater<>());
+		statsDirty = false;
 	}
 
 	void QTable::Entry::StoreToMemento(Memento & m) const
@@ -177,5 +332,6 @@ namespace astu {
 	{
 		m >> value >> delta >> visited;
 	}
+
 
 } // end of namespace

@@ -85,6 +85,43 @@ namespace astu {
             return std::round(value / gridWidth) * gridWidth;
         }
 
+        /**
+         * Exponentiation by squaring.
+         * 
+         * This functions reises the parameter b to the power of e, comparable
+         * to the pow function of the C++ standard library. However, this
+         * funtions operates on integer values rather than floating point
+         * values.
+         * 
+         * For more details of the algorithm see:
+         * https://en.wikipedia.org/wiki/Exponentiation_by_squaring
+         * 
+         * @param b the basis
+         * @param e the exponent (must be positive)
+         * @TParam T
+         */
+        template <typename T>
+        static T BinExp(T b, T e) {
+            if (!e) return T(1);
+
+            T h = ~(~0u >> 1); 
+            while (!(e & h)) {
+                h >>= 1;
+            }
+
+            T r = b;
+
+            while (h >>= 1)
+            {
+                r *= r;
+                if (e & h) {
+                    r *= b; 
+                }
+            }
+
+            return r;
+        }
+
     };
 
 } // end of namespace
