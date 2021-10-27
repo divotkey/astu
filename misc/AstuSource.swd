@@ -1,0 +1,147 @@
+// SWORD Script: ASTU-Source Files, CMAKE
+// Copyright 2021 Roman Divotkey. All rights reserved.
+
+privateDir = "src";
+publicDir = "include";
+cmakdVar = "astulib_SOURCES";
+modules = [
+	"Util", "Math", "Graphics",
+	"Audio", "ECS", "Input", 
+	"Service", "Suite2D", "Ai",
+	"Velox"
+	];
+rootDir = GetInputDirectory();
+
+§:
+set(astulib_SOURCES )
+list(APPEND astulib_SOURCES
+
+	# Global files
+:§
+
+EmitFiles(rootDir + privateDir);
+EmitFiles(rootDir + publicDir);
+
+EmitModules();
+
+§:
+	)
+:§
+
+function EmitModules() {
+	for (i = 0; i < modules.length; ++i) {
+		§:
+
+			# Module: §{modules[i]}
+		:§
+		EmitFiles(rootDir + privateDir + filePathSeparator() + modules[i]);
+		EmitFiles(rootDir + publicDir + filePathSeparator() + modules[i]);
+	}
+}
+
+function ScanDir(dir) {
+	//files = listFiles(dir + privateDir);
+	EmitFiles(dir + privateDir);
+	EmitFiles(dir + publicDir);
+	/*
+	for (i = 0; i < files.length; ++i) {
+		if (isDir(files[i])) {
+			continue;
+		}
+
+		if (!EndsWith(files[i], ".cpp") && !EndsWith(files[i], ".h")) {
+			continue;
+		}
+		sourceEntry = ExtractRelativePath(files[i], rootDir);
+		§:
+			§{sourceEntry}
+		:§
+	}
+	*/
+}
+
+function EmitFiles(dir)
+{
+	files = listFiles(dir);
+	if (files == undefined) {
+		print "directory " + dir + " does not exist";
+		return;
+	}
+
+	for (i = 0; i < files.length; ++i) {
+		// Process files only.
+		if (isDir(files[i])) {
+			continue;
+		}
+
+		// Process files with mathing extenions only.
+		if (!EndsWith(files[i], ".cpp") && !EndsWith(files[i], ".h")) {
+			continue;
+		}
+
+		// Get relative path.
+		sourceEntry = ExtractRelativePath(files[i], rootDir);
+
+		// Emit CMake source line
+		§:
+			§{sourceEntry}
+		:§
+	}
+
+}
+
+function ExtractRelativePath(file, root)
+{
+	// Search position where strings mismatch.
+	i = 0;
+	while ((i < file.length) && (i < root.length) && (file[i] == root[i])) {
+		++i;
+	}
+
+	// If no match, return entire path of file.
+	if (i == 0) {
+		return file;
+	}
+
+	// Extract relative path.
+	s = "";
+	for (; i < file.length; ++i) {
+		s += file[i];
+	}
+
+	return s;
+}
+
+function EndsWith(filename, ending)
+{
+	if (filename.length < ending.length)
+		return false;
+
+	for (i = 0; i < ending.length; ++i) {
+		if (filename[filename.length - 1 - i] !=  ending[ending.length - 1 - i])
+			return false;
+	}
+
+	return true;
+}
+
+function GetInputDirectory()
+{
+	// See if a input directory has been stored from a 
+	// previous script execution.
+	inputDir = recall("inputDir");
+
+	// Run the directory selection dialog.
+	result = selectOpenDir(inputDir, "Select Root Directory of Source Code");
+	if (!result.approved) {
+		// User pressed the canceled button.
+		exit;
+	}
+
+	// Remember selected input directory on next script execution.
+	memorize("inputDir", result.file);
+
+	// Return selected directory and add an
+	// operating system specific file path separator.
+	return result.file + filePathSeparator();
+}

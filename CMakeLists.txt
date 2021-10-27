@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(ASTU VERSION 0.10.1)
+project(ASTU VERSION 0.11.0)
 
 configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 set(CMAKE_CXX_STANDARD 17)
@@ -80,20 +80,17 @@ list(APPEND astulib_SOURCES
 
                     src/AstUtils1.cpp)
 
-OPTION(USE_JACK "Build the project with support for JACK Audio Connection Kit" OFF)
-#set(USE_JACK false CACHE BOOL "Use JACK2")
-if (USE_JACK)
+OPTION(ASTU_USE_JACK "Build the project with support for JACK Audio Connection Kit" OFF)
+if (ASTU_USE_JACK)
     list(APPEND astulib_SOURCES 
         src/SuiteJack/JackErrorUtil.cpp
         src/SuiteJack/JackClient.cpp
         )
-endif(USE_JACK) 
+endif(ASTU_USE_JACK) 
 
+OPTION(ASTU_USE_SDL "Build the project with support for SDL2" OFF)
 
-OPTION(USE_SDL "Build the project with support for SDL2" OFF)
-#set(WITH_SDL false CACHE BOOL "Use SDL")
-
-if(USE_SDL)
+if(ASTU_USE_SDL)
 
     list(APPEND astulib_SOURCES 
         src/SuiteSDL/SdlApplication0.cpp
@@ -115,9 +112,9 @@ if(USE_SDL)
         src/SuiteSDL/SdlApplication.cpp
         src/SuiteSDL/SdlMessageBox.cpp
         )
-else(USE_SDL)
+else(ASTU_USE_SDL)
     list(APPEND astulib_SOURCES src/SuiteSDL/SdlApplicationDummy.cpp src/Util/DefaultMessageBox.cpp)
-endif(USE_SDL)                 
+endif(ASTU_USE_SDL)                 
 
 add_library(astu ${astulib_SOURCES})
 
@@ -127,7 +124,7 @@ list(APPEND astulib_INCLUDES
         astu PRIVATE "${PROJECT_SOURCE_DIR}/src"
         astu PUBLIC ${PROJECT_SOURCE_DIR}/include)
       
-if(USE_SDL)
+if(ASTU_USE_SDL)
     IF (WIN32)
         target_link_libraries(astu $ENV{SDL2_HOME}/lib/x64/SDL2.lib)
         list(APPEND astulib_INCLUDES astu PRIVATE $ENV{SDL2_HOME})
@@ -137,15 +134,15 @@ if(USE_SDL)
     ELSE()
         target_link_libraries(astu SDL2)
     ENDIF()
-endif(USE_SDL)                 
+endif(ASTU_USE_SDL)                 
 
-if(USE_JACK)
+if(ASTU_USE_JACK)
     IF (WIN32)
         target_include_directories(astu PRIVATE $ENV{JACK2_HOME}/include)
         target_link_libraries(astu $ENV{JACK2_HOME}/lib/libjack64.lib)
     ELSE()
         target_link_libraries(astu jack)    
     ENDIF()
-endif(USE_JACK)                 
+endif(ASTU_USE_JACK)                 
 
 target_include_directories(${astulib_INCLUDES})

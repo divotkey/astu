@@ -1,6 +1,11 @@
 
 # Version History {#CHANGES}
 
+# Version 0.11.0
+*Date: 2021-??-??*
+
+- Improved CMake file.
+
 # Version 0.10.1
 *Date: 2021-08-06*
 
