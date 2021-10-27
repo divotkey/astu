@@ -5,6 +5,8 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+#define _USE_MATH_DEFINES
+
 // Local includes
 #include "Velox/VeloxInterpreter.h"
 #include "Velox/VeloxAst.h"
@@ -20,7 +22,6 @@
 #include "Velox/VeloxParser.h"
 
 // C++ Standard Library includes
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include <limits>
 #include <cassert>

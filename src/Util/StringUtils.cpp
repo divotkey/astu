@@ -20,6 +20,9 @@
 #include <sstream>
 #include <experimental/filesystem>
 
+// #pragma warning( push )
+// #pragma warning( disable : 4996)
+
 #if defined(WIN32) || defined(_WIN32)
 #define SEPARATOR '\\'
 #else
@@ -31,23 +34,23 @@ using namespace std;
 
 namespace astu {
 
-	wstring StringUtils::utf8ToUtf16(const string & s)
-	{
-		wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> conversion;
-		return conversion.from_bytes(s);
-	}
+	// wstring StringUtils::utf8ToUtf16(const string & s)
+	// {
+	// 	wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> conversion;
+	// 	return conversion.from_bytes(s);
+	// }
 
-	string StringUtils::utf16ToUtf8(const wstring & ws)
-	{
-		wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> conversion;
-		return conversion.to_bytes(ws);
-	}
+	// string StringUtils::utf16ToUtf8(const wstring & ws)
+	// {
+	// 	wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> conversion;
+	// 	return conversion.to_bytes(ws);
+	// }
 
-	string StringUtils::utf16ToUtf8(const wchar_t & wc)
-	{
-		wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> conversion;
-		return conversion.to_bytes(wc);
-	}
+	// string StringUtils::utf16ToUtf8(const wchar_t & wc)
+	// {
+	// 	wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> conversion;
+	// 	return conversion.to_bytes(wc);
+	// }
 
 	string & StringUtils::rtrim(string & s)
 	{
@@ -234,4 +237,4 @@ namespace astu {
 
 } // end of namespace
 
-#pragma warning( pop ) 
+//#pragma warning( pop ) 

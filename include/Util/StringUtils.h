@@ -24,29 +24,31 @@ namespace astu {
 		 */
 		StringUtils() = delete;
 
-		/**
-		 * Converts the specified UTF-8 string to UTF-16.
-		 *
-		 * @param s	the UTF-8 encoded input string
-		 * @return the UTF-16 encoded output string
-		 */
-		static std::wstring utf8ToUtf16(const std::string & s);
+		// There seems to be a problem regarding deprecated functions/headers
+		// in C++ 17.
+		// /**
+		//  * Converts the specified UTF-8 string to UTF-16.
+		//  *
+		//  * @param s	the UTF-8 encoded input string
+		//  * @return the UTF-16 encoded output string
+		//  */
+		// static std::wstring utf8ToUtf16(const std::string & s);
 
-		/**
-		 * Converts the specified UTF-16 string to UTF-8.
-		 *
-		 * @param ws	the UTF-16 encoded input string
-		 * @return the UTF-8 encoded output string
-		 */
-		static std::string utf16ToUtf8(const std::wstring & ws);
+		// /**
+		//  * Converts the specified UTF-16 string to UTF-8.
+		//  *
+		//  * @param ws	the UTF-16 encoded input string
+		//  * @return the UTF-8 encoded output string
+		//  */
+		// static std::string utf16ToUtf8(const std::wstring & ws);
 
-		/**
-		 * Converts the specified UTF-16 string to UTF-8.
-		 *
-		 * @param wc   the UTF-16 encoded input character
-		 * @return the UTF-8 encoded output character
-		 */
-		static std::string utf16ToUtf8(const wchar_t & wc);
+		// /**
+		//  * Converts the specified UTF-16 string to UTF-8.
+		//  *
+		//  * @param wc   the UTF-16 encoded input character
+		//  * @return the UTF-8 encoded output character
+		//  */
+		// static std::string utf16ToUtf8(const wchar_t & wc);
 
 		/**
 		 * Removes white space characters on the right side of the string.
