@@ -1,9 +1,10 @@
 // SWORD Script: ASTU-Source Files, CMAKE
 // Copyright 2021 Roman Divotkey. All rights reserved.
 
+// Configuration
 privateDir = "src";
 publicDir = "include";
-cmakdVar = "astulib_SOURCES";
+cmakeVar = "astulib_SOURCES";
 modules = [
 	"Util", "Math", "Graphics",
 	"Audio", "ECS", "Input", 
@@ -12,9 +13,11 @@ modules = [
 	];
 rootDir = GetInputDirectory();
 
+
+
 §:
-set(astulib_SOURCES )
-list(APPEND astulib_SOURCES
+set(§{cmakeVar})
+list(APPEND §{cmakeVar}
 
 	# Global files
 :§
@@ -39,27 +42,13 @@ function EmitModules() {
 	}
 }
 
-function ScanDir(dir) {
-	//files = listFiles(dir + privateDir);
-	EmitFiles(dir + privateDir);
-	EmitFiles(dir + publicDir);
-	/*
-	for (i = 0; i < files.length; ++i) {
-		if (isDir(files[i])) {
-			continue;
-		}
-
-		if (!EndsWith(files[i], ".cpp") && !EndsWith(files[i], ".h")) {
-			continue;
-		}
-		sourceEntry = ExtractRelativePath(files[i], rootDir);
-		§:
-			§{sourceEntry}
-		:§
-	}
-	*/
-}
-
+/**
+ * Emits all matching files within the specified directory.
+ * 
+ * This function will emit cpp implementation (*.cpp) and header files (*.h)
+ * within the specified directory, but remove the root directory witch
+ * is stored in the global variable "rootDir".
+ */
 function EmitFiles(dir)
 {
 	files = listFiles(dir);
@@ -81,15 +70,29 @@ function EmitFiles(dir)
 
 		// Get relative path.
 		sourceEntry = ExtractRelativePath(files[i], rootDir);
+		sourceEntry = ToUnixPath(sourceEntry);
 
 		// Emit CMake source line
 		§:
-			§{sourceEntry}
+			§{sourceEntry} 
 		:§
 	}
 
 }
 
+/**
+ * Extracts the relavite path from a absolute file location.
+ *
+ * Example
+ *
+ * - file: c:\User\Marvin\ProjectA\src\main.cpp
+ * - root: c:\User\Marvin\ProjectA\
+ * - result: src\main.cpp
+ *
+ * @param file the absolute file location
+ * @param root the path to the root directory which will be removed
+ * @param the relativ path
+ */
 function ExtractRelativePath(file, root)
 {
 	// Search position where strings mismatch.
@@ -112,19 +115,53 @@ function ExtractRelativePath(file, root)
 	return s;
 }
 
-function EndsWith(filename, ending)
+/**
+ * Converts all backslash file path separators to slashes.
+ *
+ * @param filepath the input file path to convert
+ * @return the converted filepath
+ */
+function ToUnixPath(filepath)
 {
-	if (filename.length < ending.length)
+	result = "";
+	for (i = 0; i < filepath.length; ++i) {
+		if (filepath[i] == "\\") {
+			result += "/";
+		} else {
+			result += filepath[i];
+		}
+	}
+
+	return result;
+}
+
+/**
+ * Returns whether the specified string ends with a certain character sequence.
+ *
+ * @param s				the string to test
+ * @param ending	the character sequence
+ */
+function EndsWith(s, ending)
+{
+	if (s.length < ending.length)
 		return false;
 
 	for (i = 0; i < ending.length; ++i) {
-		if (filename[filename.length - 1 - i] !=  ending[ending.length - 1 - i])
+		if (s[s.length - 1 - i] !=  ending[ending.length - 1 - i])
 			return false;
 	}
 
 	return true;
 }
 
+/**
+ * Queries the root input directory from the user.
+ *
+ * If the user cancels the directory selection dialog, this
+ * function will terminate the script.
+ *
+ * @return the input directory
+ */
 function GetInputDirectory()
 {
 	// See if a input directory has been stored from a 
