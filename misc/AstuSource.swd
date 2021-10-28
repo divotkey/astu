@@ -46,12 +46,55 @@ function EmitProlog()
 
 function EmitEpilog()
 {
+	EmitHeader("Define targets and include directories");
+
 	§:
 	# Define static library target.
 	add_library(astu ${astulib_SOURCES})
 
+	# Create and initilaize include list variable
+	set(astulib_INCLUDES )
+	list(APPEND astulib_INCLUDES
+		astu PRIVATE "${PROJECT_BINARY_DIR}"
+		astu PRIVATE "${PROJECT_SOURCE_DIR}/§{privateDir}"
+		astu PUBLIC ${PROJECT_SOURCE_DIR}/§{publicDir})
+
+	:§
+
+	§:
+	if(§{GetOptionName("Sdl")})
+  	  IF (WIN32)
+    	    target_link_libraries(astu $ENV{SDL2_HOME}/lib/x64/SDL2.lib)
+      	  list(APPEND astulib_INCLUDES astu PRIVATE $ENV{SDL2_HOME})
+    	ELSEIF(APPLE)
+      	  #list(APPEND astulib_INCLUDES astu PRIVATE /Library/Frameworks/SDL2.framework/Headers)
+        	target_link_libraries(astu /Library/Frameworks/SDL2.framework/Versions/A/SDL2)
+    	ELSE()
+      	  target_link_libraries(astu SDL2)
+    	ENDIF()
+	endif(§{GetOptionName("Sdl")})                 
+
+	:§
+
+	§:
+	if(§{GetOptionName("Jack")})
+  	  IF (WIN32)
+    	    target_include_directories(astu PRIVATE $ENV{JACK2_HOME}/include)
+      	  target_link_libraries(astu $ENV{JACK2_HOME}/lib/libjack64.lib)
+    	ELSE()
+      	  target_link_libraries(astu jack)    
+    	ENDIF()
+	endif(§{GetOptionName("Jack")})    
+             
+	:§
+
+	§:
+	# Set include directories.
+	target_include_directories(${astulib_INCLUDES})
 	:§
 }
+
+
 
 /**
  * Emits Core files for AST-Utilities, must be called first.
@@ -80,6 +123,17 @@ function EmitCoreFiles()
 }
 
 /**
+ * Creates a option variable name for CMAKE.
+ *
+ * @param option the plain option name
+ * @return the full option name
+ */
+function GetOptionName(option)
+{
+	return "ASTU_USE_" + upperCase(option);
+}
+
+/**
  * Emits optional source files.
  *
  * @param option the option text
@@ -90,7 +144,7 @@ function EmitOptionalFiles(option, modules, text)
 {
 	if (text == undefined) text = "";
 	EmitHeader("Optional Support for " + option);
-	cmakeOption = "ASTU_USE_" + upperCase(option);
+	cmakeOption = GetOptionName(option);
 	§:
 	OPTION(§{cmakeOption} "§{text}" OFF)
 	if(§{cmakeOption})
