@@ -2,43 +2,122 @@
 // Copyright 2021 Roman Divotkey. All rights reserved.
 
 // Configuration
+astuVersion = "0.11.0";
 privateDir = "src";
 publicDir = "include";
-cmakeVar = "astulib_SOURCES";
-modules = [
+srcVar = "astulib_SOURCES";
+coreModules = [
 	"Util", "Math", "Graphics",
 	"Audio", "ECS", "Input", 
 	"Service", "Suite2D", "Ai",
 	"Velox"
 	];
+sdlModules = ["SuiteSDL"];
+jackModules = ["SuiteJack"];
+
+// Emit CMake file
 rootDir = GetInputDirectory();
+EmitProlog();
+EmitCoreFiles();
+EmitOptionalFiles("Sdl", sdlModules, "Build the ASTU library with support for SDL2");
+EmitOptionalFiles("Jack", jackModules, "Build the ASTU library with support for JACK Audio Connection Kit");
+EmitEpilog();
 
+// Functions
 
+function EmitProlog()
+{
+	§:
+	# CMake file for AST-Utilities Version §{astuVersion}
+	# Generated §{date()} with SWORD Interpreter §{version()}
 
-§:
-set(§{cmakeVar})
-list(APPEND §{cmakeVar}
+	# Define required CMake version
+	cmake_minimum_required(VERSION 3.1)
 
-	# Global files
-:§
+	# Define and promulgate project version information
+	project(ASTU VERSION §{astuVersion})
+	configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 
-EmitFiles(rootDir + privateDir);
-EmitFiles(rootDir + publicDir);
+	# Define C++ Standard
+	set(CMAKE_CXX_STANDARD 17)
 
-EmitModules();
+	:§
+}
 
-§:
-	)
-:§
+function EmitEpilog()
+{
+	§:
+	# Define static library target.
+	add_library(astu ${astulib_SOURCES})
 
-function EmitModules() {
+	:§
+}
+
+/**
+ * Emits Core files for AST-Utilities, must be called first.
+ */
+function EmitCoreFiles()
+{
+	EmitHeader("ASTU Core Files");
+
+	§:
+	set(§{srcVar})
+	list(APPEND §{srcVar}
+
+		# Global files
+	:§
+
+	EmitFiles(rootDir + privateDir);
+	EmitFiles(rootDir + publicDir);
+	§:
+	:§
+	EmitModules(coreModules);
+
+	§:
+		)
+
+	:§
+}
+
+/**
+ * Emits optional source files.
+ *
+ * @param option the option text
+ * @param modules the modules required for the optional code
+ * @param text the CMAKE help text
+ */
+function EmitOptionalFiles(option, modules, text)
+{
+	if (text == undefined) text = "";
+	EmitHeader("Optional Support for " + option);
+	cmakeOption = "ASTU_USE_" + upperCase(option);
+	§:
+	OPTION(§{cmakeOption} "§{text}" OFF)
+	if(§{cmakeOption})
+  	  list(APPEND §{srcVar} 
+
+	:§
+
+	indent(1);
+	EmitModules(modules);
+	indent(-1);
+	§:
+      )
+	endif(§{cmakeOption})    
+             
+	:§
+}
+
+function EmitModules(modules)
+{
 	for (i = 0; i < modules.length; ++i) {
 		§:
-
 			# Module: §{modules[i]}
 		:§
 		EmitFiles(rootDir + privateDir + filePathSeparator() + modules[i]);
 		EmitFiles(rootDir + publicDir + filePathSeparator() + modules[i]);
+		§:
+		:§
 	}
 }
 
@@ -113,6 +192,31 @@ function ExtractRelativePath(file, root)
 	}
 
 	return s;
+}
+
+/**
+ * Emits a comment header block.
+ *
+ * @param text	the comment text
+ */
+function EmitHeader(text)
+{
+	s1 = "";
+	for (i = 0; i < 7 * 7; ++i) {
+		s1 += "#";
+	}
+	s2 = "";
+	for (i = 0; i < 7; ++i) {
+		s2 += "#";
+	}
+	s2 += " " + text;
+
+	§:
+	§{s1}
+	§{s2}
+	§{s1}
+
+	:§
 }
 
 /**
