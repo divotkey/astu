@@ -5,7 +5,7 @@
 astuVersion = "0.11.0";
 privateDir = "src";
 publicDir = "include";
-srcVar = "astulib_SOURCES";
+srcVar = "astu_SOURCES";
 coreModules = [
 	"Util", "Math", "Graphics",
 	"Audio", "ECS", "Input", 
@@ -45,59 +45,91 @@ function EmitProlog()
 
 function EmitEpilog()
 {
-	EmitHeader("Define targets and include directories");
-
+	EmitHeader("Configuration File");
 	§:
 	# Setup confituration file to promulgate version info, etc.
 	# Note: this needs to be done after definition of optional variables.
 	configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 
-	# Define static library target.
-	add_library(astu ${astulib_SOURCES})
+	:§
 
-	# Create and initilaize include list variable
-	set(astulib_INCLUDES )
-	list(APPEND astulib_INCLUDES
-		astu PRIVATE "${PROJECT_BINARY_DIR}"
-		astu PRIVATE "${PROJECT_SOURCE_DIR}/§{privateDir}"
-		astu PUBLIC ${PROJECT_SOURCE_DIR}/§{publicDir})
+	EmitStaticLibraryTarget("astuStatic");
+	EmitSharedLibraryTarget("astuShared");
+}
+
+function EmitStaticLibraryTarget(targetName)
+{
+	EmitHeader("Static Library Target (" + targetName + ")");
+	§:
+	# Define static library target.
+	add_library(§{targetName} ${§{srcVar}})
 
 	:§
 
+	EmitIncludesAndLinkLibraries(targetName);
+}
+
+function EmitSharedLibraryTarget(targetName)
+{
+	EmitHeader("Shared Library Target (" + targetName + ")");
 	§:
+	# Define shared library target.
+	add_library(§{targetName} SHARED ${§{srcVar}})
+	IF (WIN32)
+		target_compile_definitions(§{targetName} PRIVATE ASTU_EXPORT)       
+	ENDIF()
+
+	:§
+
+	EmitIncludesAndLinkLibraries(targetName);
+}
+
+function EmitIncludesAndLinkLibraries(targetName)
+{
+	listName = targetName + "_INCLUDES";
+
+	§:
+	# Set include directories for target §{targetName}
+	target_include_directories(
+			§{targetName} PRIVATE "${PROJECT_BINARY_DIR}"
+			§{targetName} PRIVATE "${PROJECT_SOURCE_DIR}/§{privateDir}"
+			§{targetName} PUBLIC "${PROJECT_SOURCE_DIR}/§{publicDir}"
+		)
+
+	:§
+
+	// This is currently not tested for shared libraries and probably not working.
+	§:
+	# Add dependencies for SDL
 	if(§{GetOptionName("Sdl")})
-  	  IF (WIN32)
-    	    target_link_libraries(astu $ENV{SDL2_HOME}/lib/x64/SDL2.lib)
-      	  list(APPEND astulib_INCLUDES astu PRIVATE $ENV{SDL2_HOME})
-    	ELSEIF(APPLE)
-      	  #list(APPEND astulib_INCLUDES astu PRIVATE /Library/Frameworks/SDL2.framework/Headers)
-        	target_link_libraries(astu /Library/Frameworks/SDL2.framework/Versions/A/SDL2)
-    	ELSE()
-      	  target_link_libraries(astu SDL2)
-    	ENDIF()
+		IF (WIN32)
+			target_link_libraries(§{targetName} $ENV{SDL2_HOME}/lib/x64/SDL2.lib)
+			list(APPEND §{listName} §{targetName} PRIVATE $ENV{SDL2_HOME})
+			target_include_directories(§{targetName} PRIVATE $ENV{SDL2_HOME})
+		ELSEIF(APPLE)
+			#list(APPEND §{listName} §{targetName} PRIVATE /Library/Frameworks/SDL2.framework/Headers)
+			target_link_libraries(§{targetName} /Library/Frameworks/SDL2.framework/Versions/A/SDL2)
+		ELSE()
+			target_link_libraries(§{targetName} SDL2)
+		ENDIF()
 	endif(§{GetOptionName("Sdl")})                 
 
 	:§
 
+	// This is currently not tested for shared libraries and probably not working.
 	§:
+	# Add dependencies for Jack
 	if(§{GetOptionName("Jack")})
-  	  IF (WIN32)
-    	    target_include_directories(astu PRIVATE $ENV{JACK2_HOME}/include)
-      	  target_link_libraries(astu $ENV{JACK2_HOME}/lib/libjack64.lib)
-    	ELSE()
-      	  target_link_libraries(astu jack)    
-    	ENDIF()
+		IF (WIN32)
+			target_include_directories(§{targetName} PRIVATE $ENV{JACK2_HOME}/include)
+			target_link_libraries(§{targetName} $ENV{JACK2_HOME}/lib/libjack64.lib)
+		ELSE()
+			target_link_libraries(§{targetName} jack)    
+		ENDIF()
 	endif(§{GetOptionName("Jack")})    
              
 	:§
-
-	§:
-	# Set include directories.
-	target_include_directories(${astulib_INCLUDES})
-	:§
 }
-
-
 
 /**
  * Emits Core files for AST-Utilities, must be called first.
