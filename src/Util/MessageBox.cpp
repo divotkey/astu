@@ -6,12 +6,14 @@
  */
 
 // Local includes
+#include "AstUtilsConfig.h"
 #include "Util/MessageBox.h"
 
+using namespace std;
+
+#ifdef ASTU_USE_SDL
 // SDL includes
 #include <SDL2/SDL.h>
-
-using namespace std;
 
 namespace astu {
 
@@ -21,3 +23,18 @@ namespace astu {
     }
 
 } // end of namespace
+
+#elif
+// C++ Standard Library includes.
+#include <iostream>
+
+namespace astu {
+
+    void MessageBox::ShowErrorMessage(const std::string& message, const std::string& title)
+    {
+        std::cout << message << std::endl;
+    }
+
+} // end of namespace
+
+#endif

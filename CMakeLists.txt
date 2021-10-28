@@ -1,9 +1,18 @@
+# CMake file for AST-Utilities Version 0.11.0
+# Generated Thu Oct 28 07:58:51 CEST 2021 with SWORD Interpreter 1.9.0
+
+# Define required CMake version
 cmake_minimum_required(VERSION 3.1)
 
+# Add version information
 project(ASTU VERSION 0.11.0)
 
-configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
+# Define C++ Standard
 set(CMAKE_CXX_STANDARD 17)
+
+#################################################
+####### ASTU Core Files
+#################################################
 
 set(astulib_SOURCES)
 list(APPEND astulib_SOURCES
@@ -30,8 +39,8 @@ list(APPEND astulib_SOURCES
 	# Module: Util
 	src/Util/Controllable.cpp 
 	src/Util/Controller.cpp 
-	src/Util/DefaultMessageBox.cpp 
 	src/Util/Memento.cpp 
+	src/Util/MessageBox.cpp 
 	src/Util/StringUtils.cpp 
 	src/Util/VersionInfo.cpp 
 	include/Util/CommandQueue.h 
@@ -205,74 +214,112 @@ list(APPEND astulib_SOURCES
 	include/Velox/StringCharStream.h 
 	include/Velox/VeloxDragAndDropService.h 
 	include/Velox/VeloxService.h 
+
 	)
-    
-	#Uncomment for debuggin purpose.
-	#message(STATUS "core files: " "${astulib_SOURCES}")
 
-OPTION(ASTU_USE_JACK "Build the project with support for JACK Audio Connection Kit" OFF)
-if (ASTU_USE_JACK)
-    list(APPEND astulib_SOURCES 
-        src/SuiteJack/JackErrorUtil.cpp
-        src/SuiteJack/JackClient.cpp
-        )
-endif(ASTU_USE_JACK) 
+#################################################
+####### Optional Support for Sdl
+#################################################
 
-OPTION(ASTU_USE_SDL "Build the project with support for SDL2" OFF)
-
+OPTION(ASTU_USE_SDL "Build the ASTU library with support for SDL2" OFF)
 if(ASTU_USE_SDL)
+  	  list(APPEND astulib_SOURCES 
 
-    list(APPEND astulib_SOURCES 
-        src/SuiteSDL/SdlApplication0.cpp
-        src/SuiteSDL/Application.cpp
-        src/SuiteSDL/ApplicationImpl.cpp
-        
-        src/SuiteSDL/SdlService.cpp
-        src/SuiteSDL/SdlEventService.cpp
-        src/SuiteSDL/SdlKeyTable.cpp
-        src/SuiteSDL/SdlVideoService.cpp
-        src/SuiteSDL/SdlRenderService.cpp
-        src/SuiteSDL/SdlJoystickService.cpp
-        src/SuiteSDL/SdlAudioService.cpp
-        src/SuiteSDL/SdlTimeService.cpp
-        src/SuiteSDL/SdlLineRenderer.cpp
-        src/SuiteSDL/SdlSceneGraph2D.cpp
-        src/SuiteSDL/SdlSceneRenderer2D.cpp
-        src/SuiteSDL/SdlRecordingSceneRenderer2D.cpp
-        src/SuiteSDL/SdlApplication.cpp
-        src/SuiteSDL/SdlMessageBox.cpp
-        )
-else(ASTU_USE_SDL)
-    list(APPEND astulib_SOURCES src/SuiteSDL/SdlApplicationDummy.cpp src/Util/DefaultMessageBox.cpp)
-endif(ASTU_USE_SDL)                 
+		# Module: SuiteSDL
+		src/SuiteSDL/Application.cpp 
+		src/SuiteSDL/ApplicationImpl.cpp 
+		src/SuiteSDL/ApplicationImpl.h 
+		src/SuiteSDL/ISdlEventListener.h 
+		src/SuiteSDL/SdlApplication.cpp 
+		src/SuiteSDL/SdlApplication0.cpp 
+		src/SuiteSDL/SdlApplicationDummy.cpp 
+		src/SuiteSDL/SdlAudioService.cpp 
+		src/SuiteSDL/SdlEventService.cpp 
+		src/SuiteSDL/SdlJoystickService.cpp 
+		src/SuiteSDL/SdlKeyTable.cpp 
+		src/SuiteSDL/SdlKeyTable.h 
+		src/SuiteSDL/SdlLineRenderer.cpp 
+		src/SuiteSDL/SdlRecordingSceneRenderer2D.cpp 
+		src/SuiteSDL/SdlRecordingSceneRenderer2D.h 
+		src/SuiteSDL/SdlRenderService.cpp 
+		src/SuiteSDL/SdlSceneGraph2D.cpp 
+		src/SuiteSDL/SdlSceneRenderer2D.cpp 
+		src/SuiteSDL/SdlSceneRenderer2D.h 
+		src/SuiteSDL/SdlService.cpp 
+		src/SuiteSDL/SdlTimeService.cpp 
+		src/SuiteSDL/SdlVideoService.cpp 
+		include/SuiteSDL/Application.h 
+		include/SuiteSDL/ISdlResizeListener.h 
+		include/SuiteSDL/SdlApplication.h 
+		include/SuiteSDL/SdlApplication0.h 
+		include/SuiteSDL/SdlAudioService.h 
+		include/SuiteSDL/SdlEventService.h 
+		include/SuiteSDL/SdlJoystickService.h 
+		include/SuiteSDL/SdlLineRenderer.h 
+		include/SuiteSDL/SdlRenderService.h 
+		include/SuiteSDL/SdlSceneGraph2D.h 
+		include/SuiteSDL/SdlService.h 
+		include/SuiteSDL/SdlTimeService.h 
+		include/SuiteSDL/SdlVideoService.h 
+	
+      )
+endif(ASTU_USE_SDL)    
+             
+#################################################
+####### Optional Support for Jack
+#################################################
 
+OPTION(ASTU_USE_JACK "Build the ASTU library with support for JACK Audio Connection Kit" OFF)
+if(ASTU_USE_JACK)
+  	  list(APPEND astulib_SOURCES 
+
+		# Module: SuiteJack
+		src/SuiteJack/JackClient.cpp 
+		src/SuiteJack/JackErrorUtil.cpp 
+		src/SuiteJack/JackErrorUtil.h 
+		include/SuiteJack/JackClient.h 
+	
+      )
+endif(ASTU_USE_JACK)    
+             
+#################################################
+####### Define targets and include directories
+#################################################
+
+# Setup confituration file to promulgate version info, etc.
+# Note: this needs to be done after definition of optional variables.
+configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
+
+# Define static library target.
 add_library(astu ${astulib_SOURCES})
 
+# Create and initilaize include list variable
 set(astulib_INCLUDES )
 list(APPEND astulib_INCLUDES
-        astu PRIVATE "${PROJECT_BINARY_DIR}" 
-        astu PRIVATE "${PROJECT_SOURCE_DIR}/src"
-        astu PUBLIC ${PROJECT_SOURCE_DIR}/include)
-      
+	astu PRIVATE "${PROJECT_BINARY_DIR}"
+	astu PRIVATE "${PROJECT_SOURCE_DIR}/src"
+	astu PUBLIC ${PROJECT_SOURCE_DIR}/include)
+
 if(ASTU_USE_SDL)
-    IF (WIN32)
-        target_link_libraries(astu $ENV{SDL2_HOME}/lib/x64/SDL2.lib)
-        list(APPEND astulib_INCLUDES astu PRIVATE $ENV{SDL2_HOME})
-    ELSEIF(APPLE)
-        #list(APPEND astulib_INCLUDES astu PRIVATE /Library/Frameworks/SDL2.framework/Headers)
-        target_link_libraries(astu /Library/Frameworks/SDL2.framework/Versions/A/SDL2)
-    ELSE()
-        target_link_libraries(astu SDL2)
-    ENDIF()
+  	  IF (WIN32)
+    	    target_link_libraries(astu $ENV{SDL2_HOME}/lib/x64/SDL2.lib)
+      	  list(APPEND astulib_INCLUDES astu PRIVATE $ENV{SDL2_HOME})
+    	ELSEIF(APPLE)
+      	  #list(APPEND astulib_INCLUDES astu PRIVATE /Library/Frameworks/SDL2.framework/Headers)
+        	target_link_libraries(astu /Library/Frameworks/SDL2.framework/Versions/A/SDL2)
+    	ELSE()
+      	  target_link_libraries(astu SDL2)
+    	ENDIF()
 endif(ASTU_USE_SDL)                 
 
 if(ASTU_USE_JACK)
-    IF (WIN32)
-        target_include_directories(astu PRIVATE $ENV{JACK2_HOME}/include)
-        target_link_libraries(astu $ENV{JACK2_HOME}/lib/libjack64.lib)
-    ELSE()
-        target_link_libraries(astu jack)    
-    ENDIF()
-endif(ASTU_USE_JACK)                 
-
+  	  IF (WIN32)
+    	    target_include_directories(astu PRIVATE $ENV{JACK2_HOME}/include)
+      	  target_link_libraries(astu $ENV{JACK2_HOME}/lib/libjack64.lib)
+    	ELSE()
+      	  target_link_libraries(astu jack)    
+    	ENDIF()
+endif(ASTU_USE_JACK)    
+             
+# Set include directories.
 target_include_directories(${astulib_INCLUDES})

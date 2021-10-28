@@ -5,13 +5,15 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
+#include "AstUtilsConfig.h"
 #include "AstUtils0.h"
 #include "SuiteSDL/SdlApplication0.h"
 
+#ifndef ASTU_USE_SDL
 int SetNoSDLSupportError()
 {
     SetLastError(SDL_ERROR);
-    SetErrorDetails("SDL support not activated. Run cmake command in build folder: cmake -DWITH_SDL=true ../");
+    SetErrorDetails("SDL support not activated. Run cmake command in build folder: cmake -DASTU_USE_SDL=true ../");
     return GetLastError();
 }
 
@@ -88,3 +90,5 @@ bool IsMouseButtonPressed(int button)
 {
     return false; 
 }
+
+#endif
