@@ -241,7 +241,7 @@ namespace astu {
 
 
     /**
-     * Services can derive from this class to process mouse wheel signals.
+     * Services can derive from this class to process mouse move signals.
      * 
      * @ingroup input_group
      */
@@ -267,7 +267,7 @@ namespace astu {
     protected:
 
         /** 
-         * Called by this base class when a mouse wheel signals has received.
+         * Called by this base class when a mouse move signals has received.
          * 
          * @param x the x-coordinate of the mouse cursor in screen coordinates
          * @param y the y-coordinate of the mouse cursor in screen coordinates
