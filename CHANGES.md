@@ -1,6 +1,12 @@
 
 # Version History {#CHANGES}
 
+# Version 0.10.2
+*Date: 2021-11-21*
+
+- Fixed some inconsistencies and spelling errors in the source code documentation.
+- Added functions to configure global 2D transformation to SDL-based render routines in API-Level 0.
+
 # Version 0.10.1
 *Date: 2021-08-06*
 
@@ -88,7 +94,7 @@ understanding.
 # Version 0.6.3
 *Date: 2021-01-20*
 
-- Changed Matrix3 class to be a template and moved it to public include folder.
+- Changed Matrix3 class to be a template and moved it to 'public' include folder.
 - Improved `Palette` class.
 - Extended and improved `ImageRenderer` class.
 - The documentation of the Full API has been updated and slightly extended.
@@ -96,7 +102,7 @@ understanding.
 # Version 0.6.1
 *Date: 2021-01-14*
 
-- Added option to specify the maximum recursion depth the the scene quadtree in `ImageRenderer` class.
+- Added option to specify the maximum recursion depth the scene quadtree in `ImageRenderer` class.
 
 # Version 0.6.0
 *Date: 2021-01-13*
@@ -131,7 +137,7 @@ understanding.
 
 - Added service facility for simulations and games.
 - Added Entity Component System (ECS) to be used for simulations and games.
-- Added template for mathematical vectors in three dimensional space.
+- Added template for mathematical vectors in three-dimensional space.
 - Started to add basic support for SDL-based application for API-level 0.
 
 # Version 0.3.0

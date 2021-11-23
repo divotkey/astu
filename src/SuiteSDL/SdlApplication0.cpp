@@ -5,8 +5,9 @@
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
-// Libary-Local includes
+// Library-Local includes
 #include "Math/Vector2.h"
+#include "Math/Matrix3.h"
 #include "AstUtils0.h"
 #include "SuiteSDL/SdlApplication0.h"
 
@@ -58,6 +59,9 @@ namespace astu {
     /** The background color of the application window. */
     uint8_t drawColor[4] = {255, 255, 255, 255};
 
+    /** The global transformation used for rendering. */
+    Matrix3<double> transform;
+
     /** The current x-coordinate of the mouse cursor. */
     int cursorX = 0;
 
@@ -94,7 +98,6 @@ namespace astu {
 
     /** Stores the string output of the GetFpsString() method. */
     std::string fpsString;
-
 
     void RenderApp()
     {
@@ -413,30 +416,46 @@ int SetBackgroundColor(int rgb)
 
 int RenderPoint(double x, double y)    
 {
+    // Test for proper initialization.
     if (!astu::renderer) {
         SetLastError(SDL_ERROR);
         SetErrorDetails("Application not initialized");
         return GetLastError();
     }
 
-    SDL_RenderDrawPoint(astu::renderer, static_cast<int>(x + 0.5), static_cast<int>(y + 0.5));
+    // Transform point according to global transformation matrix.
+    auto p = astu::transform.TransformPoint(x, y);
+
+    // Render transformed point.
+    SDL_RenderDrawPoint(
+            astu::renderer,
+            static_cast<int>(p.x + 0.5),
+            static_cast<int>(p.y + 0.5)
+            );
+
     return NO_ERROR;
 }
 
 int RenderLine(double x1, double y1, double x2, double y2)
 {
+    // Test for proper initialization.
     if (!astu::renderer) {
         SetLastError(SDL_ERROR);
         SetErrorDetails("Application not initialized");
         return GetLastError();
     }
 
+    // Transform points according to global transformation matrix.
+    auto p1 = astu::transform.TransformPoint(x1, y1);
+    auto p2 = astu::transform.TransformPoint(x2, y2);
+
+    // Render line.
     if (SDL_RenderDrawLine( 
         astu::renderer,
-        static_cast<int>(x1 + 0.5), 
-        static_cast<int>(y1 + 0.5), 
-        static_cast<int>(x2 + 0.5), 
-        static_cast<int>(y2 + 0.5)))
+        static_cast<int>(p1.x + 0.5),
+        static_cast<int>(p1.y + 0.5),
+        static_cast<int>(p2.x + 0.5),
+        static_cast<int>(p2.y + 0.5)))
     {
         SDL_LogError(SDL_LOG_CATEGORY_RENDER, "Couldn't render line: %s", SDL_GetError());        
         SetLastError(SDL_ERROR);
@@ -449,17 +468,25 @@ int RenderLine(double x1, double y1, double x2, double y2)
 
 int RenderRectangle(double x, double y, double w, double h, bool filled)
 {
+    // Test for proper initialization.
     if (!astu::renderer) {
         SetLastError(SDL_ERROR);
         SetErrorDetails("Application not initialized");
         return GetLastError();
     }
 
+    // Transform center and dimensions.
+    auto p0 = astu::transform.TransformPoint(x, y);
+    auto v0 = astu::transform.TransformVector(w, 0);
+    auto v1 = astu::transform.TransformVector(0, h);
+    double wt = v0.Length();
+    double ht = v1.Length();
+
     SDL_Rect rect;
-    rect.x = static_cast<int>(x - w / 2);
-    rect.y = static_cast<int>(y - h / 2);
-    rect.w = static_cast<int>(w);
-    rect.h = static_cast<int>(h);
+    rect.x = static_cast<int>(p0.x - wt / 2);
+    rect.y = static_cast<int>(p0.y - ht / 2);
+    rect.w = static_cast<int>(wt);
+    rect.h = static_cast<int>(ht);
 
     if (filled) {
         if (SDL_RenderFillRect(astu::renderer, &rect)) {
@@ -482,6 +509,8 @@ int RenderRectangle(double x, double y, double w, double h, bool filled)
 
 int RenderRegularPolygon(double x, double y, double r, unsigned int n, double angle)
 {
+    // Verify parameters.
+
     if (r <= 0) {
         SetLastError(INVALID_PARAMETER);
         SetErrorDetails("Radius for n-gon must be greater zero");
@@ -493,6 +522,9 @@ int RenderRegularPolygon(double x, double y, double r, unsigned int n, double an
         SetErrorDetails("Number of vertices for n-gon must be greater 2");
         return GetLastError();
     }
+
+
+    // Render polygon.
 
     double da = (2.0 * M_PI) / n;
 
@@ -510,6 +542,26 @@ int RenderRegularPolygon(double x, double y, double r, unsigned int n, double an
     }
 
     return NO_ERROR;
+}
+
+void ApplyRenderScaling(double sx, double sy)
+{
+    astu::transform.Scale(sx, sy);
+}
+
+void ApplyRenderTranslation(double tx, double ty)
+{
+    astu::transform.Translate(tx, ty);
+}
+
+void ApplyRenderRotation(double phi)
+{
+    astu::transform.Rotate(phi);
+}
+
+void ResetRenderTransform()
+{
+    astu::transform.SetToIdentity();
 }
 
 double GetDeltaTime()
