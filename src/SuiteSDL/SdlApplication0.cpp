@@ -12,15 +12,16 @@
 #include "SuiteSDL/SdlApplication0.h"
 
 // SDL includes
-#include <array>
 #include <SDL2/SDL.h>
 
 // C++ Standard Library includes
 #define _USE_MATH_DEFINES
+#include <array>
 #include <cmath>
 #include <algorithm>
 #include <sstream>
 #include <string>
+#include <iostream>
 
 #define FPS_UPDATE_INTERVAL 1.0
 #define NUM_MOUSE_BUTTONS   5
@@ -592,7 +593,7 @@ const char* GetFpsString(const char* text, int precision)
     }
 
     astu::fpsStringStream.precision(precision);
-    astu::fpsStringStream << GetFps();
+    astu::fpsStringStream << std::fixed << GetFps();
     astu::fpsString = astu::fpsStringStream.str();
     return astu::fpsString.c_str();
 }

@@ -880,12 +880,12 @@ void ClearImage()
 
 void SetDrawColor(int r, int g, int b, int a)
 {
-    lvl0DrawColor.Set(r, g, b, a);
+    lvl0DrawColor = Color4d::CreateFromRgb(r, g, b, a);
 }
 
 void SetClearColor(int r, int g, int b)
 {
-    lvl0ClearColor.Set(r, g, b);
+    lvl0ClearColor = Color4d::CreateFromRgb(r, g, b);
 }
 
 void DrawLine(double x0, double y0, double x1, double y1, double w)
