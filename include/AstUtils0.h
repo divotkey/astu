@@ -1084,6 +1084,28 @@ int WriteImage(const char* filename);
 void SetDrawColor(int r, int g, int b, int a = 255);
 
 /**
+ * Sets the color used when drawing images.
+ *
+ * This function can be used to set the drawing color using the usual
+ * hex-quadruplet notation which is a eight-digit, four-byte hexadecimal
+ * number used int HTML, CSS, SVG etc.
+ *
+ * **Example Usage**
+ *
+ * ```
+ * // Set render color to orange, full opaque.
+ * SetDrawColor(0xFFA500FF);
+ *
+ * // Set render color to yellow, 50% transparent.
+ * SetDrawColor(0xFFFF0080);
+ *
+ * // Set render color to white, full opaque.
+ * SetDrawColor(0xFFFFFFFF);
+ * ```
+ */
+void SetDrawColor(int rgba);
+
+/**
  * Sets the color used to clear images.
  * 
  * @param r the red color channel [0, 255] 

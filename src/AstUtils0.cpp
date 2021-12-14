@@ -883,6 +883,12 @@ void SetDrawColor(int r, int g, int b, int a)
     lvl0DrawColor = Color4d::CreateFromRgb(r, g, b, a);
 }
 
+void SetDrawColor(int rgba)
+{
+    lvl0DrawColor = Color4d::CreateFromRgba(rgba);
+}
+
+
 void SetClearColor(int r, int g, int b)
 {
     lvl0ClearColor = Color4d::CreateFromRgb(r, g, b);

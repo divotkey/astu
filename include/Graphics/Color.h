@@ -58,6 +58,20 @@ namespace astu {
         }
 
         /**
+         * Creates a color from RGB integer values.
+         *
+         * @param rgb   the rgb color components encoded within in an integer
+         */
+        static Color<T> CreateFromRgba(int rgba)
+        {
+            return CreateFromRgb(
+                    (rgba & 0xff000000) >> 24,
+                    (rgba & 0xff0000) >> 16,
+                    (rgba & 0xff00) >> 8,
+                    rgba & 0xff);
+        }
+
+        /**
          * Constructor.
          * 
          * @param red   the red color component
