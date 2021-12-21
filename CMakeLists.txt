@@ -5,7 +5,7 @@ project(ASTU VERSION 0.10.2)
 configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 set(CMAKE_CXX_STANDARD 17)
 
-set(astulib_SOURCES )
+set(astulib_SOURCES src/Util/StringUtils.cpp include/Util/StringUtils.h)
 list(APPEND astulib_SOURCES
                     src/AstUtils0.cpp
                     src/Util/VersionInfo.cpp
@@ -14,6 +14,8 @@ list(APPEND astulib_SOURCES
                     src/Util/Memento.cpp
                     src/Math/Random.cpp
                     src/Math/MathUtils.cpp
+                    src/Util/StringUtils.cpp include/Util/StringUtils.h
+
 
                     src/Graphics/AstuGraphics.cpp
 

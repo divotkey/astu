@@ -136,7 +136,7 @@ namespace astu {
             // We need to convert 8-bit or 16-bit PCM to IEEE float.
             
             if (formatChunk.GetBitsPerSample() == 16) {
-                // Convert 16-bit samples to float.
+                // Apply 16-bit samples to float.
         
                 assert(dataChunk.GetDataSize() % sizeof(int16_t) == 0);
                 size_t numSamples = dataChunk.GetDataSize() / sizeof(int16_t);
@@ -152,7 +152,7 @@ namespace astu {
                     assert(result->GetSamples()[i] <= 1.0f || result->GetSamples()[i] >= -1.0f);
                 }
             } else if(formatChunk.GetBitsPerSample() == 24) {
-                // Convert 24-bit samples to float.
+                // Apply 24-bit samples to float.
                 assert(dataChunk.GetDataSize() % 3 == 0);
 
                 size_t numSamples = dataChunk.GetDataSize() / 3;
@@ -168,7 +168,7 @@ namespace astu {
                 }
 
             } else if (formatChunk.GetBitsPerSample() == 8) {
-                // Convert 8-bit samples to float.
+                // Apply 8-bit samples to float.
 
                 size_t numSamples = dataChunk.GetDataSize();
                 std::unique_ptr<uint8_t[]> temp = std::make_unique<uint8_t[]>(numSamples);
