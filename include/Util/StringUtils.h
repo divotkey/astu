@@ -1,7 +1,7 @@
 /*
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
- * 
+ *
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
@@ -15,6 +15,8 @@ namespace astu {
 
 	/**
 	 * A utility class providing string related static utility methods.
+	 *
+	 * @ingroup misc_group
 	 */
 	class StringUtils final {
 	public:
@@ -23,6 +25,8 @@ namespace astu {
 		 * Deleted constructor -> no instances of this class allowed.
 		 */
 		StringUtils() = delete;
+        StringUtils(const StringUtils&) = delete;
+        StringUtils(StringUtils&&) = delete;
 
 		// There seems to be a problem regarding deprecated functions/headers
 		// in C++ 17.
@@ -100,7 +104,7 @@ namespace astu {
 
 		/**
 		 * Splits the specified string using the given character as separator.
-		 * 
+		 *
 		 * @param s		the string to split
 		 * @param ch	the separation character
 		 * @return a vector with strings
@@ -213,6 +217,25 @@ namespace astu {
 		 * @return		reference to the processed string
 		 */
 		static std::string & replace(std::string & s, const std::string & from, const std::string & to);
+
+        /**
+         * Extracts the file extension from a given filename.
+         *
+         * The file name can include the path to the file.
+         *
+         * @param filename  the name of the file to extract
+         * @param keepPeriod    whether to include the '.' character
+         * @return the file extension or an empty string
+         */
+        static std::string ExtractFileExtension(const std::string & filename, bool keepPeriod = true);
+
+        /**
+         * Removes file extensions from a given filename.
+         *
+         * @param filename  the file name from with to remove the extension
+         * @return the filename without an extension
+         */
+        static std::string StripFileExtension(const std::string & filename);
 
 	};
 

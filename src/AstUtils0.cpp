@@ -581,7 +581,7 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
         // We need to convert 8-bit or 16-bit PCM to IEEE float.
         
         if (formatChunk.GetBitsPerSample() == 16) {
-            // Convert 16-bit samples to float.
+            // Apply 16-bit samples to float.
     
             assert(dataChunk.GetDataSize() % sizeof(int16_t) == 0);
             *size = static_cast<unsigned int>(dataChunk.GetDataSize() / sizeof(int16_t));
@@ -597,7 +597,7 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
                 assert(data[i] <= 1.0f || data[i] >= -1.0f);
             }
         } else if(formatChunk.GetBitsPerSample() == 24) {
-            // Convert 24-bit samples to float.
+            // Apply 24-bit samples to float.
             assert(dataChunk.GetDataSize() % 3 == 0);
 
             *size = static_cast<unsigned int>(dataChunk.GetDataSize() / 3);
@@ -613,7 +613,7 @@ float *ReadAudio(const char* filename, int* size, int *sampleRate, int *channels
             }
 
         } else if (formatChunk.GetBitsPerSample() == 8) {
-            // Convert 8-bit samples to float.
+            // Apply 8-bit samples to float.
 
             *size = static_cast<unsigned int>(dataChunk.GetDataSize());
             std::unique_ptr<uint8_t[]> temp = std::make_unique<uint8_t[]>(*size);
@@ -880,12 +880,18 @@ void ClearImage()
 
 void SetDrawColor(int r, int g, int b, int a)
 {
-    lvl0DrawColor.Set(r, g, b, a);
+    lvl0DrawColor = Color4d::CreateFromRgb(r, g, b, a);
 }
+
+void SetDrawColor(int rgba)
+{
+    lvl0DrawColor = Color4d::CreateFromRgba(rgba);
+}
+
 
 void SetClearColor(int r, int g, int b)
 {
-    lvl0ClearColor.Set(r, g, b);
+    lvl0ClearColor = Color4d::CreateFromRgb(r, g, b);
 }
 
 void DrawLine(double x0, double y0, double x1, double y1, double w)

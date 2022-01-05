@@ -20,6 +20,7 @@
 #include "Util/Memento.h"
 #include "Util/Pooled.h"
 #include "Util/VersionInfo.h"
+#include "Util/StringUtils.h"
 
 namespace astu {
 

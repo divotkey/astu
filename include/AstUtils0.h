@@ -201,7 +201,7 @@ void SayDouble(double value, bool eol = true);
  * 
  * Possible output:
  * ```
- * AST Utilities Version 1.0.0 (64 bit address space) [build: Aug 13 2020, 16:04:50]
+ * AST Utilities Version 0.10.1 (64 bit address space)
  * ```
  */
 void SayVersion(bool newline = false);
@@ -226,7 +226,7 @@ void SayVersion(bool newline = false);
  * 
  * Possible output:
  * ```
- * AST Utilities Version 1.0.0 (64 bit address space) [build: Aug 13 2020, 16:04:50]
+ * Copyright 2020, 2021 AST Utilities Development Team. All rights reserved.
  * ```
  */
 void SayCopyright(bool newline = false);
@@ -541,9 +541,52 @@ int Minimum(int a, int b);
  */
 int Minimum(int a, int b, int c);
 
+/**
+ * Returns the greater of the given values.
+ *
+ * **Using plain C++ without the Standard Library or ASTU**
+ *
+ * The same result can be achieved without ASTU using plain C++
+ * and the `<algorithm>` header.
+ *
+ * ```cpp
+ * #include <iostream>
+ * #include <algorithm>
+ *
+ * int main()
+ * {
+ *   int a = 42;
+ *   int b = 17;
+ *   int c = std::max(a, b);
+ *
+ *   std::cout << "the maximum of " << a << " and " << b " is " << c << std::endl;
+ *   return 0;
+ * }
+ * ```
+ *
+ * @param a the first value
+ * @param b the second value
+ * @return The greater of a and b
+ */
 int Maximum(int a, int b);
-int Maximum(int a, int b, int c);
 
+/**
+ * Returns the greater of the given values.
+ *
+ * The same result can be achieved without ASTU using plain C++
+ * and the `<algorithm>` header by chaining
+ * `std::max()` like this:
+ *
+ * ```cpp
+ * std::max(a, std::max(a, b))
+ * ```
+ *
+ * @param a the first value
+ * @param b the second value
+ * @param c the third value
+ * @return the greater of a, b and c
+ */
+int Maximum(int a, int b, int c);
 
 /**
  * Returns a random number within the specified range.
@@ -1041,6 +1084,28 @@ int WriteImage(const char* filename);
 void SetDrawColor(int r, int g, int b, int a = 255);
 
 /**
+ * Sets the color used when drawing images.
+ *
+ * This function can be used to set the drawing color using the usual
+ * hex-quadruplet notation which is a eight-digit, four-byte hexadecimal
+ * number used int HTML, CSS, SVG etc.
+ *
+ * **Example Usage**
+ *
+ * ```
+ * // Set render color to orange, full opaque.
+ * SetDrawColor(0xFFA500FF);
+ *
+ * // Set render color to yellow, 50% transparent.
+ * SetDrawColor(0xFFFF0080);
+ *
+ * // Set render color to white, full opaque.
+ * SetDrawColor(0xFFFFFFFF);
+ * ```
+ */
+void SetDrawColor(int rgba);
+
+/**
  * Sets the color used to clear images.
  * 
  * @param r the red color channel [0, 255] 
@@ -1315,7 +1380,7 @@ void SetErrorDetails(const char *text);
 
 /*! \mainpage AST Utilities - API Level 0
  * 
- * AST Utilities **API Level 0** is the simplest and API-Level provided by this 
+ * AST Utilities **API Level 0** is the simplest API-Level provided by this
  * utility library. Level 0 does not require a namespace to be used nor does
  * it introduce classes or objects. It solely defines functions and uses
  * only C strings. API-Level 0 also does not expose any items from the 

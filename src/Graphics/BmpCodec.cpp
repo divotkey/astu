@@ -252,7 +252,7 @@ namespace astu {
         std::ifstream ifs(filename, std::ios::in | std::ios::binary);
         if (!ifs) {
             throw std::runtime_error(std::string("unable to open BMP file '") 
-				+ filename + "' for reading '");
+				+ filename + "' for reading");
         }
 
 		auto result = Decode(ifs);

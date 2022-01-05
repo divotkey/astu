@@ -1,7 +1,7 @@
 /*
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
- * 
+ *
  * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
  */
 
@@ -134,7 +134,7 @@ namespace astu {
 	vector<string> StringUtils::split(const string & s, char ch)
 	{
 		vector<string> result;
-		
+
 		if (s.empty())
 			return result;
 
@@ -185,7 +185,7 @@ namespace astu {
 
 	bool StringUtils::endsWith(const string & s, const string & seq)
 	{
-		if (seq.size() > s.size()) 
+		if (seq.size() > s.size())
 			return false;
 
 		return equal(seq.rbegin(), seq.rend(), s.rbegin());
@@ -235,6 +235,20 @@ namespace astu {
 		return s;
 	}
 
+    string astu::StringUtils::ExtractFileExtension(const string &filename, bool keepPeriod) {
+        auto idx = filename.find_last_of('.');
+        if (idx == string::npos) {
+            return "";
+        }
+
+        return filename.substr(idx + (keepPeriod ? 0 : 1));
+    }
+
+    string StringUtils::StripFileExtension(const string &filename) {
+        auto idx = filename.find_last_of('.');
+        return filename.substr(0, idx);
+    }
+
 } // end of namespace
 
-//#pragma warning( pop ) 
+//#pragma warning( pop )

@@ -7,6 +7,13 @@
 - Improved CMake file.
 - Added `Matrix4` class.
 
+# Version 0.10.2
+*Date: 2021-12-03*
+
+- Fixed some inconsistencies and spelling errors in the source code documentation.
+- Added functions to configure global 2D transformation to SDL-based render routines in API-Level 0.
+- Fixed bugs causing `SetDrawColor()` and `SetDrawColor()` not to work.
+
 # Version 0.10.1
 *Date: 2021-08-06*
 

@@ -152,6 +152,11 @@ int RenderRectangle(double x, double y, double w, double h, bool filled = false)
  */
 int RenderRegularPolygon(double x, double y, double r, unsigned int n, double angle = 0);
 
+void ApplyRenderScaling(double sx, double sy);
+void ApplyRenderTranslation(double tx, double ty);
+void ApplyRenderRotation(double phi);
+void ResetRenderTransform();
+
 /**
  * Sets the render color for subsequent render calls.
  * 
