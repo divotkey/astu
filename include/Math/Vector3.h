@@ -21,12 +21,16 @@ namespace astu {
     template <typename T>
 	class Vector3 {
     public:
-		/** Zero vector to be used as convenient constant. */
-		static const inline Vector3<T> Zero = Vector3<T>(
-            static_cast<T>(0), 
-            static_cast<T>(0), 
-            static_cast<T>(0)
-        );
+        // For some reasons, MS C++ compiler does not work with template inline keyword.
+		///** Zero vector to be used as convenient constant. */
+		//static const inline Vector3<T> Zero = Vector3<T>(
+        //    static_cast<T>(0),
+        //    static_cast<T>(0),
+        //    static_cast<T>(0)
+        //);
+
+        /** Zero vector to be used as convenient constant. */
+        static const Vector3<T> Zero;
 
         /** The x-coordinate of this vector. */
         T x;
@@ -427,7 +431,17 @@ namespace astu {
 	std::ostream& operator<<(std::ostream& os, const Vector3<T> &vec) {
 		os << '[' << vec.x << ", " << vec.y << ", " << vec.z << ']';
 		return os;
-	}    
+	}
+
+    /**
+     * Defines the Zero-Constant für Vector2 templates.
+     * (For some reasons, MS C++ compiler does not work with template inline
+     * keyword.)
+     *
+     * @param tparam    the numerical type of the vector
+     */
+    template <typename T>
+    Vector3<T> const Vector3<T>::Zero = Vector3<T>(0, 0, 0);
 
     using Vector3f = Vector3<float>;
     using Vector3d = Vector3<double>;

@@ -2,9 +2,10 @@
 # Version History {#CHANGES}
 
 # Version 0.11.0
-*Date: 2021-??-??*
+*Date: 2022-01-??*
 
 - Improved CMake file.
+- Added `Matrix4` class.
 
 # Version 0.10.1
 *Date: 2021-08-06*

@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  * 
- * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
+ * Copyright (c) 2013 - 2018 Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -23,6 +23,7 @@ namespace astu {
 	/**
 	 * A column-major order 3x3 matrix.
 	 * 
+	 * TODO Verify description of Matrix4x4
      * @ingroup math_group
 	 */
     template <typename T>

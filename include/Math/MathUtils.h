@@ -7,6 +7,9 @@
 
 #pragma once
 
+// Local includes
+#include "Matrix4.h"
+
 // C++ Standard Library includes
 #include <cmath>
 
@@ -122,6 +125,44 @@ namespace astu {
             return r;
         }
 
+
+        //TODO document LookAt method
+        //TODO optimize and beautify LookAt method
+        template <typename T>
+        static Matrix4<T> LookAt(const Vector3<T>& eye, const Vector3<T>& center, const Vector3<T>& up) {
+            Vector3<T> f = center - eye;
+            f.Normalize();
+            Vector3<T> s = f.Cross(up);
+            s.Normalize();
+            Vector3<T> u = s.Cross(f);
+
+            Matrix4<T> result( s.x,  s.y,  s.z, 0,
+                               u.x,  u.y,  u.z, 0,
+                               -f.x, -f.y, -f.z, 0,
+                               0,    0,    0, 1);
+
+            result.Translate(-eye);
+            return result;
+        }
+
+        //TODO document CreatePerspective method
+        //TODO optimize and beautify CreatePerspective method
+        template <typename T>
+        static Matrix4<T> CreatePerspective(T near, T far, T fovy, T aspect)
+        {
+            assert(near > 0);
+            assert(far > near);
+
+            //T fd = 1.0 / tan((fovy * (Math.PI / 180)) / 2.0);
+            T fd = 1.0 / tan(astu::ToRadians<T>(fovy) / 2.0);
+            T a1 = (far + near) / (near - far);
+            T a2 = (2 * far * near) / (near - far);
+
+            return Matrix4<T>(fd / aspect,    0,     0,    0,
+                             0,             fd,     0,    0,
+                             0,              0,    a1,   a2,
+                             0,              0,    -1,    0);
+        }
     };
 
 } // end of namespace

@@ -53,7 +53,7 @@ function EmitEpilog()
 
 	:§
 
-	EmitStaticLibraryTarget("astuStatic");
+	EmitStaticLibraryTarget("astu");
 	EmitSharedLibraryTarget("astuShared");
 }
 
