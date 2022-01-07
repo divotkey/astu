@@ -240,7 +240,7 @@ namespace astu {
          * @param vz	z coordinate of the other vector
          * @return reference to this vector for method chaining
          */
-        Vector3<T> & cross(T vx, T vy, T vz) {
+        Vector3<T> & Cross(T vx, T vy, T vz) {
             Set(y * vz - z * vy, z * vx - x * vz, x * vy - y * vx);
             return *this;
         } 

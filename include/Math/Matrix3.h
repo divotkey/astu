@@ -1,11 +1,15 @@
 /*
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
- * 
- * Copyright (c) 2013 - 2018 Roman Divotkey. All rights reserved.
+ *
+ * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
 #pragma once
+
+// Local includes
+#include "Vector2.h"
+#include "MathUtils.h"
 
 // C++ Standard library includes
 #include <cassert>
@@ -14,15 +18,14 @@
 #include <iostream>
 #include <limits>
 
-// Local includes
-#include "Vector2.h"
-#include "MathUtils.h"
-
 namespace astu {
 
 	/**
 	 * A column-major order 3x3 matrix.
-	 * 
+	 * The matrix elements are stored as 9 contiguous floating-point values
+	 * with the 7th (index 6) and 8th (index 7) elements representing the X,
+	 * and Y translation components.
+	 *
 	 * TODO Verify description of Matrix4x4
      * @ingroup math_group
 	 */
@@ -476,16 +479,15 @@ namespace astu {
 
 } // end of namespace
 
+template <typename T>
+ std::ostream & operator<<(std::ostream& os, const astu::Matrix3<T>& mat) {
+ 	os << '[';
+ 	os << mat[0] << ", " << mat[3] << ", " << mat[6];
+ 	os << ", ";
+ 	os << mat[1] << ", " << mat[4] << ", " << mat[7];
+ 	os << ", ";
+ 	os << mat[2] << ", " << mat[5] << ", " << mat[8];
+ 	os << ']';
 
-
-// std::ostream & operator<<(std::ostream& os, const astu::Matrix3& mat) {
-// 	os << '[';
-// 	os << mat[0] << ", " << mat[3] << ", " << mat[6];
-// 	os << ", ";
-// 	os << mat[1] << ", " << mat[4] << ", " << mat[7];
-// 	os << ", ";
-// 	os << mat[2] << ", " << mat[5] << ", " << mat[8];
-// 	os << ']';
-
-// 	return os;
-// }
+ 	return os;
+ }

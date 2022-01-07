@@ -22,6 +22,7 @@
 #include "Math/Vector3.h"
 #include "Math/Matrix3.h"
 #include "Math/Matrix4.h"
+#include "Math/Quaternion.h"
 #include "Math/Transform2.h"
 #include "Math/Polygon.h"
 #include "Math/Line2.h"

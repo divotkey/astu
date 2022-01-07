@@ -2,27 +2,28 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2013 - 2018 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
 #pragma once
 
-// C++ Standard library includes
-#include <cassert>
-
 // Local includes
 #include "Vector3.h"
+#include "Quaternion.h"
+
+// C++ Standard library includes
+#include <cassert>
+#include <iostream>
 
 namespace astu {
 
 	/**
-	 * A row-major order 4x4 matrix.
-	 * The matrix elements are stored as 16 contiguous float point values
-	 * with the 13th, 14th, and 15th elements representing the X, Y, and Z, 
-	 * translation components.
+	 * A column-major order 4x4 matrix.
+	 * The matrix elements are stored as 16 contiguous floating-point values
+	 * with the 13th (index 12) , 14th (index 13), and 15th (index 14)
+	 * elements representing the X, Y, and Z, translation components.
 	 *
      * @ingroup math_group
-	 * TODO Verify description of Matrix4x4
 	 */
      template<typename T>
 	class Matrix4 {
@@ -108,7 +109,9 @@ namespace astu {
 		}
 
 		/**
-		 * Constructor. Initializes the matrix with the specified values
+		 * Constructor.
+		 *
+		 * Initializes the matrix with the specified values
 		 *
 		 * @param data array containing the matrix values
 		 */
@@ -270,6 +273,114 @@ namespace astu {
 			return scale(v.x, v.y, v.z);
 		}
 
+        /**
+         * Sets this matrix to a rotation matrix rotating about the x-axis by the specified angle.
+         *
+         * @param phi   the rotation angle in radians
+		 * @return reference to this matrix for method chaining
+         */
+        Matrix4& SetToRotationX(T phi) {
+            T sin = std::sin(phi); T cos = std::cos(phi);
+            m[0] = 1;   m[4] = 0;   m[ 8] = 0;    m[12] = 0;
+            m[1] = 0;   m[5] = cos; m[ 9] = -sin; m[13] = 0;
+            m[2] = 0;   m[6] = sin; m[10] = cos;  m[14] = 0;
+            m[3] = 0;   m[7] = 0;   m[11] = 0;    m[15] = 1;
+            return *this;
+        }
+
+        /**
+         * Sets this matrix to a rotation matrix rotating about the y-axis by the specified angle.
+         *
+         * @param phi   the rotation angle in radians
+		 * @return reference to this matrix for method chaining
+         */
+        Matrix4& SetToRotationY(T phi) {
+            T sin = std::sin(phi); T cos = std::cos(phi);
+
+            m[0] = cos;     m[4] = 0;   m[ 8] = sin;    m[12] = 0;
+            m[1] = 0;       m[5] = 1;   m[ 9] = 0;      m[13] = 0;
+            m[2] = -sin;    m[6] = 0;   m[10] = cos;    m[14] = 0;
+            m[3] = 0;       m[7] = 0;   m[11] = 0;      m[15] = 1;
+            return *this;
+        }
+
+        /**
+         * Sets this matrix to a rotation matrix rotating about the z-axis by the specified angle.
+         *
+         * @param phi   the rotation angle in radians
+		 * @return reference to this matrix for method chaining
+         */
+        Matrix4& SetToRotationZ(T phi) {
+            T sin = std::sin(phi); T cos = std::cos(phi);
+
+            m[0] = cos; m[4] = -sin;    m[ 8] = 0;  m[12] = 0;
+            m[1] = sin; m[5] = cos;     m[ 9] = 0;  m[13] = 0;
+            m[2] = 0;   m[6] = 0;       m[10] = 1;  m[14] = 0;
+            m[3] = 0;   m[7] = 0;       m[11] = 0;  m[15] = 1;
+            return *this;
+        }
+
+        /**
+         * Sets this  matrix to the rotation defined by the given quaternion.
+         * @param q     the quaternion defining the rotation
+         * @return reference to this matrix for method chaining
+         */
+        Matrix4& SetToRotation(const Quaternion<T>& q) {
+            return Set(0, 0, 0, q.w, q.x, q.y, q.z);
+        }
+
+        /**
+         * Sets this matrix to the transformation defined by the given vector and quaternion.
+         *
+         * @param t the position / translation
+         * @param q the orientation
+         * @return reference to this matrix for method chaining
+         */
+        Matrix4& Set(const Vector3<T>& t, const Quaternion<T>& q) {
+            return set(t.x, t.y, t.z, q.w, q.x, q.y, q.z);
+        }
+
+        /**
+         * Sets this matrix to the transformation defined by the given vector and quaternion.
+         *
+         * @param tx    the x-component of the position vector
+         * @param ty    the y-component of the position vector
+         * @param tz    the z-component of the position vector
+         * @param qw    the w-component of the orientation quaternion
+         * @param qx    the x-component of the orientation quaternion
+         * @param qy    the y-component of the orientation quaternion
+         * @param qz    the z-component of the orientation quaternion
+         * @return reference to this matrix for method chaining
+         */
+        Matrix4& Set(T tx, T ty, T tz, T qw, T qx, T qy, T qz) {
+            T xs = qx * 2,  ys = qy * 2,  zs = qz * 2;
+            T wx = qw * xs, wy = qw * ys, wz = qw * zs;
+            T xx = qx * xs, xy = qx * ys, xz = qx * zs;
+            T yy = qy * ys, yz = qy * zs, zz = qz * zs;
+
+            m[0]    = (1.0f - (yy + zz));
+            m[4]    = (xy - wz);
+            m[8]    = (xz + wy);
+            m[12]   = tx;
+
+            m[1]    = (xy + wz);
+            m[5]    = (1.0f - (xx + zz));
+            m[9]    = (yz - wx);
+            m[13]   = ty;
+
+            m[2]    = (xz - wy);
+            m[6]    = (yz + wx);
+            m[10]   = (1.0f - (xx + yy));
+            m[14]   = tz;
+
+            m[3]    = 0.f;
+            m[7]    = 0.f;
+            m[11]   = 0.f;
+            m[15]   = 1.0f;
+
+            return *this;
+        }
+
 		/**
 		 * Transforms the specified point. 
 		 *
@@ -345,6 +456,23 @@ namespace astu {
 				v.x * m[2] + v.y * m[6] + v.z * m[10]
 			);
 		}
+
+        /**
+         * Projects the specified row vector.
+         * The vector components are divided by w assuming that the fourth element of the vector is one.
+         *
+         * @param p the point to project
+         * @return the projected point
+         */
+        Vector3<T> ProjectPoint(const Vector3<T>& p) const {
+            T w = p.x * m[3] + p.y * m[7] + p.z * m[11] + m[15];
+
+            return Vector3(
+                    (p.x * m[0] + p.y * m[4] + p.z * m[8] + m[12]) / w,
+                    (p.x * m[1] + p.y * m[5] + p.z * m[9] + m[13]) / w,
+                    (p.x * m[2] + p.y * m[6] + p.z * m[10] + m[14]) / w
+            );
+        }
 
 		/**
 		 * Binary multiply operator for matrices. This operator multiplies this matrix
@@ -493,3 +621,18 @@ namespace astu {
     using Matrix4f = astu::Matrix4<float>;
 
 } // end of namespace
+
+template <typename T>
+std::ostream & operator<<(std::ostream& os, const astu::Matrix4<T>& mat) {
+    os << '[';
+    os << mat[0] << ", " << mat[4] << ", " << mat[8] << ", " << mat[12];
+    os << ", ";
+    os << mat[1] << ", " << mat[5] << ", " << mat[9] << ", " << mat[13];
+    os << ", ";
+    os << mat[2] << ", " << mat[6] << ", " << mat[10] << ", " << mat[14];
+    os << ", ";
+    os << mat[3] << ", " << mat[7] << ", " << mat[11] << ", " << mat[15];
+    os << ']';
+
+    return os;
+}

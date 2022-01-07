@@ -65,6 +65,35 @@ namespace astu {
         }
 
         /**
+         * Compares two real numbers to be equal within a certain margin or error.
+         *
+         * @param a			the first real number
+         * @param b			the second real number
+         * @param epsilon	the maximum allowed difference
+         * @return `true` if the two real number are considered to be equal
+         */
+        template <typename T>
+        static T IsEqual(T a, T b, T epsilon) {
+            return std::abs(a - b) < epsilon;
+        }
+
+        /**
+         * Clamps the specified value to the given range [min, max].
+         *
+         * @param value	the value to clamp
+         * @param min	the lower boundary
+         * @param max	the upper boundary
+         */
+        template <typename T>
+        static T Clamp(T value, T min, T max) {
+            if (value < min)
+                return min;
+            if (value > max)
+                return max;
+            return value;
+        }
+
+        /**
          * Calculates the diagonal of a two dimensional square.
          * 
          * @param width the width of the square
@@ -132,16 +161,21 @@ namespace astu {
         static Matrix4<T> LookAt(const Vector3<T>& eye, const Vector3<T>& center, const Vector3<T>& up) {
             Vector3<T> f = center - eye;
             f.Normalize();
-            Vector3<T> s = f.Cross(up);
-            s.Normalize();
-            Vector3<T> u = s.Cross(f);
 
-            Matrix4<T> result( s.x,  s.y,  s.z, 0,
-                               u.x,  u.y,  u.z, 0,
-                               -f.x, -f.y, -f.z, 0,
-                               0,    0,    0, 1);
+            Vector3<T> s(f);
+            s.Cross(up).Normalize();
 
-            result.Translate(-eye);
+            Vector3<T> u(s);
+            u.Cross(f);
+
+            Matrix4<T> result( s.x,  u.x, -f.x, 0,
+                               s.y,  u.y, -f.y, 0,
+                               s.z,  u.z, -f.z, 0,
+                                 0,    0,    0, 1);
+
+            Matrix4<T> tx;
+            tx.SetToTranslate(-eye);
+            result *= tx;
             return result;
         }
 
@@ -158,10 +192,10 @@ namespace astu {
             T a1 = (far + near) / (near - far);
             T a2 = (2 * far * near) / (near - far);
 
-            return Matrix4<T>(fd / aspect,    0,     0,    0,
-                             0,             fd,     0,    0,
-                             0,              0,    a1,   a2,
-                             0,              0,    -1,    0);
+            return Matrix4<T>(fd / aspect,   0,   0,  0,
+                                        0,  fd,   0,  0,
+                                        0,   0,  a1, -1,
+                                        0,   0,  a2,  0);
         }
     };
 

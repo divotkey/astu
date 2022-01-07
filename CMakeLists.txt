@@ -297,7 +297,7 @@ configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 #################################################
 
 # Define static library target.
-add_library(astu ${astu_SOURCES})
+add_library(astu ${astu_SOURCES} include/Math/Quaternion.h)
 
 # Set include directories for target astu
 target_include_directories(
