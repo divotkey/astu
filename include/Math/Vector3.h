@@ -69,13 +69,22 @@ namespace astu {
         }        
 
         /**
+         * Constructor that initializes all components with 0.
+         */
+        Vector3()
+            : Vector3(0, 0, 0)
+        {
+            // intentionally left empty
+        }
+
+        /**
          * Constructor.
          * 
          * @param vx	the x-coordinate
          * @param vy	thy y-coordinate
          * @param vz	thy z-coordinate
          */
-        Vector3(T vx = 0, T vy = 0, T vz = 0)
+        Vector3(T vx, T vy, T vz)
             : x(vx), y(vy), z(vz)
         {
             // intentionally left empty

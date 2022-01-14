@@ -59,19 +59,28 @@ namespace astu {
         }
 
         /**
+         * Constructor that implements all components with 0.
+         */
+        explicit Vector2()
+            : Vector2(0, 0)
+        {
+            // Intentionally left empty.
+        }
+
+        /**
          * Constructor.
          * 
          * @param x the x-coordinate of the vector
          * @param y the y-coordinate of the vector
          */
-        Vector2(T x = 0, T y = 0)
+        Vector2(T x, T y)
             : x(x), y(y)
         {
             // Intentionally left empty.
         }
 
         /**
-         * Sets thsi vector to the coordinates of another vector.
+         * Sets this vector to the coordinates of another vector.
          *
          * @param o the other vector which coordinates to use
          * @return reference to this vector for method chaining
