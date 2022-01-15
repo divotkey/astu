@@ -1,8 +1,8 @@
 /*
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
- * 
- * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
+ *
+ * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -59,19 +59,28 @@ namespace astu {
         }
 
         /**
+         * Constructor that initializes all components with 0.
+         */
+        Vector2()
+            : x(0), y(0)
+        {
+            // Intentionally left empty.
+        }
+
+        /**
          * Constructor.
          * 
          * @param x the x-coordinate of the vector
          * @param y the y-coordinate of the vector
          */
-        Vector2(T x = 0, T y = 0)
+        Vector2(T x, T y)
             : x(x), y(y)
         {
             // Intentionally left empty.
         }
 
         /**
-         * Sets thsi vector to the coordinates of another vector.
+         * Sets this vector to the coordinates of another vector.
          *
          * @param o the other vector which coordinates to use
          * @return reference to this vector for method chaining

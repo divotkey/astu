@@ -1,8 +1,8 @@
 /*
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
- * 
- * Copyright (c) 2020, 2021 Roman Divotkey, Nora Loimayr. All rights reserved.
+ *
+ * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -21,12 +21,16 @@ namespace astu {
     template <typename T>
 	class Vector3 {
     public:
-		/** Zero vector to be used as convenient constant. */
-		static const inline Vector3<T> Zero = Vector3<T>(
-            static_cast<T>(0), 
-            static_cast<T>(0), 
-            static_cast<T>(0)
-        );
+        // For some reasons, MS C++ compiler does not work with template inline keyword.
+		///** Zero vector to be used as convenient constant. */
+		//static const inline Vector3<T> Zero = Vector3<T>(
+        //    static_cast<T>(0),
+        //    static_cast<T>(0),
+        //    static_cast<T>(0)
+        //);
+
+        /** Zero vector to be used as convenient constant. */
+        static const Vector3<T> Zero;
 
         /** The x-coordinate of this vector. */
         T x;
@@ -62,7 +66,16 @@ namespace astu {
          */
         static T LengthSquared(T vx, T vy, T vz) {
             return vx * vx + vy * vy + vz * vz;
-        }        
+        }
+
+        /**
+         * Constructor that initializes all components with 0.
+         */
+        Vector3()
+            : x(0), y(0), z(0)
+        {
+            // Intentionally left empty.
+        }
 
         /**
          * Constructor.
@@ -71,7 +84,7 @@ namespace astu {
          * @param vy	thy y-coordinate
          * @param vz	thy z-coordinate
          */
-        Vector3(T vx = 0, T vy = 0, T vz = 0)
+        Vector3(T vx, T vy, T vz)
             : x(vx), y(vy), z(vz)
         {
             // intentionally left empty
@@ -236,7 +249,7 @@ namespace astu {
          * @param vz	z coordinate of the other vector
          * @return reference to this vector for method chaining
          */
-        Vector3<T> & cross(T vx, T vy, T vz) {
+        Vector3<T> & Cross(T vx, T vy, T vz) {
             Set(y * vz - z * vy, z * vx - x * vz, x * vy - y * vx);
             return *this;
         } 
@@ -427,7 +440,17 @@ namespace astu {
 	std::ostream& operator<<(std::ostream& os, const Vector3<T> &vec) {
 		os << '[' << vec.x << ", " << vec.y << ", " << vec.z << ']';
 		return os;
-	}    
+	}
+
+    /**
+     * Defines the Zero-Constant für Vector2 templates.
+     * (For some reasons, MS C++ compiler does not work with template inline
+     * keyword.)
+     *
+     * @param tparam    the numerical type of the vector
+     */
+    template <typename T>
+    Vector3<T> const Vector3<T>::Zero = Vector3<T>(0, 0, 0);
 
     using Vector3f = Vector3<float>;
     using Vector3d = Vector3<double>;
