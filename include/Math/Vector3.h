@@ -7,9 +7,9 @@
 
 #pragma once
 
+// C++ Standard Library includes
 #include <cmath>
 #include <iostream>
-
 
 namespace astu {
 
@@ -66,7 +66,16 @@ namespace astu {
          */
         static T LengthSquared(T vx, T vy, T vz) {
             return vx * vx + vy * vy + vz * vz;
-        }        
+        }
+
+        /**
+         * Constructor that initializes all components with 0.
+         */
+        Vector3()
+            : x(0), y(0), z(0)
+        {
+            // Intentionally left empty.
+        }
 
         /**
          * Constructor.
@@ -75,7 +84,7 @@ namespace astu {
          * @param vy	thy y-coordinate
          * @param vz	thy z-coordinate
          */
-        Vector3(T vx = 0, T vy = 0, T vz = 0)
+        Vector3(T vx, T vy, T vz)
             : x(vx), y(vy), z(vz)
         {
             // intentionally left empty
@@ -113,7 +122,20 @@ namespace astu {
          */
         T Length() const {
             return std::sqrt(x * x + y * y + z * z);
-        }  
+        }
+
+        /**
+         * Sets the length of this vector.
+         *
+         * In case the current length of this vector is zero, the result
+         * will be undefined.
+         *
+         * @param lng the new length
+         * @return reference to this vector for method chaining
+         */
+        Vector3<T> &SetLength(T lng) {
+            return *this *= lng / Length();
+        }
 
         /**
          * Returns the distance between this vector and the other vector.
@@ -427,6 +449,17 @@ namespace astu {
 		return v * s;
 	}
 
+    /**
+     * Calculates the cross product between two vectors.
+     * @param v1    the first vector
+     * @param v2    the second vector
+     * @return the cross product between the two vectors
+     */
+    template<typename T>
+    Vector3<T> Cross(const Vector3<T> &v1, const Vector3<T> &v2) {
+        return Vector3<T>(v1).Cross(v2);
+    }
+
     template<typename T>
 	std::ostream& operator<<(std::ostream& os, const Vector3<T> &vec) {
 		os << '[' << vec.x << ", " << vec.y << ", " << vec.z << ']';
@@ -443,7 +476,14 @@ namespace astu {
     template <typename T>
     Vector3<T> const Vector3<T>::Zero = Vector3<T>(0, 0, 0);
 
+    /**
+     * Convenient type alias for astu::Vector3 template using float as data type.
+     */
     using Vector3f = Vector3<float>;
+
+    /**
+     * Convenient type alias for astu::Vector3 template using double as data type.
+     */
     using Vector3d = Vector3<double>;
 
 } // end of namespace

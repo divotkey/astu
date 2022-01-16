@@ -59,19 +59,28 @@ namespace astu {
         }
 
         /**
+         * Constructor that initializes all components with 0.
+         */
+        Vector2()
+            : x(0), y(0)
+        {
+            // Intentionally left empty.
+        }
+
+        /**
          * Constructor.
          * 
          * @param x the x-coordinate of the vector
          * @param y the y-coordinate of the vector
          */
-        Vector2(T x = 0, T y = 0)
+        Vector2(T x, T y)
             : x(x), y(y)
         {
             // Intentionally left empty.
         }
 
         /**
-         * Sets thsi vector to the coordinates of another vector.
+         * Sets this vector to the coordinates of another vector.
          *
          * @param o the other vector which coordinates to use
          * @return reference to this vector for method chaining
@@ -154,11 +163,11 @@ namespace astu {
          * In case the current length of this vector is zero, the result
          * will be undefined.
          *
-         * @param l	the new length of this vector
+         * @param lng   the new length of this vector
          * @return reference to this vector for method chaining
          */
-        Vector2 & SetLength(T l) {
-            return *this *= l / Length();
+        Vector2 & SetLength(T lng) {
+            return *this *= lng / Length();
         }
 
         /**

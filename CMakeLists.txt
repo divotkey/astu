@@ -65,6 +65,7 @@ list(APPEND astu_SOURCES
 		include/Math/Polygon.h
 		include/Math/Random.h
 		include/Math/Ray2.h
+		include/Math/Ray3.h
 		include/Math/Segment1.h
 		include/Math/Segment2.h
 		include/Math/Transform2.h
@@ -370,4 +371,4 @@ if(ASTU_USE_JACK)
 		target_link_libraries(astuShared jack)
 	ENDIF()
 endif(ASTU_USE_JACK)    
-             
+

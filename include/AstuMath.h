@@ -22,6 +22,7 @@
 #include "Math/Polygon.h"
 #include "Math/Line2.h"
 #include "Math/Ray2.h"
+#include "Math/Ray3.h"
 #include "Math/Segment1.h"
 #include "Math/Segment2.h"
 #include "Math/Random.h"

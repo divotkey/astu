@@ -8,7 +8,10 @@
 #pragma once
 
 // Local includes.
-#include "Vector2.h"
+#include "Vector3.h"
+
+// C++ Standard Library includes
+#include <iostream>
 
 namespace astu {
 
@@ -25,8 +28,16 @@ namespace astu {
      * @ingroup math_group
      */
     template <typename T>
-    class Ray2 {
+    class Ray3 {
     public:
+
+        /**
+         * Constructor.
+         */
+        Ray3()
+        {
+            // Intentionally left empty.
+        }
 
         /**
          * Constructor.
@@ -34,7 +45,7 @@ namespace astu {
          * @param p the starting point
          * @param d the direction vector
          */
-        Ray2(const Vector2<T>& p, const Vector2<T>& d)
+        Ray3(const Vector3<T>& p, const Vector3<T>& d)
             : p0(p), dir(d)
         {
             // Intentionally left empty.
@@ -45,11 +56,13 @@ namespace astu {
          * 
          * @param px    the x-coordinate of the starting point
          * @param py    the y-coordinate of the starting point
+         * @param pz    the z-coordinate of the starting point
          * @param dx    the x-component of the direction vector
          * @param dy    the y-component of the direction vector
+         * @param dz    the z-component of the direction vector
          */
-        Ray2(T px, T py, T dx, T dy)
-            : p0(px, py), dir(dx, dy)
+        Ray3(T px, T py, T pz, T dx, T dy, T dz)
+            : p0(px, py, pz), dir(dx, dy, dz)
         {
             // Intentionally left empty.
         }
@@ -59,8 +72,17 @@ namespace astu {
          * 
          * @return the start point
          */
-        const Vector2<T>& GetStartPoint() const {
+        const Vector3<T>& GetStartPoint() const {
             return p0;
+        }
+
+        /**
+         * Sets the start point of this ray.
+         *
+         * @param p the start point
+         */
+        void SetStartPoint(const Vector3<T> p) {
+            p0 = p;
         }
 
         /**
@@ -68,30 +90,45 @@ namespace astu {
          * 
          * @return dir
          */
-        const Vector2<T>& GetDirection() const {
+        const Vector3<T>& GetDirection() const {
             return dir;
         }
 
-    private:
+        /**
+         * Sets the direction of this ray.
+         *
+         * @param d the direction vector
+         */
+        void SetDirection(const Vector3<T> d) {
+            dir = d;
+        }
+
+    public:
         /** The starting point of this ray. */
-        Vector2<T> p0;
+        Vector3<T> p0;
 
         /** The direction of this ray. */
-        Vector2<T> dir;
+        Vector3<T> dir;
     };
+
+    template<typename T>
+    std::ostream& operator<<(std::ostream& os, const Ray3<T> &ray) {
+        os << ray.p0 << " -> " << ray.dir;
+        return os;
+    }
 
     /**
      * Type alias for Ray2 template using double as data type.
      * 
      * @ingroup math_group
      */
-    using Ray2d = astu::Ray2<double>;    
+    using Ray3d = astu::Ray3<double>;
 
     /**
      * Type alias for Ray2 template using float as data type.
      * 
      * @ingroup math_group
      */
-    using Ray2f = astu::Ray2<float>;    
+    using Ray3f = astu::Ray3<float>;
 
 } // end of namespace
