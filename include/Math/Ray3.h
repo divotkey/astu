@@ -42,7 +42,7 @@ namespace astu {
         /**
          * Constructor.
          * 
-         * @param p the starting point
+         * @param p the origin of this ray
          * @param d the direction vector
          */
         Ray3(const Vector3<T>& p, const Vector3<T>& d)
@@ -54,9 +54,9 @@ namespace astu {
         /**
          * Constructor.
          * 
-         * @param px    the x-coordinate of the starting point
-         * @param py    the y-coordinate of the starting point
-         * @param pz    the z-coordinate of the starting point
+         * @param px    the x-coordinate of origin
+         * @param py    the y-coordinate of origin
+         * @param pz    the z-coordinate of origin
          * @param dx    the x-component of the direction vector
          * @param dy    the y-component of the direction vector
          * @param dz    the z-component of the direction vector
@@ -68,20 +68,20 @@ namespace astu {
         }
 
         /**
-         * Returns the start point of this ray.
+         * Returns the origin of this ray.
          * 
-         * @return the start point
+         * @return this ray's origin
          */
-        const Vector3<T>& GetStartPoint() const {
+        const Vector3<T>& GetOrigin() const {
             return p0;
         }
 
         /**
-         * Sets the start point of this ray.
+         * Sets the origin of this ray.
          *
-         * @param p the start point
+         * @param p the new origin
          */
-        void SetStartPoint(const Vector3<T> p) {
+        void SetOrigin(const Vector3<T> p) {
             p0 = p;
         }
 
@@ -103,8 +103,26 @@ namespace astu {
             dir = d;
         }
 
+        /**
+         * Returns the length of this ray.
+         *
+         * @return this ray's length
+         */
+        T Length() const {
+            return dir.Length();
+        }
+
+        /**
+         * Returns the length of this ray.
+         *
+         * @return this ray's length
+         */
+        T LengthSquared() const {
+            return dir.LengthSquared();
+        }
+
     public:
-        /** The starting point of this ray. */
+        /** The origin of this ray. */
         Vector3<T> p0;
 
         /** The direction of this ray. */

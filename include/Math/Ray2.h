@@ -31,7 +31,7 @@ namespace astu {
         /**
          * Constructor.
          * 
-         * @param p the starting point
+         * @param p the origin
          * @param d the direction vector
          */
         Ray2(const Vector2<T>& p, const Vector2<T>& d)
@@ -43,8 +43,8 @@ namespace astu {
         /**
          * Constructor.
          * 
-         * @param px    the x-coordinate of the starting point
-         * @param py    the y-coordinate of the starting point
+         * @param px    the x-coordinate of the origin
+         * @param py    the y-coordinate of the origin
          * @param dx    the x-component of the direction vector
          * @param dy    the y-component of the direction vector
          */
@@ -55,12 +55,21 @@ namespace astu {
         }
 
         /**
-         * Returns the start point of this ray.
+         * Returns the origin of this ray.
          * 
-         * @return the start point
+         * @return this ray's origin
          */
-        const Vector2<T>& GetStartPoint() const {
+        const Vector2<T>& GetOrigin() const {
             return p0;
+        }
+
+        /**
+         * Sets the origin of this ray.
+         *
+         * @param p the new origin
+         */
+        void SetOrigin(const Vector2<T> p) {
+            p0 = p;
         }
 
         /**
@@ -72,8 +81,33 @@ namespace astu {
             return dir;
         }
 
+        /**
+         * Returns the length of this ray.
+         *
+         * @return this ray's length
+         */
+        T Length() const {
+            return dir.Length();
+        }
+
+        /**
+         * Returns the length of this ray.
+         *
+         * @return this ray's length
+         */
+        T LengthSquared() const {
+            return dir.LengthSquared();
+        }
+
+        /**
+         * Normalizes the direction vector of this ray.
+         */
+        void Normalize() {
+            dir.Normalize();
+        }
+
     private:
-        /** The starting point of this ray. */
+        /** The origin of this ray. */
         Vector2<T> p0;
 
         /** The direction of this ray. */

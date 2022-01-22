@@ -304,7 +304,46 @@ namespace astu {
             return *this;
         }
 
-        /**
+		/**
+		 * Applies a rotation about the x-asis by the specified angle.
+		 *
+		 * This method pre-multiplies a rotation matrix 'Mr' with this
+		 * matrix and stores the result in this matrix.
+		 *
+         * @param phi   the rotation angle in radians
+		 * @return reference to this matrix for method chaining
+		 */
+		Matrix4& RotateX(T phi) {
+			return *this = Matrix4().SetToRotationX(phi) * *this;
+		}
+
+		/**
+		 * Applies a rotation about the y-asis by the specified angle.
+		 *
+		 * This method pre-multiplies a rotation matrix 'Mr' with this
+		 * matrix and stores the result in this matrix.
+		 *
+         * @param phi   the rotation angle in radians
+		 * @return reference to this matrix for method chaining
+		 */
+		Matrix4& RotateY(T phi) {
+			return *this = Matrix4().SetToRotationY(phi) * *this;
+		}
+
+		/**
+		 * Applies a rotation about the z-asis by the specified angle.
+		 *
+		 * This method pre-multiplies a rotation matrix 'Mr' with this
+		 * matrix and stores the result in this matrix.
+		 *
+         * @param phi   the rotation angle in radians
+		 * @return reference to this matrix for method chaining
+		 */
+		Matrix4& RotateZ(T phi) {
+			return *this = Matrix4().SetToRotationZ(phi) * *this;
+		}
+
+		/**
          * Sets this matrix to a rotation matrix rotating about the z-axis by the specified angle.
          *
          * @param phi   the rotation angle in radians

@@ -154,6 +154,29 @@ namespace astu {
             return r;
         }
 
+        template <typename T>
+        static int CalcQuadricRoots(T a, T b, T c, T& x1, T& x2) {
+            T determinant = b * b - 4 * a * c;
+            if (determinant < 0) {
+                return 0;
+            }
+
+            determinant = std::sqrt(determinant);
+            T q = static_cast<T>(-0.5) * (b + copysign(determinant, b));
+
+            x1 = q / a;
+            x2 = c / q;
+
+            if (x1 > x2) {
+                q = x2; x2 = x1; x1 = q;
+            }
+            if (x1 == x2) {
+                return 1;
+            }
+            return 2;
+        }
+
+
 
         //TODO document LookAt method
         //TODO optimize and beautify LookAt method

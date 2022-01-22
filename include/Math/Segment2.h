@@ -98,7 +98,7 @@ namespace astu {
             bool valid = Line2<T>::Intersect(
                 GetStartPoint(), 
                 GetDirection(),
-                ray.GetStartPoint(),
+                ray.GetOrigin(),
                 ray.GetDirection(),
                 s1,
                 s2
@@ -119,13 +119,13 @@ namespace astu {
             bool valid = Line2<T>::Intersect(
                 GetStartPoint(), 
                 GetDirection(),
-                ray.GetStartPoint(),
+                ray.GetOrigin(),
                 ray.GetDirection(),
                 s1,
                 s2);
 
             if (valid && s1 >= 0 && s1 <= 1 && s2 >= 0) {
-                outPoint = ray.GetStartPoint() + ray.GetDirection() * s2;
+                outPoint = ray.GetOrigin() + ray.GetDirection() * s2;
                 return true;
             }
 

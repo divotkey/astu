@@ -71,6 +71,7 @@ list(APPEND astu_SOURCES
 		include/Math/Transform2.h
 		include/Math/Vector2.h
 		include/Math/Vector3.h
+		include/Math/Quaternion.h
 
 		# Module: Graphics
 		src/Graphics/AstuGraphics.cpp
@@ -298,7 +299,7 @@ configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 #################################################
 
 # Define static library target.
-add_library(astu ${astu_SOURCES} include/Math/Quaternion.h)
+add_library(astu ${astu_SOURCES})
 
 # Set include directories for target astu
 target_include_directories(
