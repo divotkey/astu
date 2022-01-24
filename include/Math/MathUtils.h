@@ -176,7 +176,22 @@ namespace astu {
             return 2;
         }
 
-
+        /**
+         * Returns the reflection vector given an incidence vector and a normal vector.
+         *
+         * The normal vector n should be normalized. If n is normalized, the output
+         * vector will have the same length as the input incidence vector i.
+         *
+         * @param i     the incidence vector
+         * @param nv    the normal vector
+         * @return the reflection vector
+         * @tparam T the numerical type of the vectors
+         */
+        template <typename T>
+        static Vector3<T> Reflect(const Vector3<T> &i, const Vector3<T> &nv) {
+            //return i - (static_cast<T>(2) * nv * nv.Dot(i));
+            return i - nv * (static_cast<T>(2) * nv.Dot(i));
+        }
 
         //TODO document LookAt method
         //TODO optimize and beautify LookAt method

@@ -411,6 +411,30 @@ namespace astu {
         }
 
         /**
+         * Binary multiplication operator for two colors.
+         *
+         * @param rhs the right-hand color value
+         * @return a new color representing the result of the operation
+         */
+        Color<T> operator*(const Color<T> &rhs) const {
+            return Color(r * rhs.r, g * rhs.g, b * rhs.b, a * rhs.a);
+        }
+
+        /**
+         * Compound assignment and multiplication operator for two colors.
+         *
+         * @param rhs the right-hand color value
+         * @return a reference to this color
+         */
+        Color<T> & operator*=(const Color<T> &rhs) {
+            r *= rhs.r;
+            g *= rhs.g;
+            b *= rhs.b;
+            a *= rhs.a;
+            return *this;
+        }
+
+        /**
          * Binary division operator for a color and a scalar value.
          *
          * @param s the right-hand side scalar value

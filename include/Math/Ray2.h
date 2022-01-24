@@ -9,6 +9,7 @@
 
 // Local includes.
 #include "Vector2.h"
+#include "Matrix3.h"
 
 namespace astu {
 
@@ -104,6 +105,16 @@ namespace astu {
          */
         void Normalize() {
             dir.Normalize();
+        }
+
+        /**
+         * Transforms this ray by the specified transformation matrix.
+         *
+         * @param m the transformation matrix
+         */
+        void Transform(const Matrix3 <T> &m) {
+            p0 = m.TransformPoint(p0);
+            dir = m.TransformVector(dir);
         }
 
     private:

@@ -9,6 +9,7 @@
 
 // Local includes.
 #include "Vector3.h"
+#include "Matrix4.h"
 
 // C++ Standard Library includes
 #include <iostream>
@@ -119,6 +120,23 @@ namespace astu {
          */
         T LengthSquared() const {
             return dir.LengthSquared();
+        }
+
+        /**
+         * Normalizes the direction vector of this ray.
+         */
+        void Normalize() {
+            dir.Normalize();
+        }
+
+        /**
+         * Transforms this ray by the specified transformation matrix.
+         *
+         * @param m the transformation matrix
+         */
+        void Transform(const Matrix4 <T> &m) {
+            p0 = m.TransformPoint(p0);
+            dir = m.TransformVector(dir);
         }
 
     public:

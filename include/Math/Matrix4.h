@@ -421,6 +421,22 @@ namespace astu {
         }
 
 		/**
+		 * Transposes this matrix.
+		 *
+		 * @return reference to this matrix for method chaining
+		 */
+		Matrix4<T>& Transpose() {
+			std::swap(m[1], m[4]);
+			std::swap(m[2], m[8]);
+			std::swap(m[6], m[9]);
+			std::swap(m[3], m[12]);
+			std::swap(m[7], m[13]);
+			std::swap(m[11], m[14]);
+
+			return *this;
+		}
+
+		/**
 		 * Transforms the specified point. 
 		 *
 		 * The specified vector is considered to be a row vector and hence

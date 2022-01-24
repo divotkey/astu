@@ -26,7 +26,6 @@ namespace astu {
 	 * with the 7th (index 6) and 8th (index 7) elements representing the X,
 	 * and Y translation components.
 	 *
-	 * TODO Verify description of Matrix4x4
      * @ingroup math_group
 	 */
     template <typename T>
