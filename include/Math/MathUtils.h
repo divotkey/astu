@@ -167,9 +167,10 @@ namespace astu {
             x1 = q / a;
             x2 = c / q;
 
-            if (x1 > x2) {
-                q = x2; x2 = x1; x1 = q;
-            }
+            // Uncomment t sort results.
+            //if (x1 > x2) {
+            //    q = x2; x2 = x1; x1 = q;
+            //}
             if (x1 == x2) {
                 return 1;
             }

@@ -56,6 +56,18 @@ namespace astu {
         }
 
         /**
+         * Constructs a ray from a given ray and transformation matrix.
+         *
+         * @param r the ray to transform
+         * @param m the transformation matrix
+         */
+        Ray2(const Ray2<T>& r, const Matrix3<T> &m)
+                : p0(m.TransformPoint(r.p0)), dir(m.TransformVector(r.dir))
+        {
+            // Intentionally left empty.
+        }
+
+        /**
          * Returns the origin of this ray.
          * 
          * @return this ray's origin
@@ -80,6 +92,16 @@ namespace astu {
          */
         const Vector2<T>& GetDirection() const {
             return dir;
+        }
+
+        /**
+         * Returns a point on this ray.
+         *
+         * @param s the scaling factor used to calculate the point
+         * @return the requested point on this ray
+         */
+        Vector2<T> GetPoint(T s) const {
+            return p0 + dir * s;
         }
 
         /**

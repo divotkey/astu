@@ -28,8 +28,9 @@ namespace astu {
      template<typename T>
 	class Matrix4 {
 	public:
+
 		/** The Identity matrix. */
-		//static const Matrix4 IDENTITY;
+        static const Matrix4<T> Identity;
 
 		/**
 		 * Constructor.
@@ -44,22 +45,22 @@ namespace astu {
 		/**
 		 * Constructor. Initializes the matrix with the specified values.
 		 *
-		 * @param m00 the first value
-		 * @param m01 the second value
-		 * @param m02 the third value
-		 * @param m03 the fourth value
-		 * @param m04 the fifth value
-		 * @param m05 the sixth value
-		 * @param m06 the seventh value
-		 * @param m07 the eighth value
-		 * @param m08 the ninth value
-		 * @param m09 the tenth value
-		 * @param m10 the eleventh value
-		 * @param m11 the twelfth value
-		 * @param m12 the thirteenth value
-		 * @param m13 the fourteenth vlaue
-		 * @param m14 the fifteenth value
-		 * @param m15 the sixteenth value
+		 * @param m00   the first element of the first column
+		 * @param m01   the second element of the first column
+		 * @param m02   the third element of the first column
+		 * @param m03   the fourth element of th first column
+		 * @param m04   the first element of the second column
+		 * @param m05   the second element of the second column
+		 * @param m06   the third element of the second column
+		 * @param m07   the fourth element of the second column
+		 * @param m08   the first element of the third column
+		 * @param m09   the second element of the third column
+		 * @param m10   the third element of the third column
+		 * @param m11   the fourth element of the third column
+		 * @param m12   the first element of the fourth column
+		 * @param m13   the second element of the fourth column
+		 * @param m14   the third element of the fourth column
+		 * @param m15   the fourth element of the fourth column
 		 */
 		Matrix4(
 			T m00, T m01, T m02, T m03,
@@ -437,6 +438,77 @@ namespace astu {
 		}
 
 		/**
+		 * Inverts this matrix.
+		 *
+		 * If no inverse is possible, the matrix is set to identity matrix.
+		 *
+		 * @return reference to this (now inverted) matrix
+		 */
+		Matrix4<T>& Invert() {
+			T tmp[16];
+
+			tmp[0] = m[5] * m[10] * m[15] - m[5] * m[11] * m[14] - m[9] * m[6] * m[15] + m[9] * m[7] * m[14] +
+					 m[13] * m[6] * m[11] - m[13] * m[7] * m[10];
+			tmp[4] = -m[4] * m[10] * m[15] + m[4] * m[11] * m[14] + m[8] * m[6] * m[15] - m[8] * m[7] * m[14] -
+					 m[12] * m[6] * m[11] + m[12] * m[7] * m[10];
+			tmp[8] = m[4] * m[9] * m[15] - m[4] * m[11] * m[13] - m[8] * m[5] * m[15] + m[8] * m[7] * m[13] +
+					 m[12] * m[5] * m[11] - m[12] * m[7] * m[9];
+			tmp[12] = -m[4] * m[9] * m[14] + m[4] * m[10] * m[13] + m[8] * m[5] * m[14] - m[8] * m[6] * m[13] -
+					  m[12] * m[5] * m[10] + m[12] * m[6] * m[9];
+			tmp[1] = -m[1] * m[10] * m[15] + m[1] * m[11] * m[14] + m[9] * m[2] * m[15] - m[9] * m[3] * m[14] -
+					 m[13] * m[2] * m[11] + m[13] * m[3] * m[10];
+			tmp[5] = m[0] * m[10] * m[15] - m[0] * m[11] * m[14] - m[8] * m[2] * m[15] + m[8] * m[3] * m[14] +
+					 m[12] * m[2] * m[11] - m[12] * m[3] * m[10];
+			tmp[9] = -m[0] * m[9] * m[15] + m[0] * m[11] * m[13] + m[8] * m[1] * m[15] - m[8] * m[3] * m[13] -
+					 m[12] * m[1] * m[11] + m[12] * m[3] * m[9];
+			tmp[13] = m[0] * m[9] * m[14] - m[0] * m[10] * m[13] - m[8] * m[1] * m[14] + m[8] * m[2] * m[13] +
+					  m[12] * m[1] * m[10] - m[12] * m[2] * m[9];
+			tmp[2] = m[1] * m[6] * m[15] - m[1] * m[7] * m[14] - m[5] * m[2] * m[15] + m[5] * m[3] * m[14] +
+					 m[13] * m[2] * m[7] - m[13] * m[3] * m[6];
+			tmp[6] = -m[0] * m[6] * m[15] + m[0] * m[7] * m[14] + m[4] * m[2] * m[15] - m[4] * m[3] * m[14] -
+					 m[12] * m[2] * m[7] + m[12] * m[3] * m[6];
+			tmp[10] = m[0] * m[5] * m[15] - m[0] * m[7] * m[13] - m[4] * m[1] * m[15] + m[4] * m[3] * m[13] +
+					  m[12] * m[1] * m[7] - m[12] * m[3] * m[5];
+			tmp[14] = -m[0] * m[5] * m[14] + m[0] * m[6] * m[13] + m[4] * m[1] * m[14] - m[4] * m[2] * m[13] -
+					  m[12] * m[1] * m[6] + m[12] * m[2] * m[5];
+			tmp[3] = -m[1] * m[6] * m[11] + m[1] * m[7] * m[10] + m[5] * m[2] * m[11] - m[5] * m[3] * m[10] -
+					 m[9] * m[2] * m[7] + m[9] * m[3] * m[6];
+			tmp[7] = m[0] * m[6] * m[11] - m[0] * m[7] * m[10] - m[4] * m[2] * m[11] + m[4] * m[3] * m[10] +
+					 m[8] * m[2] * m[7] - m[8] * m[3] * m[6];
+			tmp[11] = -m[0] * m[5] * m[11] + m[0] * m[7] * m[9] + m[4] * m[1] * m[11] - m[4] * m[3] * m[9] -
+					  m[8] * m[1] * m[7] + m[8] * m[3] * m[5];
+			tmp[15] = m[0] * m[5] * m[10] - m[0] * m[6] * m[9] - m[4] * m[1] * m[10] + m[4] * m[2] * m[9] +
+					  m[8] * m[1] * m[6] - m[8] * m[2] * m[5];
+
+			T determinant = m[0] * tmp[0] + m[1] * tmp[4] + m[2] * tmp[8] + m[3] * tmp[12];
+
+			if (abs(determinant) < std::numeric_limits<T>::min()) {
+				SetToIdentity();
+			} else {
+				T invDeterminant = static_cast<T>(1) / determinant;
+				m[0] = tmp[0] * invDeterminant;
+				m[1] = tmp[1] * invDeterminant;
+				m[2] = tmp[2] * invDeterminant;
+				m[3] = tmp[3] * invDeterminant;
+				m[4] = tmp[4] * invDeterminant;
+				m[5] = tmp[5] * invDeterminant;
+				m[6] = tmp[6] * invDeterminant;
+				m[7] = tmp[7] * invDeterminant;
+				m[8] = tmp[8] * invDeterminant;
+				m[9] = tmp[9] * invDeterminant;
+				m[10] = tmp[10] * invDeterminant;
+				m[11] = tmp[11] * invDeterminant;
+				m[12] = tmp[12] * invDeterminant;
+				m[13] = tmp[13] * invDeterminant;
+				m[14] = tmp[14] * invDeterminant;
+				m[15] = tmp[15] * invDeterminant;
+			}
+
+			return *this;
+		}
+
+
+		/**
 		 * Transforms the specified point. 
 		 *
 		 * The specified vector is considered to be a row vector and hence
@@ -511,6 +583,50 @@ namespace astu {
 				v.x * m[2] + v.y * m[6] + v.z * m[10]
 			);
 		}
+
+        /**
+         * Transforms the specified row vector by the transposed of this matrix.
+         *
+         * This multiplication is carried out as if this matrix has been transposed.
+         *
+         * The specified vector is considered to be a row vector and hence
+         * multiplied from the right side. The missing fourth element
+         * of the required four component vector is assumed to be zero.
+         *
+         * @param v	the vector to transform
+         * @return the transformed vector
+         */
+        Vector3<T> TransformVectorTransposed(const Vector3<T>& v) const {
+            return Vector3(
+                    v.x * m[0] + v.y * m[1] + v.z * m[2],
+                    v.x * m[4] + v.y * m[5] + v.z * m[6],
+                    v.x * m[8] + v.y * m[9] + v.z * m[10]
+            );
+        }
+
+        /**
+         * Transforms the specified row vector by the transposed of this matrix.
+         *
+         * The result will be stored in the specified result vector.
+         *
+         * This multiplication is carried out as if this matrix has been transposed.
+         *
+         * The specified vector is considered to be a row vector and hence
+         * multiplied from the right side. The missing fourth element
+         * of the required four component vector is assumed to be zero.
+         *
+         * @param v		the point to transform
+         * @param vt	the point where to store the result
+         * @return reference to the specified result vector
+         */
+        Vector3<T>& TransformVectorTransposed(const Vector3<T>& v, Vector3<T>& vt) const {
+            return vt.Set(
+                    v.x * m[0] + v.y * m[1] + v.z * m[2],
+                    v.x * m[4] + v.y * m[5] + v.z * m[6],
+                    v.x * m[8] + v.y * m[9] + v.z * m[10]
+            );
+        }
+
 
         /**
          * Projects the specified row vector.
@@ -664,6 +780,16 @@ namespace astu {
 		/** The matrix elements. */
 		T m[16];
 	};
+
+    /**
+     * Defines the Identity-Constant für Matrix4 templates.
+     * (For some reasons, MS C++ compiler does not work with template inline
+     * keyword.)
+     *
+     * @param tparam    the numerical type of the vector
+     */
+    template <typename T>
+    Matrix4<T> const Matrix4<T>::Identity = Matrix4<T>(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
     /**
      * Convenient type alias for astu::Matrix4 template using double as data type.

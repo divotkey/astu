@@ -32,6 +32,9 @@ namespace astu {
     class Matrix3 {
     public:
 
+        /** The Identity matrix. */
+        static const Matrix3<T> Identity;
+
 		/**
 		 * Constructor.
 		 * 
@@ -47,15 +50,15 @@ namespace astu {
 		 * 
 		 * Initializes the matrix with the specified values.
 		 *
-		 * @param m0	the first value
-		 * @param m1	the second value
-		 * @param m2	the third value
-		 * @param m3	the fourth value
-		 * @param m4	the fifth value
-		 * @param m5	the sixth value
-		 * @param m6	the seventh value
-		 * @param m7	the eighth value
-		 * @param m8	the ninth value
+		 * @param m0    the first element of the first column
+		 * @param m1	the second element of the second column
+		 * @param m2	the third element of the third column
+		 * @param m3	the first element of the second column
+		 * @param m4	the second element of the second column
+		 * @param m5	the third element of the second column
+		 * @param m6	the first element of the third column
+		 * @param m7	the second element of the third column
+		 * @param m8	the third element of the third column
 		 */
 		Matrix3(T m0, T m1, T m2,
 				 T m3, T m4, T m5,
@@ -360,6 +363,7 @@ namespace astu {
 			tmp[8] = m[0] * m[4] - m[1] * m[3];
 
 			T determinant = m[0] * tmp[0] + m[1] * tmp[3] + m[2] * tmp[6];
+
 			if (abs(determinant) < std::numeric_limits<T>::min()) {
 				SetToIdentity();
 			}
@@ -465,6 +469,16 @@ namespace astu {
     private:
         T m[9];
     };
+
+    /**
+     * Defines the Identity-Constant für Matrix4 templates.
+     * (For some reasons, MS C++ compiler does not work with template inline
+     * keyword.)
+     *
+     * @param tparam    the numerical type of the vector
+     */
+    template <typename T>
+    Matrix3<T> const Matrix3<T>::Identity = Matrix3<T>(1, 0, 0, 0, 1, 0, 0, 0, 1);
 
 	/**
 	 * Convenient type alias for astu::Matrix3 template using double as data type.

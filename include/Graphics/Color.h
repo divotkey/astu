@@ -202,8 +202,8 @@ namespace astu {
          */
         T DistanceSquaredWithoutAlpha(const Color<T> & o) const {
             return (r - o.r) * (r - o.r) 
-                + (g - o.g) * (g - o.g) 
-                + (b - o.b) * (b - o.b);
+                 + (g - o.g) * (g - o.g)
+                 + (b - o.b) * (b - o.b);
         }
 
         /**
@@ -335,6 +335,24 @@ namespace astu {
          */
         Color<T> Lerp(const Color<T> & o, T t) const {
             return *this + (o - *this) * t;
+        }
+
+        /**
+         * Tests whether all components are zero, ignoring the alpha component.
+         *
+         * @return `true` if all components are zero.
+         */
+        bool IsZeroWithoutAlpha() const {
+            return r == 0 && b == 0 && g == 0;
+        }
+
+        /**
+         * Tests whether all components are zero.
+         *
+         * @return `true` if all components are zero.
+         */
+        bool IsZero() const {
+            return r == 0 && b == 0 && g == 0 && a == 0;
         }
 
         /**

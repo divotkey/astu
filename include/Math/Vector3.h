@@ -104,6 +104,38 @@ namespace astu {
         }
 
         /**
+         * Sets this vector to the coordinates of another vector.
+         *
+         * @param o the other vector which coordinates to use
+         * @return reference to this vector for method chaining
+         */
+        Vector3 & Set(const Vector3<T> & o) {
+            x = o.x;
+            y = o.y;
+            z = o.z;
+            return *this;
+        }
+
+        /**
+         * Sets this vector to zero length.
+         *
+         * @return reference to this vector for method chaining
+         */
+        Vector3 &SetZero() {
+            x = 0; y = 0; z = 0;
+            return *this;
+        }
+
+        /**
+         * Tests whether this vector has zero length.
+         *
+         * @return `true` if this vector has zero length
+         */
+        bool IsZero() const {
+            return x == 0 && y == 0 && z == 0;
+        }
+
+        /**
          * Returns the length of this vector squared.
          *
          * @return the squared length of this vector
@@ -222,7 +254,19 @@ namespace astu {
         }
 
         /**
-         * Calcualtes the dot product between this vector and the given vector.
+         * Flips this vector in-place.
+         *
+         * @return reference to this vector for method chaining
+         */
+        Vector3<T> & Flip() {
+            x = -x;
+            y = -y;
+            z = -z;
+            return *this;
+        }
+
+        /**
+         * Calculates the dot product between this vector and the given vector.
          *
          * @param o the other vector
          * @return the dot product between the two vectors.
@@ -303,7 +347,7 @@ namespace astu {
          * @param angle		the angle in radians
          * @return reference to this vector for method chaining
          */
-        Vector3<T> & rotateZ(T angle) {
+        Vector3<T> & RotateZ(T angle) {
             T cosA = std::cos(angle);
             T sinA = std::sin(angle);
             T t = x * cosA - y * sinA;
@@ -422,7 +466,7 @@ namespace astu {
          * @return `true` if the specified vector is equal to this vector
          */
         bool operator==(const Vector3<T> & rhs) const {
-            return x == rhs.x && y == rhs.y && z == rhs.y;
+            return x == rhs.x && y == rhs.y && z == rhs.z;
         }
 
         /**
@@ -458,6 +502,16 @@ namespace astu {
     template<typename T>
     Vector3<T> Cross(const Vector3<T> &v1, const Vector3<T> &v2) {
         return Vector3<T>(v1).Cross(v2);
+    }
+
+    /**
+     * Returns a normalized version of a vector
+     * @param v the vector to normalize
+     * @return the normalized input vector
+     */
+    template<typename T>
+    Vector3<T> Normalize(const Vector3<T> &v) {
+        return Vector3<T>(v).Normalize();
     }
 
     template<typename T>

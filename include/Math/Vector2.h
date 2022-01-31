@@ -86,8 +86,8 @@ namespace astu {
          * @return reference to this vector for method chaining
          */
         Vector2 & Set(const Vector2<T> & o) {
-            this->x = o.x;
-            this->y = o.y;
+            x = o.x;
+            y = o.y;
             return *this;
         }
 
@@ -532,15 +532,33 @@ namespace astu {
         }         
     };
 
+    /**
+     * Returns a normalized version of a vector
+     * @param v the vector to normalize
+     * @return the normalized input vector
+     */
+    template<typename T>
+    Vector2<T> Normalize(const Vector2<T> &v) {
+        return Vector2<T>(v).Normalize();
+    }
+
+    /**
+     * Binary multiplication operator for a scalar and a vector.
+     * This operator does a component-wise multiplication with the scalar value and the vector.
+     *
+     * @param s	the scalar value
+     * @param v	the vector
+     * @return a new vector representing the result of the operation
+     */
+    template<typename T>
+    inline const Vector2<T> operator*(T s, const Vector2<T> & v) {
+        return v * s;
+    }
+
     template<typename T>
 	inline std::ostream& operator<<(std::ostream& os, const Vector2<T> &vec) {
 		os << '{' << vec.x << ", " << vec.y << '}';
 		return os;
-	}    
-
-    template<typename T>
-	inline const Vector2<T> operator*(T s, const Vector2<T> & v) {
-		return v * s;
 	}    
 
     /**
