@@ -249,7 +249,7 @@ function EmitFiles(dir)
 }
 
 /**
- * Extracts the relavite path from a absolute file location.
+ * Extracts the relative path from a absolute file location.
  *
  * Example
  *
@@ -259,7 +259,7 @@ function EmitFiles(dir)
  *
  * @param file the absolute file location
  * @param root the path to the root directory which will be removed
- * @param the relativ path
+ * @param the relative path
  */
 function ExtractRelativePath(file, root)
 {

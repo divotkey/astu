@@ -154,6 +154,35 @@ namespace astu {
             return r;
         }
 
+        /**
+         * Linear interpolation between two values.
+         *
+         * @param a the first value
+         * @param b the second value
+         * @param t interpolation factor [0, 1]
+         * @return the interpolated value
+         * @tparam T the numerical type of the values
+         */
+        template <typename T>
+        static T Lerp(T a, T b, T t) {
+            return a + t * (b - a);
+        }
+
+
+        /**
+         * Linear interpolation between two values, that guarantees v = b when t = 1.
+         *
+         * @param a the first value
+         * @param b the second value
+         * @param t interpolation factor [0, 1]
+         * @return the interpolated value
+         * @tparam T the numerical type of the values
+         */
+        template <typename T>
+        static T LerpPrecise(T a, T b, T t) {
+            return (static_cast<T>(1) - t) * a + t * b;
+        }
+
         template <typename T>
         static int CalcQuadricRoots(T a, T b, T c, T& x1, T& x2) {
             T determinant = b * b - 4 * a * c;
