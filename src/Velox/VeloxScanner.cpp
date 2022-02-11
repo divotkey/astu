@@ -7,6 +7,7 @@
 // File: VeloxScanner.cpp
 
 #include <cctype>
+#include <stdexcept>
 #include "VeloxScanner.h"
 
 namespace astu {

@@ -15,8 +15,8 @@
 /**
  * Initializes the SDL-based application.
  * 
- * This function opens the main appplication window and carries out
- * some internal initializaiton procedures and acquire required resources.
+ * This function opens the main application window and carries out
+ * some internal initialization procedures and acquire required resources.
  * 
  * @param width     the width of the main window in pixels
  * @param height    the width of the main window in pixels
@@ -82,7 +82,7 @@ void UpdateApp();
 /**
  * Returns `true` in case the user want's to terminate the application.
  * 
- * On most plattform the request to terminate the application happens
+ * On most platform the request to terminate the application happens
  * e.g., by pressing the close button of the application window.
  * 
  * @return `true` if the application should be terminated, `false` otherwise

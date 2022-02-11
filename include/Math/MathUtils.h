@@ -7,9 +7,6 @@
 
 #pragma once
 
-// Local includes
-#include "Matrix4.h"
-
 // C++ Standard Library includes
 #include <cmath>
 
@@ -38,11 +35,24 @@ namespace astu {
         /** Constant for PI times two with double precision. */
         const static double PI2d;
 
+        /** Inverse PI (1 / PI) with double precision. */
+        const static double InvPId;
+
+        /** Inverse of PI times two (1 / 2PI) with double precision. */
+        const static double InvPI2d;
+
         /** Constant for PI with single precision. */
         const static float PIf;
 
         /** Constant for PI times two with single precision. */
         const static float PI2f;
+
+        /** Inverse PI (1 / PI) with single precision. */
+        const static float InvPIf;
+
+        /** Inverse of PI times two (1 / 2PI) with double precision. */
+        const static float InvPI2f;
+
 
         /**
          * Converts from degrees to radians.
@@ -170,7 +180,7 @@ namespace astu {
 
 
         /**
-         * Linear interpolation between two values, that guarantees v = b when t = 1.
+         * Linear interpolation between two values, that guarantees v = v1 when t = 1.
          *
          * @param a the first value
          * @param b the second value
@@ -206,65 +216,6 @@ namespace astu {
             return 2;
         }
 
-        /**
-         * Returns the reflection vector given an incidence vector and a normal vector.
-         *
-         * The normal vector n should be normalized. If n is normalized, the output
-         * vector will have the same length as the input incidence vector i.
-         *
-         * @param i     the incidence vector
-         * @param nv    the normal vector
-         * @return the reflection vector
-         * @tparam T the numerical type of the vectors
-         */
-        template <typename T>
-        static Vector3<T> Reflect(const Vector3<T> &i, const Vector3<T> &nv) {
-            //return i - (static_cast<T>(2) * nv * nv.Dot(i));
-            return i - nv * (static_cast<T>(2) * nv.Dot(i));
-        }
-
-        //TODO document LookAt method
-        //TODO optimize and beautify LookAt method
-        template <typename T>
-        static Matrix4<T> LookAt(const Vector3<T>& eye, const Vector3<T>& center, const Vector3<T>& up) {
-            Vector3<T> f = center - eye;
-            f.Normalize();
-
-            Vector3<T> s(f);
-            s.Cross(up).Normalize();
-
-            Vector3<T> u(s);
-            u.Cross(f);
-
-            Matrix4<T> result( s.x,  u.x, -f.x, 0,
-                               s.y,  u.y, -f.y, 0,
-                               s.z,  u.z, -f.z, 0,
-                                 0,    0,    0, 1);
-
-            Matrix4<T> tx;
-            tx.SetToTranslate(-eye);
-            result *= tx;
-            return result;
-        }
-
-        //TODO document CreatePerspective method
-        //TODO optimize and beautify CreatePerspective method
-        template <typename T>
-        static Matrix4<T> CreatePerspective(T near, T far, T fovy, T aspect)
-        {
-            assert(near > 0);
-            assert(far > near);
-
-            //T fd = 1.0 / tan((fovy * (Math.PI / 180)) / 2.0);
-            T fd = 1.0 / tan(astu::ToRadians<T>(fovy) / 2.0);
-            T a1 = (far + near) / (near - far);
-            T a2 = (2 * far * near) / (near - far);
-
-            return Matrix4<T>(fd / aspect,   0,   0,  0,
-                                        0,  fd,   0,  0,
-                                        0,   0,  a1, -1,
-                                        0,   0,  a2,  0);
-        }
     };
 
 } // end of namespace

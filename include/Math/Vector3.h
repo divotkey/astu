@@ -309,7 +309,21 @@ namespace astu {
         Vector3<T> & Cross(T vx, T vy, T vz) {
             Set(y * vz - z * vy, z * vx - x * vz, x * vy - y * vx);
             return *this;
-        } 
+        }
+
+        /**
+         * Returns the reflection vector of this incidence vector and a given normal vector.
+         *
+         * The normal vector n should be normalized. If nv is normalized, the output
+         * vector will have the same length as this vector.
+         *
+         * @param nv    the normal vector
+         * @return the reflection vector
+         * @tparam T the numerical type of the vectors
+         */
+        Vector3<T> Reflect(const Vector3<T> &nv) const {
+            return *this - nv * (static_cast<T>(2) * Dot(nv));
+        }
 
         /**
          * Rotates this vector about the x axis.

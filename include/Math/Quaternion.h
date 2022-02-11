@@ -501,7 +501,7 @@ namespace astu {
          * @return `true` if this quaternion is normalized.
          */
         bool IsNormalized(T epsilon = static_cast<T>(0.000001)) const {
-            return MathUtils::IsEqual(length(), (Real) 1.0, epsilon);
+            return MathUtils::IsEqual(Length(), static_cast<T>(1.0), epsilon);
         }
 
         /**
@@ -531,10 +531,10 @@ namespace astu {
             if ((1 - absDot) > static_cast<T>(0.1)) {
                 // Get the angle between the 2 quaternions,
                 // and then store the sin() of that angle
-                const Real angle = std::acos(absDot);
-                const Real invSinTheta = 1 / std::sin(angle);
+                const T angle = std::acos(absDot);
+                const T invSinTheta = 1 / std::sin(angle);
 
-                // Calculate the scale for q1 and q2, according to the angle and it's sine value
+                // Calculate the scale for q1 and q2, according to the angle, and it's sine value
                 scale0 = (std::sin((1 - t) * angle) * invSinTheta);
                 scale1 = (std::sin((t * angle)) * invSinTheta);
             }

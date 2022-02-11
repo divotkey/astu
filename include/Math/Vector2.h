@@ -250,7 +250,7 @@ namespace astu {
          */
         Vector2 & RotateDeg(T phi)
         {
-            return Rotate(ToRadians<T>(phi));
+            return Rotate(MathUtils::ToRadians<T>(phi));
         }
 
         /**

@@ -13,7 +13,7 @@
 namespace astu {
 
     /**
-     * Simplified the requried startup code for SDL-based interactive applications.
+     * Simplified the required startup code for SDL-based interactive applications.
      * 
      * @ingroup sdl_group
      */
@@ -26,7 +26,7 @@ namespace astu {
         SdlApplication();
 
         /**
-         * Specifies whetehr to add services required for 2D renderings.
+         * Specifies whether to add services required for 2D renderings.
          * 
          * @param b set to `true` to add 2D services
          */

@@ -10,6 +10,7 @@
 // Local includes
 #include "Vector3.h"
 #include "Quaternion.h"
+#include "MathUtils.h"
 
 // C++ Standard library includes
 #include <cassert>
@@ -25,12 +26,69 @@ namespace astu {
 	 *
      * @ingroup math_group
 	 */
-     template<typename T>
+    template<typename T>
 	class Matrix4 {
 	public:
 
 		/** The Identity matrix. */
         static const Matrix4<T> Identity;
+
+        /**
+         * Creates a viewing matrix derived from an eye point, a target point, and an UP vector.
+         *
+         * @param eye       the position of the observer (camera etc.)
+         * @param center    the target the observer should look at
+         * @param up        the up direction of the observer
+         * @return the newly created view matrix
+         * @param tparam    the numerical type of this matrix
+         */
+        static Matrix4<T> CreateLookAt(const Vector3<T>& eye, const Vector3<T>& center, const Vector3<T>& up) {
+            //TODO optimize and beautify LookAt method
+            Vector3<T> f = center - eye;
+            f.Normalize();
+
+            Vector3<T> s(f);
+            s.Cross(up).Normalize();
+
+            Vector3<T> u(s);
+            u.Cross(f);
+
+            Matrix4<T> result( s.x,  u.x, -f.x, 0,
+                               s.y,  u.y, -f.y, 0,
+                               s.z,  u.z, -f.z, 0,
+                               0,    0,    0, 1);
+
+            Matrix4<T> tx;
+            tx.SetToTranslate(-eye);
+            result *= tx;
+            return result;
+        }
+
+        /**
+         * Creates up a perspective projection matrix.
+         *
+         * @param near      the distance from the viewer to the near clipping plane
+         * @param far       the distance from the viewer to the far clipping plane
+         * @param fovy      specifies the field of view angle, in degrees, in the y direction
+         * @param aspect    specifies the aspect ratio that determines the field of view in the x direction
+         * @return the newly created perspective projection matrix
+         * @param tparam    the numerical type of this matrix
+         */
+        static Matrix4<T> CreatePerspective(T near, T far, T fovy, T aspect)
+        {
+            assert(near > 0);
+            assert(far > near);
+
+            //T fd = 1.0 / tan((fovy * (Math.PI / 180)) / 2.0);
+            T fd = 1.0 / tan(MathUtils::ToRadians<T>(fovy) / 2.0);
+            T a1 = (far + near) / (near - far);
+            T a2 = (2 * far * near) / (near - far);
+
+            return Matrix4<T>(fd / aspect,   0,   0,  0,
+                              0,  fd,   0,  0,
+                              0,   0,  a1, -1,
+                              0,   0,  a2,  0);
+        }
 
 		/**
 		 * Constructor.
@@ -786,7 +844,7 @@ namespace astu {
      * (For some reasons, MS C++ compiler does not work with template inline
      * keyword.)
      *
-     * @param tparam    the numerical type of the vector
+     * @param tparam    the numerical type of this matrix
      */
     template <typename T>
     Matrix4<T> const Matrix4<T>::Identity = Matrix4<T>(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
