@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Mon Jan 03 08:16:49 CET 2022 with SWORD Interpreter 1.9.0
+# Generated Sat Feb 12 10:12:54 CET 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -52,6 +52,8 @@ list(APPEND astu_SOURCES
 		include/Util/MessageBox.h
 		include/Util/Pooled.h
 		include/Util/StringUtils.h
+		include/Util/Timer.cpp
+		include/Util/Timer.h
 		include/Util/VersionInfo.h
 
 		# Module: Math
@@ -63,6 +65,7 @@ list(APPEND astu_SOURCES
 		include/Math/Matrix3.h
 		include/Math/Matrix4.h
 		include/Math/Polygon.h
+		include/Math/Quaternion.h
 		include/Math/Random.h
 		include/Math/Ray2.h
 		include/Math/Ray3.h
@@ -71,7 +74,6 @@ list(APPEND astu_SOURCES
 		include/Math/Transform2.h
 		include/Math/Vector2.h
 		include/Math/Vector3.h
-		include/Math/Quaternion.h
 
 		# Module: Graphics
 		src/Graphics/AstuGraphics.cpp
@@ -230,12 +232,12 @@ if(ASTU_USE_SDL)
 	list(APPEND astu_SOURCES
 
 			# Module: SuiteSDL
-			src/SuiteSDL/Application.cpp
 			src/SuiteSDL/ApplicationImpl.cpp
 			src/SuiteSDL/ApplicationImpl.h
 			src/SuiteSDL/ISdlEventListener.h
 			src/SuiteSDL/SdlApplication.cpp
 			src/SuiteSDL/SdlApplication0.cpp
+			src/SuiteSDL/SdlApplication1.cpp
 			src/SuiteSDL/SdlApplicationDummy.cpp
 			src/SuiteSDL/SdlAudioService.cpp
 			src/SuiteSDL/SdlEventService.cpp
@@ -252,10 +254,10 @@ if(ASTU_USE_SDL)
 			src/SuiteSDL/SdlService.cpp
 			src/SuiteSDL/SdlTimeService.cpp
 			src/SuiteSDL/SdlVideoService.cpp
-			include/SuiteSDL/Application.h
 			include/SuiteSDL/ISdlResizeListener.h
 			include/SuiteSDL/SdlApplication.h
 			include/SuiteSDL/SdlApplication0.h
+			include/SuiteSDL/SdlApplication1.h
 			include/SuiteSDL/SdlAudioService.h
 			include/SuiteSDL/SdlEventService.h
 			include/SuiteSDL/SdlJoystickService.h
@@ -290,7 +292,7 @@ endif(ASTU_USE_JACK)
 ####### Configuration File
 #################################################
 
-# Setup confituration file to promulgate version info, etc.
+# Setup configuration file to promulgate version info, etc.
 # Note: this needs to be done after definition of optional variables.
 configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 
@@ -299,7 +301,7 @@ configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 #################################################
 
 # Define static library target.
-add_library(astu ${astu_SOURCES} ../ByteLight/main.cpp)
+add_library(astu ${astu_SOURCES})
 
 # Set include directories for target astu
 target_include_directories(
@@ -371,5 +373,4 @@ if(ASTU_USE_JACK)
 	ELSE()
 		target_link_libraries(astuShared jack)
 	ENDIF()
-endif(ASTU_USE_JACK)    
-
+endif(ASTU_USE_JACK)

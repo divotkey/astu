@@ -20,6 +20,7 @@
 #include "Util/Pooled.h"
 #include "Util/VersionInfo.h"
 #include "Util/StringUtils.h"
+#include "Util/Timer.h"
 
 namespace astu {
 

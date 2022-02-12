@@ -18,7 +18,7 @@
 #include "Audio/WaveCodec.h"
 #include "Audio/AudioBuffer.h"
 
-// C++ Standard Libryry includes
+// C++ Standard Library includes
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <cassert>

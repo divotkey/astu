@@ -5,12 +5,12 @@
  * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
-#include "SuiteSDL/Application.h"
+#include "SuiteSDL/SdlApplication1.h"
 #include "SuiteSDL/ApplicationImpl.h"
 
 namespace astu {
 
-    Application::Application()
+    SdlApplication1::SdlApplication1()
         : impl(std::make_unique<ApplicationImpl>())
     {
         // Intentionally left empty.
@@ -22,104 +22,104 @@ namespace astu {
     // requires the declaration of what it has to destroy and we use
     // a forward declaration for the implementation file in the header,
     // to fully encapsulate the details of the implementation.
-    Application::~Application()
+    SdlApplication1::~SdlApplication1()
     {
         // Intentionally left empty.
     }
 
-    void Application::SetWidth(int w)
+    void SdlApplication1::SetWidth(int w)
     {
         impl->SetWidth(w);
     }
 
-    void Application::SetHeight(int w)
+    void SdlApplication1::SetHeight(int w)
     {
         impl->SetHeight(w);
     }
 
-    int Application::GetWidth() const
+    int SdlApplication1::GetWidth() const
     {
         return impl->GetWidth();
     }
 
-    int Application::GetHeight() const
+    int SdlApplication1::GetHeight() const
     {
         return impl->GetHeight();
     }
 
-    void Application::SetBackgroundColor(const Color4d & c)
+    void SdlApplication1::SetBackgroundColor(const Color4d & c)
     {
         impl->SetBackgroundColor(c);
     }
 
-    Color4d Application::GetBackgroundColor() const
+    Color4d SdlApplication1::GetBackgroundColor() const
     {
         return impl->GetBackgroundColor();
     }
 
-    void Application::SetDrawColor(const Color4d & c)
+    void SdlApplication1::SetDrawColor(const Color4d & c)
     {
         impl->SetDrawColor(c);
     }
 
-    Color4d Application::GetDrawColor() const
+    Color4d SdlApplication1::GetDrawColor() const
     {
         return impl->GetDrawColor();
     }
 
-    void Application::DrawRectangle(int x, int y, int w, int h, bool filled)
+    void SdlApplication1::DrawRectangle(int x, int y, int w, int h, bool filled)
     {
         impl->DrawRectangle(x, y, w, h, filled);
     }
 
-    void Application::DrawLine(int x1, int y1, int x2, int y2)
+    void SdlApplication1::DrawLine(int x1, int y1, int x2, int y2)
     {
         impl->DrawLine(x1, y1, x2, y2);
     }
 
-    void Application::DrawPixel(int x, int y)
+    void SdlApplication1::DrawPixel(int x, int y)
     {
         impl->DrawPixel(x, y); 
     }
 
-    void Application::Clear()
+    void SdlApplication1::Clear()
     {
         impl->Clear();
     }
 
-    double Application::GetFps() const
+    double SdlApplication1::GetFps() const
     {
         return impl->GetFps();
     }
 
-    void Application::SetTitle(const std::string & title)
+    void SdlApplication1::SetTitle(const std::string & title)
     {
         impl->SetTitle(title);
     }
 
-    std::string Application::GetTitle() const
+    std::string SdlApplication1::GetTitle() const
     {
         return impl->GetTitle();
     }
 
-    void Application::Run()
+    void SdlApplication1::Run()
     {
         OnStartup();
         impl->Run([this](){ OnRender(); });
         OnShutdown();
     }
 
-    double Application::GetDeltaTime() const
+    double SdlApplication1::GetDeltaTime() const
     {
         return impl->GetDeltaTime();
     }
 
-    double Application::GetTime() const
+    double SdlApplication1::GetTime() const
     {
         return impl->GetTime();
     }
 
-    void Application::ResetTime(double t)
+    void SdlApplication1::ResetTime(double t)
     {
         impl->ResetTime(t);
     }

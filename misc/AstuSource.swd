@@ -47,7 +47,7 @@ function EmitEpilog()
 {
 	EmitHeader("Configuration File");
 	§:
-	# Setup confituration file to promulgate version info, etc.
+	# Setup configuration file to promulgate version info, etc.
 	# Note: this needs to be done after definition of optional variables.
 	configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 

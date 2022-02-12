@@ -21,18 +21,18 @@ namespace astu {
      * This implementation represents an intermediate step between
      * AST-Utilities API Level 0 and Full-API.
      */
-    class Application {
+    class SdlApplication1 {
     public:
 
         /**
          * Constructor.
          */
-        Application();
+        SdlApplication1();
 
         /**
          * Virtual destructor.
          */
-        virtual ~Application();
+        virtual ~SdlApplication1();
 
         /**
          * Sets the width of the application window.

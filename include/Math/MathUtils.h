@@ -9,6 +9,7 @@
 
 // C++ Standard Library includes
 #include <cmath>
+#include <utility>
 
 namespace astu {
 
@@ -194,10 +195,10 @@ namespace astu {
         }
 
         template <typename T>
-        static int CalcQuadricRoots(T a, T b, T c, T& x1, T& x2) {
+        static bool CalcQuadricRoots(T a, T b, T c, T& x1, T& x2) {
             T determinant = b * b - 4 * a * c;
             if (determinant < 0) {
-                return 0;
+                return false;
             }
 
             determinant = std::sqrt(determinant);
@@ -206,14 +207,11 @@ namespace astu {
             x1 = q / a;
             x2 = c / q;
 
-            // Uncomment t sort results.
-            //if (x1 > x2) {
-            //    q = x2; x2 = x1; x1 = q;
-            //}
-            if (x1 == x2) {
-                return 1;
+            // Make sure x1 is < x2
+            if (x2 < x1) {
+                std::swap(x1, x2);
             }
-            return 2;
+            return true;
         }
 
     };

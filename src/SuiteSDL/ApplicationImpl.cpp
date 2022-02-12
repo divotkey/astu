@@ -256,6 +256,7 @@ namespace astu {
 
     void ApplicationImpl::Render(std::function<void()> renderCallback)
     {
+        Clear();
         renderCallback();
         SDL_RenderPresent(renderer);
     }
