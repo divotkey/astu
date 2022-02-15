@@ -7,10 +7,17 @@
 
 #pragma once
 
-#include <string>
-#include <functional>
-#include <SDL2/SDL.h>
+// AST-Utilities includes
 #include "Graphics/Color.h"
+#include "Input/Keyboard.h"
+#include "Input/Mouse.h"
+#include "SuiteSDL/ISdlApplication1Listener.h"
+
+// SDL2 includes
+#include <SDL2/SDL.h>
+
+// C++ Standard Library includes
+#include <string>
 
 namespace astu {
 
@@ -48,7 +55,22 @@ namespace astu {
         void SetTitle(const std::string &title);
         std::string GetTitle() const;
 
-        void Run(std::function<void()> renderCallback);
+        /**
+         * Pre-run initialization.
+         */
+        void Startup();
+
+        /**
+         * Post-run de-initialization.
+         */
+        void Shutdown();
+
+        /**
+         * Runs this application.
+         *
+         * @param listener  receives render and other events
+         */
+        void Run(ISdlApplication1Listener &listener);
 
 
         double GetDeltaTime() const {
@@ -112,6 +134,11 @@ namespace astu {
         /** The number of frames since the last FPS update. */
         unsigned int cntFrames;
 
+        /** Used to transfer keyboard events to keyboard mono-state. */
+        Keyboard keyboard;
+
+        /** Used to transfer mouse events to mouse mono-state. */
+        Mouse mouse;
 
         /**
          * Initializes SDL and prerequisites for the application.
@@ -125,13 +152,17 @@ namespace astu {
 
         /**
          * Renders the content to screen.
+         *
+         * @param listener  receives the OnRender event
          */
-        void Render(std::function<void()> renderCallback);
+        void Render(ISdlApplication1Listener &listener);
 
         /**
          * Processes the event queue.
+         *
+         * @param listener  receives selected events
          */
-        void ProcessEvents();
+        void ProcessEvents(ISdlApplication1Listener& listener);
 
         /**
          * Updates elapsed time.

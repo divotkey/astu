@@ -14,6 +14,7 @@ namespace astu {
 
     class ISdlEventListener {
     public:
+
         /** Virtual destructor. */
         virtual ~ISdlEventListener() {}
 

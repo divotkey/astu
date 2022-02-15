@@ -24,8 +24,9 @@ namespace astu {
     /////////////////////////////////////////////////
 
     /**
-     * Keys represent input controlls and are caleld Keys for the sake of shortness.
-     * A Key can be an actuall key on the keyboard but also a button on the 
+     * Keys represent input controls and are called Keys for the sake of shortness.
+     *
+     * A Key can be an actually key on the keyboard but also a button on the
      * gamepad or mouse etc. Keys are used to define input mapping in the
      * context of the InputMappingService.
      * 

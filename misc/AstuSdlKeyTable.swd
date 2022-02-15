@@ -74,6 +74,18 @@ AddKey(80, "Left");
 AddKey(81, "Down");
 AddKey(82, "Up");
 
+AddKey(89, "NumpadOne");
+AddKey(90, "NumpadTwo");
+AddKey(91, "NumpadThree");
+AddKey(92, "NumpadFour");
+AddKey(93, "NumpadFive");
+AddKey(94, "NumpadSix");
+AddKey(95, "NumpadSeven");
+AddKey(96, "NumpadEight");
+AddKey(97, "NumpadNine");
+AddKey(98, "NumpadZero");
+AddKey(99, "NumpadPeriod");
+
 AddKey(224, "LeftControl");
 AddKey(225, "LeftShift");
 AddKey(226, "LeftAlt");
@@ -94,7 +106,7 @@ AddSpecialKey("GamepadLeftThumbstickX", "Gamepad Left Thumbstick x-Achis");
 AddSpecialKey("GamepadLeftThumbstickY", "Gamepad Left Thumbstick Y-Achis");
 AddSpecialKey("GamepadRightThumbstickX", "Gamepad Right Thumbstick X-Achis");
 AddSpecialKey("GamepadRightThumbstickY", "Gamepad Right Thumbstick Y-Achis");
-AddSpecialKey("GamepadLeftShoulder", "Gamepad Keft Shoulder");
+AddSpecialKey("GamepadLeftShoulder", "Gamepad Left Shoulder");
 AddSpecialKey("GamepadRightShoulder", "Gamepad Right Shoulder");
 
 //EmitTableCode();

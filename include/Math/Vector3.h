@@ -328,12 +328,12 @@ namespace astu {
         /**
          * Rotates this vector about the x axis.
          *
-         * @param angle	the angle in radians
+         * @param phi   the phi in radians
          * @return reference to this vector for method chaining
          */
-        Vector3<T> & RotateX(T angle) {
-            T cosA = std::cos(angle);
-            T sinA = std::sin(angle);
+        Vector3<T> & RotateX(T phi) {
+            T cosA = std::cos(phi);
+            T sinA = std::sin(phi);
             T t = y * cosA - z * sinA;
             z = y * sinA + z * cosA;
             y = t;
@@ -341,33 +341,63 @@ namespace astu {
         }
 
         /**
-         * Rotates this vector about the y axis.
+         * Rotates this vector about the x axis.
          *
-         * @param angle		the angle in radians
+         * @param phi   the angle in degrees
          * @return reference to this vector for method chaining
          */
-        Vector3<T> & RotateY(T angle) {
-            T cosA = std::cos(angle);
-            T sinA = std::sin(angle);
+        Vector3<T> & RotateDegX(T phi) {
+            return RotateX(MathUtils::ToRadians(phi));
+        }
+
+        /**
+         * Rotates this vector about the y axis.
+         *
+         * @param phi   the phi in radians
+         * @return reference to this vector for method chaining
+         */
+        Vector3<T> & RotateY(T phi) {
+            T cosA = std::cos(phi);
+            T sinA = std::sin(phi);
             T t = z * sinA + x * cosA;
             z = z * cosA - x * sinA;
             x = t;
             return *this;
-        } 
+        }
+
+        /**
+         * Rotates this vector about the y axis.
+         *
+         * @param phi   the angle in degrees
+         * @return reference to this vector for method chaining
+         */
+        Vector3<T> & RotateDegY(T phi) {
+            return RotateY(MathUtils::ToRadians(phi));
+        }
 
         /**
          * Rotates this vector about the z axis.
          *
-         * @param angle		the angle in radians
+         * @param phi   the phi in radians
          * @return reference to this vector for method chaining
          */
-        Vector3<T> & RotateZ(T angle) {
-            T cosA = std::cos(angle);
-            T sinA = std::sin(angle);
+        Vector3<T> & RotateZ(T phi) {
+            T cosA = std::cos(phi);
+            T sinA = std::sin(phi);
             T t = x * cosA - y * sinA;
             y = x * sinA + y * cosA;
             x = t;
             return *this;
+        }
+
+        /**
+         * Rotates this vector about the z axis.
+         *
+         * @param phi   the angle in degrees
+         * @return reference to this vector for method chaining
+         */
+        Vector3<T> & RotateDegZ(T phi) {
+            return RotateZ(MathUtils::ToRadians(phi));
         }
 
         /**

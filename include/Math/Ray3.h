@@ -41,6 +41,17 @@ namespace astu {
         }
 
         /**
+         * Creates a new ray object defined by two points.
+         *
+         * @param p0    the origin of the ray in world space
+         * @param p1    a point on the ray in world space
+         * @return the newly created ray with normalized direction vector
+         */
+        static Ray3 CreateFromTwoPoints(const Vector3<T> &p0, const Vector3<T> &p1) {
+            return Ray3<T>(p0, astu::Normalize(p1 - p0));
+        }
+
+        /**
          * Constructor.
          * 
          * @param p the origin of this ray

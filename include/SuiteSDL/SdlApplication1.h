@@ -7,9 +7,14 @@
 
 #pragma once
 
+// Local includes
+#include "Graphics/Color.h"
+#include "Input/Keys.h"
+#include "ISdlApplication1Listener.h"
+
+// C++ Standard Library includes
 #include <memory>
 #include <string>
-#include "Graphics/Color.h"
 
 namespace astu {
 
@@ -21,7 +26,7 @@ namespace astu {
      * This implementation represents an intermediate step between
      * AST-Utilities API Level 0 and Full-API.
      */
-    class SdlApplication1 {
+    class SdlApplication1 : public ISdlApplication1Listener {
     public:
 
         /**
@@ -173,11 +178,6 @@ namespace astu {
 
     protected:
 
-        /** 
-         * Called by this base class to render application specific content.
-         */ 
-        virtual void OnRender() {}
-
         /**
          * Called by this base class when the application is started.
          */
@@ -187,6 +187,13 @@ namespace astu {
          * Called by this base class when the application is shutdown.
          */
         virtual void OnShutdown() {}
+
+        // Inherited via ISdlApplication1Listener
+        virtual void OnRender() override {}
+        virtual void OnKeyDown(const Key &key) override {}
+        virtual void OnKeyUp(const Key &key) override {}
+        virtual void OnMouseButtonDown(int button, int x, int y) override {}
+        virtual void OnMouseButtonUp(int button, int x, int y) override {}
 
     private:
         /** Pointer to the implementation, see PImpl C++ Idiom. */

@@ -104,9 +104,11 @@ namespace astu {
 
     void SdlApplication1::Run()
     {
+        impl->Startup();
         OnStartup();
-        impl->Run([this](){ OnRender(); });
+        impl->Run(*this);
         OnShutdown();
+        impl->Shutdown();
     }
 
     double SdlApplication1::GetDeltaTime() const

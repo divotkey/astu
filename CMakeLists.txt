@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Sat Feb 12 10:12:54 CET 2022 with SWORD Interpreter 1.9.1
+# Generated Sun Feb 13 18:58:43 CET 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -43,6 +43,7 @@ list(APPEND astu_SOURCES
 		src/Util/Memento.cpp
 		src/Util/MessageBox.cpp
 		src/Util/StringUtils.cpp
+		src/Util/Timer.cpp
 		src/Util/VersionInfo.cpp
 		include/Util/CommandQueue.h
 		include/Util/Controllable.h
@@ -52,7 +53,6 @@ list(APPEND astu_SOURCES
 		include/Util/MessageBox.h
 		include/Util/Pooled.h
 		include/Util/StringUtils.h
-		include/Util/Timer.cpp
 		include/Util/Timer.h
 		include/Util/VersionInfo.h
 
@@ -254,6 +254,7 @@ if(ASTU_USE_SDL)
 			src/SuiteSDL/SdlService.cpp
 			src/SuiteSDL/SdlTimeService.cpp
 			src/SuiteSDL/SdlVideoService.cpp
+			include/SuiteSDL/ISdlApplication1Listener.h
 			include/SuiteSDL/ISdlResizeListener.h
 			include/SuiteSDL/SdlApplication.h
 			include/SuiteSDL/SdlApplication0.h

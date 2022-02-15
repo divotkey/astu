@@ -5,11 +5,16 @@
  * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
+
+// Local includes
+#include "ApplicationImpl.h"
+#include "AstUtilsConfig.h"
+#include "Util/VersionInfo.h"
+#include "SdlKeyTable.h"
+
+// C++ Standard Library includes
 #include <stdexcept>
 #include <iostream>
-#include "Util/VersionInfo.h"
-#include "AstUtilsConfig.h"
-#include "ApplicationImpl.h"
 
 #define FPS_UPDATE_INTERVAL 1.0
 
@@ -173,63 +178,44 @@ namespace astu {
         return title;
     }
 
-    void ApplicationImpl::Run(std::function<void()> renderCallback)
-    {
-        Initialize();
-        running = true;
-        while (running) {
-            UpdateTime();
-            UpdateFps();            
-            ProcessEvents();
-            Render(renderCallback);
-        }
-        CleanUp();
-    }
-
-    void ApplicationImpl::ResetTime(double t)
-    {
-        time = t;
-    }
-
-    void ApplicationImpl::Initialize()
-    {
+    void ApplicationImpl::Startup() {
         if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());        
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
             throw std::runtime_error(SDL_GetError());
-        }    
+        }
 
         window = SDL_CreateWindow(
-            title.c_str(), 
-            SDL_WINDOWPOS_UNDEFINED, 
-            SDL_WINDOWPOS_UNDEFINED,
-            width,
-            height,
-            SDL_WINDOW_SHOWN
+                title.c_str(),
+                SDL_WINDOWPOS_UNDEFINED,
+                SDL_WINDOWPOS_UNDEFINED,
+                width,
+                height,
+                SDL_WINDOW_SHOWN
         );
 
         if (!window) {
-            SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't create SDL Window: %s", SDL_GetError());        
+            SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't create SDL Window: %s", SDL_GetError());
             CleanUp();
             throw std::runtime_error(SDL_GetError());
         }
 
         renderer = SDL_CreateRenderer(
-            window, 
-            -1, 
-            SDL_RendererFlags::SDL_RENDERER_ACCELERATED | SDL_RendererFlags::SDL_RENDERER_PRESENTVSYNC
-            );
+                window,
+                -1,
+                SDL_RendererFlags::SDL_RENDERER_ACCELERATED | SDL_RendererFlags::SDL_RENDERER_PRESENTVSYNC
+        );
 
         if (!renderer) {
-            SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't create SDL Renderer: %s", SDL_GetError());        
+            SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't create SDL Renderer: %s", SDL_GetError());
             CleanUp();
             throw std::runtime_error(SDL_GetError());
-        }            
+        }
 
         if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)) {
-            SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't set blend mode for SDL Renderer: %s", SDL_GetError());        
+            SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Couldn't set blend mode for SDL Renderer: %s", SDL_GetError());
             CleanUp();
             throw std::runtime_error(SDL_GetError());
-        }            
+        }
 
         performToSeconds = 1.0 / SDL_GetPerformanceFrequency();
         performCnt = SDL_GetPerformanceCounter();
@@ -237,6 +223,26 @@ namespace astu {
         fpsSum = 0;
         fpsUpdate = FPS_UPDATE_INTERVAL;
         cntFrames = 0;
+    }
+
+    void ApplicationImpl::Shutdown() {
+        CleanUp();
+    }
+
+    void ApplicationImpl::Run(ISdlApplication1Listener &listener)
+    {
+        running = true;
+        while (running) {
+            UpdateTime();
+            UpdateFps();            
+            ProcessEvents(listener);
+            Render(listener);
+        }
+    }
+
+    void ApplicationImpl::ResetTime(double t)
+    {
+        time = t;
     }
 
     void ApplicationImpl::CleanUp()
@@ -254,20 +260,38 @@ namespace astu {
         SDL_Quit();
     }
 
-    void ApplicationImpl::Render(std::function<void()> renderCallback)
+    void ApplicationImpl::Render(ISdlApplication1Listener& listener)
     {
-        Clear();
-        renderCallback();
+        listener.OnRender();
         SDL_RenderPresent(renderer);
     }
 
-    void ApplicationImpl::ProcessEvents()
+    void ApplicationImpl::ProcessEvents(ISdlApplication1Listener& listener)
     {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
             case SDL_QUIT:
                 running = false;
+                break;
+
+            case SDL_KEYDOWN:
+                keyboard.SetKey(event.key.keysym.scancode, true);
+                listener.OnKeyDown(SdlKeyTable::ScanCodeToKey(event.key.keysym.scancode));
+                break;
+
+            case SDL_KEYUP:
+                listener.OnKeyUp(SdlKeyTable::ScanCodeToKey(event.key.keysym.scancode));
+                break;
+
+            case SDL_MOUSEBUTTONDOWN:
+                mouse.SetButton(event.button.button, true);
+                listener.OnMouseButtonDown(event.button.button, event.button.x, event.button.y);
+                break;
+
+            case SDL_MOUSEBUTTONUP:
+                mouse.SetButton(event.button.button, false);
+                listener.OnMouseButtonUp(event.button.button, event.button.x, event.button.y);
                 break;
 
             case SDL_DROPTEXT:
