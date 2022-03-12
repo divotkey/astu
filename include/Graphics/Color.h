@@ -302,6 +302,20 @@ namespace astu {
         }
 
         /**
+         * Converts this color from linear RGB color space to sRGB color space.
+         * Values less than zero or greater than one are clamped to [0, 1].
+         *
+         * @return reference to this color for method chaining
+         */
+        Color<T> &ToSRGB() {
+            r = ToSRGB(r);
+            g = ToSRGB(g);
+            b = ToSRGB(b);
+
+            return *this;
+        }
+
+        /**
          * Blends this color with another color respecting the alpha channel.
          * 
          * This method changes this color and leaves the other color
@@ -324,7 +338,6 @@ namespace astu {
 
             return *this;
         }
-
 
         /**
          * Does a linear interpolation between this and the specified color.
@@ -353,6 +366,43 @@ namespace astu {
          */
         bool IsZero() const {
             return r == 0 && b == 0 && g == 0 && a == 0;
+        }
+
+        /**
+         * Returns the maximum channel value of this color.
+         *
+         * @return the maximum value, either the red, green, blue or alpha channel
+         */
+        T GetMax() const {
+            return std::max(r, std::max(g, std::max(b, a)));
+        }
+
+        /**
+         * Clamps all channel values to the specified maximum.
+         *
+         * @param value the maximum channel value
+         * @return reference to this color for method chaining
+         */
+        Color<T> &ClampMax(T value) {
+            if (r > value) r = value;
+            if (g > value) g = value;
+            if (b > value) b = value;
+            if (a > value) a = value;
+            return *this;
+        }
+
+        /**
+         * Clamps all channel values to the specified minimum.
+         *
+         * @param value the minimum channel value
+         * @return reference to this color for method chaining
+         */
+        Color<T> &ClampMin(T value) {
+            if (r < value) r = value;
+            if (g < value) g = value;
+            if (b < value) b = value;
+            if (a < value) a = value;
+            return *this;
         }
 
         /**
@@ -514,6 +564,29 @@ namespace astu {
             double lng2 = sqrt(rhs.r * rhs.r + rhs.g * rhs.g + rhs.b * rhs.b + rhs.a * rhs.a);
             return lng1 < lng2;
         }
+
+    private:
+
+        /**
+         * Converts a single color channel from RGB color space to sRGB color space.
+         *
+         * Values less than zero or greater than one are clamped to [0, 1].
+         *
+         * @param x the color channel in linear RGB color space
+         * @return the converted color channel in SRGB color space
+         */
+        T ToSRGB(T x) const {
+            if (x <= static_cast<T>(0)) {
+                return static_cast<T>(0);
+            } else if (x >= static_cast<T>(1)) {
+                return static_cast<T>(1);
+            } else if (x < static_cast<T>(0.0031308)) {
+                return x * static_cast<T>(12.92);
+            } else {
+                return std::pow(x, static_cast<T>(1.0 / 2.4)) * static_cast<T>(1.055) - static_cast<T>(0.055);
+            }
+        }
+
     };
 
     /**

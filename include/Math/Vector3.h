@@ -401,6 +401,74 @@ namespace astu {
         }
 
         /**
+         * Compares this vector with another vector for equality.
+         *
+         * @param o the other vector
+         * @param e the error range (epsilon)
+         * @return `true` if the other vector is equal to this vector within a certain error range
+         */
+        bool IsEqual(const Vector3<T> o, T e = static_cast<T>(MathUtils::Epsilon)) const {
+            return MathUtils::IsEqual(x, o.x, e) && MathUtils::IsEqual(y, o.y, e) && MathUtils::IsEqual(z, o.z, e);
+        }
+
+        /**
+         * Verifies that this vector has length of approximately one unit.
+         *
+         * @return `true` if ths is a unit vector
+         */
+        bool IsUnitVector() const {
+            return MathUtils::IsEqual(Length(), static_cast<T>(1));
+        }
+
+        /**
+         * Accesses the element with the specified index.
+         *
+         * @param idx   index of the element to be retrieved
+         * @return the requested element
+         * @throws std::out_of_range in case the specified index is invalid
+         */
+        T& at(size_t idx) {
+            if (idx < 3) {
+                return *(this)[idx];
+            }
+            throw std::out_of_range("Index out of range");
+        }
+
+        /**
+         * Accesses the element with the specified index.
+         *
+         * @param idx   index of the element to be retrieved
+         * @return the requested element
+         * @throws std::out_of_range in case the specified index is invalid
+         */
+        const T& at(size_t idx) const {
+            if (idx < 3) {
+                return *(this)[idx];
+            }
+            throw std::out_of_range("Index out of range");
+        }
+
+        /**
+         * Subscript operator for this vector.
+         *
+         * @param idx   index of the element to be retrieved
+         * @return the requested element
+         */
+        T& operator[](size_t idx) {
+            return &x[idx];
+        }
+
+        /**
+         * Subscript operator for this vector.
+         *
+         * @param idx   index of the element to be retrieved
+         * @return the requested element
+         */
+        const T& operator[](size_t idx) const {
+            return &x[idx];
+        }
+
+        /**
          * Binary addition operator for two vectors.
          *
          * @param rhs the right hand-side vector

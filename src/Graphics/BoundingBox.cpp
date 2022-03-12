@@ -9,7 +9,7 @@
 #include <string>
 #include <algorithm>
 #include <limits>
-#include "BoundingBox.h"
+#include "Graphics/BoundingBox.h"
 
 namespace astu {
 

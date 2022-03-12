@@ -12,6 +12,8 @@
 // C++ Standard Library includes
 #include <stdexcept>
 #include <string>
+#include <limits>
+#include <algorithm>
 
 namespace astu {
 
@@ -108,6 +110,28 @@ namespace astu {
             throw std::out_of_range("The pixel index exceeds the number of pixels, got "
                 + std::to_string(idx));
         }
+    }
+
+    Image& Image::Normalize() {
+        double s = std::numeric_limits<double>::lowest();
+        for (const auto &c : data) {
+            s = std::max(s, c.GetMax());
+        }
+
+        for (auto &c : data) {
+            c /= s;
+        }
+
+        return *this;
+    }
+
+    double Image::GetMaxValue() const {
+        double s = std::numeric_limits<double>::lowest();
+        for (const auto &c : data) {
+            s = std::max(s, c.GetMax());
+        }
+
+        return s;
     }
 
 }

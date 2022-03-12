@@ -375,6 +375,25 @@ namespace astu {
             return *this;
         }
 
+        /**
+         * Compares this vector with another vector for equality.
+         *
+         * @param o the other vector
+         * @param e the error range (epsilon)
+         * @return `true` if the other vector is equal to this vector within a certain error range
+         */
+        bool IsEqual(const Vector2<T> o, T e = static_cast<T>(MathUtils::Epsilon)) {
+            return MathUtils::IsEqual(x, o.x, e) && MathUtils::IsEqual(y, o.y, e);
+        }
+
+        /**
+         * Verifies that this vector has length of approximately one unit.
+         *
+         * @return `true` if ths is a unit vector
+         */
+        bool IsUnitVector() const {
+            return MathUtils::IsEqual(Length(), static_cast<T>(1));
+        }
 
         /**
          * Binary addition operator for two vectors.

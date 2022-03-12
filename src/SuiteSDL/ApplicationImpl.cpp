@@ -281,6 +281,7 @@ namespace astu {
                 break;
 
             case SDL_KEYUP:
+                keyboard.SetKey(event.key.keysym.scancode, false);
                 listener.OnKeyUp(SdlKeyTable::ScanCodeToKey(event.key.keysym.scancode));
                 break;
 

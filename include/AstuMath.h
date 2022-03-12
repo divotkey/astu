@@ -19,6 +19,7 @@
 #include "Math/Matrix4.h"
 #include "Math/Quaternion.h"
 #include "Math/Transform2.h"
+#include "Math/SphericalCoordinates.h"
 #include "Math/Polygon.h"
 #include "Math/Line2.h"
 #include "Math/Ray2.h"

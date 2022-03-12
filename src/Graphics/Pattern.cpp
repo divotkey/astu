@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <string>
 #include <cmath>
-#include "Pattern.h"
+#include "Graphics/Pattern.h"
 
 namespace astu {
 

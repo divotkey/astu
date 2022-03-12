@@ -8,6 +8,8 @@
 // Local includes    
 #include "AstuGraphics.h"
 #include "Graphics/BmpCodec.h"
+#include "Graphics/HdrCodec.h"
+#include "Util/StringUtils.h"
 
 namespace astu {
 
@@ -17,6 +19,9 @@ namespace astu {
     /** Used to write BMP files. */
     static astu::BmpEncoder bmpEncoder;
 
+    /** Used to read HDR files. */
+    static astu::HdrDecoder hdrDecoder;
+
     void StoreImage(const Image & image, const std::string & filename)
     {
         bmpEncoder.Encode(image, filename.c_str());
@@ -24,7 +29,16 @@ namespace astu {
 
     std::unique_ptr<Image> LoadImage(const std::string & filename)
     {
-        return bmpDecoder.Decode(filename.c_str());  
+        auto extension = StringUtils::ExtractFileExtension(filename, false);
+        StringUtils::toUpperCase(extension);
+
+        if (extension == "BMP") {
+            return bmpDecoder.Decode(filename.c_str());
+        } else if (extension == "HDR") {
+            return hdrDecoder.Decode(filename.c_str());
+        } else {
+            throw std::runtime_error("Unsupported image format");
+        }
     }
 
 } // end of namespace

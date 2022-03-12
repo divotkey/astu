@@ -9,6 +9,7 @@
 
 // Local includes
 #include "Vector2.h"
+#include "Vector3.h"
 #include "MathUtils.h"
 
 // C++ Standard library includes
@@ -67,18 +68,29 @@ namespace astu {
 			Set(m0, m1, m2, m3, m4, m5, m6, m7, m8);
 		}
 
+        /**
+         * Constructor.
+         *
+         * @param t a vector which elements will be placed in the first row of the matrix
+         * @param s a vector which elements will be placed in the second row of the matrix
+         * @param n a vector which elements will be placed in the third row of the matrix
+         */
+        Matrix3(const Vector3<T> &t, const Vector3<T> &s, const Vector3<T> &n) {
+            Set(t.x, s.x, n.x, t.y, s.y, n.y, t.z, s.z, n.z);
+        }
+
 		/**
 		 * Sets this matrix to the specified values.
 		 *
-		 * @param m0	the first value
-		 * @param m1	the second value
-		 * @param m2	the third value
-		 * @param m3	the fourth value
-		 * @param m4	the fifth value
-		 * @param m5	the sixth value
-		 * @param m6	the seventh value
-		 * @param m7	the eighth value
-		 * @param m8	the ninth value
+		 * @param m0    the first element of the first column
+		 * @param m1	the second element of the second column
+		 * @param m2	the third element of the third column
+		 * @param m3	the first element of the second column
+		 * @param m4	the second element of the second column
+		 * @param m5	the third element of the second column
+		 * @param m6	the first element of the third column
+		 * @param m7	the second element of the third column
+		 * @param m8	the third element of the third column
 		 * @return reference to this matrix for method chaining
 		 */
 		Matrix3<T>& Set(T m0, T m1, T m2,
@@ -325,9 +337,61 @@ namespace astu {
 		 * @param v	the vector to transform
 		 * @return the transformed point
 		 */
-		Vector2<T> TransformVector(const Vector2<T> & v) const {
+		Vector2<T> TransformVector(const Vector2<T> &v) const {
 			return TransformVector(v.x, v.y);
-		}        
+		}
+
+        /**
+         * Transforms the specified 3-dimensional row vector.
+         *
+		 * @param x	the x-coordinate of the vector
+		 * @param y	the y-coordinate of the vector
+		 * @param z	the z-coordinate of the vector
+         * @return the transformed vector
+         */
+        Vector3<T> Transform(T x, T y, T z) const {
+            return Vector3<T>(
+                    m[0] * x + m[3] * y + m[6] * z,
+                    m[1] * x + m[4] * y + m[7] * z,
+                    m[2] * x + m[5] * y + m[8] * z
+            );
+        }
+
+        /**
+         * Transforms the specified 3-dimensional row vector.
+         *
+         * @param v the vector to transform
+         * @return the transformed vector
+         */
+        Vector3<T> Transform(const Vector3<T> &v) const {
+            return Transform(v.x, v.y, v.z);
+        }
+
+        /**
+         * Transforms the specified 3-dimensional row vector.
+         *
+		 * @param x	the x-coordinate of the vector
+		 * @param y	the y-coordinate of the vector
+		 * @param z	the z-coordinate of the vector
+         * @return the transformed vector
+         */
+        Vector3<T> TransformTransposed(T x, T y, T z) const {
+            return Vector3<T>(
+                    m[0] * x + m[1] * y + m[2] * z,
+                    m[3] * x + m[4] * y + m[5] * z,
+                    m[6] * x + m[7] * y + m[8] * z
+            );
+        }
+
+        /**
+         * Transforms the specified 3-dimensional row vector.
+         *
+         * @param v the vector to transform
+         * @return the transformed vector
+         */
+        Vector3<T> TransformTransposed(const Vector3<T> &v) const {
+            return TransformTransposed(v.x, v.y, v.z);
+        }
 
 		/**
 		 * Transposes this matrix.

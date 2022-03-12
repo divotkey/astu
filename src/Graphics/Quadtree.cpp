@@ -7,7 +7,7 @@
 
 #include <cassert>
 #include <iostream>
-#include "Quadtree.h"
+#include "Graphics/Quadtree.h"
 
 using namespace std;
 

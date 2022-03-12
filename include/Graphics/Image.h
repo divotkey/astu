@@ -115,6 +115,20 @@ namespace astu {
         size_t NumberOfPixels() const;
 
         /**
+         * Normalizes this image such that the maximum value of any color channel is 1.
+         *
+         * @return reference to this image for method chaining
+         */
+        Image& Normalize();
+
+        /**
+         * Searches for the maximum channel value in this image.
+         *
+         * @return the maximum channel value, either red, green, blue or alpha of the brightest pixel
+         */
+        double GetMaxValue() const;
+
+        /**
          * This method provides raw access to the pixel colors, use with care.
          * 
          * @return pointer to the linear array of pixel colors

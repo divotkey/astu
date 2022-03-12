@@ -36,6 +36,12 @@ namespace astu {
         /** Constant for PI times two with double precision. */
         const static double PI2d;
 
+        /** Constant for PI divided by  four with double precision. */
+        const static double PIOver2d;
+
+        /** Constant for PI divided by  four with double precision. */
+        const static double PIOver4d;
+
         /** Inverse PI (1 / PI) with double precision. */
         const static double InvPId;
 
@@ -48,12 +54,20 @@ namespace astu {
         /** Constant for PI times two with single precision. */
         const static float PI2f;
 
+        /** Constant for PI divided by two with double precision. */
+        const static float PIOver2f;
+
+        /** Constant for PI divided by two with double precision. */
+        const static float PIOver4f;
+
         /** Inverse PI (1 / PI) with single precision. */
         const static float InvPIf;
 
         /** Inverse of PI times two (1 / 2PI) with double precision. */
         const static float InvPI2f;
 
+        /** Default error margin used to compare floating-point values. */
+        const static double Epsilon;
 
         /**
          * Converts from degrees to radians.
@@ -76,15 +90,15 @@ namespace astu {
         }
 
         /**
-         * Compares two real numbers to be equal within a certain margin or error.
+         * Compares two floating-point numbers to be equal within a certain margin or error.
          *
-         * @param a			the first real number
-         * @param b			the second real number
+         * @param a			the first floating-point number
+         * @param b			the second floating-point number
          * @param epsilon	the maximum allowed difference
          * @return `true` if the two real number are considered to be equal
          */
         template <typename T>
-        static T IsEqual(T a, T b, T epsilon) {
+        static T IsEqual(T a, T b, T epsilon = static_cast<T>(Epsilon)) {
             return std::abs(a - b) < epsilon;
         }
 
@@ -178,7 +192,6 @@ namespace astu {
         static T Lerp(T a, T b, T t) {
             return a + t * (b - a);
         }
-
 
         /**
          * Linear interpolation between two values, that guarantees v = v1 when t = 1.

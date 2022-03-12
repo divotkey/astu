@@ -23,6 +23,8 @@ EmitOptionalFiles("Sdl", sdlModules, "Build the ASTU library with support for SD
 EmitOptionalFiles("Jack", jackModules, "Build the ASTU library with support for JACK Audio Connection Kit");
 EmitEpilog();
 
+store(0, rootDir + "CMakeLists.txt");
+
 // Functions
 
 function EmitProlog()
@@ -203,8 +205,8 @@ function EmitModules(modules)
 		§:
 			# Module: §{modules[i]}
 		:§
-		EmitFiles(rootDir + privateDir + filePathSeparator() + modules[i]);
-		EmitFiles(rootDir + publicDir + filePathSeparator() + modules[i]);
+		EmitFiles(rootDir + privateDir + filePathSeparator() + modules[i], true);
+		EmitFiles(rootDir + publicDir + filePathSeparator() + modules[i], true);
 		§:
 		:§
 	}
@@ -217,14 +219,19 @@ function EmitModules(modules)
  * within the specified directory, but remove the root directory witch
  * is stored in the global variable "rootDir".
  */
-function EmitFiles(dir)
+function EmitFiles(dir, recursively)
 {
+	if (recursively == undefined)
+		recursively = false;
+
+	print "emitting files in " + dir;
 	files = listFiles(dir);
 	if (files == undefined) {
 		print "directory " + dir + " does not exist";
 		return;
 	}
 
+	// Process files.
 	for (i = 0; i < files.length; ++i) {
 		// Process files only.
 		if (isDir(files[i])) {
@@ -244,6 +251,17 @@ function EmitFiles(dir)
 		§:
 			§{sourceEntry} 
 		:§
+	}
+
+	// Process directories recursively.
+	if (recursively) {
+
+		for (i = 0; i < files.length; ++i) {
+			// Process directories only.
+			if (isDir(files[i])) {
+				EmitFiles(files[i]);
+			}
+		}
 	}
 
 }
