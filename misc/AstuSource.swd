@@ -10,6 +10,7 @@ coreModules = [
 	"Util", "Math", "Graphics",
 	"Audio", "ECS", "Input", 
 	"Service", "Suite2D", "Ai",
+	"FSM",
 	"Velox"
 	];
 sdlModules = ["SuiteSDL"];

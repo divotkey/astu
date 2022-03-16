@@ -10,6 +10,7 @@
 // C++ Standard Library includes
 #include <string>
 #include <vector>
+#include <sstream>
 
 namespace astu {
 
@@ -53,6 +54,15 @@ namespace astu {
 		//  * @return the UTF-8 encoded output character
 		//  */
 		// static std::string utf16ToUtf8(const wchar_t & wc);
+
+        /**
+         * Converts the specified character to a printable string.
+         *
+         * @param ch            the character
+          * @param includeHex   whether to include a hexadecimal representation
+         * @return a printable string representation of the specified character
+         */
+        static std::string ToPrintable(char ch, bool includeHex = false);
 
 		/**
 		 * Removes white space characters on the right side of the string.
@@ -236,6 +246,20 @@ namespace astu {
          * @return the filename without an extension
          */
         static std::string StripFileExtension(const std::string & filename);
+
+        template<typename T>
+        static std::string MakeList(const T &c) {
+
+            std::stringstream result;
+            for (auto it = c.cbegin(), end = c.cend(); it != end;) {
+                result << *it;
+                if (++it != end) {
+                    result << ", ";
+                }
+            }
+
+            return result.str();
+        }
 
 	};
 

@@ -137,7 +137,6 @@ namespace velox {
         }
 
         if (sm.HasTransition(curState, sequence[0])) {
-            while(idx < sequence.size() && )
             throw std::logic_error("not implemented");
         } else {
             curState = AddTokenStartState(curState, sequence[idx++]);
@@ -147,7 +146,7 @@ namespace velox {
             curState = AddTokenState(curState, sequence[idx++]);
         }
 
-        curState = AddTokenEndState(curState, type);
+        //curState = AddTokenEndState(curState, type);
 
         if (IsIdentStart(sequence[0])) {
             sm.SetFlags(curState, POSSIBLE_IDENT);
@@ -239,9 +238,9 @@ namespace velox {
         // recognize tokens, that have the same initial character sequence.
         sm.SetFlags(curState, LAST_CHAR_OF_TOKEN);
 
-        auto terminal = state + "_end";
+        auto terminal = curState + "_end";
         sm.AddState(terminal);
-        sm.AddTransition(state, terminal, AllTriggerBuilder<char>().Build());
+        sm.AddTransition(curState, terminal, AllTriggerBuilder<char>().Build());
         sm.SetEnterFunc(terminal, [this, type](const char &ch) {
             curToken.type = type;
         });
@@ -250,7 +249,8 @@ namespace velox {
     }
 
     bool Source::IsIdentStart(char ch) {
-        return sm.GetTrigger(IDENT_STATE, 0).Evaluate(ch);
+        return true;
+        //return sm.GetTrigger(IDENT_STATE, 0).Evaluate(ch);
     }
 
 }

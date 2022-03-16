@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Thu Mar 10 09:56:17 CET 2022 with SWORD Interpreter 1.9.1
+# Generated Wed Mar 16 09:19:51 CET 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -42,6 +42,7 @@ list(APPEND astu_SOURCES
 	src/Util/Controller.cpp 
 	src/Util/Memento.cpp 
 	src/Util/MessageBox.cpp 
+	src/Util/StateMachine.cpp 
 	src/Util/StringUtils.cpp 
 	src/Util/Timer.cpp 
 	src/Util/VersionInfo.cpp 
@@ -52,6 +53,7 @@ list(APPEND astu_SOURCES
 	include/Util/Memento.h 
 	include/Util/MessageBox.h 
 	include/Util/Pooled.h 
+	include/Util/StateMachine.h 
 	include/Util/StringUtils.h 
 	include/Util/Timer.h 
 	include/Util/VersionInfo.h 
@@ -189,13 +191,23 @@ list(APPEND astu_SOURCES
 	include/Ai/Quantizer.h 
 	include/Ai/StateUtil.h 
 
+	# Module: FSM
+	src/FSM/DStateMachine.cpp 
+	src/FSM/DStateMachineBuilder.cpp 
+	src/FSM/FStateMachine.cpp 
+	src/FSM/NStateMachine.cpp 
+	src/FSM/PowersetBuilder.cpp 
+	include/FSM/DStateMachine.h 
+	include/FSM/DStateMachineBuilder.h 
+	include/FSM/FStateMachine.h 
+	include/FSM/NStateMachine.h 
+	include/FSM/PowersetBuilder.h 
+
 	# Module: Velox
 	include/Velox/Interpreter/InterpreterNode.cpp 
 	include/Velox/Interpreter/InterpreterNode.h 
 	include/Velox/Parser/Parser.cpp 
 	include/Velox/Parser/Parser.h 
-	include/Velox/Parser/ProcessingGraph.cpp 
-	include/Velox/Parser/ProcessingGraph.h 
 	include/Velox/Parser/Source.cpp 
 	include/Velox/Parser/Source.h 
 	include/Velox/Parser/StateMachine.h 

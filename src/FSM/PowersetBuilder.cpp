@@ -4,18 +4,9 @@
 // which is part of this source code package. See 'AUTHORS' file for a list
 // of contributors.
 
-#pragma once
+// Local includes
+#include "FSM/PowersetBuilder.h"
 
-// C++ Standard Library includes
-#include <memory>
-#include <vector>
+namespace astu {
 
-class ProcessingGraph {
-public:
-
-    void AddNode();
-
-private:
-};
-
-
+} // end of namespace

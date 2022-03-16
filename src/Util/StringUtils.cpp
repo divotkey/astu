@@ -249,6 +249,38 @@ namespace astu {
         return filename.substr(0, idx);
     }
 
+    std::string StringUtils::ToPrintable(char ch, bool includeHex) {
+        string result;
+
+        switch (ch) {
+            case '\t':
+                result += "'\t'";
+                break;
+
+            case '\n':
+                result += "'\n'";
+                break;
+
+            case '\r':
+                result += "'\r'";
+                break;
+
+            default:
+                if (isalnum(ch)) {
+                    result += "'"; result += ch; result += "'";
+                } else {
+                    result = "(" + toHexString(ch) + ")";
+                    return result;
+                }
+        }
+
+        if (includeHex) {
+            result += " (" + toHexString(ch) + ")";
+        }
+
+        return result;
+    }
+
 } // end of namespace
 
 //#pragma warning( pop )
