@@ -536,7 +536,7 @@ namespace astu {
 
         using ListenerList = std::vector<IEntityListener*>;
 
-        /** Pending commands. */
+        /** Pending pendingCommands. */
         CommandQueue commands;
 
 		/** The entities administered by this service. */

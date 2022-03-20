@@ -266,7 +266,7 @@ namespace astu {
                 break;
 
             default:
-                if (isalnum(ch)) {
+                if (isprint(ch)) {
                     result += "'"; result += ch; result += "'";
                 } else {
                     result = "(" + toHexString(ch) + ")";

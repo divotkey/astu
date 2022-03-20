@@ -32,7 +32,7 @@ namespace astu {
         }
 
         /**
-         * Clears all pending commands.
+         * Clears all pending pendingCommands.
          */
         void Clear() {
             return commands.clear();
@@ -41,14 +41,14 @@ namespace astu {
         /**
          * Returns the number of queued dommands.
          * 
-         * @return the number of commands in the queue
+         * @return the number of pendingCommands in the queue
          */
         size_t Size() {
             return commands.size();
         }
 
         /**
-         * Executes all pending commands.
+         * Executes all pending pendingCommands.
          */
         void Execute() {
             for (auto const & cmd : commands) {
@@ -58,7 +58,7 @@ namespace astu {
         }
 
     private:
-        /** The queued commands. */
+        /** The queued pendingCommands. */
         std::vector<Command> commands;
     };
 

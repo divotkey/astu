@@ -143,7 +143,7 @@ namespace astu {
         /** The managed listeners. */
         std::vector<Decorator> listeners;
 
-        /** Pending commands. */
+        /** Pending pendingCommands. */
         CommandQueue commandQueue;
 
 
@@ -299,7 +299,7 @@ namespace astu {
         /** The managed listeners. */
         std::vector<Decorator> listeners;
 
-        /** Pending commands. */
+        /** Pending pendingCommands. */
         CommandQueue commandQueue;
 
         void AddListenerInternal(const std::shared_ptr<T> & listener, int priority) {
@@ -446,7 +446,7 @@ namespace astu {
         /** The managed listeners. */
         std::vector<Decorator> listeners;
 
-        /** Pending commands. */
+        /** Pending pendingCommands. */
         CommandQueue commandQueue;
 
 
@@ -617,7 +617,7 @@ namespace astu {
         /** The managed listeners. */
         std::vector<Decorator> listeners;
 
-        /** Pending commands. */
+        /** Pending pendingCommands. */
         CommandQueue commandQueue;
 
 

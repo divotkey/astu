@@ -58,7 +58,7 @@ namespace astu {
         virtual void OnShutdown() override;
 
     private:
-        /** Enumeration for types of render commands. */
+        /** Enumeration for types of render pendingCommands. */
         enum CommandType {DRAW_LINE, SET_COLOR};
 
         struct DrawLineCommand {
@@ -71,14 +71,14 @@ namespace astu {
             int r, g, b, a;
         };
 
-        /** Union holding data for all types of render commands. */
+        /** Union holding data for all types of render pendingCommands. */
         union RenderCommand {
             CommandType type;
             DrawLineCommand line;
             SetColorCommand color;
         };
 
-        /** The current render commands to be processed. */
+        /** The current render pendingCommands to be processed. */
         std::vector<RenderCommand> commands;
     };
 
