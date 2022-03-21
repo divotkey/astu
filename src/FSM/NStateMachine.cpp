@@ -90,11 +90,17 @@ namespace astu {
 
     void NStateMachine::AddTransition(char symbol, size_t targetState) {
         EnsureState();
+        AddTransition(curState, symbol, targetState);
+    }
 
-        auto &transitions = transitionTable[curState];
+    void NStateMachine::AddTransition(size_t sourceState, char symbol, size_t targetState) {
+        EnsureState(sourceState);
+
+        auto &transitions = transitionTable[sourceState];
         transitions[symbol].insert(targetState);
         symbols.insert(symbol);
     }
+
 
     bool NStateMachine::HasTransition(char symbol, size_t targetState) const {
         EnsureState();
@@ -215,5 +221,6 @@ namespace astu {
         EnsureState(state);
         return states[state].flags;
     }
+
 
 } // end of namespace

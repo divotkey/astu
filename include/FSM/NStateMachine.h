@@ -37,6 +37,8 @@ namespace astu {
         bool IsStartState() const;
         size_t GetStartState() const;
         void AddTransition(char symbol, size_t targetState);
+        void AddTransition(size_t sourceState, char symbol, size_t targetState);
+
         const std::set<size_t> &GetTransitions(char ch) const;
         const std::set<size_t> &GetTransitions(size_t state, char ch) const;
         void SetEnterFunc(std::function<void (char, void *)> func);
