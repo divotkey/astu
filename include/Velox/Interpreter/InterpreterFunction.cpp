@@ -1,6 +1,6 @@
 #include "InterpreterFunction.h"
 #include "Scope.h"
-#include "InterpreterException.h"
+#include "InterpreterError.h"
 #include "ItemStateUndefined.h"
 
 #include <cassert>
@@ -13,7 +13,7 @@ namespace velox {
     InterpreterFunction::Execute(ScriptContext &sc, InterpreterActualParameterList &actualParameters) {
         // Actual parameters must be less or equal to formal parameters.
         if (formalParameters.size() < actualParameters.NumParameters()) {
-            throw InterpreterException("Function call with to many parameters");
+            throw InterpreterError("Function call with to many parameters");
         }
 
         // Create a new scope for the function parameters.

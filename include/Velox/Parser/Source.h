@@ -27,12 +27,19 @@ namespace velox {
         virtual ~Source() {}
 
         TokenType GetNextTokenType();
-        TokenType GetCurrentTokenType();
+        TokenType GetCurrentTokenType() const;
         const std::string &GetStringValue() const;
         int GetIntegerValue() const;
         double GetRealValue() const;
 
         std::string TokenTypeToString(TokenType type) const;
+
+        /**
+         * Returns a string representation of the type of the current token.
+         *
+         * @return string representation of the curren token type
+         */
+        std::string GetTokenTypeAsString() const;
 
     protected:
         virtual std::shared_ptr<std::istream> GetStream() = 0;

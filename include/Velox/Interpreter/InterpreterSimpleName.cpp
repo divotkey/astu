@@ -1,5 +1,5 @@
 #include "InterpreterSimpleName.h"
-#include "InterpreterException.h"
+#include "InterpreterError.h"
 #include "ScriptContext.h"
 #include "ItemStateUndefined.h"
 
@@ -11,7 +11,7 @@ namespace velox {
         auto result = sc.FindItem(name);
         if (!result) {
             if (!IsLocation()) {
-                throw InterpreterException("Unknown identifier '" + name + "'");
+                throw InterpreterError("Unknown identifier '" + name + "'");
             }
             result = make_shared<Item>(make_unique<ItemStateUndefined>());
             sc.AddItem(name, result);

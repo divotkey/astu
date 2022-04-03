@@ -10,11 +10,11 @@
 #include "Script/ScannerException.h"
 #include "Velox/Interpreter/InterpreterArithmeticOperation.h"
 #include "Velox/Interpreter/InterpreterSimpleName.h"
-#include "Velox/Interpreter/InterpreterFieldAccess.h"
+#include "Velox/Interpreter/InterpreterMemberAccess.h"
 #include "Velox/Interpreter/InterpreterAssignment.h"
 #include "Velox/Interpreter/InterpreterIntegerLiteral.h"
+#include "Velox/Interpreter/InterpreterRealLiteral.h"
 #include "Velox/Interpreter/InterpreterFunctionCall.h"
-#include "Velox/Interpreter/InterpreterActualParameterList.h"
 
 // C++ Standard Library includes
 #include <algorithm>
@@ -99,18 +99,16 @@ namespace velox {
     }
 
     std::shared_ptr<InterpreterStatement> Parser::ParseIdentStatement(Source &source) {
-        // FIXME true is not a parameter but a result of the parsing.
-        auto lValue = ParseVariable(source, true);
+        auto result = ParseVariable(source, true);
 
         switch (source.GetCurrentTokenType()) {
             case TokenType::ASSIGNMENT:
-                return ParseAssignment(source, lValue);
+                return ParseAssignment(source, result);
 
             default:
-                throw ParserError("Syntax Error");
+                ParseSemicolon(source);
+                return result;
         }
-
-        //return std::shared_ptr<InterpreterStatement>();
     }
 
     std::shared_ptr<InterpreterStatement>
@@ -130,18 +128,16 @@ namespace velox {
     }
 
     std::shared_ptr<InterpreterExpression> Parser::ParseVariable(Source &source, bool location) {
-        std::shared_ptr<InterpreterExpression> result = ParseSimpleName(source, true);
+        std::shared_ptr<InterpreterExpression> result = ParseSimpleName(source);
 
         while (CONTAINS(LVALUE_CHAIN, source.GetCurrentTokenType())) {
             switch (source.GetCurrentTokenType()) {
                 case TokenType::MEMBER_ACCESS:
-                    result = ParseMemberAccess(source, location, result);
+                    result = ParseMemberAccess(source, result);
                     break;
 
                 case TokenType::LEFT_PARENTHESIS:
-                    if (location) {
-                        throw ParserError("l-value expected");
-                    }
+                    result->SetLocation(false);
                     result = ParseFunctionCall(source, result);
                     break;
             }
@@ -151,13 +147,14 @@ namespace velox {
     }
 
     std::shared_ptr<InterpreterExpression>
-    Parser::ParseMemberAccess(Source &source, bool location, std::shared_ptr<InterpreterExpression> lValue) {
+    Parser::ParseMemberAccess(Source &source, std::shared_ptr<InterpreterExpression> lValue) {
         assert(source.GetCurrentTokenType() == TokenType::MEMBER_ACCESS);
-        if (source.GetNextTokenType() != TokenType::IDENT) {
+        source.GetNextTokenType();
+        if (source.GetCurrentTokenType() != TokenType::IDENT) {
             throw ParserError("Field name expected");
         }
 
-        auto result = make_shared<InterpreterFieldAccess>(location);
+        auto result = make_shared<InterpreterMemberAccess>();
         result->SetLeftHandSide(lValue);
         result->SetRightHandSide(source.GetStringValue());
         source.GetNextTokenType();
@@ -165,9 +162,9 @@ namespace velox {
         return result;
     }
 
-    std::shared_ptr<InterpreterExpression> Parser::ParseSimpleName(Source &source, bool location) {
+    std::shared_ptr<InterpreterExpression> Parser::ParseSimpleName(Source &source) {
         assert(source.GetCurrentTokenType() == TokenType::IDENT);
-        auto result = make_shared<InterpreterSimpleName>(source.GetStringValue(), location);
+        auto result = make_shared<InterpreterSimpleName>(source.GetStringValue(), true);
         source.GetNextTokenType();
         return result;
     }
@@ -229,6 +226,11 @@ namespace velox {
                 source.GetNextTokenType();
                 break;
 
+            case TokenType::REAL:
+                result = make_shared<InterpreterRealLiteral>(source.GetRealValue());
+                source.GetNextTokenType();
+                break;
+
             case TokenType::IDENT:
                 result = ParseFactorIdent(source);
                 break;
@@ -260,12 +262,12 @@ namespace velox {
         // Look if function call contains parameters.
         if (source.GetCurrentTokenType() != TokenType::RIGHT_PARENTHESIS) {
             result->AddParameter(ParseRightValue(source));
-
             while (source.GetCurrentTokenType() == TokenType::COMMA) {
                 source.GetNextTokenType();
                 result->AddParameter(ParseRightValue(source));
             }
         }
+
         ParseRightParenthesis(source);
 
         return result;

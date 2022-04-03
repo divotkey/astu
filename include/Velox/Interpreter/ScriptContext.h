@@ -13,7 +13,7 @@ namespace velox {
     class ScriptContext {
 
     public:
-        void PushScope(std::shared_ptr<Scope> scope);
+        void PushScope(std::shared_ptr<Scope> scope = nullptr);
         void PopScope();
 
         bool HasItem(const std::string &name) const;

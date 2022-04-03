@@ -5,10 +5,10 @@
 
 namespace velox {
 
-    class InterpreterFieldAccess : public InterpreterExpression {
+    class InterpreterMemberAccess : public InterpreterExpression {
     public:
 
-        InterpreterFieldAccess(bool location);
+        InterpreterMemberAccess::InterpreterMemberAccess() : InterpreterExpression(true) { }
 
         void SetLeftHandSide(std::shared_ptr<InterpreterExpression> lhs);
         void SetRightHandSide(const std::string& name);

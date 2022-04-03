@@ -25,7 +25,7 @@ namespace velox {
 
         /**
          * Called to evaluate this state es function.
-         * The default implementation will throws an InterpreterException.
+         * The default implementation will throws an InterpreterError.
          *
          * @param sc            the script context containing the scope etc.
          * @param parameters    the actual parameters of the function call

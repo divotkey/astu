@@ -32,6 +32,15 @@ namespace velox {
         }
 
         /**
+         * Defines this expression represents an location (l-value) of an variable.
+         *
+         * @param b `true` to make this an l-value
+         */
+        void SetLocation(bool b) {
+            location = b;
+        }
+
+        /**
          * Evaluates this expression.
          *
          * @param sc    the script context used to evaluate this expression

@@ -39,7 +39,7 @@ namespace velox {
         return GetCurrentTokenType();
     }
 
-    TokenType Source::GetCurrentTokenType() {
+    TokenType Source::GetCurrentTokenType() const {
         return static_cast<TokenType>(scanner->GetToken());
     }
 
@@ -143,6 +143,10 @@ namespace velox {
                 return "EOS";
         }
         return std::string();
+    }
+
+    std::string Source::GetTokenTypeAsString() const {
+        return TokenTypeToString(GetCurrentTokenType());
     }
 
 }

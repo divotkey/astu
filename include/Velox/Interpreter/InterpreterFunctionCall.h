@@ -8,6 +8,8 @@ namespace velox {
     class InterpreterFunctionCall : public InterpreterExpression {
     public:
 
+        InterpreterFunctionCall() : InterpreterExpression(false) {}
+
         void AddParameter(std::shared_ptr<InterpreterExpression> param);
         void SetFunction(std::shared_ptr<InterpreterExpression> inFunction);
         std::shared_ptr<Item> Evaluate(ScriptContext &sc) override;

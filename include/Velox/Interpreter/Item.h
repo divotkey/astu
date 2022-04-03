@@ -89,6 +89,9 @@ namespace velox {
         /** List of sub-items associated with unique names. */
         std::map<std::string, std::shared_ptr<Item>> subItems;
 
+        int ExecuteIntegerArithmetic(int a, int b, ArithmeticOperator op) const;
+        double ExecuteRealArithmetic(double a, double b, ArithmeticOperator op) const;
+
         friend class ItemStateReference;
     };
 

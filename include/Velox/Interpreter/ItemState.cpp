@@ -1,22 +1,22 @@
 #include "ItemState.h"
-#include "InterpreterException.h"
+#include "InterpreterError.h"
 
 namespace velox {
 
     std::shared_ptr<Item> ItemState::CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters) {
-        throw InterpreterException("Item cannot be called as function");
+        throw InterpreterError("Not a function");
     }
 
     double ItemState::GetRealValue() const {
-        throw InterpreterException("Item cannot be interpreted as real value");
+        throw InterpreterError("Not a floating-point value");
     }
 
     int ItemState::GetIntegerValue() const {
-        throw InterpreterException("Item cannot be interpreted as integer value");
+        throw InterpreterError("Not an integer");
     }
 
     std::string ItemState::GetStringValue() const {
-        throw InterpreterException("Item cannot be interpreted as string value");
+        throw InterpreterError("Not a string");
     }
 
     ItemType ItemState::GetType() const {

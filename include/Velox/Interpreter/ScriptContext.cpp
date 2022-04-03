@@ -1,11 +1,13 @@
 #include "ScriptContext.h"
-#include "InterpreterException.h"
+#include "InterpreterError.h"
 #include "Scope.h"
 
 namespace velox {
 
-
     void ScriptContext::PushScope(std::shared_ptr<Scope> scope) {
+        if (!scope) {
+            scope = std::make_shared<Scope>();
+        }
         scopes.push_front(scope);
     }
 
@@ -29,7 +31,7 @@ namespace velox {
                 return *item;
         }
 
-        throw InterpreterException("Unknown identifier '" + name + "'");
+        throw InterpreterError("Unknown identifier '" + name + "'");
     }
 
     const Item &ScriptContext::GetItem(const std::string &name) const {
@@ -39,7 +41,7 @@ namespace velox {
                 return *item;
         }
 
-        throw InterpreterException("Unknown identifier '" + name + "'");
+        throw InterpreterError("Unknown identifier '" + name + "'");
     }
 
     std::shared_ptr<Item> ScriptContext::FindItem(const std::string &name) {

@@ -2,7 +2,7 @@
 #include "ItemState.h"
 #include "ItemStateInteger.h"
 #include "ItemStateReal.h"
-#include "InterpreterException.h"
+#include "InterpreterError.h"
 
 #include <cassert>
 
@@ -221,15 +221,17 @@ namespace velox {
                 // fall through
 
             case ItemType::Other:
-                throw InterpreterException("Undefined arithmetic operator between this types");
+                throw InterpreterError("Undefined arithmetic operator between this types");
 
             case ItemType::Integer:
                 return make_shared<Item>(
-                        make_unique<ItemStateInteger>(state->GetIntegerValue() + item.state->GetIntegerValue()));
+                        make_unique<ItemStateInteger>(
+                                ExecuteIntegerArithmetic(state->GetIntegerValue(), item.state->GetIntegerValue(), op)));
 
             case ItemType::Real:
                 return make_shared<Item>(
-                        make_unique<ItemStateReal>(state->GetRealValue() + item.state->GetRealValue()));
+                        make_unique<ItemStateReal>(
+                                ExecuteRealArithmetic(state->GetRealValue(), item.state->GetRealValue(), op)));
 
             case ItemType::Boolean:
                 throw runtime_error(
@@ -242,7 +244,42 @@ namespace velox {
             default:
                 throw runtime_error("undefined result type for arithmetic operation");
         }
+    }
 
+    int Item::ExecuteIntegerArithmetic(int a, int b, ArithmeticOperator op) const {
+        switch (op) {
+            case ArithmeticOperator::ADD:
+                return a + b;
+            case ArithmeticOperator::SUB:
+                return a - b;
+            case ArithmeticOperator::MUL:
+                return a * b;
+            case ArithmeticOperator::DIV:
+                return a / b;
+            case ArithmeticOperator::MOD:
+                return a % b;
+
+            default:
+                throw InterpreterError("Unknown arithmetic operator");
+        }
+    }
+
+    double Item::ExecuteRealArithmetic(double a, double b, ArithmeticOperator op) const {
+        switch (op) {
+            case ArithmeticOperator::ADD:
+                return a + b;
+            case ArithmeticOperator::SUB:
+                return a - b;
+            case ArithmeticOperator::MUL:
+                return a * b;
+            case ArithmeticOperator::DIV:
+                return a / b;
+            case ArithmeticOperator::MOD:
+                return std::fmod(a, b);
+
+            default:
+                throw InterpreterError("Unknown arithmetic operator");
+        }
     }
 
 }
