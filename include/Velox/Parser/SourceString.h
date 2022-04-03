@@ -7,19 +7,24 @@
 #pragma once
 
 // Local includes
-#include "Velox/Parser/SyntaxNode.h"
+#include "Source.h"
+
+// C++ Standard Library includes
+#include <sstream>
+#include <string>
 
 namespace velox {
 
-    class InterpreterNode : SyntaxNode {
+    class SourceString : public Source {
     public:
+
+        SourceString(const std::string& inSource);
+
+    protected:
+        std::shared_ptr<std::istream> GetStream() override;
 
     private:
-    };
-
-    class InterpreterStatementNode : InterpreterNode {
-    public:
-        virtual void Interpret() const;
+        std::string source;
     };
 
 }

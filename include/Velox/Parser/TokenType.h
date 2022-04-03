@@ -7,6 +7,15 @@ namespace velox {
         /** Invalid token. */
         INVALID,
 
+        /** String literal. */
+        STRING,
+
+        /** Integer value. */
+        INTEGER,
+
+        /** Floating point value. */
+        REAL,
+
         /** Left Bracket. */
         LEFT_BRACKET,
 
@@ -18,6 +27,15 @@ namespace velox {
 
         /** Right Parenthesis. */
         RIGHT_PARENTHESIS,
+
+        /** Used so separate statements. */
+        SEMICOLON,
+
+        /** Comma sign ','. */
+        COMMA,
+
+        /** Allows to access members of a class, struct etc. */
+        MEMBER_ACCESS,
 
         /** Addition. */
         ADD,
@@ -39,9 +57,6 @@ namespace velox {
 
         /** the 'true' token. */
         TRUE,
-
-        /** the 'true' token. */
-        TRUEX,
 
         /** the 'false' token. */
         FALSE,

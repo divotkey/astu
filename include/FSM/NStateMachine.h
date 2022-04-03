@@ -47,6 +47,7 @@ namespace astu {
         bool HasEnterFunc(size_t state) const;
         bool HasTransition(char symbol, size_t targetState) const;
 
+        size_t GetCurrentState() const;
         size_t GetState(const std::string &name) const;
         bool HasState(const std::string &name) const;
         void SetName(const std::string &name);

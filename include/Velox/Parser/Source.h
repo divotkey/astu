@@ -1,17 +1,18 @@
 #pragma once
 
 // Local includes
-#include "Token.h"
-#include "StateMachine.h"
+#include "TokenType.h"
+#include "Script/Scanner.h"
 
 // C++ Standard Library includes
-#include <string>
-#include <vector>
+#include <istream>
 #include <memory>
-#include <map>
 
 namespace velox {
 
+    /**
+     * Represents a piece of source code and can scan and tokenize it.
+     */
     class Source {
     public:
 
@@ -25,50 +26,22 @@ namespace velox {
          */
         virtual ~Source() {}
 
-        const Token &GetFirstToken();
+        TokenType GetNextTokenType();
+        TokenType GetCurrentTokenType();
+        const std::string &GetStringValue() const;
+        int GetIntegerValue() const;
+        double GetRealValue() const;
 
-        const Token &GetCurrentToken() const;
-
-        /**
-         * Attempts to recognize the next token starting with the current character.
-         *
-         * @return the recognized token
-         */
-        const Token &GetNextToken();
-
-        virtual char GetCurrentChar() const = 0;
-        virtual bool IsEndOfFile() const = 0;
-        virtual size_t GetCharPosition() const = 0;
+        std::string TokenTypeToString(TokenType type) const;
 
     protected:
-        virtual char GetFirstChar() = 0;
-        virtual char GetNextChar() = 0;
+        virtual std::shared_ptr<std::istream> GetStream() = 0;
 
     private:
+        std::unique_ptr<astu::Scanner> scanner;
+        bool scanningStarted;
 
-        /** The string representing the current token. */
-        std::string tokenString;
-
-        /** The current token. */
-        Token curToken;
-
-        /** The position where the current token started. */
-        size_t tokenStart;
-
-        /** The state machine used to recognise tokens. */
-        StateMachine<char> sm;
-
-        void AddToken(const std::string &sequence, TokenType type);
-
-        void AddIdentTermination(const std::string &state, TokenType type);
-
-        std::string AddTokenStartState(const std::string &curState, char ch);
-        std::string AddTokenState(const std::string &curState, char ch);
-        std::string AddTokenEndState(const std::string &curState, TokenType type, bool useIdent);
-
-        bool IsIdentStart(char ch);
-
-        void PrintDebug(char ch);
+        static std::unique_ptr<astu::Scanner> BuildScanner();
     };
 
 } // end of namespace

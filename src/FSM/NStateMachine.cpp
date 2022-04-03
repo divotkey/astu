@@ -222,5 +222,10 @@ namespace astu {
         return states[state].flags;
     }
 
+    size_t NStateMachine::GetCurrentState() const {
+        EnsureState();
+        return curState;
+    }
+
 
 } // end of namespace

@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Wed Mar 16 09:31:12 CET 2022 with SWORD Interpreter 1.9.1
+# Generated Sat Apr 02 16:00:45 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -203,22 +203,80 @@ list(APPEND astu_SOURCES
 	include/FSM/NStateMachine.h 
 	include/FSM/PowersetBuilder.h 
 
+	# Module: Script
+	src/Script/Scanner.cpp 
+	src/Script/ScannerBuilder.cpp 
+	include/Script/Scanner.h 
+	include/Script/ScannerBuilder.h 
+	include/Script/ScannerException.h 
+
 	# Module: Velox
-	include/Velox/Interpreter/InterpreterNode.cpp 
-	include/Velox/Interpreter/InterpreterNode.h 
+	include/Velox/Interpreter/Interpreter.cpp 
+	include/Velox/Interpreter/Interpreter.h 
+	include/Velox/Interpreter/InterpreterActualParameterList.cpp 
+	include/Velox/Interpreter/InterpreterActualParameterList.h 
+	include/Velox/Interpreter/InterpreterArithmeticOperation.cpp 
+	include/Velox/Interpreter/InterpreterArithmeticOperation.h 
+	include/Velox/Interpreter/InterpreterAssignment.cpp 
+	include/Velox/Interpreter/InterpreterAssignment.h 
+	include/Velox/Interpreter/InterpreterException.h 
+	include/Velox/Interpreter/InterpreterExpression.cpp 
+	include/Velox/Interpreter/InterpreterExpression.h 
+	include/Velox/Interpreter/InterpreterFieldAccess.cpp 
+	include/Velox/Interpreter/InterpreterFieldAccess.h 
+	include/Velox/Interpreter/InterpreterFormalParameterList.cpp 
+	include/Velox/Interpreter/InterpreterFormalParameterList.h 
+	include/Velox/Interpreter/InterpreterFunction.cpp 
+	include/Velox/Interpreter/InterpreterFunction.h 
+	include/Velox/Interpreter/InterpreterFunctionCall.cpp 
+	include/Velox/Interpreter/InterpreterFunctionCall.h 
+	include/Velox/Interpreter/InterpreterIntegerLiteral.cpp 
+	include/Velox/Interpreter/InterpreterIntegerLiteral.h 
+	include/Velox/Interpreter/InterpreterPrintFunction.cpp 
+	include/Velox/Interpreter/InterpreterPrintFunction.h 
+	include/Velox/Interpreter/InterpreterScriptFunction.cpp 
+	include/Velox/Interpreter/InterpreterScriptFunction.h 
+	include/Velox/Interpreter/InterpreterSimpleName.cpp 
+	include/Velox/Interpreter/InterpreterSimpleName.h 
+	include/Velox/Interpreter/InterpreterSineFunction.cpp 
+	include/Velox/Interpreter/InterpreterSineFunction.h 
+	include/Velox/Interpreter/InterpreterStatement.h 
+	include/Velox/Interpreter/InterpreterStatementBlock.cpp 
+	include/Velox/Interpreter/InterpreterStatementBlock.h 
+	include/Velox/Interpreter/Item.cpp 
+	include/Velox/Interpreter/Item.h 
+	include/Velox/Interpreter/ItemState.cpp 
+	include/Velox/Interpreter/ItemState.h 
+	include/Velox/Interpreter/ItemStateFunction.cpp 
+	include/Velox/Interpreter/ItemStateFunction.h 
+	include/Velox/Interpreter/ItemStateInteger.cpp 
+	include/Velox/Interpreter/ItemStateInteger.h 
+	include/Velox/Interpreter/ItemStateReal.cpp 
+	include/Velox/Interpreter/ItemStateReal.h 
+	include/Velox/Interpreter/ItemStateReference.cpp 
+	include/Velox/Interpreter/ItemStateReference.h 
+	include/Velox/Interpreter/ItemStateUndefined.cpp 
+	include/Velox/Interpreter/ItemStateUndefined.h 
+	include/Velox/Interpreter/ItemType.h 
+	include/Velox/Interpreter/Operators.h 
+	include/Velox/Interpreter/Scope.cpp 
+	include/Velox/Interpreter/Scope.h 
+	include/Velox/Interpreter/ScriptContext.cpp 
+	include/Velox/Interpreter/ScriptContext.h 
 	include/Velox/Parser/Parser.cpp 
 	include/Velox/Parser/Parser.h 
+	include/Velox/Parser/ParserError.h 
 	include/Velox/Parser/Source.cpp 
 	include/Velox/Parser/Source.h 
-	include/Velox/Parser/StateMachine.h 
-	include/Velox/Parser/StringSource.cpp 
-	include/Velox/Parser/StringSource.h 
-	include/Velox/Parser/SyntaxNode.cpp 
-	include/Velox/Parser/SyntaxNode.h 
+	include/Velox/Parser/SourceFile.cpp 
+	include/Velox/Parser/SourceFile.h 
+	include/Velox/Parser/SourceString.cpp 
+	include/Velox/Parser/SourceString.h 
 	include/Velox/Parser/Token.cpp 
 	include/Velox/Parser/Token.h 
 	include/Velox/Parser/TokenType.h 
-	include/Velox/Parser/Trigger.h 
+	include/Velox/Parser/VeloxScanner.cpp 
+	include/Velox/Parser/VeloxScanner.h 
 
 	)
 

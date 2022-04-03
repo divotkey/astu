@@ -7,11 +7,9 @@
 
 // Local includes
 #include "Service/Service.h"
-#include "Service/ServiceManager.h"
 
 // C++ Standard Library includes
 #include <stdexcept>
-
 
 namespace astu {
 

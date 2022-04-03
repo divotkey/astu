@@ -7,18 +7,19 @@
 #pragma once
 
 // C++ Standard Library includes
-#include <memory>
-#include <vector>
+#include <stdexcept>
 
-namespace velox {
+namespace astu {
 
-    class SyntaxNode {
+    class ScannerException : public std::runtime_error {
     public:
-        virtual ~SyntaxNode() {}
+
+        ScannerException(const std::string& message) : std::runtime_error(message) {
+            // Intentionally left empty.
+        }
+
+        virtual ~ScannerException() {}
 
     };
 
-} // end of namespace
-
-
-
+}

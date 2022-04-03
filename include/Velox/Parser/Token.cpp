@@ -34,8 +34,6 @@ const std::string velox::Token::GetTypeAsString() const {
             return "IDENT";
         case TokenType::TRUE:
             return "TRUE";
-        case TokenType::TRUEX:
-            return "TRUEX";
         case TokenType::FALSE:
             return "FALSE";
         case TokenType::EOS:

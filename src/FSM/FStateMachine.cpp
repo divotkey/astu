@@ -207,6 +207,26 @@ namespace astu {
         return states[state].flags;
     }
 
+    size_t FStateMachine::NumDeadEndStates() const {
+        size_t sum = 0;
+        for (size_t i = 0; i < states.size(); ++i) {
+            if (IsDeadEndState(i))
+                ++sum;
+        }
+        return sum;
+    }
+
+    bool FStateMachine::IsDeadEndState(size_t state) const {
+        EnsureState(state);
+
+        const auto &transitions = transitionTable[state];
+        for (auto it : transitions) {
+            if (it.second != state)
+                return false;
+        }
+
+        return true;
+    }
 
 } // end of namespace
 

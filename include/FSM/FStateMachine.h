@@ -21,6 +21,9 @@ namespace astu {
         FStateMachine();
 
         size_t NumStates() const;
+        size_t NumDeadEndStates() const;
+        bool IsDeadEndState(size_t state) const;
+
         std::set<char> DetermineSymbols() const;
 
         size_t CreateState();
