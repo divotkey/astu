@@ -15,6 +15,8 @@
 #define INVALID_CHAR        "INVALID_CHAR"
 
 #define WHITESPACE_TOKEN    -1
+#define BLOCK_COMMENT_START -2
+#define BLOCK_COMMENT_END   -3
 #define COMMENT_TOKEN       -2
 
 #define LOW_PRIORITY        -1
@@ -174,14 +176,6 @@ namespace astu {
     }
 
     ScannerBuilder &ScannerBuilder::SetBlockComment(const string &commentStart, const string &commentEnd) {
-        if (commentStart.empty()) {
-            throw std::logic_error("Block-comment start must not be empty");
-        }
-
-        if (commentEnd.empty()) {
-            throw std::logic_error("Block-comment start must not be empty");
-        }
-
         blockCommentStart = commentStart;
         blockCommentEnd = commentEnd;
         return *this;
@@ -191,7 +185,6 @@ namespace astu {
         lineComment = commentStart;
         return *this;
     }
-
 
     /////////////////////////////////////////////////
     /////// State machine related methods.
@@ -215,16 +208,34 @@ namespace astu {
 
     void ScannerBuilder::BuildSymbols() {
         symbols.insert(whitespaceSymbols.begin(), whitespaceSymbols.end());
-        symbols.insert(identStartSymbols.begin(), identStartSymbols.end());
-        symbols.insert(identSymbols.begin(), identSymbols.end());
-        symbols.insert(stringSymbols.begin(), stringSymbols.end());
+
+        if (HasSpecialToken(EOS_TOKEN_ID)) {
+            symbols.insert(identStartSymbols.begin(), identStartSymbols.end());
+            symbols.insert(identSymbols.begin(), identSymbols.end());
+        }
+
+        if (HasSpecialToken(STRING_TOKEN_ID)) {
+            symbols.insert(stringSymbols.begin(), stringSymbols.end());
+            symbols.insert(stringDelimiter);
+            symbols.insert(escapeCharacter);
+        }
+
+        if (!blockCommentStart.empty() && !blockCommentEnd.empty()) {
+            symbols.insert(blockCommentStart.begin(), blockCommentStart.end());
+            symbols.insert(blockCommentEnd.begin(), blockCommentEnd.end());
+        }
+
+        symbols.insert(lineComment.begin(), lineComment.end());
         symbols.insert(decimalSeparator);
-        symbols.insert(stringDelimiter);
-        symbols.insert(escapeCharacter);
         symbols.insert(EOF);
 
         for (auto it : keywords) {
             symbols.insert(it.first.begin(), it.first.end());
+        }
+
+        // FIXME make digits optional based on whether scanner should be able to detect integer and or real numbers.
+        for (char ch = '0'; ch <= '9'; ++ch) {
+            symbols.insert(ch);
         }
     }
 
@@ -247,7 +258,10 @@ namespace astu {
                 BuildIdentKeywordState(it.first, it.second);
             }
         }
-        BuildIdentState();
+
+        if (HasSpecialToken(IDENT_TOKEN_ID)) {
+            BuildIdentState();
+        }
 
         if (HasSpecialToken(STRING_TOKEN_ID)) {
             BuildStringState();
@@ -259,6 +273,7 @@ namespace astu {
         }
 
         if (!lineComment.empty()) {
+            throw logic_error("Line comments not implemented (yet)");
             BuildLineCommentStates();
         }
 
@@ -497,6 +512,10 @@ namespace astu {
         nsm.BeginState(qInteger);
         nsm.AddTransition(decimalSeparator, qRealStart);
         nsm.EndState();
+
+        nsm.BeginState(qIntegerStart);
+        nsm.AddTransition(decimalSeparator, qRealStart);
+        nsm.EndState();
     }
 
     void ScannerBuilder::BuildEscapeStates() {
@@ -615,11 +634,12 @@ namespace astu {
 
     void ScannerBuilder::BuildBlockCommentStates() {
 
-        auto blockCommentError = nsm.BeginState();
-        nsm.SetAccepting(true);
-        nsm.SetEnterFunc(CreateErrorFunc(BLOCK_COMMENT_NOT_CLOSED, NORMAL_PRIORITY));
-        nsm.EndState();
+        //auto blockCommentError = nsm.BeginState();
+        //nsm.SetAccepting(true);
+        //nsm.SetEnterFunc(CreateErrorFunc(BLOCK_COMMENT_NOT_CLOSED, NORMAL_PRIORITY));
+        //nsm.EndState();
 
+        // Add (internal) token for block comment start.
         nsm.BeginState(nsm.GetStartState());
         for (auto ch : blockCommentStart) {
             auto q = nsm.CreateState();
@@ -628,22 +648,21 @@ namespace astu {
             nsm.BeginState(q);
         }
 
-        for (auto ch : symbols) {
-            if (ch == EOF) {
-                nsm.AddTransition(ch, blockCommentError);
-            } else {
-                nsm.AddTransition(ch, nsm.GetCurrentState());
-            }
-        }
+        nsm.SetAccepting(true);
+        nsm.SetEnterFunc(CreateSetTokenFunc(BLOCK_COMMENT_START));
+        nsm.EndState();
 
+        // Add (internal) token for block comment end.
+        nsm.BeginState(nsm.GetStartState());
         for (auto ch : blockCommentEnd) {
             auto q = nsm.CreateState();
             nsm.AddTransition(ch, q);
+            nsm.EndState();
             nsm.BeginState(q);
         }
 
         nsm.SetAccepting(true);
-        nsm.SetEnterFunc(CreateSetTokenFunc(COMMENT_TOKEN, NORMAL_PRIORITY));
+        nsm.SetEnterFunc(CreateSetTokenFunc(BLOCK_COMMENT_END));
         nsm.EndState();
     }
 
@@ -717,16 +736,19 @@ namespace astu {
             throw std::logic_error("No token specified for floating-point numbers");
         }
 
-        if (!HasSpecialToken(IDENT_TOKEN_ID)) {
-            throw std::logic_error("No token specified for identifier");
-        }
+        // Uncomment, if identifier token is not optional.
+        //if (!HasSpecialToken(IDENT_TOKEN_ID)) {
+        //    throw std::logic_error("No token specified for identifier");
+        //}
 
-        if (identStartSymbols.empty()) {
-            throw std::logic_error("No start symbols defined for identifier");
-        }
+        if (HasSpecialToken(IDENT_TOKEN_ID)) {
+            if (identStartSymbols.empty()) {
+                throw std::logic_error("No start symbols defined for identifier");
+            }
 
-        if (identSymbols.empty()) {
-            throw std::logic_error("No symbols defined for identifier");
+            if (identSymbols.empty()) {
+                throw std::logic_error("No symbols defined for identifier");
+            }
         }
 
         if (stringSymbols.find(stringDelimiter) != stringSymbols.end()) {

@@ -15,6 +15,10 @@ namespace velox {
         throw InterpreterError("Not an integer");
     }
 
+    bool ItemState::GetBooleanValue() const {
+        throw InterpreterError("Not a boolean");
+    }
+
     std::string ItemState::GetStringValue() const {
         throw InterpreterError("Not a string");
     }

@@ -12,7 +12,7 @@ namespace velox {
         AddFormalParameter(PARAM_NAME);
     }
 
-    shared_ptr<Item> InterpreterSineFunction::Execute(ScriptContext &sc) {
+    shared_ptr<Item> InterpreterSineFunction::DoEvaluate(ScriptContext &sc) {
         auto &item = sc.GetItem(PARAM_NAME);
 
         double resultValue = std::sin(item.GetRealValue());

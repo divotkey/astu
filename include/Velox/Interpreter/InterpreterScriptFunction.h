@@ -1,22 +1,23 @@
 #pragma once
 
-#include "InterpreterFormalParameterList.h"
-#include "InterpreterActualParameterList.h"
 #include "InterpreterStatementBlock.h"
+#include "InterpreterFunction.h"
 #include "Item.h"
 #include "ScriptContext.h"
 #include <memory>
 
 namespace velox {
 
-    class InterpreterScriptFunction {
+    class InterpreterScriptFunction : public InterpreterFunction {
     public:
 
-        std::shared_ptr<Item> Execute(ScriptContext &sc, InterpreterActualParameterList &actualParameters);
+        void SetStatement(std::shared_ptr<InterpreterStatement> statement);
+
+    protected:
+        std::shared_ptr<Item> DoEvaluate(ScriptContext &sc) override;
 
     private:
-        std::shared_ptr<InterpreterFormalParameterList> formalParameters;
-        std::shared_ptr<InterpreterStatementBlock> statements;
+        std::shared_ptr<InterpreterStatement> statement;
     };
 
 }

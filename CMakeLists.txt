@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Sun Apr 03 08:12:18 CEST 2022 with SWORD Interpreter 1.9.1
+# Generated Tue Apr 05 08:28:57 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -228,14 +228,24 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterFunction.h 
 	include/Velox/Interpreter/InterpreterFunctionCall.cpp 
 	include/Velox/Interpreter/InterpreterFunctionCall.h 
+	include/Velox/Interpreter/InterpreterFunctionDefinition.cpp 
+	include/Velox/Interpreter/InterpreterFunctionDefinition.h 
+	include/Velox/Interpreter/InterpreterIfStatement.cpp 
+	include/Velox/Interpreter/InterpreterIfStatement.h 
 	include/Velox/Interpreter/InterpreterIntegerLiteral.cpp 
 	include/Velox/Interpreter/InterpreterIntegerLiteral.h 
+	include/Velox/Interpreter/InterpreterLogicalOperation.cpp 
+	include/Velox/Interpreter/InterpreterLogicalOperation.h 
 	include/Velox/Interpreter/InterpreterMemberAccess.cpp 
 	include/Velox/Interpreter/InterpreterMemberAccess.h 
 	include/Velox/Interpreter/InterpreterPrintFunction.cpp 
 	include/Velox/Interpreter/InterpreterPrintFunction.h 
 	include/Velox/Interpreter/InterpreterRealLiteral.cpp 
 	include/Velox/Interpreter/InterpreterRealLiteral.h 
+	include/Velox/Interpreter/InterpreterRelationalOperation.cpp 
+	include/Velox/Interpreter/InterpreterRelationalOperation.h 
+	include/Velox/Interpreter/InterpreterReturnStatement.cpp 
+	include/Velox/Interpreter/InterpreterReturnStatement.h 
 	include/Velox/Interpreter/InterpreterScriptFunction.cpp 
 	include/Velox/Interpreter/InterpreterScriptFunction.h 
 	include/Velox/Interpreter/InterpreterSimpleName.cpp 
@@ -245,10 +255,14 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterStatement.h 
 	include/Velox/Interpreter/InterpreterStatementBlock.cpp 
 	include/Velox/Interpreter/InterpreterStatementBlock.h 
+	include/Velox/Interpreter/InterpreterWhileStatement.cpp 
+	include/Velox/Interpreter/InterpreterWhileStatement.h 
 	include/Velox/Interpreter/Item.cpp 
 	include/Velox/Interpreter/Item.h 
 	include/Velox/Interpreter/ItemState.cpp 
 	include/Velox/Interpreter/ItemState.h 
+	include/Velox/Interpreter/ItemStateBool.cpp 
+	include/Velox/Interpreter/ItemStateBool.h 
 	include/Velox/Interpreter/ItemStateFunction.cpp 
 	include/Velox/Interpreter/ItemStateFunction.h 
 	include/Velox/Interpreter/ItemStateInteger.cpp 
@@ -361,7 +375,7 @@ configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 #################################################
 
 # Define static library target.
-add_library(astu ${astu_SOURCES})
+add_library(astu ${astu_SOURCES} include/Velox/Interpreter/MemoryManager.cpp include/Velox/Interpreter/MemoryManager.h)
 
 # Set include directories for target astu
 target_include_directories(

@@ -10,6 +10,8 @@ namespace velox {
 
         for (const auto &statement: statements) {
             statement->Execute(sc);
+            if (sc.IsSet(ScriptContext::RETURN_EXECUTED_FLAG))
+                break;
         }
 
         sc.PopScope();

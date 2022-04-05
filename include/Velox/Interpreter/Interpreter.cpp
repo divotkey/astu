@@ -11,6 +11,7 @@ namespace velox {
     }
 
     void velox::Interpreter::Execute(std::shared_ptr<velox::InterpreterStatement> program) {
+        context.ClearFlags();
         program->Execute(context);
     }
 

@@ -10,7 +10,7 @@ namespace velox {
         InterpreterSineFunction();
 
     protected:
-        std::shared_ptr<Item> Execute(ScriptContext &sc) override;
+        std::shared_ptr<Item> DoEvaluate(ScriptContext &sc) override;
     };
 
 }

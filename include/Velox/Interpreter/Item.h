@@ -55,6 +55,14 @@ namespace velox {
         int GetIntegerValue() const;
 
         /**
+         * Tries to convert this item to a boolean value.
+         *
+         * @return the boolean value
+         * @throws InterpreterException in case this item cannot interpreted as boolean value
+         */
+        bool GetBooleanValue() const;
+
+        /**
          * Tries to convert this item to a string value.
          *
          * @return the extracted string value
@@ -65,12 +73,22 @@ namespace velox {
         /**
          * Carries out an arithmetic operation.
          *
-         * @param op    the arithmetic operation
+         * @param op    the arithmetic operator
          * @param item  the left-hand side of the operation
          * @return the result of the operation
          * @throws InterpreterException in case the operation is invalid between the two items
          */
         std::shared_ptr<Item> ExecuteArithmeticOperator(ArithmeticOperator op, const Item& item) const;
+
+        /**
+         * Carries out an relational operation.
+         *
+         * @param op    the relational operator
+         * @param item  the left-hand side of the operation
+         * @return the result of the operation
+         * @throws InterpreterException in case the operation is invalid between the two items
+         */
+        std::shared_ptr<Item> ExecuteRelationalOperator(RelationalOperator op, const Item& item) const;
 
         void AddItem(const std::string& name, std::shared_ptr<Item> item);
         bool HasItem(const std::string& name) const;
@@ -83,6 +101,9 @@ namespace velox {
         /** Lookup table for arithmetic results of items according to their types. */
         static const ItemType arithmeticResult[6][6];
 
+        /** Lookup table defining the type for relational operations. */
+        static const ItemType relationalType[6][6];
+
         /** The internal state of this item. */
         std::unique_ptr<ItemState> state;
 
@@ -91,6 +112,8 @@ namespace velox {
 
         int ExecuteIntegerArithmetic(int a, int b, ArithmeticOperator op) const;
         double ExecuteRealArithmetic(double a, double b, ArithmeticOperator op) const;
+        bool ExecuteIntegerRelational(int a, int b, RelationalOperator op) const;
+        bool ExecuteRealRelational(double a, double b, RelationalOperator op) const;
 
         friend class ItemStateReference;
     };

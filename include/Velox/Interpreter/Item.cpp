@@ -2,6 +2,7 @@
 #include "ItemState.h"
 #include "ItemStateInteger.h"
 #include "ItemStateReal.h"
+#include "ItemStateBool.h"
 #include "InterpreterError.h"
 
 #include <cassert>
@@ -141,6 +142,135 @@ namespace velox {
             },
     };
 
+    const ItemType Item::relationalType[6][6] = {
+
+            // First type 'Undefined'
+            {
+                    // Second type 'Undefined'
+                    ItemType::Undefined,
+
+                    // Second type 'Integer'
+                    ItemType::Undefined,
+
+                    // Second type 'Real'
+                    ItemType::Undefined,
+
+                    // Second type 'Boolean'
+                    ItemType::Undefined,
+
+                    // Second type 'String'
+                    ItemType::Undefined,
+
+                    // Second type 'Other'
+                    ItemType::Undefined
+            },
+
+            // First type 'Integer'
+            {
+                    // Second type 'Undefined'
+                    ItemType::Undefined,
+
+                    // Second type 'Integer'
+                    ItemType::Integer,
+
+                    // Second type 'Real'
+                    ItemType::Real,
+
+                    // Second type 'Boolean'
+                    ItemType::Undefined,
+
+                    // Second type 'String'
+                    ItemType::Undefined,
+
+                    // Second type 'Other'
+                    ItemType::Undefined
+            },
+
+            // First type 'Real'
+            {
+                    // Second type 'Undefined'
+                    ItemType::Undefined,
+
+                    // Second type 'Integer'
+                    ItemType::Real,
+
+                    // Second type 'Real'
+                    ItemType::Real,
+
+                    // Second type 'Boolean'
+                    ItemType::Undefined,
+
+                    // Second type 'String'
+                    ItemType::Undefined,
+
+                    // Second type 'Other'
+                    ItemType::Undefined
+            },
+
+            // First type 'Boolean'
+            {
+                    // Second type 'Undefined'
+                    ItemType::Undefined,
+
+                    // Second type 'Integer'
+                    ItemType::Undefined,
+
+                    // Second type 'Real'
+                    ItemType::Undefined,
+
+                    // Second type 'Boolean'
+                    ItemType::Undefined,
+
+                    // Second type 'String'
+                    ItemType::Undefined,
+
+                    // Second type 'Other'
+                    ItemType::Undefined
+            },
+
+            // First type 'String'
+            {
+                    // Second type 'Undefined'
+                    ItemType::Undefined,
+
+                    // Second type 'Integer'
+                    ItemType::Undefined,
+
+                    // Second type 'Real'
+                    ItemType::Undefined,
+
+                    // Second type 'Boolean'
+                    ItemType::Undefined,
+
+                    // Second type 'String'
+                    ItemType::Undefined,
+
+                    // Second type 'Other'
+                    ItemType::Undefined
+            },
+
+            // First type 'Other'
+            {
+                    // Second type 'Undefined'
+                    ItemType::Undefined,
+
+                    // Second type 'Integer'
+                    ItemType::Undefined,
+
+                    // Second type 'Real'
+                    ItemType::Undefined,
+
+                    // Second type 'Boolean'
+                    ItemType::Undefined,
+
+                    // Second type 'String'
+                    ItemType::Undefined,
+
+                    // Second type 'Other'
+                    ItemType::Undefined
+            },
+    };
+
     Item::Item(std::unique_ptr<ItemState> state) : state(move(state)) {
         // Intentionally left empty.
     }
@@ -159,6 +289,10 @@ namespace velox {
 
     int Item::GetIntegerValue() const {
         return state->GetIntegerValue();
+    }
+
+    bool Item::GetBooleanValue() const {
+        return state->GetBooleanValue();
     }
 
     std::string Item::GetStringValue() const {
@@ -246,6 +380,38 @@ namespace velox {
         }
     }
 
+    std::shared_ptr<Item> Item::ExecuteRelationalOperator(RelationalOperator op, const Item &item) const {
+        // TODO look for custom operation function within this item for overloaded operators.
+
+        // Get type used for the relational operation.
+        ItemType opType = relationalType[TYPE_INDEX(*this)][TYPE_INDEX(item)];
+
+        switch (opType) {
+            case ItemType::Undefined:
+                // Fall through
+
+            case ItemType::Boolean:
+                // Fall through
+
+            case ItemType::String:
+                // Fall through
+
+            case ItemType::Other:
+                throw InterpreterError("Undefined relational operator between this types");
+
+            case ItemType::Integer:
+                return make_shared<Item>(make_unique<ItemStateBool>(
+                        ExecuteIntegerRelational(state->GetIntegerValue(), item.state->GetIntegerValue(), op)));
+
+            case ItemType::Real:
+                return make_shared<Item>(make_unique<ItemStateBool>(
+                        ExecuteRealRelational(state->GetRealValue(), item.state->GetRealValue(), op)));
+
+            default:
+                throw runtime_error("Internal interpreter error: implementation of relational operator is flawed.");
+        }
+    }
+
     int Item::ExecuteIntegerArithmetic(int a, int b, ArithmeticOperator op) const {
         switch (op) {
             case ArithmeticOperator::ADD:
@@ -281,5 +447,59 @@ namespace velox {
                 throw InterpreterError("Unknown arithmetic operator");
         }
     }
+
+    bool Item::ExecuteIntegerRelational(int a, int b, RelationalOperator op) const {
+        switch (op) {
+
+            case RelationalOperator::LESS_THAN:
+                return a < b;
+
+            case RelationalOperator::LESS_EQUAL:
+                return a <= b;
+
+            case RelationalOperator::GREATER_THAN:
+                return a > b;
+
+            case RelationalOperator::GREATER_EQUAL:
+                return a >= b;
+
+            case RelationalOperator::EQUAL:
+                return a == b;
+
+            case RelationalOperator::NOT_EQUAL:
+                return a != b;
+
+            default:
+                throw runtime_error("Internal interpreter error: implementation of relational operator is flawed.");
+        }
+    }
+
+    bool Item::ExecuteRealRelational(double a, double b, RelationalOperator op) const {
+        switch (op) {
+
+            case RelationalOperator::LESS_THAN:
+                return a < b;
+
+            case RelationalOperator::LESS_EQUAL:
+                return a <= b;
+
+            case RelationalOperator::GREATER_THAN:
+                return a > b;
+
+            case RelationalOperator::GREATER_EQUAL:
+                return a >= b;
+
+            case RelationalOperator::EQUAL:
+                return a == b;
+
+            case RelationalOperator::NOT_EQUAL:
+                return a != b;
+
+            default:
+                throw runtime_error("Internal interpreter error: implementation of relational operator is flawed.");
+        }
+
+    }
+
 
 }

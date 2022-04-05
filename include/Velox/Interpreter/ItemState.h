@@ -56,6 +56,14 @@ namespace velox {
         virtual int GetIntegerValue() const;
 
         /**
+         * Tries to convert this state to a boolean value.
+         *
+         * @return the boolean value
+         * @throws InterpreterException in case this state cannot interpreted as boolean value
+         */
+        virtual bool GetBooleanValue() const;
+
+        /**
          * Tries to convert this state to a string value.
          *
          * @return the string value

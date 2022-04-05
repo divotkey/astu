@@ -8,14 +8,12 @@ namespace velox {
     class InterpreterFunction {
     public:
 
-        std::shared_ptr<Item> Execute(ScriptContext &sc, InterpreterActualParameterList &actualParameters);
-
-    protected:
-
+        std::shared_ptr<Item> Evaluate(ScriptContext &sc, InterpreterActualParameterList &actualParameters);
         void AddFormalParameter(const std::string& simpleName);
         bool HasFormalParameter(const std::string& simpleName) const;
 
-        virtual std::shared_ptr<Item> Execute(ScriptContext &sc) = 0;
+    protected:
+        virtual std::shared_ptr<Item> DoEvaluate(ScriptContext &sc) = 0;
 
     private:
         std::vector<std::string> formalParameters;

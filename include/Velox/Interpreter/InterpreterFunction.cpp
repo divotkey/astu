@@ -10,7 +10,7 @@ using namespace std;
 namespace velox {
 
     shared_ptr<Item>
-    InterpreterFunction::Execute(ScriptContext &sc, InterpreterActualParameterList &actualParameters) {
+    InterpreterFunction::Evaluate(ScriptContext &sc, InterpreterActualParameterList &actualParameters) {
         // Actual parameters must be less or equal to formal parameters.
         if (formalParameters.size() < actualParameters.NumParameters()) {
             throw InterpreterError("Function call with to many parameters");
@@ -35,13 +35,13 @@ namespace velox {
         // Script context must contain parameters before actual function is evaluated.
         sc.PushScope(parameterScope);
 
-        // Execute/evaluate the actual function.
-        auto result = Execute(sc);
+        // DoEvaluate/evaluate the actual function.
+        auto result = DoEvaluate(sc);
 
         // Clean up the scope stack.
         sc.PopScope();
 
-        return nullptr;
+        return result;
     }
 
     void InterpreterFunction::AddFormalParameter(const string &simpleName) {

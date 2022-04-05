@@ -2,7 +2,11 @@
 #include "InterpreterError.h"
 #include "Scope.h"
 
+#include <cassert>
+
 namespace velox {
+
+    const unsigned int ScriptContext::RETURN_EXECUTED_FLAG = 1 << 0;
 
     void ScriptContext::PushScope(std::shared_ptr<Scope> scope) {
         if (!scope) {
@@ -13,6 +17,16 @@ namespace velox {
 
     void ScriptContext::PopScope() {
         scopes.pop_front();
+    }
+
+    Scope &ScriptContext::GetCurrentScope() {
+        assert(!scopes.empty());
+        return *scopes.front();
+    }
+
+    const Scope &ScriptContext::GetCurrentScope() const {
+        assert(!scopes.empty());
+        return *scopes.front();
     }
 
     bool ScriptContext::HasItem(const std::string &name) const {
@@ -70,6 +84,42 @@ namespace velox {
 
     void ScriptContext::Clear() {
         scopes.clear();
+        returnValueStack.clear();
+        flags = 0;
+    }
+
+    void ScriptContext::PushReturnValue(std::shared_ptr<Item> value) {
+        returnValueStack.push_back(value);
+    }
+
+    std::shared_ptr<Item> ScriptContext::PopReturnValue() {
+        auto result = returnValueStack.back();
+        returnValueStack.pop_back();
+        return result;
+    }
+
+    void ScriptContext::SetCurrentReturnValue(std::shared_ptr<Item> value) {
+        returnValueStack.back() = value;
+    }
+
+    void ScriptContext::SetFlag(unsigned int bitmask) {
+        flags |= bitmask;
+    }
+
+    unsigned int ScriptContext::GetFlags() const {
+        return flags;
+    }
+
+    bool ScriptContext::IsSet(unsigned int bitmask) {
+        return flags & bitmask;
+    }
+
+    void ScriptContext::ClearFlag(unsigned int bitmask) {
+        flags &= ~bitmask;
+    }
+
+    void ScriptContext::ClearFlags() {
+        flags = 0;
     }
 
 }

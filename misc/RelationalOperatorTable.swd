@@ -1,0 +1,175 @@
+// Sword-Script: Relational-Operator Table
+// Copyright 2022 Roman Divotkey. All rights reserved.
+
+types = 
+	[ "Undefined"
+	, "Integer"
+	, "Real"
+	, "Boolean"
+	, "String"
+	, "Other"
+	];
+
+
+EmitHeader();
+EmitRows();
+EmitFooter();
+
+function EmitRows() {
+	for (i = 0; i < types.length; ++i) {
+		EmitRow(types[i], i >= types.length);
+	}
+}
+
+function EmitRow(type1, lastRow) {
+	indent(1);
+	§:
+	:§
+	§:
+		// First type '§{type1}'
+		{
+	:§
+
+	for (i = 0; i < types.length; ++i) {
+		s = GetType(type1, types[i]);
+		if (i < types.length - 1)
+			s += ","; 
+
+		§:
+				// Second type '§{types[i]}'
+				§{s}
+		:§
+
+		if (i < types.length - 1) {
+			§:
+			:§
+		}
+			
+	}
+
+	if (lastRow) {
+		§:
+			}
+		:§
+	}
+	else {
+		§:
+			}, 
+		:§
+	}
+	indent(-1);
+}
+
+function GetType(type1, type2) {
+	switch (type1) {
+		case "Undefined":
+			return "ItemType::Undefined";
+
+		case "Integer":
+			switch (type2) {
+				case "Undefined":
+					return "ItemType::Undefined";
+
+				case "Integer":
+					return "ItemType::Integer";
+
+				case "Real":
+					return "ItemType::Real";
+
+				case "Boolean":
+					return "ItemType::Undefined";
+
+				case "String":
+					return "ItemType::Undefined";
+
+				case "Other":
+					return "ItemType::Undefined";
+			}
+
+		case "Real":
+			switch (type2) {
+				case "Undefined":
+					return "ItemType::Undefined";
+
+				case "Integer":
+					return "ItemType::Real";
+
+				case "Real":
+					return "ItemType::Real";
+
+				case "Boolean":
+					return "ItemType::Undefined";
+
+				case "String":
+					return "ItemType::Undefined";
+
+				case "Other":
+					return "ItemType::Undefined";
+			}
+
+		case "Boolean":
+			switch (type2) {
+				case "Undefined":
+					return "ItemType::Undefined";
+
+				case "Integer":
+					return "ItemType::Undefined";
+
+				case "Real":
+					return "ItemType::Undefined";
+
+				case "Boolean":
+					return "ItemType::Undefined";
+
+				case "String":
+					return "ItemType::Undefined";
+
+				case "Other":
+					return "ItemType::Undefined";
+			}
+
+		case "String":
+			switch (type2) {
+				case "Undefined":
+					return "ItemType::Undefined";
+
+				case "Integer":
+					return "ItemType::Undefined";
+
+				case "Real":
+					return "ItemType::Undefined";
+
+				case "Boolean":
+					return "ItemType::Undefined";
+
+				case "String":
+					return "ItemType::Undefined";
+
+				case "Other":
+					return "ItemType::Undefined";
+			}
+
+		case "Other":
+			return "ItemType::Undefined";
+	}
+
+	return "???";
+}
+
+function EmitHeader(varName) {
+	if (varName == undefined)
+		varName = "relationalType";
+
+	§:
+		const ItemType Item::§{varName}[§{types.length}][§{types.length}] = {
+	:§
+}
+
+function EmitFooter() {
+	§:
+		};
+	:§
+}
+
+
+
