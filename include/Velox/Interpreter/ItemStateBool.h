@@ -11,7 +11,10 @@ namespace velox {
          * Constructor.
          * @param value the value of this state
          */
-        ItemStateBool(bool value = 0) : value(value) {}
+        ItemStateBool(bool value) : value(value) {}
+
+        ItemStateBool( const ItemStateBool& ) = delete; // non construction-copyable
+        ItemStateBool& operator=( const ItemStateBool& ) = delete; // non copyable
 
         // Inherited via ItemState
         std::unique_ptr<ItemState> Copy() const override;

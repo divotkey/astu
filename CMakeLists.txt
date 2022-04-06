@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Tue Apr 05 08:28:57 CEST 2022 with SWORD Interpreter 1.9.1
+# Generated Wed Apr 06 09:48:55 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -211,6 +211,7 @@ list(APPEND astu_SOURCES
 	include/Script/ScannerException.h 
 
 	# Module: Velox
+	include/Velox/Interpreter/IMemoryManager.h 
 	include/Velox/Interpreter/Interpreter.cpp 
 	include/Velox/Interpreter/Interpreter.h 
 	include/Velox/Interpreter/InterpreterActualParameterList.cpp 
@@ -274,11 +275,15 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/ItemStateUndefined.cpp 
 	include/Velox/Interpreter/ItemStateUndefined.h 
 	include/Velox/Interpreter/ItemType.h 
+	include/Velox/Interpreter/MemoryManager.cpp 
+	include/Velox/Interpreter/MemoryManager.h 
 	include/Velox/Interpreter/Operators.h 
 	include/Velox/Interpreter/Scope.cpp 
 	include/Velox/Interpreter/Scope.h 
 	include/Velox/Interpreter/ScriptContext.cpp 
 	include/Velox/Interpreter/ScriptContext.h 
+	include/Velox/Interpreter/SimpleMemoryManager.cpp 
+	include/Velox/Interpreter/SimpleMemoryManager.h 
 	include/Velox/Parser/Parser.cpp 
 	include/Velox/Parser/Parser.h 
 	include/Velox/Parser/ParserError.h 
@@ -375,7 +380,7 @@ configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 #################################################
 
 # Define static library target.
-add_library(astu ${astu_SOURCES} include/Velox/Interpreter/MemoryManager.cpp include/Velox/Interpreter/MemoryManager.h)
+add_library(astu ${astu_SOURCES})
 
 # Set include directories for target astu
 target_include_directories(

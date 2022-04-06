@@ -9,6 +9,7 @@
 
 // C++ Standard Library
 #include <cassert>
+#include <stdexcept>
 
 using namespace std;
 

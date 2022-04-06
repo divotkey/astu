@@ -16,7 +16,7 @@ namespace velox {
     shared_ptr<Item> InterpreterPrintFunction::DoEvaluate(ScriptContext &sc) {
         auto &item = sc.GetItem(PARAM_NAME);
         cout << item.GetStringValue() << endl;
-        return make_shared<Item>(make_unique<ItemStateUndefined>());
+        return Item::Create(make_unique<ItemStateUndefined>());
     }
 
 }

@@ -87,8 +87,7 @@ namespace astu {
 			}
 			else {
 				stringstream stream;
-				stream.precision(precision);
-				stream << s << " KiB";
+				stream << fixed << setprecision(precision) << s << " KiB";
 				return stream.str();
 			}
 		}
@@ -99,8 +98,7 @@ namespace astu {
 			}
 			else {
 				stringstream stream;
-				stream.precision(precision);
-				stream << s << " MiB";
+				stream << fixed << setprecision(precision) << s << " MiB";
 				return stream.str();
 			}
 		}
@@ -111,8 +109,7 @@ namespace astu {
 			}
 			else {
 				stringstream stream;
-				stream.precision(precision);
-				stream << s << " GiB";
+				stream << fixed << setprecision(precision) << s << " GiB";
 				return stream.str();
 			}
 		}

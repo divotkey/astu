@@ -1,17 +1,38 @@
+// Copyright (c) 2022 Roman Divotkey. All rights reserved.
+//
+// This file is subject to the terms and conditions defined in file 'LICENSE',
+// which is part of this source code package. See 'AUTHORS' file for a list
+// of contributors.
+
 #include "Item.h"
 #include "ItemState.h"
 #include "ItemStateInteger.h"
 #include "ItemStateReal.h"
 #include "ItemStateBool.h"
 #include "InterpreterError.h"
+#include "IMemoryManager.h"
 
+// C++ Standard Library
 #include <cassert>
+#include <cmath>
 
 using namespace std;
 
 #define TYPE_INDEX(a) static_cast<size_t>((a).state->GetType())
 
 namespace velox {
+
+    //std::shared_ptr<Item> Item::Create(std::unique_ptr<ItemState> state) {
+    //    return std::shared_ptr<Item>(new Item(move(state)));
+    //}
+
+    void *Item::operator new(size_t count) {
+        return gMemoryManager->Allocate(count);
+    }
+
+    void Item::operator delete(void *p) {
+        gMemoryManager->Free(p);
+    }
 
     const ItemType Item::arithmeticResult[6][6] = {
 
@@ -271,10 +292,6 @@ namespace velox {
             },
     };
 
-    Item::Item(std::unique_ptr<ItemState> state) : state(move(state)) {
-        // Intentionally left empty.
-    }
-
     void Item::Assign(const Item &other) {
         state = other.state->Copy();
     }
@@ -358,12 +375,12 @@ namespace velox {
                 throw InterpreterError("Undefined arithmetic operator between this types");
 
             case ItemType::Integer:
-                return make_shared<Item>(
-                        make_unique<ItemStateInteger>(
+                return Item::Create(
+                        std::make_unique<ItemStateInteger>(
                                 ExecuteIntegerArithmetic(state->GetIntegerValue(), item.state->GetIntegerValue(), op)));
 
             case ItemType::Real:
-                return make_shared<Item>(
+                return Item::Create(
                         make_unique<ItemStateReal>(
                                 ExecuteRealArithmetic(state->GetRealValue(), item.state->GetRealValue(), op)));
 
@@ -400,11 +417,11 @@ namespace velox {
                 throw InterpreterError("Undefined relational operator between this types");
 
             case ItemType::Integer:
-                return make_shared<Item>(make_unique<ItemStateBool>(
+                return Item::Create(make_unique<ItemStateBool>(
                         ExecuteIntegerRelational(state->GetIntegerValue(), item.state->GetIntegerValue(), op)));
 
             case ItemType::Real:
-                return make_shared<Item>(make_unique<ItemStateBool>(
+                return Item::Create(make_unique<ItemStateBool>(
                         ExecuteRealRelational(state->GetRealValue(), item.state->GetRealValue(), op)));
 
             default:
@@ -500,6 +517,7 @@ namespace velox {
         }
 
     }
+
 
 
 }

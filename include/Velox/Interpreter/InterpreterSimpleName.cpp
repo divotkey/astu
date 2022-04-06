@@ -13,7 +13,7 @@ namespace velox {
             if (!IsLocation()) {
                 throw InterpreterError("Unknown identifier '" + name + "'");
             }
-            result = make_shared<Item>(make_unique<ItemStateUndefined>());
+            result = Item::Create(make_unique<ItemStateUndefined>());
             sc.AddItem(name, result);
         }
 

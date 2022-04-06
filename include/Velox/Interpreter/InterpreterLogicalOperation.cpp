@@ -24,16 +24,16 @@ namespace velox {
         auto lhs = leftHandSide->Evaluate(sc);
         if (logOp == LogicalOperator::OR) {
             if (!lhs->GetBooleanValue()) {
-                return make_shared<Item>(make_unique<ItemStateBool>(rightHandSide->Evaluate(sc)->GetBooleanValue()));
+                return Item::Create(make_unique<ItemStateBool>(rightHandSide->Evaluate(sc)->GetBooleanValue()));
             } else {
-                return make_shared<Item>(make_unique<ItemStateBool>(false));
+                return Item::Create(make_unique<ItemStateBool>(false));
             }
         } else {
             // Logical and.
             if (lhs->GetBooleanValue()) {
-                return make_shared<Item>(make_unique<ItemStateBool>(rightHandSide->Evaluate(sc)->GetBooleanValue()));
+                return Item::Create(make_unique<ItemStateBool>(rightHandSide->Evaluate(sc)->GetBooleanValue()));
             } else {
-                return make_shared<Item>(make_unique<ItemStateBool>(false));
+                return Item::Create(make_unique<ItemStateBool>(false));
             }
         }
     }

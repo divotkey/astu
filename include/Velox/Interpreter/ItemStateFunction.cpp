@@ -1,4 +1,5 @@
 #include "ItemStateFunction.h"
+#include "IMemoryManager.h"
 
 using namespace std;
 
@@ -12,6 +13,5 @@ namespace velox {
     ItemStateFunction::CallAsFunction(ScriptContext &sc, InterpreterActualParameterList& parameters) {
         return function->Evaluate(sc, parameters);
     }
-
 
 }

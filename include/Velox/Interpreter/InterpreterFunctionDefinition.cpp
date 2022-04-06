@@ -12,7 +12,8 @@ namespace velox {
             throw InterpreterError("Ambiguous function name '" + functionName + "'");
         }
 
-        sc.GetCurrentScope().AddItem(functionName, make_shared<Item>(make_unique<ItemStateFunction>(function)));
+
+        sc.GetCurrentScope().AddItem(functionName, Item::Create(make_unique<ItemStateFunction>(function)));
     }
 
     void InterpreterFunctionDefinition::SetFunction(std::shared_ptr<InterpreterScriptFunction> inFunction) {

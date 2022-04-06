@@ -5,6 +5,7 @@
 #include "Operators.h"
 #include "InterpreterActualParameterList.h"
 #include "ItemType.h"
+#include "ItemState.h"
 
 #include <memory>
 #include <map>
@@ -21,11 +22,15 @@ namespace velox {
     class Item final {
     public:
 
-        /**
-         * Constructor.
-         * @param state the initial state of this item.
-         */
-        Item(std::unique_ptr<ItemState> state);
+        static std::shared_ptr<Item> Create(std::unique_ptr<ItemState> state) {
+            return std::shared_ptr<Item>(new Item(move(state)));
+        }
+
+        Item( const Item& ) = delete; // non construction-copyable
+        Item& operator=( const Item& ) = delete; // non copyable
+
+        void * operator new(size_t count);
+        void operator delete(void * p);
 
         /**
          * Calls this item as function.
@@ -114,6 +119,12 @@ namespace velox {
         double ExecuteRealArithmetic(double a, double b, ArithmeticOperator op) const;
         bool ExecuteIntegerRelational(int a, int b, RelationalOperator op) const;
         bool ExecuteRealRelational(double a, double b, RelationalOperator op) const;
+
+        /**
+         * Constructor.
+         */
+        Item(std::unique_ptr<ItemState> state) : state(std::move(state)) {}
+
 
         friend class ItemStateReference;
     };

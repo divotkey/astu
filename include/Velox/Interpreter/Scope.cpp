@@ -1,6 +1,8 @@
 #include "Scope.h"
 
+// C++ Standard Library
 #include <cassert>
+#include <stdexcept>
 
 using namespace std;
 
@@ -49,6 +51,10 @@ namespace velox {
         }
 
         return *result;
+    }
+
+    void Scope::Clear() {
+        items.clear();
     }
 
 }

@@ -27,5 +27,4 @@ namespace velox {
     ItemType ItemStateBool::GetType() const {
         return ItemType::Boolean;
     }
-
 }

@@ -103,7 +103,7 @@ namespace astu {
         ~ImageRenderer();
 
         /**
-         * Clear the output rendering.
+         * ClearVariables the output rendering.
          */
         void Clear();
 
@@ -234,7 +234,7 @@ namespace astu {
         /**
          * Sets the maximum recursion depth of the scene quadtree.
          * 
-         * Note: changing the depth will only have on effect after Clear() 
+         * Note: changing the depth will only have on effect after ClearVariables()
          * has been called.
          * 
          * @param depth the depth of the scene quadtree.

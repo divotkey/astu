@@ -3,7 +3,9 @@
 #include "InterpreterError.h"
 #include "ItemStateUndefined.h"
 
+// C++ Standard Library
 #include <cassert>
+#include <algorithm>
 
 using namespace std;
 
@@ -26,7 +28,7 @@ namespace velox {
             if (i < actualParameters.NumParameters()) {
                 parameter = actualParameters.GetParameter(i).Evaluate(sc);
             } else {
-                parameter = make_shared<Item>(make_unique<ItemStateUndefined>());
+                parameter = Item::Create(make_unique<ItemStateUndefined>());
             }
 
             parameterScope->AddItem(formalParameters[i], parameter);

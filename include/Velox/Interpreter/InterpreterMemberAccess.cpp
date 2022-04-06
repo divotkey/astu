@@ -14,7 +14,7 @@ namespace velox {
             if (!IsLocation()) {
                 throw InterpreterError("Unknown field '" + name + "'");
             }
-            result = make_shared<Item>(make_unique<ItemStateUndefined>());
+            result = Item::Create(make_unique<ItemStateUndefined>());
             leftItem->AddItem(name, result);
         }
 

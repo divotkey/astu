@@ -16,7 +16,7 @@ namespace velox {
         auto &item = sc.GetItem(PARAM_NAME);
 
         double resultValue = std::sin(item.GetRealValue());
-        return make_shared<Item>(make_unique<ItemStateReal>(resultValue));
+        return Item::Create(make_unique<ItemStateReal>(resultValue));
     }
 
 }

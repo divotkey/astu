@@ -9,6 +9,7 @@
 #include "FSM/DStateMachine.h"
 
 // C++ Standard Library
+#include <stdexcept>
 #include <cassert>
 #include <vector>
 

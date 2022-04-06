@@ -18,6 +18,7 @@ namespace velox {
         std::shared_ptr<const Item> FindItem(const std::string& name) const;
         Item &GetItem(const std::string& name);
         const Item &GetItem(const std::string& name) const;
+        void Clear();
 
     private:
         /** List of items associated with unique names. */

@@ -24,4 +24,12 @@ namespace velox {
         return ItemType::Integer;
     }
 
+    //void *ItemStateInteger::operator new(size_t count) {
+    //    return gMemoryManager->Allocate(count);
+    //}
+    //
+    //void ItemStateInteger::operator delete(void *p) {
+    //    gMemoryManager->Free(p);
+    //}
+
 }

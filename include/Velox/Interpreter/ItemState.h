@@ -23,6 +23,9 @@ namespace velox {
          */
         virtual ~ItemState() {}
 
+        void * operator new(size_t count);
+        void operator delete(void * p);
+
         /**
          * Called to evaluate this state es function.
          * The default implementation will throws an InterpreterError.

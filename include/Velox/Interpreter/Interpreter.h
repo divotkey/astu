@@ -22,7 +22,8 @@ namespace velox {
 
         void AddFunction(const std::string& name, std::shared_ptr<InterpreterFunction> function);
         void Execute(std::shared_ptr<InterpreterStatement> program);
-        void Clear();
+        void ClearVariables();
+        void ClearAll();
 
     private:
         std::shared_ptr<Scope> superGlobals;

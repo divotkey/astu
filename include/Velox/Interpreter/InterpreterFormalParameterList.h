@@ -3,6 +3,9 @@
 //#include "SimpleNameInterpreterNode.h"
 #include <vector>
 
+// C++ Standard Library include
+#include <cstddef>
+#include <string>
 
 namespace velox {
 

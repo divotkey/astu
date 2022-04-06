@@ -226,7 +226,7 @@ namespace astu {
 
         // Inherited via Service
         virtual void OnShutdown() override {
-            // Clear pending signals and try to free memory used by queues.
+            // ClearVariables pending signals and try to free memory used by queues.
             for (auto & queue : signalQueues) {
                 queue.clear();
             }

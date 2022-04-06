@@ -10,7 +10,7 @@ namespace velox {
         if (expression) {
             sc.SetCurrentReturnValue(expression->Evaluate(sc));
         } else {
-            sc.SetCurrentReturnValue(make_shared<Item>(std::make_unique<ItemStateUndefined>()));
+            sc.SetCurrentReturnValue(Item::Create(std::make_unique<ItemStateUndefined>()));
         }
         sc.SetFlag(ScriptContext::RETURN_EXECUTED_FLAG);
     }

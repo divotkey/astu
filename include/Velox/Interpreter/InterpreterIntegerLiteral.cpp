@@ -11,7 +11,7 @@ namespace velox {
     }
 
     std::shared_ptr<Item> velox::InterpreterIntegerLiteral::Evaluate(velox::ScriptContext &sc) {
-        return make_shared<Item>(make_unique<ItemStateInteger>(value));
+        return Item::Create(std::make_unique<ItemStateInteger>(value));
     }
 
 }

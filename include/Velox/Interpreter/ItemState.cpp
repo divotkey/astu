@@ -1,5 +1,6 @@
 #include "ItemState.h"
 #include "InterpreterError.h"
+#include "IMemoryManager.h"
 
 namespace velox {
 
@@ -25,6 +26,14 @@ namespace velox {
 
     ItemType ItemState::GetType() const {
         return ItemType::Other;
+    }
+
+    void *ItemState::operator new(size_t count) {
+        return gMemoryManager->Allocate(count);
+    }
+
+    void ItemState::operator delete(void *p) {
+        gMemoryManager->Free(p);
     }
 
 }
