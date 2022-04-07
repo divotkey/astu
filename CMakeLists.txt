@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Wed Apr 06 09:48:55 CEST 2022 with SWORD Interpreter 1.9.1
+# Generated Thu Apr 07 09:02:38 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -220,6 +220,8 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterArithmeticOperation.h 
 	include/Velox/Interpreter/InterpreterAssignment.cpp 
 	include/Velox/Interpreter/InterpreterAssignment.h 
+	include/Velox/Interpreter/InterpreterAssignmentOperator.cpp 
+	include/Velox/Interpreter/InterpreterAssignmentOperator.h 
 	include/Velox/Interpreter/InterpreterError.h 
 	include/Velox/Interpreter/InterpreterExpression.cpp 
 	include/Velox/Interpreter/InterpreterExpression.h 
@@ -239,6 +241,10 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterLogicalOperation.h 
 	include/Velox/Interpreter/InterpreterMemberAccess.cpp 
 	include/Velox/Interpreter/InterpreterMemberAccess.h 
+	include/Velox/Interpreter/InterpreterPostIncrement.cpp 
+	include/Velox/Interpreter/InterpreterPostIncrement.h 
+	include/Velox/Interpreter/InterpreterPreIncrement.cpp 
+	include/Velox/Interpreter/InterpreterPreIncrement.h 
 	include/Velox/Interpreter/InterpreterPrintFunction.cpp 
 	include/Velox/Interpreter/InterpreterPrintFunction.h 
 	include/Velox/Interpreter/InterpreterRealLiteral.cpp 
@@ -256,6 +262,8 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterStatement.h 
 	include/Velox/Interpreter/InterpreterStatementBlock.cpp 
 	include/Velox/Interpreter/InterpreterStatementBlock.h 
+	include/Velox/Interpreter/InterpreterStringLiteral.cpp 
+	include/Velox/Interpreter/InterpreterStringLiteral.h 
 	include/Velox/Interpreter/InterpreterWhileStatement.cpp 
 	include/Velox/Interpreter/InterpreterWhileStatement.h 
 	include/Velox/Interpreter/Item.cpp 
@@ -272,6 +280,8 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/ItemStateReal.h 
 	include/Velox/Interpreter/ItemStateReference.cpp 
 	include/Velox/Interpreter/ItemStateReference.h 
+	include/Velox/Interpreter/ItemStateString.cpp 
+	include/Velox/Interpreter/ItemStateString.h 
 	include/Velox/Interpreter/ItemStateUndefined.cpp 
 	include/Velox/Interpreter/ItemStateUndefined.h 
 	include/Velox/Interpreter/ItemType.h 

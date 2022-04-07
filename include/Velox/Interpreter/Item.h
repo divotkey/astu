@@ -26,7 +26,14 @@ namespace velox {
             return std::shared_ptr<Item>(new Item(move(state)));
         }
 
-        Item( const Item& ) = delete; // non construction-copyable
+        std::shared_ptr<Item> Copy() const;
+
+        /**
+         * Copy-constructor.
+         *
+         * @param other the other item used as copy-source
+         */
+        Item(const Item &other) = delete;
         Item& operator=( const Item& ) = delete; // non copyable
 
         void * operator new(size_t count);

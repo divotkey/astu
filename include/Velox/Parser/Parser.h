@@ -36,13 +36,16 @@ namespace velox {
         std::shared_ptr<InterpreterStatement> ParseStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseIdentStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseAssignment(Source &source, std::shared_ptr<InterpreterExpression> lValue);
+
+        std::shared_ptr<InterpreterStatement>
+        ParseAssignmentOperator(Source &source, std::shared_ptr<InterpreterExpression> lValue, ArithmeticOperator op);
         std::shared_ptr<InterpreterStatement> ParseFunctionDefinition(Source &source);
         std::shared_ptr<InterpreterStatement> ParseReturnStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseIfStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseWhileStatement(Source &source);
 
         std::shared_ptr<InterpreterExpression> ParseVariable(Source &source, bool location);
-        std::shared_ptr<InterpreterExpression> ParseRightValue(Source &source);
+        std::shared_ptr<InterpreterExpression> ParseExpression(Source &source);
         std::shared_ptr<InterpreterExpression> ParseMemberAccess(Source &source, std::shared_ptr<InterpreterExpression> lValue);
         std::shared_ptr<InterpreterExpression> ParseSimpleName(Source &source);
         std::shared_ptr<InterpreterExpression> ParseOrExpression(Source &source);

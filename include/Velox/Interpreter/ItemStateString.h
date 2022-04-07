@@ -1,0 +1,40 @@
+#pragma once
+
+#include "ItemState.h"
+
+namespace velox {
+
+    class ItemStateString : public ItemState {
+    public:
+
+        /**
+         * Constructor.
+         * @param value the value of this state
+         */
+        explicit ItemStateString(const std::string& value);
+
+        /**
+         * Destructor.
+         */
+        ~ItemStateString() override;
+
+        ItemStateString( const ItemStateString& ) = delete; // non construction-copyable
+        ItemStateString& operator=( const ItemStateString& ) = delete; // non copyable
+
+        // Inherited via ItemState
+        std::unique_ptr<ItemState> Copy() const override;
+        std::string GetStringValue() const override;
+        ItemType GetType() const override;
+
+    private:
+        /** The value of this state. */
+        std::string value;
+
+        // Alternative implementation using memory manager.
+        //char *value;
+    };
+
+}
+
+
+

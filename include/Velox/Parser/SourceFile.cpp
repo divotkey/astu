@@ -1,3 +1,9 @@
+// Copyright (c) 2022 Roman Divotkey. All rights reserved.
+//
+// This file is subject to the terms and conditions defined in file 'LICENSE',
+// which is part of this source code package. See 'AUTHORS' file for a list
+// of contributors.
+
 #include "SourceFile.h"
 
 // C++ Standard Library includes
@@ -13,7 +19,13 @@ namespace velox {
 
     shared_ptr<istream> SourceFile::GetStream() {
         // Input file stream must be binary to conserve line breaks.
-        return make_shared<ifstream>(filePath, ios::in | ios::binary);
+        auto result = make_shared<ifstream>(filePath, ios::in | ios::binary);
+
+        if (!*result) {
+            throw std::runtime_error("Unable to open source file '" + filePath + "' for reading.");
+        }
+
+        return result;
     }
 
 }

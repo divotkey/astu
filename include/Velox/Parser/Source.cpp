@@ -55,6 +55,10 @@ namespace velox {
         return scanner->GetRealValue();
     }
 
+    unsigned int Source::GetLineNumber() const {
+        return scanner->GetTokenLine();
+    }
+
     std::unique_ptr<astu::Scanner> Source::BuildScanner() {
         ScannerBuilder builder;
 
@@ -89,11 +93,11 @@ namespace velox {
         builder.AddKeyword(",", TOK2INT(TokenType::COMMA));
 
         builder.AddKeyword("=", TOK2INT(TokenType::ASSIGNMENT));
-        builder.AddKeyword("=+", TOK2INT(TokenType::ASSIGN_ADD));
-        builder.AddKeyword("=-", TOK2INT(TokenType::ASSIGN_SUB));
-        builder.AddKeyword("=*", TOK2INT(TokenType::ASSIGN_MUL));
-        builder.AddKeyword("=/", TOK2INT(TokenType::ASSIGN_DIV));
-        builder.AddKeyword("=%", TOK2INT(TokenType::ASSIGN_MOD));
+        builder.AddKeyword("+=", TOK2INT(TokenType::ASSIGN_ADD));
+        builder.AddKeyword("-=", TOK2INT(TokenType::ASSIGN_SUB));
+        builder.AddKeyword("*=", TOK2INT(TokenType::ASSIGN_MUL));
+        builder.AddKeyword("/=", TOK2INT(TokenType::ASSIGN_DIV));
+        builder.AddKeyword("%=", TOK2INT(TokenType::ASSIGN_MOD));
         builder.AddKeyword("++", TOK2INT(TokenType::INCREMENT));
         builder.AddKeyword("--", TOK2INT(TokenType::DECREMENT));
 

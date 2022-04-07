@@ -31,6 +31,7 @@ namespace velox {
         const std::string &GetStringValue() const;
         int GetIntegerValue() const;
         double GetRealValue() const;
+        unsigned int GetLineNumber() const;
 
         std::string TokenTypeToString(TokenType type) const;
 

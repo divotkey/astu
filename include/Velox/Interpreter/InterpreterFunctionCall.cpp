@@ -13,7 +13,7 @@ namespace velox {
     }
 
     std::shared_ptr<Item> InterpreterFunctionCall::Evaluate(ScriptContext &sc) {
-        auto funcItem = function->Evaluate(sc);
+        auto funcItem= function->Evaluate(sc);
         return funcItem->CallAsFunction(sc, parameters);
     }
 

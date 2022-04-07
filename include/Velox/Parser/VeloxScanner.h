@@ -4,7 +4,7 @@
 #include "Script/Scanner.h"
 
 // C++ Standard Library includes
-#include <Memory>
+#include <memory>
 
 namespace velox {
 

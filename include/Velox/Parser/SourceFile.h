@@ -1,6 +1,3 @@
-#pragma once
-
-
 // Copyright (c) 2022 Roman Divotkey. All rights reserved.
 //
 // This file is subject to the terms and conditions defined in file 'LICENSE',
@@ -21,12 +18,18 @@ namespace velox {
     class SourceFile : public Source {
     public:
 
+        /**
+         * Constructor
+         * @param filePath  the path to the source file
+         */
         SourceFile(const std::string& filePath);
 
     protected:
+        // Inherited via Source
         std::shared_ptr<std::istream> GetStream() override;
 
     private:
+        /** The path to the source file. */
         std::string filePath;
     };
 

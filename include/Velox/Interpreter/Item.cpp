@@ -9,6 +9,7 @@
 #include "ItemStateInteger.h"
 #include "ItemStateReal.h"
 #include "ItemStateBool.h"
+#include "ItemStateString.h"
 #include "InterpreterError.h"
 #include "IMemoryManager.h"
 
@@ -25,6 +26,15 @@ namespace velox {
     //std::shared_ptr<Item> Item::Create(std::unique_ptr<ItemState> state) {
     //    return std::shared_ptr<Item>(new Item(move(state)));
     //}
+
+    std::shared_ptr<Item> Item::Copy() const {
+        auto result = Create(state->Copy());
+
+        // TODO test and reconsider if a shallow copy of sub-items is the right thing to do.
+        result->subItems = result->subItems;
+
+        return result;
+    }
 
     void *Item::operator new(size_t count) {
         return gMemoryManager->Allocate(count);
@@ -390,7 +400,10 @@ namespace velox {
                         "should never be of type boolean");
 
             case ItemType::String:
-                throw runtime_error("string result of arithmetic operation not implemented");
+                if (op != ArithmeticOperator::ADD) {
+                    throw InterpreterError("Operation not supported for strings.");
+                }
+                return Item::Create(make_unique<ItemStateString>(state->GetStringValue() + item.state->GetStringValue()));
 
             default:
                 throw runtime_error("undefined result type for arithmetic operation");
@@ -517,7 +530,5 @@ namespace velox {
         }
 
     }
-
-
 
 }
