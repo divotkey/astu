@@ -15,12 +15,11 @@ namespace velox {
         /**
          * Constructor.
          *
-         * @param location  whether this expression represents an l-value
+         * @param lineNumber    information about the location within the source code
+         * @param locator       whether this expression represents a lvalue
          */
-        InterpreterExpression(bool location = false) : location(location) {}
-
-        /** Virtual destructor. */
-        ~InterpreterExpression() {}
+        InterpreterExpression(unsigned int lineNumber = 0, bool locator = false)
+            : InterpreterStatement(lineNumber), locator(locator) {}
 
         /**
          * Whether this expression represents an location (l-value) of an variable.
@@ -28,7 +27,7 @@ namespace velox {
          * @return
          */
         bool IsLocation() const {
-            return location;
+            return locator;
         }
 
         /**
@@ -37,7 +36,7 @@ namespace velox {
          * @param b `true` to make this an l-value
          */
         void SetLocation(bool b) {
-            location = b;
+            locator = b;
         }
 
         /**
@@ -51,9 +50,9 @@ namespace velox {
         // Inherited via InterpreterStatement
         void Execute(ScriptContext &sc) override;
 
-    private:
-        /** Whether this expression represents a location (l-Value). */
-        bool location;
+    protected:
+        /** Whether this expression represents a lvalue. */
+        bool locator;
     };
 
 }

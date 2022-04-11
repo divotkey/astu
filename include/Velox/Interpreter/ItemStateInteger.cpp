@@ -4,7 +4,7 @@ using namespace std;
 
 namespace velox {
 
-    std::unique_ptr<ItemState> ItemStateInteger::Copy() const {
+    unique_ptr<ItemState> ItemStateInteger::Copy() const {
         return make_unique<ItemStateInteger>(value);
     }
 
@@ -22,6 +22,14 @@ namespace velox {
 
     ItemType ItemStateInteger::GetType() const {
         return ItemType::Integer;
+    }
+
+    bool ItemStateInteger::Assign(Item &owner, const ItemState &rhs) {
+        if (rhs.GetType() != ItemType::Integer)
+            return false;
+
+        value = rhs.GetIntegerValue();
+        return true;
     }
 
     //void *ItemStateInteger::operator new(size_t count) {

@@ -4,7 +4,7 @@ using namespace std;
 
 namespace velox {
 
-    std::unique_ptr<ItemState> ItemStateReal::Copy() const {
+    unique_ptr<ItemState> ItemStateReal::Copy() const {
         return make_unique<ItemStateReal>(value);
     }
 
@@ -23,4 +23,11 @@ namespace velox {
     ItemType ItemStateReal::GetType() const {
         return ItemType::Real;
     }
-}
+
+    bool ItemStateReal::Assign(Item &owner, const ItemState &rhs) {
+        if (rhs.GetType() != ItemType::Real)
+            return false;
+
+        value = rhs.GetRealValue();
+        return true;
+    }}

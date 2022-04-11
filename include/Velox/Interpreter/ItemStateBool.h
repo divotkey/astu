@@ -24,6 +24,10 @@ namespace velox {
         std::string GetStringValue() const override;
         ItemType GetType() const override;
 
+    protected:
+        // Inherited via ItemState
+        bool Assign(Item &owner, const ItemState &rhs) override;
+
     private:
         /** The value of this state. */
         bool value;

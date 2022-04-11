@@ -8,7 +8,10 @@ namespace velox {
     class InterpreterFunction {
     public:
 
-        std::shared_ptr<Item> Evaluate(ScriptContext &sc, InterpreterActualParameterList &actualParameters);
+        virtual ~InterpreterFunction() {}
+
+        std::shared_ptr<Item>
+        Evaluate(ScriptContext &sc, InterpreterActualParameterList &actualParameters, unsigned int lineNumber);
         void AddFormalParameter(const std::string& simpleName);
         bool HasFormalParameter(const std::string& simpleName) const;
 

@@ -9,6 +9,10 @@ namespace velox {
         sc.PushScope(make_shared<Scope>());
 
         for (const auto &statement: statements) {
+            statement->Prepare(sc);
+        }
+
+        for (const auto &statement: statements) {
             statement->Execute(sc);
             if (sc.IsSet(ScriptContext::RETURN_EXECUTED_FLAG))
                 break;

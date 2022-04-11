@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Thu Apr 07 09:02:38 CEST 2022 with SWORD Interpreter 1.9.1
+# Generated Sun Apr 10 09:14:29 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -222,6 +222,12 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterAssignment.h 
 	include/Velox/Interpreter/InterpreterAssignmentOperator.cpp 
 	include/Velox/Interpreter/InterpreterAssignmentOperator.h 
+	include/Velox/Interpreter/InterpreterClass.cpp 
+	include/Velox/Interpreter/InterpreterClass.h 
+	include/Velox/Interpreter/InterpreterClassDefinition.cpp 
+	include/Velox/Interpreter/InterpreterClassDefinition.h 
+	include/Velox/Interpreter/InterpreterConstructorCall.cpp 
+	include/Velox/Interpreter/InterpreterConstructorCall.h 
 	include/Velox/Interpreter/InterpreterError.h 
 	include/Velox/Interpreter/InterpreterExpression.cpp 
 	include/Velox/Interpreter/InterpreterExpression.h 
@@ -241,6 +247,8 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterLogicalOperation.h 
 	include/Velox/Interpreter/InterpreterMemberAccess.cpp 
 	include/Velox/Interpreter/InterpreterMemberAccess.h 
+	include/Velox/Interpreter/InterpreterNewStatement.cpp 
+	include/Velox/Interpreter/InterpreterNewStatement.h 
 	include/Velox/Interpreter/InterpreterPostIncrement.cpp 
 	include/Velox/Interpreter/InterpreterPostIncrement.h 
 	include/Velox/Interpreter/InterpreterPreIncrement.cpp 
@@ -276,6 +284,8 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/ItemStateFunction.h 
 	include/Velox/Interpreter/ItemStateInteger.cpp 
 	include/Velox/Interpreter/ItemStateInteger.h 
+	include/Velox/Interpreter/ItemStateObject.cpp 
+	include/Velox/Interpreter/ItemStateObject.h 
 	include/Velox/Interpreter/ItemStateReal.cpp 
 	include/Velox/Interpreter/ItemStateReal.h 
 	include/Velox/Interpreter/ItemStateReference.cpp 
@@ -287,6 +297,8 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/ItemType.h 
 	include/Velox/Interpreter/MemoryManager.cpp 
 	include/Velox/Interpreter/MemoryManager.h 
+	include/Velox/Interpreter/ObjectType.cpp 
+	include/Velox/Interpreter/ObjectType.h 
 	include/Velox/Interpreter/Operators.h 
 	include/Velox/Interpreter/Scope.cpp 
 	include/Velox/Interpreter/Scope.h 

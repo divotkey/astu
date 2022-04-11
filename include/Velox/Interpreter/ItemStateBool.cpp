@@ -4,7 +4,7 @@ using namespace std;
 
 namespace velox {
 
-    std::unique_ptr<ItemState> ItemStateBool::Copy() const {
+    unique_ptr<ItemState> ItemStateBool::Copy() const {
         return make_unique<ItemStateBool>(value);
     }
 
@@ -26,5 +26,13 @@ namespace velox {
 
     ItemType ItemStateBool::GetType() const {
         return ItemType::Boolean;
+    }
+
+    bool ItemStateBool::Assign(Item &owner, const ItemState &rhs) {
+        if (rhs.GetType() != ItemType::Boolean)
+            return false;
+
+        value = rhs.GetBooleanValue();
+        return true;
     }
 }

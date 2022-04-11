@@ -12,12 +12,11 @@ namespace velox {
         auto result = leftItem->FindItem(name);
         if (!result) {
             if (!IsLocation()) {
-                throw InterpreterError("Unknown field '" + name + "'");
+                throw InterpreterError("Unknown field '" + name + "'", GetLineNumber());
             }
             result = Item::Create(make_unique<ItemStateUndefined>());
             leftItem->AddItem(name, result);
         }
-
         return result;
     }
 

@@ -8,7 +8,7 @@ namespace velox {
     class InterpreterFunctionCall : public InterpreterExpression {
     public:
 
-        InterpreterFunctionCall() : InterpreterExpression(false) {}
+        InterpreterFunctionCall(unsigned int lineNumber) : InterpreterExpression(lineNumber) {}
 
         void AddParameter(std::shared_ptr<InterpreterExpression> param);
         void SetFunction(std::shared_ptr<InterpreterExpression> inFunction);

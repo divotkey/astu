@@ -21,7 +21,8 @@ namespace velox {
     shared_ptr<Item> InterpreterAssignment::Evaluate(ScriptContext &sc) {
         auto rightItem = rhs->Evaluate(sc);
         auto leftItem = lhs->Evaluate(sc);
-        leftItem->Assign(*rightItem);
+
+        leftItem->Assign(rightItem);
         return leftItem;
     }
 

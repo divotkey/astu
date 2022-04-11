@@ -10,6 +10,7 @@
 #include "ItemStateReal.h"
 #include "ItemStateBool.h"
 #include "ItemStateString.h"
+#include "ItemStateReference.h"
 #include "InterpreterError.h"
 #include "IMemoryManager.h"
 
@@ -22,27 +23,6 @@ using namespace std;
 #define TYPE_INDEX(a) static_cast<size_t>((a).state->GetType())
 
 namespace velox {
-
-    //std::shared_ptr<Item> Item::Create(std::unique_ptr<ItemState> state) {
-    //    return std::shared_ptr<Item>(new Item(move(state)));
-    //}
-
-    std::shared_ptr<Item> Item::Copy() const {
-        auto result = Create(state->Copy());
-
-        // TODO test and reconsider if a shallow copy of sub-items is the right thing to do.
-        result->subItems = result->subItems;
-
-        return result;
-    }
-
-    void *Item::operator new(size_t count) {
-        return gMemoryManager->Allocate(count);
-    }
-
-    void Item::operator delete(void *p) {
-        gMemoryManager->Free(p);
-    }
 
     const ItemType Item::arithmeticResult[6][6] = {
 
@@ -302,12 +282,39 @@ namespace velox {
             },
     };
 
-    void Item::Assign(const Item &other) {
-        state = other.state->Copy();
+    std::shared_ptr<Item> Item::Create(std::shared_ptr<Item> item) {
+        if (item->state->GetType() == ItemType::Other) {
+            return Item::Create(make_unique<ItemStateReference>(item));
+        }
+        return Item::Create(item->state->Copy());
     }
 
-    std::shared_ptr<Item> Item::CallAsFunction(ScriptContext &sc, InterpreterActualParameterList& parameters) {
-        return state->CallAsFunction(sc, parameters);
+    std::shared_ptr<Item> Item::Copy() const {
+        auto result = Create(state->Copy());
+        state->CopyItems(*result);
+        return result;
+    }
+
+    void *Item::operator new(size_t count) {
+        return gMemoryManager->Allocate(count);
+    }
+
+    void Item::operator delete(void *p) {
+        gMemoryManager->Free(p);
+    }
+
+    void Item::Assign(std::shared_ptr<Item> rhs) {
+        state->Assign(*this, rhs);
+    }
+
+    std::shared_ptr<Item>
+    Item::CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, unsigned int lineNumber) {
+        auto parent = GetParent();
+        if (parent) {
+            sc.AddItem("this", Item::Create(make_unique<ItemStateReference>(parent)));
+            parent->AddItemsToScope(sc);
+        }
+        return state->CallAsFunction(sc, parameters, lineNumber);
     }
 
     double Item::GetRealValue() const {
@@ -327,45 +334,23 @@ namespace velox {
     }
 
     void Item::AddItem(const string &name, std::shared_ptr<Item> item) {
-        assert(!HasItem(name));
-        subItems[name] = item;
+        if (state->AddItem(name, item)) {
+            item->parent = shared_from_this();
+        }
     }
 
     bool Item::HasItem(const string &name) const {
-        return subItems.find(name) == subItems.end();
+        return state->FindItem(name) != nullptr;
     }
 
     std::shared_ptr<Item> Item::FindItem(const string &name) {
-        auto it = subItems.find(name);
-        if (it != subItems.end()) {
-            return it->second;
-        }
-
-        return nullptr;
-    }
-
-    std::shared_ptr<const Item> Item::FindItem(const string &name) const {
-        auto it = subItems.find(name);
-        if (it != subItems.end()) {
-            return it->second;
-        }
-
-        return nullptr;
+        return state->FindItem(name);
     }
 
     Item &Item::GetItem(const string &name) {
         auto result = FindItem(name);
         if (!result) {
-            throw std::logic_error("Unknown sub item '" + name + "'");
-        }
-
-        return *result;
-    }
-
-    const Item &Item::GetItem(const string &name) const {
-        auto result = FindItem(name);
-        if (!result) {
-            throw std::logic_error("Unknown sub item '" + name + "'");
+            throw std::logic_error("Unknown sub-item '" + name + "'");
         }
 
         return *result;
@@ -529,6 +514,14 @@ namespace velox {
                 throw runtime_error("Internal interpreter error: implementation of relational operator is flawed.");
         }
 
+    }
+
+    std::shared_ptr<Item> Item::GetParent() {
+        return state->GetParent(*this);
+    }
+
+    void Item::AddItemsToScope(ScriptContext &sc) const {
+        state->AddItemsToScope(sc);
     }
 
 }

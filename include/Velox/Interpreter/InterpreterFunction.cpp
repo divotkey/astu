@@ -6,16 +6,21 @@
 // C++ Standard Library
 #include <cassert>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 
 namespace velox {
 
-    shared_ptr<Item>
-    InterpreterFunction::Evaluate(ScriptContext &sc, InterpreterActualParameterList &actualParameters) {
+    std::shared_ptr<Item>
+    InterpreterFunction::Evaluate(ScriptContext &sc, InterpreterActualParameterList &actualParameters,
+                                  unsigned int lineNumber)
+    {
         // Actual parameters must be less or equal to formal parameters.
         if (formalParameters.size() < actualParameters.NumParameters()) {
-            throw InterpreterError("Function call with to many parameters");
+            throw InterpreterError(string("Function call with to many parameters (expected ") +
+                                   std::to_string(formalParameters.size()) + " but got " +
+                                   to_string(actualParameters.NumParameters()) + ")", lineNumber);
         }
 
         // Create a new scope for the function parameters.
@@ -26,7 +31,7 @@ namespace velox {
             std::shared_ptr<Item> parameter;
 
             if (i < actualParameters.NumParameters()) {
-                parameter = actualParameters.GetParameter(i).Evaluate(sc);
+                parameter = Item::Create(actualParameters.GetParameter(i).Evaluate(sc));
             } else {
                 parameter = Item::Create(make_unique<ItemStateUndefined>());
             }

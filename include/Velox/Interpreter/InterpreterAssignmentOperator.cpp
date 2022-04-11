@@ -23,7 +23,7 @@ namespace velox {
         auto lhsItem = leftHandSide->Evaluate(sc);
         auto rhsItem = rightHandSide->Evaluate(sc);
 
-        lhsItem->Assign(*lhsItem->ExecuteArithmeticOperator(arithOp, *rhsItem));
+        lhsItem->Assign(rhsItem);
         return lhsItem;
     }
 

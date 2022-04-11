@@ -24,7 +24,7 @@ namespace velox {
         // Intentionally left empty.
     }
 
-    std::unique_ptr<ItemState> ItemStateString::Copy() const {
+    unique_ptr<ItemState> ItemStateString::Copy() const {
         return make_unique<ItemStateString>(value);
     }
 

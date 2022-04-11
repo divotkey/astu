@@ -11,7 +11,7 @@ namespace velox {
         auto result = sc.FindItem(name);
         if (!result) {
             if (!IsLocation()) {
-                throw InterpreterError("Unknown identifier '" + name + "'");
+                throw InterpreterError("Unknown identifier '" + name + "'", GetLineNumber());
             }
             result = Item::Create(make_unique<ItemStateUndefined>());
             sc.AddItem(name, result);

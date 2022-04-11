@@ -15,7 +15,7 @@ namespace velox {
                 decrement ? ArithmeticOperator::SUB : ArithmeticOperator::ADD,
                 *Item::Create(make_unique<ItemStateInteger>(1)));
 
-        itemValue->Assign(*result);
+        itemValue->Assign(result);
 
         return prevValue;
     }

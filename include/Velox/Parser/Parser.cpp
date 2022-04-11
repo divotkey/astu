@@ -21,11 +21,12 @@
 #include "Velox/Interpreter/InterpreterRealLiteral.h"
 #include "Velox/Interpreter/InterpreterStringLiteral.h"
 #include "Velox/Interpreter/InterpreterFunctionCall.h"
-#include "Velox/Interpreter/InterpreterFunctionDefinition.h"
 #include "Velox/Interpreter/InterpreterScriptFunction.h"
 #include "Velox/Interpreter/InterpreterReturnStatement.h"
 #include "Velox/Interpreter/InterpreterIfStatement.h"
 #include "Velox/Interpreter/InterpreterWhileStatement.h"
+#include "Velox/Interpreter/InterpreterClassDefinition.h"
+#include "Velox/Interpreter/InterpreterNewStatement.h"
 
 // DEBUG
 #include <iostream>
@@ -39,9 +40,12 @@ using namespace std;
 
 namespace velox {
 
-    const TokenType Parser::STATEMENT_START[] = {TokenType::IDENT, TokenType::FUNCTION, TokenType::RETURN,
-                                                 TokenType::IF, TokenType::WHILE, TokenType::DECREMENT,
-                                                 TokenType::INCREMENT};
+    const TokenType Parser::STATEMENT_START[] = {TokenType::IDENT, TokenType::INTEGER, TokenType::REAL,
+                                                 TokenType::STRING, TokenType::DECREMENT, TokenType::INCREMENT,
+                                                 TokenType::FUNCTION, TokenType::RETURN,
+                                                 TokenType::IF, TokenType::WHILE, TokenType::CLASS, TokenType::NEW,
+
+    };
 
     const TokenType Parser::LVALUE_CHAIN[] = {TokenType::MEMBER_ACCESS, TokenType::LEFT_PARENTHESIS};
     const TokenType Parser::REL_OP[] = {TokenType::EQUAL, TokenType::NOT_EQUAL, TokenType::LESS_EQUAL,
@@ -69,47 +73,30 @@ namespace velox {
             {TokenType::LOG_OR,     LogicalOperator::OR}
     };
 
-    std::shared_ptr<InterpreterStatementBlock> Parser::Parse(Source &source) {
-        source.GetNextTokenType();
-
-        std::shared_ptr<InterpreterStatementBlock> result;
-        try {
-            result = ParseStatementBlock(source);
-        } catch (const astu::ScannerException &e) {
-            throw ParserError(e.what());
-        }
-
-        if (source.GetCurrentTokenType() != TokenType::EOS) {
-            throw ParserError("End of source code expected");
-        }
-
-        return result;
-    }
-
     void Parser::ParseRightParenthesis(Source &source) {
         if (source.GetCurrentTokenType() != TokenType::RIGHT_PARENTHESIS) {
-            throw ParserError("Syntax error: ')' expected");
+            throw ParserError("')' expected", source.GetLineNumber());
         }
         source.GetNextTokenType();
     }
 
     void Parser::ParseLeftParenthesis(Source &source) {
         if (source.GetCurrentTokenType() != TokenType::LEFT_PARENTHESIS) {
-            throw ParserError("Syntax error: '(' expected");
+            throw ParserError("'(' expected", source.GetLineNumber());
         }
         source.GetNextTokenType();
     }
 
     void Parser::ParseBlockStart(Source &source) {
         if (source.GetCurrentTokenType() != TokenType::BLOCK_START) {
-            throw ParserError("Syntax error: '{' expected");
+            throw ParserError("'{' expected", source.GetLineNumber());
         }
         source.GetNextTokenType();
     }
 
     void Parser::ParseBlockEnd(Source &source) {
         if (source.GetCurrentTokenType() != TokenType::BLOCK_END) {
-            throw ParserError("Syntax error: '}' expected");
+            throw ParserError("'}' expected", source.GetLineNumber());
         }
         source.GetNextTokenType();
 
@@ -117,9 +104,26 @@ namespace velox {
 
     void Parser::ParseSemicolon(Source &source) {
         if (source.GetCurrentTokenType() != TokenType::SEMICOLON) {
-            throw ParserError("Syntax error: ';' expected", source.GetLineNumber());
+            throw ParserError("';' expected", source.GetLineNumber());
         }
         source.GetNextTokenType();
+    }
+
+    std::shared_ptr<InterpreterStatementBlock> Parser::Parse(Source &source) {
+        source.GetNextTokenType();
+
+        std::shared_ptr<InterpreterStatementBlock> result;
+        try {
+            result = ParseStatementBlock(source);
+        } catch (const astu::ScannerException &e) {
+            throw ParserError(e.what(), source.GetLineNumber());
+        }
+
+        if (source.GetCurrentTokenType() != TokenType::EOS) {
+            throw ParserError("end of source code expected", source.GetLineNumber());
+        }
+
+        return result;
     }
 
     std::shared_ptr<InterpreterStatementBlock> Parser::ParseStatementBlock(Source &source) {
@@ -141,16 +145,26 @@ namespace velox {
 
         switch (source.GetCurrentTokenType()) {
 
+            case TokenType::INTEGER:
+                // Fall through
+
+            case TokenType::REAL:
+                // Fall through
+
+            case TokenType::STRING:
+                // Fall through
+
             case TokenType::INCREMENT:
                 // Fall through
 
             case TokenType::DECREMENT:
-                result = ParseSimpleExpression(source);
-                ParseSemicolon(source);
-                break;
+                // Fall through
+
+            case TokenType::NEW:
+                // Fall through
 
             case TokenType::IDENT:
-                result = ParseIdentStatement(source);
+                result = ParseOptionalAssignment(source, ParseSimpleExpression(source));
                 ParseSemicolon(source);
                 break;
 
@@ -171,51 +185,59 @@ namespace velox {
                 result = ParseWhileStatement(source);
                 break;
 
+            case TokenType::CLASS:
+                result = ParseClassDefinition(source);
+                break;
+
             default:
-                throw ParserError("Internal parser error: unexpected token while parsing statement");
+                throw logic_error("Internal parser error: unexpected token while parsing statement");
         }
 
         return result;
     }
 
-    std::shared_ptr<InterpreterStatement> Parser::ParseIdentStatement(Source &source) {
-        auto result = ParseVariable(source, true);
+    std::shared_ptr<InterpreterStatement>
+    Parser::ParseOptionalAssignment(Source &source, std::shared_ptr<InterpreterExpression> lValue) {
 
         switch (source.GetCurrentTokenType()) {
             case TokenType::ASSIGNMENT:
-                return ParseAssignment(source, result);
+                return ParseAssignment(source, lValue);
 
             case TokenType::ASSIGN_ADD:
-                return ParseAssignmentOperator(source, result, ArithmeticOperator::ADD);
+                return ParseAssignmentOperator(source, lValue, ArithmeticOperator::ADD);
 
             case TokenType::ASSIGN_SUB:
-                return ParseAssignmentOperator(source, result, ArithmeticOperator::SUB);
+                return ParseAssignmentOperator(source, lValue, ArithmeticOperator::SUB);
 
             case TokenType::ASSIGN_MUL:
-                return ParseAssignmentOperator(source, result, ArithmeticOperator::MUL);
+                return ParseAssignmentOperator(source, lValue, ArithmeticOperator::MUL);
 
             case TokenType::ASSIGN_DIV:
-                return ParseAssignmentOperator(source, result, ArithmeticOperator::DIV);
+                return ParseAssignmentOperator(source, lValue, ArithmeticOperator::DIV);
 
             case TokenType::ASSIGN_MOD:
-                return ParseAssignmentOperator(source, result, ArithmeticOperator::MOD);
+                return ParseAssignmentOperator(source, lValue, ArithmeticOperator::MOD);
 
             default:
-                return result;
+                return lValue;
         }
     }
 
+
     std::shared_ptr<InterpreterStatement>
     Parser::ParseAssignment(Source &source, std::shared_ptr<InterpreterExpression> lValue) {
-        assert(source.GetCurrentTokenType() == TokenType::ASSIGNMENT);
-        assert(lValue->IsLocation());
+        // Verify expression is assignable.
+        if (!lValue->IsLocation()) {
+            throw ParserError("lvalue required as left operand of assignment", source.GetLineNumber());
+        }
 
+        // Eat assignment operator.
         source.GetNextTokenType();
-        auto rValue = ParseExpression(source);
 
+        // Assemble assignment.
         auto result = make_shared<InterpreterAssignment>();
         result->SetLeftHandSide(lValue);
-        result->SetRightHandSide(rValue);
+        result->SetRightHandSide(ParseExpression(source));
 
         return result;
     }
@@ -224,46 +246,48 @@ namespace velox {
     Parser::ParseAssignmentOperator(Source &source, std::shared_ptr<InterpreterExpression> lValue,
                                     ArithmeticOperator op)
     {
-        assert(lValue->IsLocation());
+        // Verify expression is assignable.
+        if (!lValue->IsLocation()) {
+            throw ParserError("lvalue required as left operand of assignment", source.GetLineNumber());
+        }
 
+        // Eat assignment operator.
         source.GetNextTokenType();
-        auto rValue = ParseExpression(source);
 
+        // Assemble assignment.
         auto result = make_shared<InterpreterAssignmentOperator>(op);
         result->SetLeftHandSide(lValue);
-        result->SetRightHandSide(rValue);
-
-        return result;
-    }
-
-    std::shared_ptr<InterpreterExpression> Parser::ParseVariable(Source &source, bool location) {
-        std::shared_ptr<InterpreterExpression> result = ParseSimpleName(source);
-
-        while (CONTAINS(LVALUE_CHAIN, source.GetCurrentTokenType())) {
-            switch (source.GetCurrentTokenType()) {
-                case TokenType::MEMBER_ACCESS:
-                    result = ParseMemberAccess(source, result);
-                    break;
-
-                case TokenType::LEFT_PARENTHESIS:
-                    result->SetLocation(false);
-                    result = ParseFunctionCall(source, result);
-                    break;
-            }
-        }
+        result->SetRightHandSide(ParseExpression(source));
 
         return result;
     }
 
     std::shared_ptr<InterpreterExpression>
+    Parser::ParseOptionalSelector(Source &source, std::shared_ptr<InterpreterExpression> lValue) {
+
+        while (CONTAINS(LVALUE_CHAIN, source.GetCurrentTokenType())) {
+            switch (source.GetCurrentTokenType()) {
+                case TokenType::MEMBER_ACCESS:
+                    return ParseOptionalSelector(source, ParseMemberAccess(source, lValue));
+
+                case TokenType::LEFT_PARENTHESIS:
+                    return ParseOptionalSelector(source, ParseFunctionCall(source, lValue));
+            }
+        }
+
+        return lValue;
+    }
+
+    std::shared_ptr<InterpreterExpression>
     Parser::ParseMemberAccess(Source &source, std::shared_ptr<InterpreterExpression> lValue) {
         assert(source.GetCurrentTokenType() == TokenType::MEMBER_ACCESS);
+
         source.GetNextTokenType();
         if (source.GetCurrentTokenType() != TokenType::IDENT) {
             throw ParserError("Field name expected");
         }
 
-        auto result = make_shared<InterpreterMemberAccess>();
+        auto result = make_shared<InterpreterMemberAccess>(source.GetLineNumber());
         result->SetLeftHandSide(lValue);
         result->SetRightHandSide(source.GetStringValue());
         source.GetNextTokenType();
@@ -271,9 +295,11 @@ namespace velox {
         return result;
     }
 
-    std::shared_ptr<InterpreterExpression> Parser::ParseSimpleName(Source &source) {
-        assert(source.GetCurrentTokenType() == TokenType::IDENT);
-        auto result = make_shared<InterpreterSimpleName>(source.GetStringValue(), true);
+    std::shared_ptr<InterpreterSimpleName> Parser::ParseSimpleName(Source &source) {
+        if (source.GetCurrentTokenType() != TokenType::IDENT) {
+            throw ParserError("identifier expected", source.GetLineNumber());
+        }
+        auto result = make_shared<InterpreterSimpleName>(source.GetStringValue(), source.GetLineNumber());
         source.GetNextTokenType();
         return result;
     }
@@ -408,6 +434,10 @@ namespace velox {
                 result = ParseFactorIdent(source);
                 break;
 
+            case TokenType::NEW:
+                result = ParseOptionalSelector(source, ParseNewStatement(source));
+                break;
+
             case TokenType::LEFT_PARENTHESIS:
                 source.GetNextTokenType();
                 result = ParseExpression(source);
@@ -419,8 +449,7 @@ namespace velox {
     }
 
     std::shared_ptr<InterpreterExpression> Parser::ParseFactorIdent(Source &source) {
-        auto result = ParseVariable(source, false);
-        // TODO parse optional post-fix operation (++ or --).
+        auto result = ParseOptionalSelector(source, ParseSimpleName(source));
 
         switch (source.GetCurrentTokenType()) {
             case TokenType::INCREMENT:
@@ -437,13 +466,14 @@ namespace velox {
         return result;
     }
 
-    std::shared_ptr<InterpreterExpression>
+    std::shared_ptr<InterpreterFunctionCall>
     Parser::ParseFunctionCall(Source &source, std::shared_ptr<InterpreterExpression> function) {
         assert(source.GetCurrentTokenType() == TokenType::LEFT_PARENTHESIS);
-        source.GetNextTokenType();
 
-        auto result = make_shared<InterpreterFunctionCall>();
+        auto result = make_shared<InterpreterFunctionCall>(source.GetLineNumber());
         result->SetFunction(function);
+
+        source.GetNextTokenType();
 
         // Look if function call contains parameters.
         if (source.GetCurrentTokenType() != TokenType::RIGHT_PARENTHESIS) {
@@ -459,7 +489,7 @@ namespace velox {
         return result;
     }
 
-    std::shared_ptr<InterpreterStatement> Parser::ParseFunctionDefinition(Source &source) {
+    std::shared_ptr<InterpreterFunctionDefinition> Parser::ParseFunctionDefinition(Source &source) {
         assert(source.GetCurrentTokenType() == TokenType::FUNCTION);
         source.GetNextTokenType();
 
@@ -565,6 +595,67 @@ namespace velox {
         return result;
     }
 
+    std::shared_ptr<InterpreterStatement> Parser::ParseClassDefinition(Source &source) {
+        assert(source.GetCurrentTokenType() == TokenType::CLASS);
+        source.GetNextTokenType();
 
+        if (source.GetCurrentTokenType() != TokenType::IDENT) {
+            throw ParserError("Identifier expected", source.GetLineNumber());
+        }
+
+        auto result = make_shared<InterpreterClassDefinition>(source.GetStringValue());
+        source.GetNextTokenType();
+        ParseBlockStart(source);
+
+        while (source.GetCurrentTokenType() != TokenType::BLOCK_END) {
+            auto function = ParseFunctionDefinition(source);
+            if (result->HasFunction(function->GetFunctionName())) {
+                throw ParserError("Ambiguous function name '" + function->GetFunctionName() + "'",
+                                  source.GetLineNumber());
+            }
+            result->AddFunction(function);
+        }
+
+        ParseBlockEnd(source);
+        return result;
+    }
+
+    std::shared_ptr<InterpreterExpression> Parser::ParseNewStatement(Source &source) {
+        assert(source.GetCurrentTokenType() == TokenType::NEW);
+        auto result = make_shared<InterpreterNewStatement>(source.GetLineNumber());
+        source.GetNextTokenType();
+
+        if (source.GetCurrentTokenType() != TokenType::IDENT) {
+            throw ParserError("Identifier expected", source.GetLineNumber());
+        }
+        result->SetTypeName(source.GetStringValue());
+        unsigned int identLineNumber = source.GetLineNumber();
+        source.GetNextTokenType();
+
+        result->SetConstructorCall(ParseConstructorCall(source));
+
+        return result;
+    }
+
+    std::shared_ptr<InterpreterConstructorCall> Parser::ParseConstructorCall(Source &source) {
+        if (source.GetCurrentTokenType() != TokenType::LEFT_PARENTHESIS) {
+            throw ParserError("'(' expected", source.GetLineNumber());
+        }
+        source.GetNextTokenType();
+
+        auto result = make_shared<InterpreterConstructorCall>(source.GetLineNumber());
+
+        // Look if function call contains parameters.
+        if (source.GetCurrentTokenType() != TokenType::RIGHT_PARENTHESIS) {
+            result->AddParameter(ParseExpression(source));
+            while (source.GetCurrentTokenType() == TokenType::COMMA) {
+                source.GetNextTokenType();
+                result->AddParameter(ParseExpression(source));
+            }
+        }
+
+        ParseRightParenthesis(source);
+        return result;
+    }
 
 }

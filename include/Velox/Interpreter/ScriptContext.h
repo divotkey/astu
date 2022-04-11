@@ -4,17 +4,23 @@
 #include <string>
 #include <deque>
 #include <vector>
+#include <map>
 
 namespace velox {
 
     // Forward declaration.
     class Item;
     class Scope;
+    class ObjectType;
 
     class ScriptContext {
 
     public:
         static const unsigned int RETURN_EXECUTED_FLAG;
+
+        std::shared_ptr<ObjectType> FindObjectType(const std::string& name);
+        void AddObjectType(const std::string& name, std::shared_ptr<ObjectType> type);
+        bool HasObjectType(const std::string& name) const;
 
         void SetFlag(unsigned int bitmask);
         void ClearFlag(unsigned int bitmask);
@@ -46,6 +52,9 @@ namespace velox {
 
         /** Stack of return values, used by functions and return statements. */
         std::vector<std::shared_ptr<Item>> returnValueStack;
+
+        /** Type definitions for custom objects. */
+        std::map<std::string, std::shared_ptr<ObjectType>> objectTypes;
 
         /** Flags to be set and queried during execution of scripts. */
         unsigned int flags;

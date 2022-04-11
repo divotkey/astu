@@ -16,4 +16,11 @@ namespace velox {
         return ItemType::Undefined;
     }
 
+    bool ItemStateUndefined::Assign(Item &owner, const ItemState &rhs) {
+        if (rhs.GetType() == ItemType::Undefined)
+            return true;
+
+        return false;
+    }
+
 }

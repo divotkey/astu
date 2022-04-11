@@ -85,6 +85,7 @@ namespace velox {
     void ScriptContext::Clear() {
         scopes.clear();
         returnValueStack.clear();
+        objectTypes.clear();
         flags = 0;
     }
 
@@ -120,6 +121,23 @@ namespace velox {
 
     void ScriptContext::ClearFlags() {
         flags = 0;
+    }
+
+    std::shared_ptr<ObjectType> ScriptContext::FindObjectType(const std::string &name) {
+        auto it = objectTypes.find(name);
+        if (it == objectTypes.end()) {
+            return nullptr;
+        }
+        return it->second;
+    }
+
+    void ScriptContext::AddObjectType(const std::string &name, std::shared_ptr<ObjectType> type) {
+        assert(!HasObjectType(name));
+        objectTypes[name] = type;
+    }
+
+    bool ScriptContext::HasObjectType(const std::string &name) const {
+        return objectTypes.find(name) != objectTypes.end();
     }
 
 }

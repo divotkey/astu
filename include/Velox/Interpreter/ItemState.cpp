@@ -1,10 +1,30 @@
+#include "Item.h"
 #include "ItemState.h"
+#include "ItemStateReference.h"
 #include "InterpreterError.h"
 #include "IMemoryManager.h"
 
+
+// C++ Standard Library includes
+#include <stdexcept>
+
+using namespace std;
+
 namespace velox {
 
-    std::shared_ptr<Item> ItemState::CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters) {
+    void ItemState::Assign(Item &owner, std::shared_ptr<Item> rhs) {
+        if (Assign(owner, *rhs->state))
+            return;
+
+        if (rhs->state->GetType() == ItemType::Other) {
+            owner.state = make_unique<ItemStateReference>(rhs);
+        } else {
+            owner.state = rhs->state->Copy();
+        }
+    }
+
+    std::shared_ptr<Item>
+    ItemState::CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, unsigned int lineNumber) {
         throw InterpreterError("Not a function");
     }
 
@@ -34,6 +54,22 @@ namespace velox {
 
     void ItemState::operator delete(void *p) {
         gMemoryManager->Free(p);
+    }
+
+    void ItemState::SwitchState(Item &item, std::unique_ptr<ItemState> newState) {
+        item.state = move(newState);
+    }
+
+    std::shared_ptr<Item> ItemState::FindItem(const string &name) {
+        throw InterpreterError("This type of value does not allow to access members.");
+    }
+
+    bool ItemState::AddItem(const string &name, std::shared_ptr<Item> item) {
+        throw InterpreterError("This type of value does not allow to add members.");
+    }
+
+    std::shared_ptr<Item> ItemState::GetParent(Item &context) {
+        return context.parent.lock();
     }
 
 }
