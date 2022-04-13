@@ -60,16 +60,19 @@ namespace velox {
         std::shared_ptr<InterpreterExpression> ParseTerm(Source &source);
         std::shared_ptr<InterpreterExpression> ParseFactor(Source &source);
         std::shared_ptr<InterpreterExpression> ParseFactorIdent(Source &source);
+        std::shared_ptr<InterpreterExpression> ParseColor(Source &source);
 
         std::shared_ptr<InterpreterFunctionCall>
         ParseFunctionCall(Source &source, std::shared_ptr<InterpreterExpression> function);
         std::shared_ptr<InterpreterConstructorCall> ParseConstructorCall(Source &source);
 
         void ParseSemicolon(Source &source);
+        void ParseComma(Source &source);
         void ParseRightParenthesis(Source &source);
         void ParseLeftParenthesis(Source &source);
         void ParseBlockStart(Source &source);
         void ParseBlockEnd(Source &source);
+        double ParseReal(Source &source);
 
     };
 

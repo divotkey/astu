@@ -19,7 +19,7 @@ namespace velox {
 
     private:
         /** The actual parameters of this function call. */
-        InterpreterActualParameterList parameters;
+        InterpreterExpressionParameterList parameters;
 
         /** The line number of this constructor call. */
         unsigned int lineNumber;

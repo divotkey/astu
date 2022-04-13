@@ -16,7 +16,8 @@ namespace velox {
     }
 
     std::shared_ptr<Item>
-    ItemStateFunction::CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters,
+    ItemStateFunction::CallAsFunction(ScriptContext &sc,
+                                      InterpreterActualParameterList &parameters,
                                       unsigned int lineNumber)
     {
         return function->Evaluate(sc, parameters, lineNumber);

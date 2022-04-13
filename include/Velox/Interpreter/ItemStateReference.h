@@ -21,7 +21,7 @@ namespace velox {
          * Constructor.
          * @param value the value of this state
          */
-        ItemStateReference(std::shared_ptr<Item> value) : value(value) {}
+        explicit ItemStateReference(std::shared_ptr<Item> value);
 
         // Inherited via ItemState
         std::shared_ptr<Item>
@@ -29,11 +29,14 @@ namespace velox {
         std::unique_ptr<ItemState> Copy() const override;
         double GetRealValue() const override;
         int GetIntegerValue() const override;
-        std::string GetStringValue() const override;
+        std::string GetStringValue(ScriptContext &sc) const override;
         ItemType GetType() const override;
         std::shared_ptr<Item> FindItem(const std::string &name) override;
         bool AddItem(const std::string &name, std::shared_ptr<Item> item) override;
         std::shared_ptr<Item> GetParent(Item &context) override;
+        std::shared_ptr<Item> GetReferencedItem() override;
+        void SetData(std::shared_ptr<ItemData> data) override;
+        std::shared_ptr<ItemData> GetData() override;
 
     private:
         /** The value of this state. */

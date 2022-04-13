@@ -8,52 +8,43 @@
 #include "ItemStateObject.h"
 #include "Item.h"
 #include "ItemStateReference.h"
-
-// C++ Standard Library includes
-#include <cassert>
+#include "InterpreterActualParameterList.h"
 
 using namespace std;
 
+#define TO_STRING_METHOD "ToString"
+
 namespace velox {
+
+    ItemStateObject::ItemStateObject() : data(nullptr) {
+        // Intentionally left empty.
+    }
 
     unique_ptr<ItemState> ItemStateObject::Copy() const {
         return make_unique<ItemStateObject>();
     }
 
-    string ItemStateObject::GetStringValue() const {
-        return "undefined";
+    std::string ItemStateObject::GetStringValue(ScriptContext &sc) const {
+        //auto it = subItems.find(TO_STRING_METHOD);
+        //if (it == subItems.end()) {
+        //    return ItemState::GetStringValue(sc);
+        //}
+        //
+        //InterpreterNoParameterList noParams;
+        //return it->second->CallAsFunction(sc, noParams, 0)->GetStringValue(sc);
     }
 
     ItemType ItemStateObject::GetType() const {
         return ItemType::Other;
     }
 
-    shared_ptr<Item> ItemStateObject::FindItem(const string &name) {
-        auto it = subItems.find(name);
-        if (it != subItems.end())
-            return it->second;
 
-        return nullptr;
+    void ItemStateObject::SetData(std::shared_ptr<ItemData> inData) {
+        data = inData;
     }
 
-    bool ItemStateObject::AddItem(const string &name, std::shared_ptr<Item> item) {
-        assert(FindItem(name) == nullptr);
-        subItems[name] = item;
-        return true;
-    }
-
-    void ItemStateObject::CopyItems(Item &target) {
-        for (auto it : subItems) {
-            target.AddItem(it.first, it.second->Copy());
-        }
-    }
-
-    void ItemStateObject::AddItemsToScope(ScriptContext &sc) {
-        for (auto it : subItems) {
-            sc.AddItem(it.first, Item::Create(make_unique<ItemStateReference>(it.second)));
-        }
-
-        ItemState::AddItemsToScope(sc);
+    std::shared_ptr<ItemData> ItemStateObject::GetData() {
+        return data;
     }
 
 }

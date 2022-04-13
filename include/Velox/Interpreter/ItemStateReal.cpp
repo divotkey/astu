@@ -16,7 +16,7 @@ namespace velox {
         return static_cast<int>(value);
     }
 
-    string ItemStateReal::GetStringValue() const {
+    std::string ItemStateReal::GetStringValue(ScriptContext &sc) const {
         return to_string(value);
     }
 

@@ -16,7 +16,7 @@ namespace velox {
         return value;
     }
 
-    string ItemStateInteger::GetStringValue() const {
+    std::string ItemStateInteger::GetStringValue(ScriptContext &sc) const {
         return to_string(value);
     }
 

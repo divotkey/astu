@@ -28,7 +28,7 @@ namespace velox {
         return make_unique<ItemStateString>(value);
     }
 
-    string ItemStateString::GetStringValue() const {
+    std::string ItemStateString::GetStringValue(ScriptContext &sc) const {
         return value;
     }
 

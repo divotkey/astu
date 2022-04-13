@@ -9,6 +9,7 @@
 #include <stdexcept>
 
 using namespace std;
+using namespace astu;
 
 namespace velox {
 
@@ -40,8 +41,12 @@ namespace velox {
         throw InterpreterError("Not a boolean");
     }
 
-    std::string ItemState::GetStringValue() const {
+    std::string ItemState::GetStringValue(ScriptContext &sc) const {
         throw InterpreterError("Not a string");
+    }
+
+    const Color4d & ItemState::GetColorValue() const {
+        throw InterpreterError("Not a color");
     }
 
     ItemType ItemState::GetType() const {
@@ -61,7 +66,7 @@ namespace velox {
     }
 
     std::shared_ptr<Item> ItemState::FindItem(const string &name) {
-        throw InterpreterError("This type of value does not allow to access members.");
+        return nullptr;
     }
 
     bool ItemState::AddItem(const string &name, std::shared_ptr<Item> item) {
@@ -70,6 +75,18 @@ namespace velox {
 
     std::shared_ptr<Item> ItemState::GetParent(Item &context) {
         return context.parent.lock();
+    }
+
+    std::shared_ptr<Item> ItemState::GetReferencedItem() {
+        return nullptr;
+    }
+
+    void ItemState::SetData(shared_ptr<ItemData>) {
+        throw std::logic_error("Only items with object state can hold additional data");
+    }
+
+    shared_ptr<ItemData> ItemState::GetData() {
+        return nullptr;
     }
 
 }

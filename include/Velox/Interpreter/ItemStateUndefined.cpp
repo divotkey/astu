@@ -8,7 +8,7 @@ namespace velox {
         return make_unique<ItemStateUndefined>();
     }
 
-    string ItemStateUndefined::GetStringValue() const {
+    std::string ItemStateUndefined::GetStringValue(ScriptContext &sc) const {
         return "undefined";
     }
 

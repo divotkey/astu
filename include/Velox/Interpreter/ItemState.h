@@ -7,11 +7,12 @@
 #pragma once
 
 // Local includes
-#include "Item.h"
 #include "ItemType.h"
+#include "Graphics/Color.h"
 
 // C++ Standard Library includes
 #include <memory>
+#include <string>
 
 namespace velox {
 
@@ -22,6 +23,7 @@ namespace velox {
     class ItemStateUndefined;
     class ScriptContext;
     class InterpreterActualParameterList;
+    class ItemData;
 
     class ItemState {
     public:
@@ -103,7 +105,15 @@ namespace velox {
          * @return the string value
          * @throws InterpreterException in case this state cannot interpreted as string value
          */
-        virtual std::string GetStringValue() const;
+        virtual std::string GetStringValue(ScriptContext &sc) const;
+
+        /**
+         * Tries to convert this state to a color value.
+         *
+         * @return the color value
+         * @throws InterpreterException in case this state cannot interpreted as string value
+         */
+        virtual const astu::Color4d & GetColorValue() const;
 
         /**
          * Looks for a sub-item with the specified name.
@@ -132,6 +142,30 @@ namespace velox {
         virtual void AddItemsToScope(ScriptContext &sc) {}
         virtual std::shared_ptr<Item> GetParent(Item &context);
 
+        /**
+         * Returns the actual item.
+         *
+         * Items which are not in the reference state will return a `nullptr`, reference states will return
+         * the pointer to the actual item it is referencing.
+         *
+         * @return the actual item without wrapper references or `nullptr`
+         */
+        virtual std::shared_ptr<Item> GetReferencedItem();
+
+        /**
+         * Attaches custom data to this item state.
+         * The item state will delete the associated memory of the data on destruction.
+         *
+         * @param data   pointer to the data to attach to this item.
+         */
+        virtual void SetData(std::shared_ptr<ItemData> data);
+
+        /**
+         * Returns the attached data of this item.
+         *
+         * @return the attached data
+         */
+         virtual std::shared_ptr<ItemData> GetData();
 
         /**
          * Returns the type this item state represents.

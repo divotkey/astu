@@ -1,4 +1,8 @@
 #include "InterpreterScriptFunction.h"
+#include "Item.h"
+#include "ItemStateUndefined.h"
+
+using namespace std;
 
 namespace velox {
 
@@ -6,7 +10,12 @@ namespace velox {
         sc.PushReturnValue();
         statement->Execute(sc);
         sc.ClearFlag(ScriptContext::RETURN_EXECUTED_FLAG);
-        return sc.PopReturnValue();
+
+        auto result = sc.PopReturnValue();
+        if (!result)
+            result = Item::Create(make_unique<ItemStateUndefined>());
+
+        return result;
     }
 
     void InterpreterScriptFunction::SetStatement(std::shared_ptr<InterpreterStatement> inStatement) {

@@ -17,9 +17,34 @@ EmitFooter();
 
 function EmitRows() {
 	for (i = 0; i < types.length; ++i) {
-		EmitRow(types[i], i >= types.length);
+		EmitRowCompact(types[i], i >= types.length);
 	}
 }
+
+function EmitRowCompact(type1, lastRow) {
+	indent(1);
+
+	§::§
+	§:
+		// First type '§{type1}'
+	:§
+
+	s = "{";
+	for (i = 0; i < types.length; ++i) {
+		s += "{" + GetType(type1, types[i]) + "}, ";
+
+	}
+
+	s += "}, ";
+
+	§:
+		§{s}
+	:§
+	
+
+	indent(-1);
+}
+
 
 function EmitRow(type1, lastRow) {
 	indent(1);
@@ -143,7 +168,7 @@ function GetType(type1, type2) {
 					return "ItemType::Undefined";
 
 				case "String":
-					return "ItemType::Undefined";
+					return "ItemType::String";
 
 				case "Other":
 					return "ItemType::Undefined";

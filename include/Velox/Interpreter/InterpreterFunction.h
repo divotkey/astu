@@ -1,13 +1,17 @@
 #pragma once
 
-#include "InterpreterFormalParameterList.h"
-#include "Item.h"
+// Local includes.
+#include "InterpreterActualParameterList.h"
 
 namespace velox {
+
+    // Forward declaration
+    class Item;
 
     class InterpreterFunction {
     public:
 
+        /** Virtual destructor. */
         virtual ~InterpreterFunction() {}
 
         std::shared_ptr<Item>

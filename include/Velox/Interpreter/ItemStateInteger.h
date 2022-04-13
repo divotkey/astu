@@ -20,7 +20,7 @@ namespace velox {
         std::unique_ptr<ItemState> Copy() const override;
         double GetRealValue() const override;
         int GetIntegerValue() const override;
-        std::string GetStringValue() const override;
+        std::string GetStringValue(ScriptContext &sc) const override;
         ItemType GetType() const override;
 
     protected:

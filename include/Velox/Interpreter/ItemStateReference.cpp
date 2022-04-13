@@ -12,9 +12,16 @@ using namespace std;
 
 namespace velox {
 
+    ItemStateReference::ItemStateReference(std::shared_ptr<Item> inValue)  {
+        value = inValue->GetReferencedItem();
+        if (!value)
+            value = inValue;
+    }
+
     std::shared_ptr<Item>
     ItemStateReference::CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters,
-                                       unsigned int lineNumber) {
+                                       unsigned int lineNumber)
+    {
         return value->state->CallAsFunction(sc, parameters, 0);
     }
 
@@ -30,8 +37,8 @@ namespace velox {
         return value->state->GetIntegerValue();
     }
 
-    string ItemStateReference::GetStringValue() const {
-        return value->state->GetStringValue();
+    std::string ItemStateReference::GetStringValue(ScriptContext &sc) const {
+        return value->state->GetStringValue(sc);
     }
 
     ItemType ItemStateReference::GetType() const {
@@ -48,6 +55,18 @@ namespace velox {
 
     std::shared_ptr<Item> ItemStateReference::GetParent(Item &context) {
         return value->GetParent();
+    }
+
+    std::shared_ptr<Item> ItemStateReference::GetReferencedItem() {
+        return value;
+    }
+
+    void ItemStateReference::SetData(std::shared_ptr<ItemData> data) {
+        value->SetData(data);
+    }
+
+    std::shared_ptr<ItemData> ItemStateReference::GetData() {
+        return value->GetData();
     }
 
 }

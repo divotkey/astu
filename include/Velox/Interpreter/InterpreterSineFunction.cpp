@@ -1,5 +1,9 @@
+// Local includes
 #include "InterpreterSineFunction.h"
 #include "ItemStateReal.h"
+#include "Item.h"
+
+// C++ Standard Library includes
 #include <cmath>
 
 using namespace std;

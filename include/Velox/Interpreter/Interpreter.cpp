@@ -26,6 +26,14 @@ namespace velox {
         superGlobals->AddItem(name, item);
     }
 
+    void Interpreter::AddObjectType(const std::string &name, std::shared_ptr<ObjectType> objType) {
+        context.AddObjectType(name, objType);
+    }
+
+    bool Interpreter::HasObjectType(const string &name) const {
+        return context.HasObjectType(name);
+    }
+
     void Interpreter::ClearVariables() {
         context.Clear();
         context.PushScope(superGlobals);

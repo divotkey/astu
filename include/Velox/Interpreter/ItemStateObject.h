@@ -7,28 +7,29 @@
 #pragma once
 
 // Local includes
-#include "ItemState.h"
+#include "ItemStateWithSubItems.h"
 
 // C++ Standard Library includes
 #include <map>
 
 namespace velox {
 
-    class ItemStateObject : public ItemState {
+    class ItemStateObject : public ItemStateWithSubItems {
     public:
+
+        /** Constructor. */
+        ItemStateObject();
 
         // Inherited via ItemState
         std::unique_ptr <ItemState> Copy() const override;
-        std::string GetStringValue() const override;
+        std::string GetStringValue(ScriptContext &sc) const override;
         ItemType GetType() const override;
-        std::shared_ptr<Item> FindItem(const std::string &name) override;
-        bool AddItem(const std::string &name, std::shared_ptr<Item> item) override;
-        void CopyItems(Item& target) override;
-        void AddItemsToScope(ScriptContext &sc) override;
+        void SetData(std::shared_ptr<ItemData> data) override;
+        std::shared_ptr<ItemData> GetData() override;
 
     private:
-        /** List of sub-items associated with unique names. */
-        std::map<std::string, std::shared_ptr<Item>> subItems;
+        /** Additional data. */
+        std::shared_ptr<ItemData> data;
     };
 
 }

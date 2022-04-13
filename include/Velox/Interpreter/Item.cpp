@@ -5,7 +5,6 @@
 // of contributors.
 
 #include "Item.h"
-#include "ItemState.h"
 #include "ItemStateInteger.h"
 #include "ItemStateReal.h"
 #include "ItemStateBool.h"
@@ -24,262 +23,46 @@ using namespace std;
 
 namespace velox {
 
+    const string Item::arithmeticOperatorName[] = {"operator+", "operator-", "operator*", "operator/", "operator%"};
+
     const ItemType Item::arithmeticResult[6][6] = {
-
             // First type 'Undefined'
-            {
-                    // Second type 'Undefined'
-                    ItemType::Undefined,
-
-                    // Second type 'Integer'
-                    ItemType::Undefined,
-
-                    // Second type 'Real'
-                    ItemType::Undefined,
-
-                    // Second type 'Boolean'
-                    ItemType::Undefined,
-
-                    // Second type 'String'
-                    ItemType::Undefined,
-
-                    // Second type 'Other'
-                    ItemType::Undefined
-            },
+            {{ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined},},
 
             // First type 'Integer'
-            {
-                    // Second type 'Undefined'
-                    ItemType::Undefined,
-
-                    // Second type 'Integer'
-                    ItemType::Integer,
-
-                    // Second type 'Real'
-                    ItemType::Real,
-
-                    // Second type 'Boolean'
-                    ItemType::Undefined,
-
-                    // Second type 'String'
-                    ItemType::String,
-
-                    // Second type 'Other'
-                    ItemType::Undefined
-            },
+            {{ItemType::Undefined}, {ItemType::Integer},   {ItemType::Real},      {ItemType::Undefined}, {ItemType::String},    {ItemType::Undefined},},
 
             // First type 'Real'
-            {
-                    // Second type 'Undefined'
-                    ItemType::Undefined,
-
-                    // Second type 'Integer'
-                    ItemType::Real,
-
-                    // Second type 'Real'
-                    ItemType::Real,
-
-                    // Second type 'Boolean'
-                    ItemType::Undefined,
-
-                    // Second type 'String'
-                    ItemType::String,
-
-                    // Second type 'Other'
-                    ItemType::Undefined
-            },
+            {{ItemType::Undefined}, {ItemType::Real},      {ItemType::Real},      {ItemType::Undefined}, {ItemType::String},    {ItemType::Undefined},},
 
             // First type 'Boolean'
-            {
-                    // Second type 'Undefined'
-                    ItemType::Undefined,
-
-                    // Second type 'Integer'
-                    ItemType::Undefined,
-
-                    // Second type 'Real'
-                    ItemType::Undefined,
-
-                    // Second type 'Boolean'
-                    ItemType::Undefined,
-
-                    // Second type 'String'
-                    ItemType::String,
-
-                    // Second type 'Other'
-                    ItemType::Undefined
-            },
+            {{ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::String},    {ItemType::Undefined},},
 
             // First type 'String'
-            {
-                    // Second type 'Undefined'
-                    ItemType::String,
-
-                    // Second type 'Integer'
-                    ItemType::String,
-
-                    // Second type 'Real'
-                    ItemType::String,
-
-                    // Second type 'Boolean'
-                    ItemType::String,
-
-                    // Second type 'String'
-                    ItemType::String,
-
-                    // Second type 'Other'
-                    ItemType::Undefined
-            },
+            {{ItemType::String},    {ItemType::String},    {ItemType::String},    {ItemType::String},    {ItemType::String},    {ItemType::String},},
 
             // First type 'Other'
-            {
-                    // Second type 'Undefined'
-                    ItemType::Undefined,
-
-                    // Second type 'Integer'
-                    ItemType::Undefined,
-
-                    // Second type 'Real'
-                    ItemType::Undefined,
-
-                    // Second type 'Boolean'
-                    ItemType::Undefined,
-
-                    // Second type 'String'
-                    ItemType::Undefined,
-
-                    // Second type 'Other'
-                    ItemType::Undefined
-            },
+            {{ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined},},
     };
 
     const ItemType Item::relationalType[6][6] = {
-
             // First type 'Undefined'
-            {
-                    // Second type 'Undefined'
-                    ItemType::Undefined,
-
-                    // Second type 'Integer'
-                    ItemType::Undefined,
-
-                    // Second type 'Real'
-                    ItemType::Undefined,
-
-                    // Second type 'Boolean'
-                    ItemType::Undefined,
-
-                    // Second type 'String'
-                    ItemType::Undefined,
-
-                    // Second type 'Other'
-                    ItemType::Undefined
-            },
+            {{ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined},},
 
             // First type 'Integer'
-            {
-                    // Second type 'Undefined'
-                    ItemType::Undefined,
-
-                    // Second type 'Integer'
-                    ItemType::Integer,
-
-                    // Second type 'Real'
-                    ItemType::Real,
-
-                    // Second type 'Boolean'
-                    ItemType::Undefined,
-
-                    // Second type 'String'
-                    ItemType::Undefined,
-
-                    // Second type 'Other'
-                    ItemType::Undefined
-            },
+            {{ItemType::Undefined}, {ItemType::Integer},   {ItemType::Real},      {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined},},
 
             // First type 'Real'
-            {
-                    // Second type 'Undefined'
-                    ItemType::Undefined,
-
-                    // Second type 'Integer'
-                    ItemType::Real,
-
-                    // Second type 'Real'
-                    ItemType::Real,
-
-                    // Second type 'Boolean'
-                    ItemType::Undefined,
-
-                    // Second type 'String'
-                    ItemType::Undefined,
-
-                    // Second type 'Other'
-                    ItemType::Undefined
-            },
+            {{ItemType::Undefined}, {ItemType::Real},      {ItemType::Real},      {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined},},
 
             // First type 'Boolean'
-            {
-                    // Second type 'Undefined'
-                    ItemType::Undefined,
-
-                    // Second type 'Integer'
-                    ItemType::Undefined,
-
-                    // Second type 'Real'
-                    ItemType::Undefined,
-
-                    // Second type 'Boolean'
-                    ItemType::Undefined,
-
-                    // Second type 'String'
-                    ItemType::Undefined,
-
-                    // Second type 'Other'
-                    ItemType::Undefined
-            },
+            {{ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined},},
 
             // First type 'String'
-            {
-                    // Second type 'Undefined'
-                    ItemType::Undefined,
-
-                    // Second type 'Integer'
-                    ItemType::Undefined,
-
-                    // Second type 'Real'
-                    ItemType::Undefined,
-
-                    // Second type 'Boolean'
-                    ItemType::Undefined,
-
-                    // Second type 'String'
-                    ItemType::Undefined,
-
-                    // Second type 'Other'
-                    ItemType::Undefined
-            },
+            {{ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::String},    {ItemType::Undefined},},
 
             // First type 'Other'
-            {
-                    // Second type 'Undefined'
-                    ItemType::Undefined,
-
-                    // Second type 'Integer'
-                    ItemType::Undefined,
-
-                    // Second type 'Real'
-                    ItemType::Undefined,
-
-                    // Second type 'Boolean'
-                    ItemType::Undefined,
-
-                    // Second type 'String'
-                    ItemType::Undefined,
-
-                    // Second type 'Other'
-                    ItemType::Undefined
-            },
+            {{ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined},},
     };
 
     std::shared_ptr<Item> Item::Create(std::shared_ptr<Item> item) {
@@ -329,8 +112,8 @@ namespace velox {
         return state->GetBooleanValue();
     }
 
-    std::string Item::GetStringValue() const {
-        return state->GetStringValue();
+    std::string Item::GetStringValue(ScriptContext &sc) const {
+        return state->GetStringValue(sc);
     }
 
     void Item::AddItem(const string &name, std::shared_ptr<Item> item) {
@@ -356,11 +139,18 @@ namespace velox {
         return *result;
     }
 
-    std::shared_ptr<Item> Item::ExecuteArithmeticOperator(ArithmeticOperator op, const Item &item) const {
+    std::shared_ptr<Item> Item::ExecuteArithmeticOperator(ScriptContext &sc, ArithmeticOperator op, std::shared_ptr<Item> item) const {
         // TODO look for custom operation function within this item for overloaded operators.
 
+        auto opFunc = state->FindItem(arithmeticOperatorName[static_cast<int>(op)]);
+        if (opFunc) {
+            InterpreterItemParameterList params;
+            params.AddParameter(item);
+            return opFunc->CallAsFunction(sc, params, 0);
+        }
+
         // Get result type.
-        ItemType resultType = arithmeticResult[TYPE_INDEX(*this)][TYPE_INDEX(item)];
+        ItemType resultType = arithmeticResult[TYPE_INDEX(*this)][TYPE_INDEX(*item)];
 
         switch (resultType) {
             case ItemType::Undefined:
@@ -372,12 +162,12 @@ namespace velox {
             case ItemType::Integer:
                 return Item::Create(
                         std::make_unique<ItemStateInteger>(
-                                ExecuteIntegerArithmetic(state->GetIntegerValue(), item.state->GetIntegerValue(), op)));
+                                ExecuteIntegerArithmetic(state->GetIntegerValue(), item->state->GetIntegerValue(), op)));
 
             case ItemType::Real:
                 return Item::Create(
                         make_unique<ItemStateReal>(
-                                ExecuteRealArithmetic(state->GetRealValue(), item.state->GetRealValue(), op)));
+                                ExecuteRealArithmetic(state->GetRealValue(), item->state->GetRealValue(), op)));
 
             case ItemType::Boolean:
                 throw runtime_error(
@@ -388,31 +178,32 @@ namespace velox {
                 if (op != ArithmeticOperator::ADD) {
                     throw InterpreterError("Operation not supported for strings.");
                 }
-                return Item::Create(make_unique<ItemStateString>(state->GetStringValue() + item.state->GetStringValue()));
+                return Item::Create(make_unique<ItemStateString>(state->GetStringValue(sc) + item->state->GetStringValue(
+                        sc)));
 
             default:
                 throw runtime_error("undefined result type for arithmetic operation");
         }
     }
 
-    std::shared_ptr<Item> Item::ExecuteRelationalOperator(RelationalOperator op, const Item &item) const {
+    std::shared_ptr<Item> Item::ExecuteRelationalOperator(ScriptContext &sc, RelationalOperator op, const Item &item) const {
         // TODO look for custom operation function within this item for overloaded operators.
 
-        // Get type used for the relational operation.
-        ItemType opType = relationalType[TYPE_INDEX(*this)][TYPE_INDEX(item)];
+        if (state->GetType() == ItemType::Undefined || item.state->GetType() == ItemType::Undefined) {
+            return Item::Create(make_unique<ItemStateBool>(state->GetType() == item.state->GetType()));
+        }
 
-        switch (opType) {
-            case ItemType::Undefined:
-                // Fall through
-
+        // Get type primary type for the relational operation.
+        switch (relationalType[TYPE_INDEX(*this)][TYPE_INDEX(item)]) {
             case ItemType::Boolean:
-                // Fall through
-
-            case ItemType::String:
                 // Fall through
 
             case ItemType::Other:
                 throw InterpreterError("Undefined relational operator between this types");
+
+            case ItemType::String:
+                return Item::Create(make_unique<ItemStateBool>(
+                        ExecuteStringRelational(state->GetStringValue(sc), item.state->GetStringValue(sc), op)));
 
             case ItemType::Integer:
                 return Item::Create(make_unique<ItemStateBool>(
@@ -522,6 +313,43 @@ namespace velox {
 
     void Item::AddItemsToScope(ScriptContext &sc) const {
         state->AddItemsToScope(sc);
+    }
+
+    bool Item::ExecuteStringRelational(const string &a, const string &b, RelationalOperator op) const {
+        switch (op) {
+            case RelationalOperator::LESS_THAN:
+                return a < b;
+
+            case RelationalOperator::LESS_EQUAL:
+                return a <= b;
+
+            case RelationalOperator::GREATER_THAN:
+                return a > b;
+
+            case RelationalOperator::GREATER_EQUAL:
+                return a >= b;
+
+            case RelationalOperator::EQUAL:
+                return a == b;
+
+            case RelationalOperator::NOT_EQUAL:
+                return a != b;
+
+            default:
+                throw runtime_error("Internal interpreter error: implementation of relational operator is flawed.");
+        }
+    }
+
+    std::shared_ptr<Item> Item::GetReferencedItem() {
+        return state->GetReferencedItem();
+    }
+
+    void Item::SetData(std::shared_ptr<ItemData> data) {
+        state->SetData(data);
+    }
+
+    std::shared_ptr<ItemData> Item::GetData() {
+        return state->GetData();
     }
 
 }

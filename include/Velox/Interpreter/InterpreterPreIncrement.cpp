@@ -9,9 +9,9 @@ namespace velox {
     std::shared_ptr<Item> InterpreterPreIncrement::Evaluate(ScriptContext &sc) {
         auto itemValue = value->Evaluate(sc);
 
-        auto result = itemValue->ExecuteArithmeticOperator(
+        auto result = itemValue->ExecuteArithmeticOperator(sc,
                 decrement ? ArithmeticOperator::SUB : ArithmeticOperator::ADD,
-                *Item::Create(make_unique<ItemStateInteger>(1)));
+                Item::Create(make_unique<ItemStateInteger>(1)));
 
         itemValue->Assign(result);
         return itemValue;

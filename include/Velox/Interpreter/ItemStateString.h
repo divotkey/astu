@@ -1,5 +1,6 @@
 #pragma once
 
+// Local includes
 #include "ItemState.h"
 
 namespace velox {
@@ -23,7 +24,7 @@ namespace velox {
 
         // Inherited via ItemState
         std::unique_ptr<ItemState> Copy() const override;
-        std::string GetStringValue() const override;
+        std::string GetStringValue(ScriptContext &sc) const override;
         ItemType GetType() const override;
 
     private:

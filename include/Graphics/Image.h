@@ -28,7 +28,7 @@ namespace astu {
      * 
      * @ingroup gfx_group
      */
-    class Image final {
+    class Image {
     public:
 
         /**
@@ -39,6 +39,11 @@ namespace astu {
          * @throws std::domain_error in case the width or height is
          */
         Image(int w, int h);
+
+        /**
+         * Virtual destructor.
+         */
+        virtual ~Image() {}
 
         /**
          * Returns the width of this image

@@ -1,5 +1,8 @@
 #include "ItemStateBool.h"
 
+// C++ Standard Library includes
+#include <string>
+
 using namespace std;
 
 namespace velox {
@@ -20,7 +23,7 @@ namespace velox {
         return value;
     }
 
-    string ItemStateBool::GetStringValue() const {
+    std::string ItemStateBool::GetStringValue(ScriptContext &sc) const {
         return (value ? "true" : "false");
     }
 

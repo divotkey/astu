@@ -19,7 +19,7 @@ namespace velox {
         std::shared_ptr<InterpreterExpression> function;
 
         /** The actual parameters of this function call. */
-        InterpreterActualParameterList parameters;
+        InterpreterExpressionParameterList parameters;
     };
 
 }

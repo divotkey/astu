@@ -2,6 +2,7 @@
 #include "InterpreterError.h"
 #include "ScriptContext.h"
 #include "ItemStateUndefined.h"
+#include "Item.h"
 
 using namespace std;
 

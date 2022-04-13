@@ -28,15 +28,7 @@ namespace velox {
 
         // Fill scope with parameters, either actual evaluated params or undefined.
         for (size_t i = 0; i < formalParameters.size(); ++i) {
-            std::shared_ptr<Item> parameter;
-
-            if (i < actualParameters.NumParameters()) {
-                parameter = Item::Create(actualParameters.GetParameter(i).Evaluate(sc));
-            } else {
-                parameter = Item::Create(make_unique<ItemStateUndefined>());
-            }
-
-            parameterScope->AddItem(formalParameters[i], parameter);
+            parameterScope->AddItem(formalParameters[i], actualParameters.EvaluateParam(sc, i));
         }
 
         // Script context must contain parameters before actual function is evaluated.

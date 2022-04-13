@@ -17,9 +17,12 @@
 #include "Velox/Interpreter/InterpreterSimpleName.h"
 #include "Velox/Interpreter/InterpreterMemberAccess.h"
 #include "Velox/Interpreter/InterpreterAssignment.h"
-#include "Velox/Interpreter/InterpreterIntegerLiteral.h"
-#include "Velox/Interpreter/InterpreterRealLiteral.h"
-#include "Velox/Interpreter/InterpreterStringLiteral.h"
+#include "Velox/Interpreter/InterpreterLiteralInteger.h"
+#include "Velox/Interpreter/InterpreterLiteralReal.h"
+#include "Velox/Interpreter/InterpreterLiteralBoolean.h"
+#include "Velox/Interpreter/InterpreterLiteralString.h"
+#include "Velox/Interpreter/InterpreterLiteralColor.h"
+#include "Velox/Interpreter/InterpreterColor.h"
 #include "Velox/Interpreter/InterpreterFunctionCall.h"
 #include "Velox/Interpreter/InterpreterScriptFunction.h"
 #include "Velox/Interpreter/InterpreterReturnStatement.h"
@@ -28,13 +31,11 @@
 #include "Velox/Interpreter/InterpreterClassDefinition.h"
 #include "Velox/Interpreter/InterpreterNewStatement.h"
 
-// DEBUG
-#include <iostream>
-
 // C++ Standard Library includes
 #include <algorithm>
 
 #define CONTAINS(a, b) (std::find(std::begin(a), std::end(a), b) != std::end(a))
+#define OPERATOR_NAME   "operator"
 
 using namespace std;
 
@@ -109,6 +110,13 @@ namespace velox {
         source.GetNextTokenType();
     }
 
+    void Parser::ParseComma(Source &source) {
+        if (source.GetCurrentTokenType() != TokenType::COMMA) {
+            throw ParserError("',' expected", source.GetLineNumber());
+        }
+        source.GetNextTokenType();
+    }
+
     std::shared_ptr<InterpreterStatementBlock> Parser::Parse(Source &source) {
         source.GetNextTokenType();
 
@@ -164,7 +172,7 @@ namespace velox {
                 // Fall through
 
             case TokenType::IDENT:
-                result = ParseOptionalAssignment(source, ParseSimpleExpression(source));
+                result = ParseOptionalAssignment(source, ParseExpression(source));
                 ParseSemicolon(source);
                 break;
 
@@ -416,17 +424,27 @@ namespace velox {
                 break;
 
             case TokenType::INTEGER:
-                result = make_shared<InterpreterIntegerLiteral>(source.GetIntegerValue());
+                result = make_shared<InterpreterLiteralInteger>(source.GetIntegerValue());
                 source.GetNextTokenType();
                 break;
 
             case TokenType::REAL:
-                result = make_shared<InterpreterRealLiteral>(source.GetRealValue());
+                result = make_shared<InterpreterLiteralReal>(source.GetRealValue());
+                source.GetNextTokenType();
+                break;
+
+            case TokenType::TRUE:
+                result = make_shared<InterpreterLiteralBoolean>(true);
+                source.GetNextTokenType();
+                break;
+
+            case TokenType::FALSE:
+                result = make_shared<InterpreterLiteralBoolean>(false);
                 source.GetNextTokenType();
                 break;
 
             case TokenType::STRING:
-                result = make_shared<InterpreterStringLiteral>(source.GetStringValue());
+                result = make_shared<InterpreterLiteralString>(source.GetStringValue());
                 source.GetNextTokenType();
                 break;
 
@@ -438,11 +456,18 @@ namespace velox {
                 result = ParseOptionalSelector(source, ParseNewStatement(source));
                 break;
 
+            case TokenType::BIN_OR:
+                result = ParseColor(source);
+                break;
+
             case TokenType::LEFT_PARENTHESIS:
                 source.GetNextTokenType();
                 result = ParseExpression(source);
                 ParseRightParenthesis(source);
                 break;
+
+            default:
+                throw ParserError("syntax error", source.GetLineNumber());
         }
 
         return result;
@@ -500,6 +525,35 @@ namespace velox {
         auto result = make_shared<InterpreterFunctionDefinition>();
         result->SetFunctionName(source.GetStringValue());
         source.GetNextTokenType();
+
+        if (result->GetFunctionName() == OPERATOR_NAME) {
+            switch (source.GetCurrentTokenType()) {
+                case TokenType::ADD:
+                    result->SetFunctionName(result->GetFunctionName() + '+');
+                    source.GetNextTokenType();
+                    break;
+
+                case TokenType::SUB:
+                    result->SetFunctionName(result->GetFunctionName() + '-');
+                    source.GetNextTokenType();
+                    break;
+
+                case TokenType::MUL:
+                    result->SetFunctionName(result->GetFunctionName() + '*');
+                    source.GetNextTokenType();
+                    break;
+
+                case TokenType::DIV:
+                    result->SetFunctionName(result->GetFunctionName() + '/');
+                    source.GetNextTokenType();
+                    break;
+
+                case TokenType::MOD:
+                    result->SetFunctionName(result->GetFunctionName() + '%');
+                    source.GetNextTokenType();
+                    break;
+            }
+        }
 
         ParseLeftParenthesis(source);
 
@@ -608,10 +662,11 @@ namespace velox {
         ParseBlockStart(source);
 
         while (source.GetCurrentTokenType() != TokenType::BLOCK_END) {
+            auto functionStart = source.GetLineNumber();
             auto function = ParseFunctionDefinition(source);
             if (result->HasFunction(function->GetFunctionName())) {
                 throw ParserError("Ambiguous function name '" + function->GetFunctionName() + "'",
-                                  source.GetLineNumber());
+                                  functionStart);
             }
             result->AddFunction(function);
         }
@@ -655,6 +710,48 @@ namespace velox {
         }
 
         ParseRightParenthesis(source);
+        return result;
+    }
+
+    std::shared_ptr<InterpreterExpression> Parser::ParseColor(Source &source) {
+        assert(source.GetCurrentTokenType() == TokenType::BIN_OR);
+        auto lineNumber = source.GetLineNumber();
+        source.GetNextTokenType();
+
+        auto result = make_shared<InterpreterColor>();
+        result->SetRedExpression(ParseSimpleExpression(source));
+        ParseComma(source);
+        result->SetGreenExpression(ParseSimpleExpression(source));
+        ParseComma(source);
+        result->SetBlueExpression(ParseSimpleExpression(source));
+        if (source.GetCurrentTokenType() == TokenType::COMMA) {
+            source.GetNextTokenType();
+            result->SetAlphaExpression(ParseSimpleExpression(source));
+        }
+        if (source.GetCurrentTokenType() != TokenType::BIN_OR) {
+            throw ParserError("'|' expected", source.GetLineNumber());
+        }
+        source.GetNextTokenType();
+
+        return result;
+    }
+
+    double Parser::ParseReal(Source &source) {
+        double result;
+        switch (source.GetCurrentTokenType()) {
+            case TokenType::INTEGER:
+                result = source.GetIntegerValue();
+                break;
+
+            case TokenType::REAL:
+                result = source.GetRealValue();
+                break;
+
+            default:
+                throw ParserError("floating-point value expected");
+        }
+
+        source.GetNextTokenType();
         return result;
     }
 
