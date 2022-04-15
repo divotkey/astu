@@ -212,6 +212,12 @@ namespace astu {
         /** The state machine which recognizes the tokens. */
         std::unique_ptr<astu::FStateMachine> sm;
 
+        /** The state machine used to eat block comments. */
+        std::unique_ptr<astu::FStateMachine> blockCommentSm;
+
+        /** The state machine used to eat line comments. */
+        std::unique_ptr<astu::FStateMachine> lineCommentSm;
+
         /** A set of token to be read over. */
         std::set<int> ignoreTokens;
 
@@ -239,7 +245,15 @@ namespace astu {
         /** List of error messages to be triggered by states. */
         std::vector<std::string> errorMessages;
 
-        void ScanForNextToken();
+        /** Token indicating the start of a block comment. */
+        int blockCommentStart;
+
+        /** Token indicating the start of a line comment. */
+        int lineCommentStart;
+
+        void ScanForNextTokenWithComments();
+
+        void ScanForNextToken(FStateMachine& sm);
         bool IsIgnoreToken(int type) const;
         void PutBack(char ch);
         char GetNextChar();

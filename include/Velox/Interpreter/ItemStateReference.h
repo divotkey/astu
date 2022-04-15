@@ -31,7 +31,7 @@ namespace velox {
         int GetIntegerValue() const override;
         std::string GetStringValue(ScriptContext &sc) const override;
         ItemType GetType() const override;
-        std::shared_ptr<Item> FindItem(const std::string &name) override;
+        std::shared_ptr<Item> FindItem(const std::string &name) const override;
         bool AddItem(const std::string &name, std::shared_ptr<Item> item) override;
         std::shared_ptr<Item> GetParent(Item &context) override;
         std::shared_ptr<Item> GetReferencedItem() override;

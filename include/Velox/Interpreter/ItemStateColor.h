@@ -1,12 +1,12 @@
 #pragma once
 
 // Local includes
-#include "ItemState.h"
+#include "ItemStateWithSubItems.h"
 #include "Graphics/Color.h"
 
 namespace velox {
 
-    class ItemStateColor : public ItemState {
+    class ItemStateColor : public ItemStateWithSubItems {
     public:
 
         /**
@@ -20,9 +20,6 @@ namespace velox {
         int GetIntegerValue() const override;
         std::string GetStringValue(ScriptContext &sc) const override;
         const astu::Color4d & GetColorValue() const override;
-
-        std::shared_ptr<Item> FindItem(const std::string &name) override;
-
         ItemType GetType() const override;
 
     protected:

@@ -16,7 +16,7 @@ namespace velox {
         AddFormalParameter(PARAM_NAME);
     }
 
-    shared_ptr<Item> InterpreterPrintFunction::DoEvaluate(ScriptContext &sc) {
+    std::shared_ptr<Item> InterpreterPrintFunction::DoEvaluate(ScriptContext &sc, unsigned int lineNumber) {
         auto &item = sc.GetItem(PARAM_NAME);
         cout << item.GetStringValue(sc) << endl;
         return Item::Create(make_unique<ItemStateUndefined>());

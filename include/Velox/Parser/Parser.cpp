@@ -7,7 +7,7 @@
 // Local includes
 #include "Parser.h"
 #include "ParserError.h"
-#include "Script/ScannerException.h"
+#include "Script/ScannerError.h"
 #include "Velox/Interpreter/InterpreterArithmeticOperation.h"
 #include "Velox/Interpreter/InterpreterAssignmentOperator.h"
 #include "Velox/Interpreter/InterpreterRelationalOperation.h"
@@ -27,7 +27,9 @@
 #include "Velox/Interpreter/InterpreterScriptFunction.h"
 #include "Velox/Interpreter/InterpreterReturnStatement.h"
 #include "Velox/Interpreter/InterpreterIfStatement.h"
-#include "Velox/Interpreter/InterpreterWhileStatement.h"
+#include "Velox/Interpreter/InterpreterStatementWhile.h"
+#include "Velox/Interpreter/InterpreterStatementFor.h"
+#include "Velox/Interpreter/InterpreterStatementNop.h"
 #include "Velox/Interpreter/InterpreterClassDefinition.h"
 #include "Velox/Interpreter/InterpreterNewStatement.h"
 
@@ -44,8 +46,8 @@ namespace velox {
     const TokenType Parser::STATEMENT_START[] = {TokenType::IDENT, TokenType::INTEGER, TokenType::REAL,
                                                  TokenType::STRING, TokenType::DECREMENT, TokenType::INCREMENT,
                                                  TokenType::FUNCTION, TokenType::RETURN,
-                                                 TokenType::IF, TokenType::WHILE, TokenType::CLASS, TokenType::NEW,
-
+                                                 TokenType::IF, TokenType::WHILE, TokenType::FOR,
+                                                 TokenType::CLASS, TokenType::NEW,
     };
 
     const TokenType Parser::LVALUE_CHAIN[] = {TokenType::MEMBER_ACCESS, TokenType::LEFT_PARENTHESIS};
@@ -118,13 +120,13 @@ namespace velox {
     }
 
     std::shared_ptr<InterpreterStatementBlock> Parser::Parse(Source &source) {
-        source.GetNextTokenType();
 
         std::shared_ptr<InterpreterStatementBlock> result;
         try {
+            source.GetNextTokenType();
             result = ParseStatementBlock(source);
-        } catch (const astu::ScannerException &e) {
-            throw ParserError(e.what(), source.GetLineNumber());
+        } catch (const astu::ScannerError &e) {
+            throw ParserError(e.what(), e.GetLineNumber());
         }
 
         if (source.GetCurrentTokenType() != TokenType::EOS) {
@@ -139,8 +141,44 @@ namespace velox {
         auto result = make_shared<InterpreterStatementBlock>();
 
         while (CONTAINS(STATEMENT_START, source.GetCurrentTokenType())) {
+            if (source.GetCurrentTokenType() == TokenType::SEMICOLON)
+                continue;
+
             auto statement = ParseStatement(source);
             result->AddStatement(statement);
+        }
+
+        return result;
+    }
+
+    std::shared_ptr<InterpreterStatement> Parser::ParseForHeaderStatement(Source &source) {
+        std::shared_ptr<InterpreterStatement> result;
+        switch (source.GetCurrentTokenType()) {
+
+            case TokenType::INTEGER:
+                // Fall through
+
+            case TokenType::REAL:
+                // Fall through
+
+            case TokenType::STRING:
+                // Fall through
+
+            case TokenType::INCREMENT:
+                // Fall through
+
+            case TokenType::DECREMENT:
+                // Fall through
+
+            case TokenType::NEW:
+                // Fall through
+
+            case TokenType::IDENT:
+                result = ParseOptionalAssignment(source, ParseExpression(source));
+                break;
+
+            default:
+                throw ParserError("invalid statement as for-loop initializes", source.GetLineNumber());
         }
 
         return result;
@@ -193,12 +231,16 @@ namespace velox {
                 result = ParseWhileStatement(source);
                 break;
 
+            case TokenType::FOR:
+                result = ParseForStatement(source);
+                break;
+
             case TokenType::CLASS:
                 result = ParseClassDefinition(source);
                 break;
 
             default:
-                throw logic_error("Internal parser error: unexpected token while parsing statement");
+                throw logic_error("Internal parser error: unexpected token while parsing loopBody");
         }
 
         return result;
@@ -371,7 +413,8 @@ namespace velox {
 
         while (source.GetCurrentTokenType() == TokenType::ADD || source.GetCurrentTokenType() == TokenType::SUB) {
             auto arithOp
-                    = make_shared<InterpreterArithmeticOperation>(OP_TO_TOK.at(source.GetCurrentTokenType()));
+                    = make_shared<InterpreterArithmeticOperation>(OP_TO_TOK.at(source.GetCurrentTokenType()),
+                                                                  source.GetLineNumber());
             arithOp->SetLeftHandSide(term);
             term = arithOp;
 
@@ -388,7 +431,8 @@ namespace velox {
         while (source.GetCurrentTokenType() == TokenType::MUL || source.GetCurrentTokenType() == TokenType::DIV ||
                source.GetCurrentTokenType() == TokenType::MOD) {
             auto arithOp
-                    = make_shared<InterpreterArithmeticOperation>(OP_TO_TOK.at(source.GetCurrentTokenType()));
+                    = make_shared<InterpreterArithmeticOperation>(OP_TO_TOK.at(source.GetCurrentTokenType()),
+                                                                  source.GetLineNumber());
 
             arithOp->SetLeftHandSide(factor);
             factor = arithOp;
@@ -408,19 +452,22 @@ namespace velox {
         }
 
         std::shared_ptr<InterpreterExpression> result;
+        unsigned lineNumber;
 
         switch (source.GetCurrentTokenType()) {
             case TokenType::SUB:
                 throw std::runtime_error("Unary minus not implemented");
 
             case TokenType::INCREMENT:
+                lineNumber = source.GetLineNumber();
                 source.GetNextTokenType();
-                result = make_shared<InterpreterPreIncrement>(ParseFactor(source), false);
+                result = make_shared<InterpreterPreIncrement>(ParseFactor(source), false, lineNumber);
                 break;
 
             case TokenType::DECREMENT:
+                lineNumber = source.GetLineNumber();
                 source.GetNextTokenType();
-                result = make_shared<InterpreterPreIncrement>(ParseFactor(source), true);
+                result = make_shared<InterpreterPreIncrement>(ParseFactor(source), true, lineNumber);
                 break;
 
             case TokenType::INTEGER:
@@ -478,13 +525,13 @@ namespace velox {
 
         switch (source.GetCurrentTokenType()) {
             case TokenType::INCREMENT:
+                result = make_shared<InterpreterPostIncrement>(result, false, source.GetLineNumber());
                 source.GetNextTokenType();
-                result = make_shared<InterpreterPostIncrement>(result, false);
                 break;
 
             case TokenType::DECREMENT:
+                result = make_shared<InterpreterPostIncrement>(result, true, source.GetLineNumber());
                 source.GetNextTokenType();
-                result = make_shared<InterpreterPostIncrement>(result, true);
                 break;
         }
 
@@ -494,6 +541,7 @@ namespace velox {
     std::shared_ptr<InterpreterFunctionCall>
     Parser::ParseFunctionCall(Source &source, std::shared_ptr<InterpreterExpression> function) {
         assert(source.GetCurrentTokenType() == TokenType::LEFT_PARENTHESIS);
+        function->SetLocation(false);
 
         auto result = make_shared<InterpreterFunctionCall>(source.GetLineNumber());
         result->SetFunction(function);
@@ -607,23 +655,11 @@ namespace velox {
 
         result->SetCondition(ParseExpression(source));
         ParseRightParenthesis(source);
-        if (source.GetCurrentTokenType() == TokenType::BLOCK_START) {
-            source.GetNextTokenType();
-            result->SetThenPart(ParseStatementBlock(source));
-            ParseBlockEnd(source);
-        } else {
-            result->SetThenPart(ParseStatement(source));
-        }
+        result->SetThenPart(ParseStatementOrBlock(source));
 
         if (source.GetCurrentTokenType() == TokenType::ELSE) {
             source.GetNextTokenType();
-            if (source.GetCurrentTokenType() == TokenType::BLOCK_START) {
-                source.GetNextTokenType();
-                result->SetElsePart(ParseStatementBlock(source));
-                ParseBlockEnd(source);
-            } else {
-                result->SetElsePart(ParseStatement(source));
-            }
+            result->SetElsePart(ParseStatementOrBlock(source));
         }
 
         return result;
@@ -633,21 +669,49 @@ namespace velox {
         assert(source.GetCurrentTokenType() == TokenType::WHILE);
         source.GetNextTokenType();
 
-        auto result = make_shared<InterpreterWhileStatement>();
+        auto result = make_shared<InterpreterStatementWhile>();
         ParseLeftParenthesis(source);
 
         result->SetCondition(ParseExpression(source));
         ParseRightParenthesis(source);
-        if (source.GetCurrentTokenType() == TokenType::BLOCK_START) {
-            source.GetNextTokenType();
-            result->SetStatement(ParseStatementBlock(source));
-            ParseBlockEnd(source);
-        } else {
-            result->SetStatement(ParseStatement(source));
-        }
+        result->SetStatement(ParseStatementOrBlock(source));
 
         return result;
     }
+
+    std::shared_ptr<InterpreterStatement> Parser::ParseForStatement(Source &source) {
+        assert(source.GetCurrentTokenType() == TokenType::FOR);
+        source.GetNextTokenType();
+
+        auto result = make_shared<InterpreterStatementFor>();
+        ParseLeftParenthesis(source);
+
+        if (source.GetCurrentTokenType() == TokenType::SEMICOLON) {
+            result->SetInitStatement(make_shared<InterpreterStatementNop>());
+        } else {
+            result->SetInitStatement(ParseForHeaderStatement(source));
+        }
+        ParseSemicolon(source);
+
+        if (source.GetCurrentTokenType() == TokenType::SEMICOLON) {
+            result->SetCondition(make_shared<InterpreterLiteralBoolean>(true));
+        } else {
+            result->SetCondition(ParseExpression(source));
+        }
+        ParseSemicolon(source);
+
+        if (source.GetCurrentTokenType() == TokenType::SEMICOLON) {
+            result->SetLoopStatement(make_shared<InterpreterStatementNop>());
+        } else {
+            result->SetLoopStatement(ParseForHeaderStatement(source));
+        }
+
+        ParseRightParenthesis(source);
+
+        result->SetLoopBody(ParseStatementOrBlock(source));
+        return result;
+    }
+
 
     std::shared_ptr<InterpreterStatement> Parser::ParseClassDefinition(Source &source) {
         assert(source.GetCurrentTokenType() == TokenType::CLASS);
@@ -752,6 +816,20 @@ namespace velox {
         }
 
         source.GetNextTokenType();
+        return result;
+    }
+
+    std::shared_ptr<InterpreterStatement> Parser::ParseStatementOrBlock(Source &source) {
+        std::shared_ptr<InterpreterStatement> result;
+
+        if (source.GetCurrentTokenType() == TokenType::BLOCK_START) {
+            source.GetNextTokenType();
+            result = ParseStatementBlock(source);
+            ParseBlockEnd(source);
+        } else {
+            result = ParseStatement(source);
+        }
+
         return result;
     }
 

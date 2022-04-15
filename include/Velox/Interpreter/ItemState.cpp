@@ -65,7 +65,7 @@ namespace velox {
         item.state = move(newState);
     }
 
-    std::shared_ptr<Item> ItemState::FindItem(const string &name) {
+    std::shared_ptr<Item> ItemState::FindItem(const string &name) const {
         return nullptr;
     }
 

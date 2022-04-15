@@ -9,7 +9,6 @@
 #include <stdexcept>
 #include <memory>
 
-
 namespace velox {
 
     class InterpreterFunction;
@@ -37,6 +36,8 @@ namespace velox {
     private:
         std::shared_ptr<Scope> superGlobals;
         ScriptContext context;
+
+        void AddStandardFunctions();
     };
 
 }

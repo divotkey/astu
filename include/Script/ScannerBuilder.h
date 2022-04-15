@@ -99,7 +99,7 @@ namespace astu {
         /** Symbol sequence that ends a block comment. */
         std::string blockCommentEnd;
 
-        /** Symbol sequence that ends a line comment. */
+        /** Symbol sequence that starts a line comment. */
         std::string lineComment;
 
         /** Maps escape sequences to its corresponding characters. */
@@ -132,6 +132,9 @@ namespace astu {
         std::function<void (char, void*)> CreateSetTokenAndAddCharFunc(int token, int priority = 0) const;
         std::function<void (char, void*)> CreateAddCharFunc(int priority) const;
         std::function<void (char, void*)> CreateErrorFunc(int messageId, int priority) const;
+
+        void BuildBlockCommentSm();
+        void BuildLineCommentSm();
     };
 
 }

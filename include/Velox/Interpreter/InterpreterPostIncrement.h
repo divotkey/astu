@@ -6,8 +6,8 @@ namespace velox {
 
     class InterpreterPostIncrement : public InterpreterExpression {
     public:
-        InterpreterPostIncrement(std::shared_ptr<InterpreterExpression> lValue, bool decrement = false)
-            : value(lValue), decrement(decrement) {}
+        InterpreterPostIncrement(std::shared_ptr<InterpreterExpression> lValue, bool decrement, unsigned int lineNumber)
+            : InterpreterExpression(lineNumber, true), value(lValue), decrement(decrement) {}
 
         void SetValue(std::shared_ptr<InterpreterExpression> lValue);
 

@@ -121,7 +121,7 @@ namespace velox {
          * @param name  the name of the sub-item
          * @return the requested item or `nullptr`
          */
-        virtual std::shared_ptr<Item> FindItem(const std::string &name);
+        virtual std::shared_ptr<Item> FindItem(const std::string &name) const;
 
         /**
          * Adds an sub-item.

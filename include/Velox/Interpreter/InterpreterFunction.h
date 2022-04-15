@@ -20,7 +20,7 @@ namespace velox {
         bool HasFormalParameter(const std::string& simpleName) const;
 
     protected:
-        virtual std::shared_ptr<Item> DoEvaluate(ScriptContext &sc) = 0;
+        virtual std::shared_ptr<Item> DoEvaluate(ScriptContext &sc, unsigned int lineNumber) = 0;
 
     private:
         std::vector<std::string> formalParameters;

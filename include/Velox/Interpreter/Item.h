@@ -173,7 +173,7 @@ namespace velox {
         CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, unsigned int lineNumber);
 
         /**
-         * Assigns the contents of one statement to this item, possible changing its type.
+         * Assigns the contents of one loopBody to this item, possible changing its type.
          *
          * @param rhs   the right hand side of this assignment
          */
@@ -213,6 +213,15 @@ namespace velox {
         std::string GetStringValue(ScriptContext &sc) const;
 
         /**
+         * Tries to get a color value from this item.
+         *
+         * @param sc    the script context under witch to execute this operation
+         * @return the extracted string value
+         * @throws InterpreterException in case this item cannot interpreted as color value
+         */
+        const astu::Color4d & GetColorValue() const;
+
+        /**
          * Carries out an arithmetic operation.
          *
          * @param sc    the the context under this this operation is executed
@@ -221,7 +230,9 @@ namespace velox {
          * @return the result of the arithmetic operation
          * @throws InterpreterException in case the operation is invalid between the two items
          */
-        std::shared_ptr<Item> ExecuteArithmeticOperator(ScriptContext &sc, ArithmeticOperator op, std::shared_ptr<Item> item) const;
+        std::shared_ptr<Item>
+        ExecuteArithmeticOperator(ScriptContext &sc, ArithmeticOperator op, std::shared_ptr<Item> item,
+                                  unsigned int lineNumber) const;
 
         /**
          * Carries out an relational operation.
@@ -248,7 +259,7 @@ namespace velox {
          * @param name  the name of the sub-item
          * @return the requested item or `nullptr`
          */
-        std::shared_ptr<Item> FindItem(const std::string& name);
+        std::shared_ptr<Item> FindItem(const std::string& name) const;
 
         /**
          * Returns whether a sub-item with the specified name exists.
@@ -287,6 +298,17 @@ namespace velox {
         const Item &GetItem(const std::string& name) const;
         void AddItemsToScope(ScriptContext &sc) const;
         std::shared_ptr<Item> GetParent();
+
+        ItemType GetType() const;
+
+        /**
+         * Convenient function which returns whether this item is of type undefined.
+         *
+         * @return `true` if this item is undefined
+         */
+        bool IsUndefined() const {
+            return GetType() == ItemType::Undefined;
+        }
 
     private:
         /** Lookup table for arithmetic results of items according to their types. */

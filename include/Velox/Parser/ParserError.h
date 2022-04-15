@@ -27,7 +27,6 @@ namespace velox {
 
     private:
         unsigned int lineNumber;
-
     };
 
 }

@@ -1,7 +1,7 @@
 #include "InterpreterFunction.h"
 #include "Scope.h"
 #include "InterpreterError.h"
-#include "ItemStateUndefined.h"
+#include "Item.h"
 
 // C++ Standard Library
 #include <cassert>
@@ -35,11 +35,14 @@ namespace velox {
         sc.PushScope(parameterScope);
 
         // DoEvaluate/evaluate the actual function.
-        auto result = DoEvaluate(sc);
+        auto result = DoEvaluate(sc, lineNumber);
 
         // Clean up the scope stack.
         sc.PopScope();
 
+        if (!result) {
+            result = Item::CreateUndefined();
+        }
         return result;
     }
 

@@ -45,7 +45,7 @@ namespace velox {
         return value->state->GetType();
     }
 
-    std::shared_ptr<Item> ItemStateReference::FindItem(const string &name) {
+    std::shared_ptr<Item> ItemStateReference::FindItem(const string &name) const {
         return value->state->FindItem(name);
     }
 

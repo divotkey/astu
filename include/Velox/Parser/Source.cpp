@@ -65,8 +65,8 @@ namespace velox {
         builder.SetIllegalToken(TOK2INT(TokenType::INVALID));
         builder.SetEndOfSourceToken(TOK2INT(TokenType::EOS));
         builder.AddWhitespaceSymbols(WHITE_SPACE_SYMBOLS);
-        //builder.SetBlockComment("/*", "*/");
-        //builder.SetLineComment("//");
+        builder.SetBlockComment("/*", "*/");
+        builder.SetLineComment("//");
 
         builder.SetIdent(IDENT_START_SYMBOLS, IDENT_SYMBOLS, TOK2INT(TokenType::IDENT));
 

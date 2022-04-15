@@ -12,12 +12,12 @@
 #define STRING_START_STATE  "STRING_START"
 #define STRING_ERROR_STATE  "STRING_ERROR"
 #define STRING_END_STATE    "STRING_END"
-#define INVALID_CHAR        "INVALID_CHAR"
 
 #define WHITESPACE_TOKEN    -1
 #define BLOCK_COMMENT_START -2
 #define BLOCK_COMMENT_END   -3
-#define COMMENT_TOKEN       -2
+#define LINE_COMMENT_START  -4
+#define LINE_COMMENT_END    -5
 
 #define LOW_PRIORITY        -1
 #define NORMAL_PRIORITY     0
@@ -209,7 +209,7 @@ namespace astu {
     void ScannerBuilder::BuildSymbols() {
         symbols.insert(whitespaceSymbols.begin(), whitespaceSymbols.end());
 
-        if (HasSpecialToken(EOS_TOKEN_ID)) {
+        if (HasSpecialToken(IDENT_TOKEN_ID)) {
             symbols.insert(identStartSymbols.begin(), identStartSymbols.end());
             symbols.insert(identSymbols.begin(), identSymbols.end());
         }
@@ -225,7 +225,10 @@ namespace astu {
             symbols.insert(blockCommentEnd.begin(), blockCommentEnd.end());
         }
 
-        symbols.insert(lineComment.begin(), lineComment.end());
+        if (!symbols.empty()) {
+            symbols.insert(lineComment.begin(), lineComment.end());
+        }
+
         symbols.insert(decimalSeparator);
         symbols.insert(EOF);
 
@@ -273,16 +276,13 @@ namespace astu {
         }
 
         if (!lineComment.empty()) {
-            throw logic_error("Line comments not implemented (yet)");
             BuildLineCommentStates();
         }
 
         scanner->sm = powersetBuilder.Build(nsm);
         scanner->ignoreTokens.insert(WHITESPACE_TOKEN);
-        scanner->ignoreTokens.insert(COMMENT_TOKEN);
-
-        nsm.Clear();
-        symbols.clear();
+        scanner->blockCommentStart = BLOCK_COMMENT_START;
+        scanner->lineCommentStart = LINE_COMMENT_START;
 
         for (size_t i = 0; i < scanner->sm->NumStates(); ++i) {
             if (scanner->sm->IsDeadEndState(i)) {
@@ -295,6 +295,18 @@ namespace astu {
                 scanner->sm->EndState();
             }
         }
+
+        if (!blockCommentStart.empty() && !blockCommentEnd.empty()) {
+            BuildBlockCommentSm();
+            scanner->blockCommentSm = powersetBuilder.Build(nsm);
+        }
+        if (!lineComment.empty()) {
+            BuildLineCommentSm();
+            scanner->lineCommentSm = powersetBuilder.Build(nsm);
+        }
+
+        nsm.Clear();
+        symbols.clear();
 
         return std::move(scanner);
     }
@@ -634,11 +646,6 @@ namespace astu {
 
     void ScannerBuilder::BuildBlockCommentStates() {
 
-        //auto blockCommentError = nsm.BeginState();
-        //nsm.SetAccepting(true);
-        //nsm.SetEnterFunc(CreateErrorFunc(BLOCK_COMMENT_NOT_CLOSED, NORMAL_PRIORITY));
-        //nsm.EndState();
-
         // Add (internal) token for block comment start.
         nsm.BeginState(nsm.GetStartState());
         for (auto ch : blockCommentStart) {
@@ -651,28 +658,11 @@ namespace astu {
         nsm.SetAccepting(true);
         nsm.SetEnterFunc(CreateSetTokenFunc(BLOCK_COMMENT_START));
         nsm.EndState();
-
-        // Add (internal) token for block comment end.
-        nsm.BeginState(nsm.GetStartState());
-        for (auto ch : blockCommentEnd) {
-            auto q = nsm.CreateState();
-            nsm.AddTransition(ch, q);
-            nsm.EndState();
-            nsm.BeginState(q);
-        }
-
-        nsm.SetAccepting(true);
-        nsm.SetEnterFunc(CreateSetTokenFunc(BLOCK_COMMENT_END));
-        nsm.EndState();
     }
 
     void ScannerBuilder::BuildLineCommentStates() {
 
-        auto lineCommentEnd = nsm.BeginState();
-        nsm.SetAccepting(true);
-        nsm.SetEnterFunc(CreateSetTokenFunc(COMMENT_TOKEN, NORMAL_PRIORITY));
-        nsm.EndState();
-
+        // Add (internal) token for line comment start.
         nsm.BeginState(nsm.GetStartState());
         for (auto ch : lineComment) {
             auto q = nsm.CreateState();
@@ -681,13 +671,8 @@ namespace astu {
             nsm.BeginState(q);
         }
 
-        for (auto ch : symbols) {
-            if (ch == EOF || ch == '\n') {
-                nsm.AddTransition(ch, lineCommentEnd);
-            } else {
-                nsm.AddTransition(ch, nsm.GetCurrentState());
-            }
-        }
+        nsm.SetAccepting(true);
+        nsm.SetEnterFunc(CreateSetTokenFunc(LINE_COMMENT_START));
         nsm.EndState();
     }
 
@@ -767,6 +752,56 @@ namespace astu {
         }
 
         return false;
+    }
+
+    void ScannerBuilder::BuildBlockCommentSm() {
+        nsm.Clear();
+        auto qError = nsm.BeginState();
+        nsm.SetEnterFunc(CreateErrorFunc(BLOCK_COMMENT_NOT_CLOSED, NORMAL_PRIORITY));
+        nsm.SetAccepting(true);
+        nsm.EndState();
+
+        auto qStart = nsm.BeginState();
+        nsm.SetStartState(true);
+        for (auto ch : symbols) {
+            if (ch == EOF) {
+                nsm.AddTransition(ch, qError);
+            } else {
+                nsm.AddTransition(ch, qStart);
+            }
+        }
+
+        for (auto ch : blockCommentEnd) {
+            auto q = nsm.CreateState();
+            nsm.AddTransition(ch, q);
+            nsm.EndState();
+            nsm.BeginState(q);
+        }
+
+        nsm.SetAccepting(true);
+        nsm.SetEnterFunc(CreateSetTokenFunc(BLOCK_COMMENT_END));
+        nsm.EndState();
+    }
+
+    void ScannerBuilder::BuildLineCommentSm() {
+        nsm.Clear();
+
+        auto qEnd = nsm.BeginState();
+        nsm.SetAccepting(true);
+        nsm.SetEnterFunc(CreateSetTokenFunc(LINE_COMMENT_END));
+        nsm.EndState();
+
+        auto qStart = nsm.BeginState();
+        nsm.SetStartState(true);
+        for (auto ch : symbols) {
+            if (ch != EOF && ch != '\n') {
+                nsm.AddTransition(ch, qStart);
+            }
+        }
+
+        nsm.AddTransition(EOF, qEnd);
+        nsm.AddTransition('\n', qEnd);
+        nsm.EndState();
     }
 
 }

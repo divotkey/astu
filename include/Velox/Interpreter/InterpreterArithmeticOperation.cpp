@@ -5,8 +5,8 @@ using namespace std;
 
 namespace velox {
 
-    InterpreterArithmeticOperation::InterpreterArithmeticOperation(ArithmeticOperator op)
-        : InterpreterExpression(false), arithOp(op)
+    InterpreterArithmeticOperation::InterpreterArithmeticOperation(ArithmeticOperator op, unsigned int lineNumber)
+        : InterpreterExpression(lineNumber, false), arithOp(op)
     {
         // Intentionally left empty.
     }
@@ -23,7 +23,7 @@ namespace velox {
         auto lhs = leftHandSide->Evaluate(sc);
         auto rhs = rightHandSide->Evaluate(sc);
 
-        return lhs->ExecuteArithmeticOperator(sc, arithOp, rhs);
+        return lhs->ExecuteArithmeticOperator(sc, arithOp, rhs, GetLineNumber());
     }
 
 

@@ -10,8 +10,9 @@ namespace velox {
         auto itemValue = value->Evaluate(sc);
 
         auto result = itemValue->ExecuteArithmeticOperator(sc,
-                decrement ? ArithmeticOperator::SUB : ArithmeticOperator::ADD,
-                Item::Create(make_unique<ItemStateInteger>(1)));
+                                                           decrement ? ArithmeticOperator::SUB
+                                                                     : ArithmeticOperator::ADD,
+                                                           Item::Create(make_unique<ItemStateInteger>(1)), GetLineNumber());
 
         itemValue->Assign(result);
         return itemValue;

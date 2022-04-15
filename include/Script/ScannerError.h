@@ -11,14 +11,22 @@
 
 namespace astu {
 
-    class ScannerException : public std::runtime_error {
+    class ScannerError : public std::runtime_error {
     public:
 
-        ScannerException(const std::string& message) : std::runtime_error(message) {
+        ScannerError(const std::string& message, unsigned int line = 0)
+            : std::runtime_error(message), lineNumber(line) {
             // Intentionally left empty.
         }
 
-        virtual ~ScannerException() {}
+        unsigned int GetLineNumber() const {
+            return lineNumber;
+        }
+
+        virtual ~ScannerError() {}
+
+    private:
+        unsigned int lineNumber;
 
     };
 

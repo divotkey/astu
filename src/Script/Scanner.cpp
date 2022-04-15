@@ -6,7 +6,7 @@
 
 // Local includes
 #include "Script/Scanner.h"
-#include "Script/ScannerException.h"
+#include "Script/ScannerError.h"
 
 // C++ Standard Library
 #include <cassert>
@@ -38,15 +38,32 @@ namespace astu {
     }
 
     void Scanner::GetNextToken() {
-        ScanForNextToken();
+        ScanForNextTokenWithComments();
 
         while (IsIgnoreToken(tokenType)) {
-            ScanForNextToken();
+            ScanForNextTokenWithComments();
         }
     }
 
-    void Scanner::ScanForNextToken() {
-        sm->Reset();
+    void Scanner::ScanForNextTokenWithComments() {
+        ScanForNextToken(*sm);
+        while (tokenType == blockCommentStart || tokenType == lineCommentStart) {
+            if (tokenType == blockCommentStart) {
+                assert(blockCommentSm);
+                ScanForNextToken(*blockCommentSm);
+            }
+            else {
+                assert(tokenType == lineCommentStart);
+                assert(blockCommentSm);
+                ScanForNextToken(*lineCommentSm);
+            }
+
+            ScanForNextToken(*sm);
+        }
+    }
+
+    void Scanner::ScanForNextToken(FStateMachine& sm) {
+        sm.Reset();
         intValue = 0;
         realFactor = 1;
         realValue = 0;
@@ -56,19 +73,19 @@ namespace astu {
 
         char ch = GetNextChar();
         do {
-            sm->Process(ch, this);
-            ProcessFlags(sm->GetFlags(), ch);
+            sm.Process(ch, this);
+            ProcessFlags(sm.GetFlags(), ch);
             ProcessCommands();
             ch = GetNextChar();
-        } while(!sm->IsAccepting());
-        assert(sm->IsAccepting());
+        } while(!sm.IsAccepting());
+        assert(sm.IsAccepting());
 
-        while (sm->Process(ch, this)) {
-            ProcessFlags(sm->GetFlags(), ch);
+        while (sm.Process(ch, this)) {
+            ProcessFlags(sm.GetFlags(), ch);
             ProcessCommands();
             ch = GetNextChar();
         }
-        assert(!sm->IsAccepting());
+        assert(!sm.IsAccepting());
         DiscardCommands();
 
         PutBack(ch);
@@ -135,7 +152,6 @@ namespace astu {
     void Scanner::EmitError(size_t messageIdx, int priority) {
         pendingCommands.push_back(Command::CreateEmitError(priority, messageIdx));
     }
-
 
     void Scanner::ProcessCommands() {
         assert(uniqueCommands.empty());
@@ -213,7 +229,7 @@ namespace astu {
                 break;
 
             case Type::EMIT_ERROR:
-                throw ScannerException(parent.errorMessages.at(data1));
+                throw ScannerError(parent.errorMessages.at(data1), parent.newLines.size() + 1);
                 break;
 
             default:

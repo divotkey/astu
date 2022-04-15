@@ -6,8 +6,10 @@ namespace velox {
 
     class InterpreterPreIncrement : public InterpreterExpression {
     public:
-        InterpreterPreIncrement(std::shared_ptr<InterpreterExpression> lValue, bool decrement = false)
-            : value(lValue), decrement(decrement) {}
+
+
+        InterpreterPreIncrement(std::shared_ptr<InterpreterExpression> lValue, bool decrement, unsigned int lineNumber)
+        : InterpreterExpression(lineNumber, true), value(lValue), decrement(decrement) {}
 
         void SetValue(std::shared_ptr<InterpreterExpression> lValue);
 

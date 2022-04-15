@@ -16,7 +16,7 @@ using namespace std;
 
 namespace velox {
 
-    shared_ptr<Item> ItemStateWithSubItems::FindItem(const string &name) {
+    shared_ptr<Item> ItemStateWithSubItems::FindItem(const string &name) const {
         auto it = subItems.find(name);
         if (it != subItems.end())
             return it->second;

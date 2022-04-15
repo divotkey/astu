@@ -14,7 +14,7 @@ namespace velox {
         void SetStatement(std::shared_ptr<InterpreterStatement> statement);
 
     protected:
-        std::shared_ptr<Item> DoEvaluate(ScriptContext &sc) override;
+        std::shared_ptr<Item> DoEvaluate(ScriptContext &sc, unsigned int lineNumber) override;
 
     private:
         std::shared_ptr<InterpreterStatement> statement;

@@ -6,7 +6,7 @@ using namespace std;
 
 namespace velox {
 
-    std::shared_ptr<Item> InterpreterScriptFunction::DoEvaluate(ScriptContext &sc) {
+    std::shared_ptr<Item> InterpreterScriptFunction::DoEvaluate(ScriptContext &sc, unsigned int lineNumber) {
         sc.PushReturnValue();
         statement->Execute(sc);
         sc.ClearFlag(ScriptContext::RETURN_EXECUTED_FLAG);

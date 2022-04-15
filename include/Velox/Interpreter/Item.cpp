@@ -126,7 +126,7 @@ namespace velox {
         return state->FindItem(name) != nullptr;
     }
 
-    std::shared_ptr<Item> Item::FindItem(const string &name) {
+    std::shared_ptr<Item> Item::FindItem(const string &name) const {
         return state->FindItem(name);
     }
 
@@ -139,14 +139,16 @@ namespace velox {
         return *result;
     }
 
-    std::shared_ptr<Item> Item::ExecuteArithmeticOperator(ScriptContext &sc, ArithmeticOperator op, std::shared_ptr<Item> item) const {
-        // TODO look for custom operation function within this item for overloaded operators.
+    std::shared_ptr<Item>
+    Item::ExecuteArithmeticOperator(ScriptContext &sc, ArithmeticOperator op, std::shared_ptr<Item> item,
+                                    unsigned int lineNumber) const {
 
+        // Look for custom operation function within this item for overloaded operators.
         auto opFunc = state->FindItem(arithmeticOperatorName[static_cast<int>(op)]);
         if (opFunc) {
             InterpreterItemParameterList params;
             params.AddParameter(item);
-            return opFunc->CallAsFunction(sc, params, 0);
+            return opFunc->CallAsFunction(sc, params, lineNumber);
         }
 
         // Get result type.
@@ -350,6 +352,14 @@ namespace velox {
 
     std::shared_ptr<ItemData> Item::GetData() {
         return state->GetData();
+    }
+
+    ItemType Item::GetType() const {
+        return state->GetType();
+    }
+
+    const astu::Color4d &Item::GetColorValue() const {
+        return state->GetColorValue();
     }
 
 }

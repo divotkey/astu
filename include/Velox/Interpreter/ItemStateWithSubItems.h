@@ -18,7 +18,7 @@ namespace velox {
     public:
 
         // Inherited via ItemState
-        std::shared_ptr<Item> FindItem(const std::string &name) override;
+        std::shared_ptr<Item> FindItem(const std::string &name) const override;
         bool AddItem(const std::string &name, std::shared_ptr<Item> item) override;
         void CopyItems(Item& target) override;
         void AddItemsToScope(ScriptContext &sc) override;

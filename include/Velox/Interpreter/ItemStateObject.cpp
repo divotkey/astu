@@ -25,13 +25,12 @@ namespace velox {
     }
 
     std::string ItemStateObject::GetStringValue(ScriptContext &sc) const {
-        //auto it = subItems.find(TO_STRING_METHOD);
-        //if (it == subItems.end()) {
-        //    return ItemState::GetStringValue(sc);
-        //}
-        //
-        //InterpreterNoParameterList noParams;
-        //return it->second->CallAsFunction(sc, noParams, 0)->GetStringValue(sc);
+        auto funcItem = FindItem(TO_STRING_METHOD);
+        if (!funcItem) {
+            return ItemState::GetStringValue(sc);
+        }
+        InterpreterNoParameterList noParams;
+        return funcItem->CallAsFunction(sc, noParams, 0)->GetStringValue(sc);
     }
 
     ItemType ItemStateObject::GetType() const {

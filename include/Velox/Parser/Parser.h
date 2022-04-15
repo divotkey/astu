@@ -36,7 +36,11 @@ namespace velox {
         static const std::map<TokenType, LogicalOperator> LOG_OP_TO_TOK;
 
         std::shared_ptr<InterpreterStatementBlock> ParseStatementBlock(Source &source);
+        std::shared_ptr<InterpreterStatement> ParseStatementOrBlock(Source &source);
+
         std::shared_ptr<InterpreterStatement> ParseStatement(Source &source);
+        std::shared_ptr<InterpreterStatement> ParseForHeaderStatement(Source &source);
+
         std::shared_ptr<InterpreterStatement> ParseAssignment(Source &source, std::shared_ptr<InterpreterExpression> lValue);
         std::shared_ptr<InterpreterStatement> ParseOptionalAssignment(Source &source, std::shared_ptr<InterpreterExpression> lValue);
 
@@ -46,10 +50,9 @@ namespace velox {
         std::shared_ptr<InterpreterStatement> ParseReturnStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseIfStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseWhileStatement(Source &source);
+        std::shared_ptr<InterpreterStatement> ParseForStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseClassDefinition(Source &source);
-
         std::shared_ptr<InterpreterExpression> ParseNewStatement(Source &source);
-
         std::shared_ptr<InterpreterExpression> ParseOptionalSelector(Source &source, std::shared_ptr<InterpreterExpression> lValue);
         std::shared_ptr<InterpreterExpression> ParseExpression(Source &source);
         std::shared_ptr<InterpreterExpression> ParseMemberAccess(Source &source, std::shared_ptr<InterpreterExpression> lValue);

@@ -28,10 +28,10 @@ namespace velox {
         /** Right Parenthesis. */
         RIGHT_PARENTHESIS,
 
-        /** Defines the start of a statement block. */
+        /** Defines the start of a loopBody block. */
         BLOCK_START,
 
-        /** Defines the end of a statement block. */
+        /** Defines the end of a loopBody block. */
         BLOCK_END,
 
         /** Used so separate statements. */
@@ -157,7 +157,7 @@ namespace velox {
         /** The keyword for 'global' modifier. */
         GLOBAL,
 
-        /** The keyword for 'global' statement. */
+        /** The keyword for 'global' loopBody. */
         IMPORT,
 
         /** Identifier. */
