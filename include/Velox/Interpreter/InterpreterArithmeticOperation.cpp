@@ -13,10 +13,12 @@ namespace velox {
 
     void InterpreterArithmeticOperation::SetLeftHandSide(std::shared_ptr<InterpreterExpression> lValue) {
         leftHandSide = lValue;
+        leftHandSide->SetLocation(false);
     }
 
     void InterpreterArithmeticOperation::SetRightHandSide(std::shared_ptr<InterpreterExpression> rValue) {
         rightHandSide = rValue;
+        rightHandSide->SetLocation(false);
     }
 
     shared_ptr<Item> velox::InterpreterArithmeticOperation::Evaluate(velox::ScriptContext &sc) {

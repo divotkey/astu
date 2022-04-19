@@ -6,10 +6,15 @@
 
 // Local includes
 #include "InterpreterFunctionOneParameter.h"
+#include "Item.h"
 
 using namespace std;
 
 namespace velox {
+
+    std::shared_ptr<Item> InterpreterFunctionOneParameter::CreateItem(InterpreterFunctionOneParameter::Func func) {
+        return Item::CreateFunction(make_shared<InterpreterFunctionOneParameter>(func));
+    }
 
     InterpreterFunctionOneParameter::InterpreterFunctionOneParameter(Func func) : func(func)
     {

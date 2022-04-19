@@ -35,8 +35,8 @@ namespace velox {
         static const std::map<TokenType, RelationalOperator> REL_OP_TO_TOK;
         static const std::map<TokenType, LogicalOperator> LOG_OP_TO_TOK;
 
-        std::shared_ptr<InterpreterStatementBlock> ParseStatementBlock(Source &source);
-        std::shared_ptr<InterpreterStatement> ParseStatementOrBlock(Source &source);
+        std::shared_ptr<InterpreterStatementBlock> ParseStatementBlock(Source &source, bool loopBody);
+        std::shared_ptr<InterpreterStatement> ParseStatementOrBlock(Source &source, bool loopBody);
 
         std::shared_ptr<InterpreterStatement> ParseStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseForHeaderStatement(Source &source);
@@ -48,15 +48,18 @@ namespace velox {
         ParseAssignmentOperator(Source &source, std::shared_ptr<InterpreterExpression> lValue, ArithmeticOperator op);
         std::shared_ptr<InterpreterFunctionDefinition> ParseFunctionDefinition(Source &source);
         std::shared_ptr<InterpreterStatement> ParseReturnStatement(Source &source);
+        std::shared_ptr<InterpreterStatement> ParseGlobalStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseIfStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseWhileStatement(Source &source);
+        std::shared_ptr<InterpreterStatement> ParseDoWhileStatement(Source &source);
+        std::shared_ptr<InterpreterStatement> ParseLoopStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseForStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseClassDefinition(Source &source);
         std::shared_ptr<InterpreterExpression> ParseNewStatement(Source &source);
         std::shared_ptr<InterpreterExpression> ParseOptionalSelector(Source &source, std::shared_ptr<InterpreterExpression> lValue);
         std::shared_ptr<InterpreterExpression> ParseExpression(Source &source);
         std::shared_ptr<InterpreterExpression> ParseMemberAccess(Source &source, std::shared_ptr<InterpreterExpression> lValue);
-        std::shared_ptr<InterpreterSimpleName> ParseSimpleName(Source &source);
+        std::shared_ptr<InterpreterExpressionSimpleName> ParseSimpleName(Source &source);
         std::shared_ptr<InterpreterExpression> ParseOrExpression(Source &source);
         std::shared_ptr<InterpreterExpression> ParseRelExpression(Source &source);
         std::shared_ptr<InterpreterExpression> ParseSimpleExpression(Source &source);
@@ -70,6 +73,7 @@ namespace velox {
         std::shared_ptr<InterpreterConstructorCall> ParseConstructorCall(Source &source);
 
         void ParseSemicolon(Source &source);
+        void ParseOptionalSemicolon(Source &source);
         void ParseComma(Source &source);
         void ParseRightParenthesis(Source &source);
         void ParseLeftParenthesis(Source &source);

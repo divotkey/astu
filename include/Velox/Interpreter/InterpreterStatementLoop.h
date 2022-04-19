@@ -8,28 +8,25 @@
 
 // Local includes
 #include "InterpreterStatement.h"
-#include "InterpreterExpression.h"
 
 namespace velox {
 
-    class InterpreterStatementWhile : public InterpreterStatement {
+    class InterpreterStatementLoop : public InterpreterStatement {
     public:
 
         /**
-         * Constructor
+         * Constructor.
          *
-         * @param lineNumber    information about the location within the source code
+         * @param lineNumber    information about the position of this statement within the source code
          */
-        InterpreterStatementWhile(unsigned int lineNumber) : InterpreterStatement(lineNumber) {}
-
-        void SetCondition(std::shared_ptr<InterpreterExpression> condition);
+        InterpreterStatementLoop(unsigned int lineNumber);
         void SetStatement(std::shared_ptr<InterpreterStatement> statement);
 
         // Inherited via InterpreterStatement
         void Execute(ScriptContext &sc) override;
 
     private:
-        std::shared_ptr<InterpreterExpression> condition;
+        /** The body of this loop. */
         std::shared_ptr<InterpreterStatement> loopBody;
     };
 

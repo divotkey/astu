@@ -35,24 +35,6 @@ namespace velox {
         return nullptr;
     }
 
-    Item &Scope::GetItem(const string &name) {
-        auto result = FindItem(name);
-        if (!result) {
-            throw std::logic_error("Unknown item '" + name + "'");
-        }
-
-        return *result;
-    }
-
-    const Item &Scope::GetItem(const string &name) const {
-        auto result = FindItem(name);
-        if (!result) {
-            throw std::logic_error("Unknown item '" + name + "'");
-        }
-
-        return *result;
-    }
-
     void Scope::Clear() {
         items.clear();
     }

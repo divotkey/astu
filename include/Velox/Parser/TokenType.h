@@ -115,11 +115,14 @@ namespace velox {
         /** Binary or. */
         BIN_OR,
 
-        /** the 'true' token. */
+        /** The 'true' token. */
         TRUE,
 
-        /** the 'false' token. */
+        /** The 'false' token. */
         FALSE,
+
+        /** The 'undefined' token. */
+        UNDEFINED,
 
         /** Keyword for function definitions. */
         FUNCTION,
@@ -144,6 +147,12 @@ namespace velox {
 
         /** The keyword for 'exit' statements. */
         EXIT,
+
+        /** The keyword for 'continue' statements. */
+        CONTINUE,
+
+        /** The keyword for 'break' statements. */
+        BREAK,
 
         /** The keyword for 'for' statements. */
         FOR,

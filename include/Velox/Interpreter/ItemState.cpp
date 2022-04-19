@@ -29,24 +29,24 @@ namespace velox {
         throw InterpreterError("Not a function");
     }
 
-    double ItemState::GetRealValue() const {
-        throw InterpreterError("Not a floating-point value");
+    double ItemState::GetRealValue(unsigned int lineNumber) const {
+        throw InterpreterError("floating-point value expected", lineNumber);
     }
 
-    int ItemState::GetIntegerValue() const {
-        throw InterpreterError("Not an integer");
+    int ItemState::GetIntegerValue(unsigned int lineNumber) const {
+        throw InterpreterError("integer value expected", lineNumber);
     }
 
     bool ItemState::GetBooleanValue() const {
-        throw InterpreterError("Not a boolean");
+        throw InterpreterError("boolean value expected");
     }
 
     std::string ItemState::GetStringValue(ScriptContext &sc) const {
-        throw InterpreterError("Not a string");
+        throw InterpreterError("string value expected");
     }
 
     const Color4d & ItemState::GetColorValue() const {
-        throw InterpreterError("Not a color");
+        throw InterpreterError("color value expected");
     }
 
     ItemType ItemState::GetType() const {
@@ -87,6 +87,10 @@ namespace velox {
 
     shared_ptr<ItemData> ItemState::GetData() {
         return nullptr;
+    }
+
+    std::shared_ptr<Item> ItemState::ExecuteUnaryMinus() const {
+        throw InterpreterError(string("unary minus not defined for type ") + std::to_string(static_cast<int>(GetType())));
     }
 
 }

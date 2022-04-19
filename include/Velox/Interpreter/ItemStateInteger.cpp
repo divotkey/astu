@@ -1,4 +1,6 @@
+// Local includes
 #include "ItemStateInteger.h"
+#include "Item.h"
 
 using namespace std;
 
@@ -8,11 +10,11 @@ namespace velox {
         return make_unique<ItemStateInteger>(value);
     }
 
-    double ItemStateInteger::GetRealValue() const {
+    double ItemStateInteger::GetRealValue(unsigned int lineNumber) const {
         return static_cast<double>(value);
     }
 
-    int ItemStateInteger::GetIntegerValue() const {
+    int ItemStateInteger::GetIntegerValue(unsigned int lineNumber) const {
         return value;
     }
 
@@ -28,8 +30,12 @@ namespace velox {
         if (rhs.GetType() != ItemType::Integer)
             return false;
 
-        value = rhs.GetIntegerValue();
+        value = rhs.GetIntegerValue(0);
         return true;
+    }
+
+    shared_ptr<Item> ItemStateInteger::ExecuteUnaryMinus() const {
+        return Item::CreateInteger(-value);
     }
 
     //void *ItemStateInteger::operator new(size_t count) {

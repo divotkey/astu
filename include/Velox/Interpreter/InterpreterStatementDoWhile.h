@@ -12,7 +12,7 @@
 
 namespace velox {
 
-    class InterpreterStatementWhile : public InterpreterStatement {
+    class InterpreterStatementDoWhile : public InterpreterStatement {
     public:
 
         /**
@@ -20,7 +20,7 @@ namespace velox {
          *
          * @param lineNumber    information about the location within the source code
          */
-        InterpreterStatementWhile(unsigned int lineNumber) : InterpreterStatement(lineNumber) {}
+        InterpreterStatementDoWhile(unsigned int lineNumber) : InterpreterStatement(lineNumber) {}
 
         void SetCondition(std::shared_ptr<InterpreterExpression> condition);
         void SetStatement(std::shared_ptr<InterpreterStatement> statement);

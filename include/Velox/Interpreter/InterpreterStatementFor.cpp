@@ -13,10 +13,16 @@ namespace velox {
     void InterpreterStatementFor::Execute(ScriptContext &sc) {
         sc.PushScope();
         initStatement->Execute(sc);
-        while (condition->Evaluate(sc)->GetBooleanValue()) {
+
+        sc.ClearFlag(ScriptContext::BREAK_EXECUTED_FLAG);
+        while (!sc.IsSet(ScriptContext::BREAK_EXECUTED_FLAG) && !sc.IsSet(ScriptContext::RETURN_EXECUTED_FLAG) &&
+               condition->Evaluate(sc)->GetBooleanValue())
+        {
+            sc.ClearFlag(ScriptContext::CONTINUE_EXECUTED_FLAG);
             loopBody->Execute(sc);
             loopStatement->Execute(sc);
         }
+        sc.ClearFlag(ScriptContext::BREAK_EXECUTED_FLAG | ScriptContext::CONTINUE_EXECUTED_FLAG);
         sc.PopScope();
     }
 

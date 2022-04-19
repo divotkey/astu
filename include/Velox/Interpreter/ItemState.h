@@ -57,6 +57,14 @@ namespace velox {
         void Assign(Item &owner, std::shared_ptr<Item> rhs);
 
         /**
+         * Carries out a unary minus on this item state.
+         *
+         * @return a new item representing the result of the operation
+         * @throws InterpreterException in case the operation is invalid for this item
+         */
+        virtual std::shared_ptr<Item> ExecuteUnaryMinus() const;
+
+        /**
          * Called to evaluate this state es function.
          * The default implementation will throws an InterpreterError.
          *
@@ -78,18 +86,20 @@ namespace velox {
         /**
          * Tries to convert this state to a real value.
          *
+         * @param lineNumber    information about the location within the source code
          * @return the real value
          * @throws InterpreterException in case this state cannot interpreted as real value
          */
-        virtual double GetRealValue() const;
+        virtual double GetRealValue(unsigned int lineNumber) const;
 
         /**
          * Tries to convert this state to a integer value.
          *
+         * @param lineNumber    information about the location within the source code
          * @return the integer value
          * @throws InterpreterException in case this state cannot interpreted as real value
          */
-        virtual int GetIntegerValue() const;
+        virtual int GetIntegerValue(unsigned int lineNumber) const;
 
         /**
          * Tries to convert this state to a boolean value.

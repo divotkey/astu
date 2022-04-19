@@ -344,7 +344,7 @@ namespace astu {
          * 
          * @param o the other color
          * @param t the interpolation position in the interval [0, 1]
-         * @return  the new interpolated color
+         * @return the new interpolated color
          */
         Color<T> Lerp(const Color<T> & o, T t) const {
             return *this + (o - *this) * t;

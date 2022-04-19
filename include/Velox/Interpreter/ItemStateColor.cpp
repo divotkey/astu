@@ -3,6 +3,8 @@
 #include "InterpreterFunction.h"
 #include "InterpreterError.h"
 #include "Item.h"
+#include "InterpreterFunctionOneParameter.h"
+#include "InterpreterFunctionTwoParameter.h"
 
 // C++ Standard Library includes.
 #include <functional>
@@ -76,11 +78,11 @@ namespace velox {
             return make_unique<ItemStateReal>(value);
         }
 
-        double GetRealValue() const override {
+        double GetRealValue(unsigned int lineNumber) const override {
             return value;
         }
 
-        int GetIntegerValue() const override {
+        int GetIntegerValue(unsigned int lineNumber) const override {
             return static_cast<int>(value);
         }
 
@@ -89,7 +91,7 @@ namespace velox {
         }
 
         bool Assign(Item &owner, const ItemState &rhs) override {
-            value = rhs.GetRealValue();
+            value = rhs.GetRealValue(0);
             return true;
         }
 
@@ -105,6 +107,20 @@ namespace velox {
         auto &rColor = value;
 
         AddItem("Saturate", Item::CreateFunction(make_shared<SaturateFunction>(value)));
+
+        AddItem("Lerp", InterpreterFunctionTwoParameter::CreateItem(
+                [&rColor](std::shared_ptr<Item> param1, std::shared_ptr<Item> param2,
+                          unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    if (param1->GetType() != ItemType::Color) {
+                        throw InterpreterError("first parameter for method 'Lerp' must be of type color", lineNumber);
+                    }
+
+                    if (param1->IsNumber()) {
+                        throw InterpreterError("second parameter for method 'Lerp' must be a number", lineNumber);
+                    }
+
+                    return Item::CreateColor(rColor.Lerp(param1->GetColorValue(), param2->GetRealValue(lineNumber)));
+                }));
 
         AddItem("operator+", Item::CreateFunction(
                 make_shared<ColorFunction1Param>([&rColor](const Item &item, unsigned int lineNumber) {
@@ -127,7 +143,7 @@ namespace velox {
                     if (item.GetType() == ItemType::Color) {
                         return Item::CreateColor(rColor * item.GetColorValue());
                     } else if (item.GetType() == ItemType::Real || item.GetType() == ItemType::Integer) {
-                        return Item::CreateColor(rColor * item.GetRealValue());
+                        return Item::CreateColor(rColor * item.GetRealValue(lineNumber));
                     }
                     throw InterpreterError("invalid operation for type color", lineNumber);
                 })));
@@ -135,7 +151,7 @@ namespace velox {
         AddItem("operator/", Item::CreateFunction(
                 make_shared<ColorFunction1Param>([&rColor](const Item &item, unsigned int lineNumber) {
                     if (item.GetType() == ItemType::Real || item.GetType() == ItemType::Integer) {
-                        return Item::CreateColor(rColor / item.GetRealValue());
+                        return Item::CreateColor(rColor / item.GetRealValue(lineNumber));
                     }
                     throw InterpreterError("invalid operation for type color", lineNumber);
                 })));
@@ -150,7 +166,7 @@ namespace velox {
         return make_unique<ItemStateColor>(value);
     }
 
-    int ItemStateColor::GetIntegerValue() const {
+    int ItemStateColor::GetIntegerValue(unsigned int lineNumber) const {
         return value.GetARGB();
     }
 

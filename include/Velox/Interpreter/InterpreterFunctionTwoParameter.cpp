@@ -6,10 +6,15 @@
 
 // Local includes
 #include "InterpreterFunctionTwoParameter.h"
+#include "Item.h"
 
 using namespace std;
 
 namespace velox {
+    
+    shared_ptr<Item> InterpreterFunctionTwoParameter::CreateItem(InterpreterFunctionTwoParameter::Func func) {
+        return Item::CreateFunction(make_shared<InterpreterFunctionTwoParameter>(func));
+    }
 
     InterpreterFunctionTwoParameter::InterpreterFunctionTwoParameter(Func func) : func(func)
     {
@@ -17,7 +22,7 @@ namespace velox {
         AddFormalParameter("b");
     }
 
-    std::shared_ptr<Item> InterpreterFunctionTwoParameter::DoEvaluate(ScriptContext &sc, unsigned int lineNumber) {
+    shared_ptr<Item> InterpreterFunctionTwoParameter::DoEvaluate(ScriptContext &sc, unsigned int lineNumber) {
         return func(sc.FindItem("a"), sc.FindItem("b"), lineNumber);
     }
 

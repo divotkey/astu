@@ -29,12 +29,12 @@ namespace velox {
         return value->state->Copy();
     }
 
-    double ItemStateReference::GetRealValue() const {
-        return value->state->GetRealValue();
+    double ItemStateReference::GetRealValue(unsigned int lineNumber) const {
+        return value->state->GetRealValue(lineNumber);
     }
 
-    int ItemStateReference::GetIntegerValue() const {
-        return value->state->GetIntegerValue();
+    int ItemStateReference::GetIntegerValue(unsigned int lineNumber) const {
+        return value->state->GetIntegerValue(lineNumber);
     }
 
     std::string ItemStateReference::GetStringValue(ScriptContext &sc) const {

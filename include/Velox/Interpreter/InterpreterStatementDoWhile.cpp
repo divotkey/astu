@@ -5,30 +5,30 @@
 // of contributors.
 
 // Local includes
-#include "InterpreterStatementWhile.h"
+#include "InterpreterStatementDoWhile.h"
 #include "Item.h"
 
 namespace velox {
 
-    void InterpreterStatementWhile::Execute(ScriptContext &sc) {
+    void InterpreterStatementDoWhile::Execute(ScriptContext &sc) {
         sc.PushScope();
 
         sc.ClearFlag(ScriptContext::BREAK_EXECUTED_FLAG);
-        while (!sc.IsSet(ScriptContext::BREAK_EXECUTED_FLAG) && !sc.IsSet(ScriptContext::RETURN_EXECUTED_FLAG) &&
-               condition->Evaluate(sc)->GetBooleanValue())
-        {
+        do {
             sc.ClearFlag(ScriptContext::CONTINUE_EXECUTED_FLAG);
             loopBody->Execute(sc);
-        }
+        } while (!sc.IsSet(ScriptContext::BREAK_EXECUTED_FLAG) && !sc.IsSet(ScriptContext::RETURN_EXECUTED_FLAG) &&
+                 condition->Evaluate(sc)->GetBooleanValue());
+
         sc.ClearFlag(ScriptContext::BREAK_EXECUTED_FLAG | ScriptContext::CONTINUE_EXECUTED_FLAG);
         sc.PopScope();
     }
 
-    void InterpreterStatementWhile::SetCondition(std::shared_ptr<InterpreterExpression> inCondition) {
+    void InterpreterStatementDoWhile::SetCondition(std::shared_ptr<InterpreterExpression> inCondition) {
         condition = inCondition;
     }
 
-    void InterpreterStatementWhile::SetStatement(std::shared_ptr<InterpreterStatement> statement) {
+    void InterpreterStatementDoWhile::SetStatement(std::shared_ptr<InterpreterStatement> statement) {
         loopBody = statement;
     }
 

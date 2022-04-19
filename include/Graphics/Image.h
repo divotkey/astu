@@ -150,6 +150,16 @@ namespace astu {
          */
         const Color4d* GetPixels() const;
 
+        /**
+         * Block image transfer.
+         * Copies an image to this image
+         *
+         * @param source
+         * @param x
+         * @param y
+         */
+        void Blit(const Image &source, int x, int y);
+
     private:
         /** The width of the image in pixel. */
         int width;

@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Fri Apr 15 07:38:23 CEST 2022 with SWORD Interpreter 1.9.1
+# Generated Tue Apr 19 07:13:41 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -218,8 +218,6 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterActualParameterList.h 
 	include/Velox/Interpreter/InterpreterArithmeticOperation.cpp 
 	include/Velox/Interpreter/InterpreterArithmeticOperation.h 
-	include/Velox/Interpreter/InterpreterAssignment.cpp 
-	include/Velox/Interpreter/InterpreterAssignment.h 
 	include/Velox/Interpreter/InterpreterAssignmentOperator.cpp 
 	include/Velox/Interpreter/InterpreterAssignmentOperator.h 
 	include/Velox/Interpreter/InterpreterClass.cpp 
@@ -233,6 +231,14 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterError.h 
 	include/Velox/Interpreter/InterpreterExpression.cpp 
 	include/Velox/Interpreter/InterpreterExpression.h 
+	include/Velox/Interpreter/InterpreterExpressionAssignment.cpp 
+	include/Velox/Interpreter/InterpreterExpressionAssignment.h 
+	include/Velox/Interpreter/InterpreterExpressionSimpleName.cpp 
+	include/Velox/Interpreter/InterpreterExpressionSimpleName.h 
+	include/Velox/Interpreter/InterpreterExpressionUnaryMinus.cpp 
+	include/Velox/Interpreter/InterpreterExpressionUnaryMinus.h 
+	include/Velox/Interpreter/InterpreterExpressionUndefined.cpp 
+	include/Velox/Interpreter/InterpreterExpressionUndefined.h 
 	include/Velox/Interpreter/InterpreterFormalParameterList.cpp 
 	include/Velox/Interpreter/InterpreterFormalParameterList.h 
 	include/Velox/Interpreter/InterpreterFunction.cpp 
@@ -245,10 +251,14 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterFunctionNoParameter.h 
 	include/Velox/Interpreter/InterpreterFunctionOneParameter.cpp 
 	include/Velox/Interpreter/InterpreterFunctionOneParameter.h 
+	include/Velox/Interpreter/InterpreterFunctionPrint.cpp 
+	include/Velox/Interpreter/InterpreterFunctionPrint.h 
+	include/Velox/Interpreter/InterpreterFunctionScript.cpp 
+	include/Velox/Interpreter/InterpreterFunctionScript.h 
+	include/Velox/Interpreter/InterpreterFunctionThreeParameter.cpp 
+	include/Velox/Interpreter/InterpreterFunctionThreeParameter.h 
 	include/Velox/Interpreter/InterpreterFunctionTwoParameter.cpp 
 	include/Velox/Interpreter/InterpreterFunctionTwoParameter.h 
-	include/Velox/Interpreter/InterpreterIfStatement.cpp 
-	include/Velox/Interpreter/InterpreterIfStatement.h 
 	include/Velox/Interpreter/InterpreterLiteralBoolean.cpp 
 	include/Velox/Interpreter/InterpreterLiteralBoolean.h 
 	include/Velox/Interpreter/InterpreterLiteralColor.cpp 
@@ -269,21 +279,27 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterPostIncrement.h 
 	include/Velox/Interpreter/InterpreterPreIncrement.cpp 
 	include/Velox/Interpreter/InterpreterPreIncrement.h 
-	include/Velox/Interpreter/InterpreterPrintFunction.cpp 
-	include/Velox/Interpreter/InterpreterPrintFunction.h 
 	include/Velox/Interpreter/InterpreterRelationalOperation.cpp 
 	include/Velox/Interpreter/InterpreterRelationalOperation.h 
 	include/Velox/Interpreter/InterpreterReturnStatement.cpp 
 	include/Velox/Interpreter/InterpreterReturnStatement.h 
-	include/Velox/Interpreter/InterpreterScriptFunction.cpp 
-	include/Velox/Interpreter/InterpreterScriptFunction.h 
-	include/Velox/Interpreter/InterpreterSimpleName.cpp 
-	include/Velox/Interpreter/InterpreterSimpleName.h 
 	include/Velox/Interpreter/InterpreterStatement.h 
 	include/Velox/Interpreter/InterpreterStatementBlock.cpp 
 	include/Velox/Interpreter/InterpreterStatementBlock.h 
+	include/Velox/Interpreter/InterpreterStatementBreak.cpp 
+	include/Velox/Interpreter/InterpreterStatementBreak.h 
+	include/Velox/Interpreter/InterpreterStatementContinue.cpp 
+	include/Velox/Interpreter/InterpreterStatementContinue.h 
+	include/Velox/Interpreter/InterpreterStatementDoWhile.cpp 
+	include/Velox/Interpreter/InterpreterStatementDoWhile.h 
 	include/Velox/Interpreter/InterpreterStatementFor.cpp 
 	include/Velox/Interpreter/InterpreterStatementFor.h 
+	include/Velox/Interpreter/InterpreterStatementGlobal.cpp 
+	include/Velox/Interpreter/InterpreterStatementGlobal.h 
+	include/Velox/Interpreter/InterpreterStatementIf.cpp 
+	include/Velox/Interpreter/InterpreterStatementIf.h 
+	include/Velox/Interpreter/InterpreterStatementLoop.cpp 
+	include/Velox/Interpreter/InterpreterStatementLoop.h 
 	include/Velox/Interpreter/InterpreterStatementNop.cpp 
 	include/Velox/Interpreter/InterpreterStatementNop.h 
 	include/Velox/Interpreter/InterpreterStatementWhile.cpp 

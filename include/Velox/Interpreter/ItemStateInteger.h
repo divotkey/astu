@@ -18,10 +18,12 @@ namespace velox {
 
         // Inherited via ItemState
         std::unique_ptr<ItemState> Copy() const override;
-        double GetRealValue() const override;
-        int GetIntegerValue() const override;
+        double GetRealValue(unsigned int lineNumber) const override;
+        int GetIntegerValue(unsigned int lineNumber) const override;
         std::string GetStringValue(ScriptContext &sc) const override;
         ItemType GetType() const override;
+
+        std::shared_ptr<Item> ExecuteUnaryMinus() const override;
 
     protected:
         // Inherited via ItemState

@@ -2,6 +2,8 @@
 #include "InterpreterError.h"
 #include "Item.h"
 
+using namespace std;
+
 namespace velox {
 
     void InterpreterFunctionCall::SetFunction(std::shared_ptr<InterpreterExpression> inFunction) {
@@ -16,7 +18,7 @@ namespace velox {
 
     std::shared_ptr<Item> InterpreterFunctionCall::Evaluate(ScriptContext &sc) {
         auto funcItem= function->Evaluate(sc);
-        sc.PushScope();
+        sc.PushScope(make_shared<Scope>(true));
         auto result = funcItem->CallAsFunction(sc, parameters, GetLineNumber());
         sc.PopScope();
         return result;

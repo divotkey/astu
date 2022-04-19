@@ -14,10 +14,10 @@ using namespace astu;
 namespace velox {
 
     shared_ptr<Item> InterpreterColor::Evaluate(ScriptContext &sc) {
-        double r = red->Evaluate(sc)->GetRealValue();
-        double g = green->Evaluate(sc)->GetRealValue();
-        double b = blue->Evaluate(sc)->GetRealValue();
-        double a = alpha ? alpha->Evaluate(sc)->GetRealValue() : 1.0;
+        double r = red->Evaluate(sc)->GetRealValue(GetLineNumber());
+        double g = green->Evaluate(sc)->GetRealValue(GetLineNumber());
+        double b = blue->Evaluate(sc)->GetRealValue(GetLineNumber());
+        double a = alpha ? alpha->Evaluate(sc)->GetRealValue(GetLineNumber()) : 1.0;
 
         return Item::CreateColor(Color4d(r, g, b, a));
     }

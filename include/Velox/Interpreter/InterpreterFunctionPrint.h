@@ -4,10 +4,10 @@
 
 namespace velox {
 
-    class InterpreterPrintFunction : public InterpreterFunction {
+    class InterpreterFunctionPrint : public InterpreterFunction {
     public:
 
-        InterpreterPrintFunction();
+        InterpreterFunctionPrint();
 
     protected:
         std::shared_ptr<Item> DoEvaluate(ScriptContext &sc, unsigned int lineNumber) override;

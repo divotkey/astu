@@ -19,7 +19,7 @@ namespace velox {
         sc.GetCurrentScope().AddItem(functionName, CreateFunctionItem());
     }
 
-    void InterpreterFunctionDefinition::SetFunction(std::shared_ptr<InterpreterScriptFunction> inFunction) {
+    void InterpreterFunctionDefinition::SetFunction(std::shared_ptr<InterpreterFunctionScript> inFunction) {
         function = inFunction;
     }
 

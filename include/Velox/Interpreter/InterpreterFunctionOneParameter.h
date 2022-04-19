@@ -14,10 +14,21 @@
 
 namespace velox {
 
+    // Forward declaration
+    class Item;
+
     class InterpreterFunctionOneParameter : public velox::InterpreterFunction {
     public:
 
         using Func = std::function<std::shared_ptr<Item>(std::shared_ptr<Item> param, unsigned int lineNumber)>;
+
+        /**
+         * Convenient method creating a item of type function.
+         *
+         * @param func  the one-parameter function
+         * @return the newly created item
+         */
+        static std::shared_ptr<Item> CreateItem(Func func);
 
         /**
          * Constructor

@@ -11,11 +11,11 @@ namespace velox {
         return make_unique<ItemStateBool>(value);
     }
 
-    double ItemStateBool::GetRealValue() const {
+    double ItemStateBool::GetRealValue(unsigned int lineNumber) const {
         return static_cast<double>(value);
     }
 
-    int ItemStateBool::GetIntegerValue() const {
+    int ItemStateBool::GetIntegerValue(unsigned int lineNumber) const {
         return static_cast<int>(value);
     }
 

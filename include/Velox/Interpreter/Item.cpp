@@ -100,12 +100,12 @@ namespace velox {
         return state->CallAsFunction(sc, parameters, lineNumber);
     }
 
-    double Item::GetRealValue() const {
-        return state->GetRealValue();
+    double Item::GetRealValue(unsigned int lineNumber) const {
+        return state->GetRealValue(lineNumber);
     }
 
-    int Item::GetIntegerValue() const {
-        return state->GetIntegerValue();
+    int Item::GetIntegerValue(unsigned int lineNumber) const {
+        return state->GetIntegerValue(lineNumber);
     }
 
     bool Item::GetBooleanValue() const {
@@ -139,6 +139,10 @@ namespace velox {
         return *result;
     }
 
+    std::shared_ptr<Item> Item::ExecuteUnaryMinus() const {
+        return state->ExecuteUnaryMinus();
+    }
+
     std::shared_ptr<Item>
     Item::ExecuteArithmeticOperator(ScriptContext &sc, ArithmeticOperator op, std::shared_ptr<Item> item,
                                     unsigned int lineNumber) const {
@@ -164,12 +168,14 @@ namespace velox {
             case ItemType::Integer:
                 return Item::Create(
                         std::make_unique<ItemStateInteger>(
-                                ExecuteIntegerArithmetic(state->GetIntegerValue(), item->state->GetIntegerValue(), op)));
+                                ExecuteIntegerArithmetic(state->GetIntegerValue(lineNumber),
+                                                         item->state->GetIntegerValue(lineNumber), op)));
 
             case ItemType::Real:
                 return Item::Create(
                         make_unique<ItemStateReal>(
-                                ExecuteRealArithmetic(state->GetRealValue(), item->state->GetRealValue(), op)));
+                                ExecuteRealArithmetic(state->GetRealValue(lineNumber),
+                                                      item->state->GetRealValue(lineNumber), op)));
 
             case ItemType::Boolean:
                 throw runtime_error(
@@ -188,7 +194,9 @@ namespace velox {
         }
     }
 
-    std::shared_ptr<Item> Item::ExecuteRelationalOperator(ScriptContext &sc, RelationalOperator op, const Item &item) const {
+    std::shared_ptr<Item> Item::ExecuteRelationalOperator(ScriptContext &sc, RelationalOperator op, const Item &item,
+                                                          unsigned int lineNumber) const {
+
         // TODO look for custom operation function within this item for overloaded operators.
 
         if (state->GetType() == ItemType::Undefined || item.state->GetType() == ItemType::Undefined) {
@@ -209,11 +217,13 @@ namespace velox {
 
             case ItemType::Integer:
                 return Item::Create(make_unique<ItemStateBool>(
-                        ExecuteIntegerRelational(state->GetIntegerValue(), item.state->GetIntegerValue(), op)));
+                        ExecuteIntegerRelational(state->GetIntegerValue(lineNumber),
+                                                 item.state->GetIntegerValue(lineNumber), op)));
 
             case ItemType::Real:
                 return Item::Create(make_unique<ItemStateBool>(
-                        ExecuteRealRelational(state->GetRealValue(), item.state->GetRealValue(), op)));
+                        ExecuteRealRelational(state->GetRealValue(lineNumber), item.state->GetRealValue(lineNumber),
+                                              op)));
 
             default:
                 throw runtime_error("Internal interpreter error: implementation of relational operator is flawed.");

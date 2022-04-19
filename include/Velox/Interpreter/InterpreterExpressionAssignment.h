@@ -1,8 +1,10 @@
 #pragma once
 
+// Local includes
 #include "InterpreterExpression.h"
 #include "InterpreterStatement.h"
 
+// C++ Standard Library includes
 #include <string>
 #include <memory>
 
@@ -11,8 +13,15 @@ namespace velox {
     // Forward declaration.
     class InterpreterExpression;
 
-    class InterpreterAssignment : public InterpreterExpression {
+    class InterpreterExpressionAssignment : public InterpreterExpression {
     public:
+
+        /**
+         * Constructor.
+         *
+         * @param lineNumber    information about the position of this statement within the source code
+         */
+        InterpreterExpressionAssignment(unsigned int lineNumber) : InterpreterExpression(lineNumber, false) {}
 
         void SetLeftHandSide(std::shared_ptr<InterpreterExpression> lValue);
         void SetRightHandSide(std::shared_ptr<InterpreterExpression> rValue);

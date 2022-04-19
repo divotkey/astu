@@ -17,11 +17,12 @@ namespace velox {
     // Forward declaration
     class Item;
 
-    class InterpreterFunctionTwoParameter : public velox::InterpreterFunction {
+    class InterpreterFunctionThreeParameter : public velox::InterpreterFunction {
     public:
 
         using Func = std::function<std::shared_ptr<Item>(std::shared_ptr<Item> param1,
                                                          std::shared_ptr<Item> param2,
+                                                         std::shared_ptr<Item> param3,
                                                          unsigned int lineNumber)>;
 
         /**
@@ -34,9 +35,10 @@ namespace velox {
 
         /**
          * Constructor
+         *
          * @param func  the actual function which requires one parameter
          */
-        InterpreterFunctionTwoParameter(Func func);
+        InterpreterFunctionThreeParameter(Func func);
 
     protected:
         std::shared_ptr<Item> DoEvaluate(ScriptContext &sc, unsigned int lineNumber) final override;

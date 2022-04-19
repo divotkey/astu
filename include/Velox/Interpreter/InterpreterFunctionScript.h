@@ -8,7 +8,7 @@
 
 namespace velox {
 
-    class InterpreterScriptFunction : public InterpreterFunction {
+    class InterpreterFunctionScript : public InterpreterFunction {
     public:
 
         void SetStatement(std::shared_ptr<InterpreterStatement> statement);

@@ -20,6 +20,7 @@
 #include "ItemStateBool.h"
 #include "ItemStateColor.h"
 #include "ItemStateFunction.h"
+#include "ItemStateReference.h"
 
 // C++ Standard Library includes
 #include <memory>
@@ -50,7 +51,7 @@ namespace velox {
          * Creates a new instance of an item.
          *
          * @param state the initial state of the item to create
-         * @return the newly created idem
+         * @return the newly created item
          */
         static std::shared_ptr<Item> Create(std::unique_ptr<ItemState> state) {
             return std::shared_ptr<Item>(new Item(move(state)));
@@ -70,7 +71,7 @@ namespace velox {
         /**
          * Creates a new instance of an item of type "undefined".
          *
-         * @return the newly created idem
+         * @return the newly created item
          */
         static std::shared_ptr<Item> CreateUndefined() {
             return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateUndefined>()));
@@ -80,7 +81,7 @@ namespace velox {
          * Creates a new instance of an item of type "integer".
          *
          * @param value the initial integer value
-         * @return the newly created idem
+         * @return the newly created item
          */
         static std::shared_ptr<Item> CreateInteger(int value) {
             return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateInteger>(value)));
@@ -90,7 +91,7 @@ namespace velox {
          * Creates a new instance of an item of type "real".
          *
          * @param value the floating-point value
-         * @return the newly created idem
+         * @return the newly created item
          */
         static std::shared_ptr<Item> CreateReal(double value) {
             return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateReal>(value)));
@@ -100,7 +101,7 @@ namespace velox {
          * Creates a new instance of an item of type "string".
          *
          * @param value the string value
-         * @return the newly created idem
+         * @return the newly created item
          */
         static std::shared_ptr<Item> CreateString(const std::string& value) {
             return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateString>(value)));
@@ -110,7 +111,7 @@ namespace velox {
          * Creates a new instance of an item of type "boolean".
          *
          * @param value the initial boolean value
-         * @return the newly created idem
+         * @return the newly created item
          */
         static std::shared_ptr<Item> CreateBoolean(bool value) {
             return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateBool>(value)));
@@ -120,17 +121,27 @@ namespace velox {
          * Creates a new instance of an item of type "function".
          *
          * @param value the interpreter function to be executed
-         * @return the newly created idem
+         * @return the newly created item
          */
         static std::shared_ptr<Item> CreateFunction(std::shared_ptr<InterpreterFunction> value) {
             return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateFunction>(value)));
         }
 
         /**
+         * Creates a new instance of an item of type "reference".
+         *
+         * @param item  the item that should be referenced
+         * @return the newly created item
+         */
+        static std::shared_ptr<Item> CreateReference(std::shared_ptr<Item> item) {
+            return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateReference>(item)));
+        }
+
+        /**
          * Creates a new instance of an item of type "color".
          *
          * @param value the initial color value
-         * @return the newly created idem
+         * @return the newly created item
          */
         static std::shared_ptr<Item> CreateColor(const astu::Color4d &value) {
             return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateColor>(value)));
@@ -182,18 +193,20 @@ namespace velox {
         /**
          * Tries to convert this item to a real value.
          *
+         * @param lineNumber    information about the location within the source code
          * @return the real value
          * @throws InterpreterException in case this item cannot interpreted as real value
          */
-        double GetRealValue() const;
+        double GetRealValue(unsigned int lineNumber) const;
 
         /**
          * Tries to convert this item to a integer value.
          *
+         * @param lineNumber    information about the location within the source code
          * @return the integer value
          * @throws InterpreterException in case this item cannot interpreted as integer value
          */
-        int GetIntegerValue() const;
+        int GetIntegerValue(unsigned int lineNumber = 0) const;
 
         /**
          * Tries to convert this item to a boolean value.
@@ -224,9 +237,10 @@ namespace velox {
         /**
          * Carries out an arithmetic operation.
          *
-         * @param sc    the the context under this this operation is executed
-         * @param op    the arithmetic operator
-         * @param item  the left-hand side of the operation
+         * @param sc            the the context under this this operation is executed
+         * @param op            the arithmetic operator
+         * @param item          the left-hand side of the operation
+         * @param lineNumber    information about the location within the source code
          * @return the result of the arithmetic operation
          * @throws InterpreterException in case the operation is invalid between the two items
          */
@@ -237,13 +251,23 @@ namespace velox {
         /**
          * Carries out an relational operation.
          *
-         * @param sc    the the context under this this operation is executed
-         * @param op    the relational operator
-         * @param item  the left-hand side of the operation
+         * @param sc            the the context under this this operation is executed
+         * @param op            the relational operator
+         * @param item          the left-hand side of the operation
+         * @param lineNumber    information about the location within the source code
          * @return the result of relational the operation
          * @throws InterpreterException in case the operation is invalid between the two items
          */
-        std::shared_ptr<Item> ExecuteRelationalOperator(ScriptContext &sc, RelationalOperator op, const Item& item) const;
+        std::shared_ptr<Item> ExecuteRelationalOperator(ScriptContext &sc, RelationalOperator op, const Item &item,
+                                                        unsigned int lineNumber) const;
+
+        /**
+         * Carries out a unary minus on this item.
+         *
+         * @return a new item representing the result of the operation
+         * @throws InterpreterException in case the operation is invalid for this item
+         */
+        std::shared_ptr<Item> ExecuteUnaryMinus() const;
 
         /**
          * Adds an sub-item to this item.
@@ -308,6 +332,33 @@ namespace velox {
          */
         bool IsUndefined() const {
             return GetType() == ItemType::Undefined;
+        }
+
+        /**
+         * Convenient function which returns whether this item is of type integer or real.
+         *
+         * @return `true` if this item is of type integer or real
+         */
+        bool IsNumber() const {
+            return GetType() == ItemType::Integer || GetType() == ItemType::Real;
+        }
+
+        /**
+         * Convenient function which returns whether this item is a floating-point type.
+         *
+         * @return `true` if this item is of type real
+         */
+        bool IsReal() const {
+            return GetType() == ItemType::Real;
+        }
+
+        /**
+         * Convenient function which returns whether this item is of type integer.
+         *
+         * @return `true` if this item is of type Integer
+         */
+        bool IsInteger() const {
+            return GetType() == ItemType::Integer;
         }
 
     private:

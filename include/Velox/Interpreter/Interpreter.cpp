@@ -6,15 +6,19 @@
 
 // Local includes
 #include "Interpreter.h"
+#include "InterpreterError.h"
 #include "Item.h"
 #include "ItemStateFunction.h"
 #include "InterpreterFunctionNoParameter.h"
 #include "InterpreterFunctionOneParameter.h"
 #include "InterpreterFunctionTwoParameter.h"
+#include "InterpreterFunctionThreeParameter.h"
 #include "Math/Random.h"
+#include "Math/MathUtils.h"
 
 // C++ Standard Library includes
 #include <cmath>
+#include <limits>
 
 using namespace std;
 using namespace astu;
@@ -34,8 +38,11 @@ namespace velox {
         if (superGlobals->HasItem(name)) {
             throw std::logic_error("Ambiguous function name '" + name + "'");
         }
-        auto item = Item::Create(make_unique<ItemStateFunction>(function));
-        superGlobals->AddItem(name, item);
+        superGlobals->AddItem(name, Item::CreateFunction(function));
+    }
+
+    void Interpreter::AddConstant(const string &name, double value) {
+        superGlobals->AddItem(name, Item::CreateReal(value));
     }
 
     void Interpreter::AddObjectType(const std::string &name, std::shared_ptr<ObjectType> objType) {
@@ -58,12 +65,17 @@ namespace velox {
 
     void Interpreter::AddStandardFunctions() {
 
+        AddConstant("PI", MathUtils::PId);
+        AddConstant("PI2", MathUtils::PI2d);
+        AddConstant("MAX_REAL", std::numeric_limits<double>::max());
+        AddConstant("MIN_REAL", std::numeric_limits<double>::lowest());
+
         AddFunction("real", make_shared<InterpreterFunctionOneParameter>(
                 [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     if (param->GetType() == ItemType::Real)
                         return param;
                     else
-                        return Item::CreateReal(param->GetRealValue());
+                        return Item::CreateReal(param->GetRealValue(lineNumber));
                 }));
 
         AddFunction("int", make_shared<InterpreterFunctionOneParameter>(
@@ -81,29 +93,99 @@ namespace velox {
 
         AddFunction("sqrt", make_shared<InterpreterFunctionOneParameter>(
                 [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
-                    return Item::CreateReal(std::sqrt(param->GetRealValue()));
+                    return Item::CreateReal(std::sqrt(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("log", make_shared<InterpreterFunctionOneParameter>(
                 [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
-                    return Item::CreateReal(std::log(param->GetRealValue()));
+                    return Item::CreateReal(std::log(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("sin", make_shared<InterpreterFunctionOneParameter>(
                 [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
-                    return Item::CreateReal(std::sin(param->GetRealValue()));
+                    return Item::CreateReal(std::sin(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("cos", make_shared<InterpreterFunctionOneParameter>(
                 [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
-                    return Item::CreateReal(std::cos(param->GetRealValue()));
+                    return Item::CreateReal(std::cos(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("tan", make_shared<InterpreterFunctionOneParameter>(
                 [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
-                    return Item::CreateReal(std::tan(param->GetRealValue()));
+                    return Item::CreateReal(std::tan(param->GetRealValue(lineNumber)));
                 }));
 
+        AddFunction("asin", make_shared<InterpreterFunctionOneParameter>(
+                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    return Item::CreateReal(std::asin(param->GetRealValue(lineNumber)));
+                }));
+
+        AddFunction("acos", make_shared<InterpreterFunctionOneParameter>(
+                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    return Item::CreateReal(std::acos(param->GetRealValue(lineNumber)));
+                }));
+
+        AddFunction("atan", make_shared<InterpreterFunctionOneParameter>(
+                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    return Item::CreateReal(std::atan(param->GetRealValue(lineNumber)));
+                }));
+
+        AddFunction("atan2", make_shared<InterpreterFunctionTwoParameter>(
+                [](shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    return Item::CreateReal(
+                            std::atan2(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber)));
+                }));
+
+        AddFunction("min", make_shared<InterpreterFunctionTwoParameter>(
+                [](shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    if (param1->IsReal() || param2->IsReal()){
+                        return Item::CreateReal(
+                                std::min(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber)));
+                    } else if (param1->IsInteger() && param2->IsInteger()) {
+                        return Item::CreateInteger(
+                                std::min(param1->GetIntegerValue(lineNumber), param2->GetIntegerValue(lineNumber)));
+                    }
+                    throw InterpreterError("min function not defined for these types", lineNumber);
+                }));
+
+        AddFunction("max", make_shared<InterpreterFunctionTwoParameter>(
+                [](shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    if (param1->IsReal() || param2->IsReal()){
+                        return Item::CreateReal(
+                                std::max(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber)));
+                    } else if (param1->IsInteger() && param2->IsInteger()) {
+                        return Item::CreateInteger(
+                                std::max(param1->GetIntegerValue(lineNumber), param2->GetIntegerValue(lineNumber)));
+                    }
+                    throw InterpreterError("max function not defined for these types", lineNumber);
+                }));
+
+        AddFunction("rad2deg", make_shared<InterpreterFunctionOneParameter>(
+                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    return Item::CreateReal(MathUtils::ToDegrees(param->GetRealValue(lineNumber)));
+                }));
+
+        AddFunction("deg2rad", make_shared<InterpreterFunctionOneParameter>(
+                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    return Item::CreateReal(MathUtils::ToRadians(param->GetRealValue(lineNumber)));
+                }));
+
+        AddFunction("clamp", make_shared<InterpreterFunctionThreeParameter>(
+                [](shared_ptr<Item> param1, shared_ptr<Item> param2, shared_ptr<Item> param3, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    if (param1->IsReal() || param2->IsReal() || param3->IsReal()) {
+
+                        return Item::CreateReal(MathUtils::Clamp(param1->GetRealValue(lineNumber),
+                                                                 param2->GetRealValue(lineNumber),
+                                                                 param3->GetRealValue(lineNumber)));
+                    }
+
+                    return Item::CreateInteger(MathUtils::Clamp(param1->GetIntegerValue(),
+                                                             param2->GetIntegerValue(),
+                                                             param3->GetIntegerValue()));
+
+                    return Item::CreateUndefined();
+                }));
     }
 
 }

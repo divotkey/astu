@@ -17,7 +17,7 @@ namespace velox {
 
         // Inherited via ItemState
         std::unique_ptr<ItemState> Copy() const override;
-        int GetIntegerValue() const override;
+        int GetIntegerValue(unsigned int lineNumber) const override;
         std::string GetStringValue(ScriptContext &sc) const override;
         const astu::Color4d & GetColorValue() const override;
         ItemType GetType() const override;

@@ -1,15 +1,15 @@
 #pragma once
 
 #include "InterpreterStatement.h"
-#include "InterpreterScriptFunction.h"
-#include "InterpreterSimpleName.h"
+#include "InterpreterFunctionScript.h"
+#include "InterpreterExpressionSimpleName.h"
 
 namespace velox {
 
     class InterpreterFunctionDefinition : public InterpreterStatement {
     public:
 
-        void SetFunction(std::shared_ptr<InterpreterScriptFunction> function);
+        void SetFunction(std::shared_ptr<InterpreterFunctionScript> function);
         void SetFunctionName(const std::string& name);
         const std::string& GetFunctionName() const;
 
@@ -21,7 +21,7 @@ namespace velox {
         void Prepare(ScriptContext &sc) override;
 
     private:
-        std::shared_ptr<InterpreterScriptFunction> function;
+        std::shared_ptr<InterpreterFunctionScript> function;
         std::string functionName;
     };
 

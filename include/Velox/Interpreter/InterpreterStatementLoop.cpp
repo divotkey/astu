@@ -5,17 +5,20 @@
 // of contributors.
 
 // Local includes
-#include "InterpreterStatementWhile.h"
+#include "InterpreterStatementLoop.h"
 #include "Item.h"
 
 namespace velox {
 
-    void InterpreterStatementWhile::Execute(ScriptContext &sc) {
+    InterpreterStatementLoop::InterpreterStatementLoop(unsigned int lineNumber) : InterpreterStatement(lineNumber) {
+        // Intentionally left empty.
+    }
+
+    void InterpreterStatementLoop::Execute(ScriptContext &sc) {
         sc.PushScope();
 
         sc.ClearFlag(ScriptContext::BREAK_EXECUTED_FLAG);
-        while (!sc.IsSet(ScriptContext::BREAK_EXECUTED_FLAG) && !sc.IsSet(ScriptContext::RETURN_EXECUTED_FLAG) &&
-               condition->Evaluate(sc)->GetBooleanValue())
+        while (!sc.IsSet(ScriptContext::BREAK_EXECUTED_FLAG) && !sc.IsSet(ScriptContext::RETURN_EXECUTED_FLAG))
         {
             sc.ClearFlag(ScriptContext::CONTINUE_EXECUTED_FLAG);
             loopBody->Execute(sc);
@@ -24,11 +27,7 @@ namespace velox {
         sc.PopScope();
     }
 
-    void InterpreterStatementWhile::SetCondition(std::shared_ptr<InterpreterExpression> inCondition) {
-        condition = inCondition;
-    }
-
-    void InterpreterStatementWhile::SetStatement(std::shared_ptr<InterpreterStatement> statement) {
+    void InterpreterStatementLoop::SetStatement(std::shared_ptr<InterpreterStatement> statement) {
         loopBody = statement;
     }
 

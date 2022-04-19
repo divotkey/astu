@@ -125,11 +125,16 @@ namespace velox {
         builder.AddKeyword("do", TOK2INT(TokenType::DO));
         builder.AddKeyword("loop", TOK2INT(TokenType::LOOP));
         builder.AddKeyword("exit", TOK2INT(TokenType::EXIT));
+        builder.AddKeyword("break", TOK2INT(TokenType::BREAK));
+        builder.AddKeyword("continue", TOK2INT(TokenType::CONTINUE));
         builder.AddKeyword("for", TOK2INT(TokenType::FOR));
         builder.AddKeyword("class", TOK2INT(TokenType::CLASS));
         builder.AddKeyword("new", TOK2INT(TokenType::NEW));
         builder.AddKeyword("global", TOK2INT(TokenType::GLOBAL));
         builder.AddKeyword("import", TOK2INT(TokenType::IMPORT));
+        builder.AddKeyword("true", TOK2INT(TokenType::TRUE));
+        builder.AddKeyword("false", TOK2INT(TokenType::FALSE));
+        builder.AddKeyword("undefined", TOK2INT(TokenType::UNDEFINED));
 
         return builder.Build();
     }
@@ -199,6 +204,12 @@ namespace velox {
                 return "BIN_AND";
             case TokenType::BIN_OR:
                 return "BIN_OR";
+            case TokenType::TRUE:
+                return "TRUE";
+            case TokenType::FALSE:
+                return "FALSE";
+            case TokenType::UNDEFINED:
+                return "UNDEFINED";
             case TokenType::ASSIGNMENT:
                 return "ASSIGNMENT";
             case TokenType::ASSIGN_ADD:
@@ -211,8 +222,6 @@ namespace velox {
                 return "ASSIGN_DIV";
             case TokenType::ASSIGN_MOD:
                 return "ASSIGN_MOD";
-            case TokenType::FALSE:
-                return "FALSE";
             case TokenType::IF:
                 return "IF";
             case TokenType::ELSE:
@@ -225,6 +234,10 @@ namespace velox {
                 return "LOOP";
             case TokenType::EXIT:
                 return "EXIT";
+            case TokenType::BREAK:
+                return "BREAK";
+            case TokenType::CONTINUE:
+                return "CONTINUE";
             case TokenType::FOR:
                 return "FOR";
             case TokenType::CLASS:

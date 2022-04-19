@@ -1,4 +1,5 @@
 #include "ItemStateReal.h"
+#include "Item.h"
 
 using namespace std;
 
@@ -8,11 +9,11 @@ namespace velox {
         return make_unique<ItemStateReal>(value);
     }
 
-    double ItemStateReal::GetRealValue() const {
+    double ItemStateReal::GetRealValue(unsigned int lineNumber) const {
         return value;
     }
 
-    int ItemStateReal::GetIntegerValue() const {
+    int ItemStateReal::GetIntegerValue(unsigned int lineNumber) const {
         return static_cast<int>(value);
     }
 
@@ -28,6 +29,11 @@ namespace velox {
         if (rhs.GetType() != ItemType::Real)
             return false;
 
-        value = rhs.GetRealValue();
+        value = rhs.GetRealValue(0);
         return true;
-    }}
+    }
+
+    shared_ptr<Item> ItemStateReal::ExecuteUnaryMinus() const {
+        return Item::CreateReal(-value);
+    }
+}
