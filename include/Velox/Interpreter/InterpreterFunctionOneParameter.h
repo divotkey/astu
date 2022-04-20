@@ -20,7 +20,9 @@ namespace velox {
     class InterpreterFunctionOneParameter : public velox::InterpreterFunction {
     public:
 
-        using Func = std::function<std::shared_ptr<Item>(std::shared_ptr<Item> param, unsigned int lineNumber)>;
+        using Func = std::function<std::shared_ptr<Item> (ScriptContext &sc,
+                                                          std::shared_ptr<Item> param,
+                                                          unsigned int lineNumber)>;
 
         /**
          * Convenient method creating a item of type function.

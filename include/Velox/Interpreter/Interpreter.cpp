@@ -71,7 +71,7 @@ namespace velox {
         AddConstant("MIN_REAL", std::numeric_limits<double>::lowest());
 
         AddFunction("real", make_shared<InterpreterFunctionOneParameter>(
-                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     if (param->GetType() == ItemType::Real)
                         return param;
                     else
@@ -79,7 +79,7 @@ namespace velox {
                 }));
 
         AddFunction("int", make_shared<InterpreterFunctionOneParameter>(
-                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     if (param->GetType() == ItemType::Integer)
                         return param;
                     else
@@ -92,53 +92,53 @@ namespace velox {
                 }));
 
         AddFunction("sqrt", make_shared<InterpreterFunctionOneParameter>(
-                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::sqrt(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("log", make_shared<InterpreterFunctionOneParameter>(
-                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::log(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("sin", make_shared<InterpreterFunctionOneParameter>(
-                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::sin(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("cos", make_shared<InterpreterFunctionOneParameter>(
-                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::cos(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("tan", make_shared<InterpreterFunctionOneParameter>(
-                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::tan(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("asin", make_shared<InterpreterFunctionOneParameter>(
-                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::asin(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("acos", make_shared<InterpreterFunctionOneParameter>(
-                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::acos(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("atan", make_shared<InterpreterFunctionOneParameter>(
-                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::atan(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("atan2", make_shared<InterpreterFunctionTwoParameter>(
-                [](shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(
                             std::atan2(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("min", make_shared<InterpreterFunctionTwoParameter>(
-                [](shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     if (param1->IsReal() || param2->IsReal()){
                         return Item::CreateReal(
                                 std::min(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber)));
@@ -150,7 +150,7 @@ namespace velox {
                 }));
 
         AddFunction("max", make_shared<InterpreterFunctionTwoParameter>(
-                [](shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     if (param1->IsReal() || param2->IsReal()){
                         return Item::CreateReal(
                                 std::max(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber)));
@@ -162,17 +162,17 @@ namespace velox {
                 }));
 
         AddFunction("rad2deg", make_shared<InterpreterFunctionOneParameter>(
-                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(MathUtils::ToDegrees(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("deg2rad", make_shared<InterpreterFunctionOneParameter>(
-                [](shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(MathUtils::ToRadians(param->GetRealValue(lineNumber)));
                 }));
 
         AddFunction("clamp", make_shared<InterpreterFunctionThreeParameter>(
-                [](shared_ptr<Item> param1, shared_ptr<Item> param2, shared_ptr<Item> param3, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, shared_ptr<Item> param3, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     if (param1->IsReal() || param2->IsReal() || param3->IsReal()) {
 
                         return Item::CreateReal(MathUtils::Clamp(param1->GetRealValue(lineNumber),

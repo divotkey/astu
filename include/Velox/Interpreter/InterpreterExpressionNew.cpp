@@ -5,7 +5,7 @@
 // of contributors.
 
 // Local includes
-#include "InterpreterNewStatement.h"
+#include "InterpreterExpressionNew.h"
 #include "InterpreterError.h"
 #include "ObjectType.h"
 #include "Item.h"
@@ -15,7 +15,7 @@
 
 namespace velox {
 
-    std::shared_ptr<Item> InterpreterNewStatement::Evaluate(ScriptContext &sc) {
+    std::shared_ptr<Item> InterpreterExpressionNew::Evaluate(ScriptContext &sc) {
         auto type = sc.FindObjectType(typeName);
         if (!type) {
             throw InterpreterError("Unknown object type '" + typeName + "'", GetLineNumber());
@@ -28,11 +28,11 @@ namespace velox {
         return result;
     }
 
-    void InterpreterNewStatement::SetConstructorCall(std::shared_ptr<InterpreterConstructorCall> call) {
+    void InterpreterExpressionNew::SetConstructorCall(std::shared_ptr<InterpreterConstructorCall> call) {
         constructorCall = call;
     }
 
-    void InterpreterNewStatement::SetTypeName(const std::string &name) {
+    void InterpreterExpressionNew::SetTypeName(const std::string &name) {
         typeName = name;
     }
 

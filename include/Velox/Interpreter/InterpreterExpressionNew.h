@@ -1,16 +1,23 @@
 #pragma once
 
+// Local includes
 #include "InterpreterExpression.h"
 #include "InterpreterConstructorCall.h"
 
+// C++ Standard Library includes
 #include <string>
 
 namespace velox {
 
-    class InterpreterNewStatement : public InterpreterExpression {
+    class InterpreterExpressionNew : public InterpreterExpression {
     public:
 
-        InterpreterNewStatement(unsigned int lineNumber) : InterpreterExpression(lineNumber) {}
+        /**
+         * Constructor.
+         *
+         * @param lineNumber    information about the position of this statement within the source code
+         */
+        InterpreterExpressionNew(unsigned int lineNumber) : InterpreterExpression(lineNumber) {}
 
         void SetTypeName(const std::string& name);
         void SetConstructorCall(std::shared_ptr<InterpreterConstructorCall> call);

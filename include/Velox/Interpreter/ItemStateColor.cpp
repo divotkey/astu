@@ -3,7 +3,6 @@
 #include "InterpreterFunction.h"
 #include "InterpreterError.h"
 #include "Item.h"
-#include "InterpreterFunctionOneParameter.h"
 #include "InterpreterFunctionTwoParameter.h"
 
 // C++ Standard Library includes.
@@ -109,7 +108,7 @@ namespace velox {
         AddItem("Saturate", Item::CreateFunction(make_shared<SaturateFunction>(value)));
 
         AddItem("Lerp", InterpreterFunctionTwoParameter::CreateItem(
-                [&rColor](std::shared_ptr<Item> param1, std::shared_ptr<Item> param2,
+                [&rColor](ScriptContext &sc, std::shared_ptr<Item> param1, std::shared_ptr<Item> param2,
                           unsigned int lineNumber) -> std::shared_ptr<Item> {
                     if (param1->GetType() != ItemType::Color) {
                         throw InterpreterError("first parameter for method 'Lerp' must be of type color", lineNumber);

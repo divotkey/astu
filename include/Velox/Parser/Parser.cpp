@@ -37,7 +37,7 @@
 #include "Velox/Interpreter/InterpreterStatementNop.h"
 #include "Velox/Interpreter/InterpreterClassDefinition.h"
 #include "Velox/Interpreter/InterpreterExpressionUnaryMinus.h"
-#include "Velox/Interpreter/InterpreterNewStatement.h"
+#include "Velox/Interpreter/InterpreterExpressionNew.h"
 
 // C++ Standard Library includes
 #include <algorithm>
@@ -832,7 +832,7 @@ namespace velox {
 
     std::shared_ptr<InterpreterExpression> Parser::ParseNewStatement(Source &source) {
         assert(source.GetCurrentTokenType() == TokenType::NEW);
-        auto result = make_shared<InterpreterNewStatement>(source.GetLineNumber());
+        auto result = make_shared<InterpreterExpressionNew>(source.GetLineNumber());
         source.GetNextTokenType();
 
         if (source.GetCurrentTokenType() != TokenType::IDENT) {

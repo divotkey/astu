@@ -22,7 +22,7 @@ namespace velox {
     }
 
     std::shared_ptr<Item> InterpreterFunctionOneParameter::DoEvaluate(ScriptContext &sc, unsigned int lineNumber) {
-        return func(sc.FindItem("a"), lineNumber);
+        return func(sc, sc.FindItem("a"), lineNumber);
     }
 
 }

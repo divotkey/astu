@@ -24,7 +24,7 @@ namespace velox {
     }
 
     shared_ptr<Item> InterpreterFunctionThreeParameter::DoEvaluate(ScriptContext &sc, unsigned int lineNumber) {
-        return func(sc.FindItem("a"), sc.FindItem("b"), sc.FindItem("c"), lineNumber);
+        return func(sc, sc.FindItem("a"), sc.FindItem("b"), sc.FindItem("c"), lineNumber);
     }
 
 }

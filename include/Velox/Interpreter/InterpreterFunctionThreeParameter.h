@@ -20,7 +20,8 @@ namespace velox {
     class InterpreterFunctionThreeParameter : public velox::InterpreterFunction {
     public:
 
-        using Func = std::function<std::shared_ptr<Item>(std::shared_ptr<Item> param1,
+        using Func = std::function<std::shared_ptr<Item>(ScriptContext & sc,
+                                                         std::shared_ptr<Item> param1,
                                                          std::shared_ptr<Item> param2,
                                                          std::shared_ptr<Item> param3,
                                                          unsigned int lineNumber)>;
