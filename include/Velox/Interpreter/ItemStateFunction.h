@@ -24,6 +24,7 @@ namespace velox {
 
         // Inherited via ItemState
         std::unique_ptr<ItemState> Copy() const override;
+        ItemType GetType() const override;
 
         std::shared_ptr<Item>
         CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, unsigned int lineNumber) override;

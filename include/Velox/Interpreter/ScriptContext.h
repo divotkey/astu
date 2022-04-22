@@ -55,6 +55,14 @@ namespace velox {
         bool HasItem(const std::string &name) const;
         std::shared_ptr<Item> FindItem(const std::string &name);
         void AddItem(const std::string& name, std::shared_ptr<Item> item);
+
+        /**
+         * Adds an anonymous item to this scope.
+         *
+         * @param item  the item to add
+         */
+        void AddItem(std::shared_ptr<Item> item);
+
         Item& GetItem(const std::string &name);
         const Item& GetItem(const std::string &name) const;
         std::shared_ptr<const Item> FindItem(const std::string &name) const;

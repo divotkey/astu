@@ -314,10 +314,10 @@ namespace astu {
     void ScannerBuilder::BuildErrorMessages() {
         assert(errorMessageIndexes.empty());
 
-        errorMessageIndexes[STRING_LITERAL_NOT_CLOSED] = scanner->AddErrorMessage("String literal not closed");
-        errorMessageIndexes[ILLEGAL_ESCAPE_SEQUENCE] = scanner->AddErrorMessage("Illegal escape sequence");
-        errorMessageIndexes[BLOCK_COMMENT_NOT_CLOSED] = scanner->AddErrorMessage("Block comment not closed");
-        errorMessageIndexes[INVALID_CHARACTER_DETECTED] = scanner->AddErrorMessage("Invalid character");
+        errorMessageIndexes[STRING_LITERAL_NOT_CLOSED] = scanner->AddErrorMessage("string literal not closed");
+        errorMessageIndexes[ILLEGAL_ESCAPE_SEQUENCE] = scanner->AddErrorMessage("illegal escape sequence");
+        errorMessageIndexes[BLOCK_COMMENT_NOT_CLOSED] = scanner->AddErrorMessage("block comment not closed");
+        errorMessageIndexes[INVALID_CHARACTER_DETECTED] = scanner->AddErrorMessage("invalid character");
     }
 
     void ScannerBuilder::BuildStartState() {

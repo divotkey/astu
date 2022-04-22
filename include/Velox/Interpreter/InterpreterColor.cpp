@@ -14,12 +14,16 @@ using namespace astu;
 namespace velox {
 
     shared_ptr<Item> InterpreterColor::Evaluate(ScriptContext &sc) {
-        double r = red->Evaluate(sc)->GetRealValue(GetLineNumber());
-        double g = green->Evaluate(sc)->GetRealValue(GetLineNumber());
-        double b = blue->Evaluate(sc)->GetRealValue(GetLineNumber());
-        double a = alpha ? alpha->Evaluate(sc)->GetRealValue(GetLineNumber()) : 1.0;
+        if(!green || !blue) {
+            return Item::CreateColor(Color4d(red->Evaluate(sc)->GetIntegerValue()));
+        } else {
+            double r = red->Evaluate(sc)->GetRealValue(GetLineNumber());
+            double g = green->Evaluate(sc)->GetRealValue(GetLineNumber());
+            double b = blue->Evaluate(sc)->GetRealValue(GetLineNumber());
+            double a = alpha ? alpha->Evaluate(sc)->GetRealValue(GetLineNumber()) : 1.0;
+            return Item::CreateColor(Color4d(r, g, b, a));
+        }
 
-        return Item::CreateColor(Color4d(r, g, b, a));
     }
 
     void InterpreterColor::SetRedExpression(std::shared_ptr<InterpreterExpression> inRed) {

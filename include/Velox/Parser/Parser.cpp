@@ -875,16 +875,19 @@ namespace velox {
 
         auto result = make_shared<InterpreterColor>();
         result->SetRedExpression(ParseSimpleExpression(source));
-        ParseComma(source);
-        result->SetGreenExpression(ParseSimpleExpression(source));
-        ParseComma(source);
-        result->SetBlueExpression(ParseSimpleExpression(source));
         if (source.GetCurrentTokenType() == TokenType::COMMA) {
-            source.GetNextTokenType();
-            result->SetAlphaExpression(ParseSimpleExpression(source));
+            ParseComma(source);
+            result->SetGreenExpression(ParseSimpleExpression(source));
+            ParseComma(source);
+            result->SetBlueExpression(ParseSimpleExpression(source));
+            if (source.GetCurrentTokenType() == TokenType::COMMA) {
+                source.GetNextTokenType();
+                result->SetAlphaExpression(ParseSimpleExpression(source));
+            }
         }
+
         if (source.GetCurrentTokenType() != TokenType::BIN_OR) {
-            throw ParserError("'|' expected", source.GetLineNumber());
+            throw ParserError("'|' expected, got " + source.GetTokenTypeAsString(), source.GetLineNumber());
         }
         source.GetNextTokenType();
 

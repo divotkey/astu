@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Tue Apr 19 07:45:32 CEST 2022 with SWORD Interpreter 1.9.1
+# Generated Thu Apr 21 06:30:35 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -306,6 +306,7 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterStatementWhile.h 
 	include/Velox/Interpreter/Item.cpp 
 	include/Velox/Interpreter/Item.h 
+	include/Velox/Interpreter/ItemArithmeticOperator.cpp 
 	include/Velox/Interpreter/ItemState.cpp 
 	include/Velox/Interpreter/ItemState.h 
 	include/Velox/Interpreter/ItemStateBool.cpp 

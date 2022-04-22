@@ -8,6 +8,7 @@
 
 // Local includes
 #include "Interpreter.h"
+#include "InterpreterError.h"
 #include "ScriptContext.h"
 #include "Operators.h"
 #include "InterpreterActualParameterList.h"
@@ -384,8 +385,6 @@ namespace velox {
          */
         Item(std::unique_ptr<ItemState> state) : state(std::move(state)) {}
 
-        int ExecuteIntegerArithmetic(int a, int b, ArithmeticOperator op) const;
-        double ExecuteRealArithmetic(double a, double b, ArithmeticOperator op) const;
         bool ExecuteIntegerRelational(int a, int b, RelationalOperator op) const;
         bool ExecuteRealRelational(double a, double b, RelationalOperator op) const;
         bool ExecuteStringRelational(const std::string &a, const std::string &b, RelationalOperator op) const;

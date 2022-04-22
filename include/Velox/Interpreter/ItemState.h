@@ -182,7 +182,7 @@ namespace velox {
          *
          * @return the item type.
          */
-        virtual ItemType GetType() const;
+        virtual ItemType GetType() const = 0;
 
     protected:
 

@@ -1,4 +1,4 @@
-// Sword-Script: Arithmetic-Operator-Result Table (Compact-mode)
+// Sword-Script: Arithmetic-Operator
 // Copyright 2022 Roman Divotkey. All rights reserved.
 
 types = 
@@ -6,196 +6,95 @@ types =
 	, "Integer"
 	, "Real"
 	, "Boolean"
+	, "Color3"
+	, "Color4"
+	, "Vector2"
+	, "Vector3"
+	, "Matrix3"
+	, "Matrix4"
+	, "Quaternion"
 	, "String"
 	, "Other"
 	];
 
 
 EmitHeader();
-EmitRows();
+EmitSwitchStatement();
 EmitFooter();
 
+function EmitSwitchStatement() {
 
-function EmitRows() {
-	for (i = 0; i < types.length; ++i) {
-		EmitRowCompact(types[i], i >= types.length);
-	}
-}
-
-
-function EmitRowCompact(type1, lastRow) {
-	indent(1);
-
-	§::§
-	§:
-		// First type '§{type1}'
-	:§
-
-	s = "{";
-	for (i = 0; i < types.length; ++i) {
-		s += "{" + GetType(type1, types[i]) + "}, ";
-
-	}
-
-	s += "}, ";
-
-	§:
-		§{s}
-	:§
-	
-
-	indent(-1);
-}
-
-function EmitRow(type1, lastRow) {
 	indent(1);
 	§:
-	:§
-	§:
-		// First type '§{type1}'
-		{
+		switch(GetType()) {
 	:§
 
-	for (i = 0; i < types.length; ++i) {
-		s = GetType(type1, types[i]);
-		if (i < types.length - 1)
-			s += ","; 
-
+	for (j = 0; j < types.length; ++j) {
 		§:
-				// Second type '§{types[i]}'
-				§{s}
+
+			case ItemType::§{types[j]}:
 		:§
 
-		if (i < types.length - 1) {
+		indent(1);
+		§:
+			switch(item->GetType()) {
+		:§
+		for (i = 0; i < types.length; ++i) {
 			§:
+	
+				case ItemType::§{types[i]}:
+					break;
 			:§
 		}
-			
+
+		§:
+
+			default:
+      	throw InterpreterError("arithmetic operation between this two types is undefined", lineNumber);
+			}
+			break;
+		:§
+		indent(-1);
 	}
 
-	if (lastRow) {
-		§:
-			}
-		:§
-	}
-	else {
-		§:
-			}, 
-		:§
-	}
+	§:
+
+		default:
+			throw InterpreterError("arithmetic operation between this two types is undefined", lineNumber);
+
+		}	// end of main-switch
+	:§
 	indent(-1);
 }
 
-function GetType(type1, type2) {
-	switch (type1) {
-		case "Undefined":
-			return "ItemType::Undefined";
+function EmitHeader() {
+	§:
+		namespace velox {
 
-		case "Integer":
-			switch (type2) {
-				case "Undefined":
-					return "ItemType::Undefined";
+	:§
 
-				case "Integer":
-					return "ItemType::Integer";
-
-				case "Real":
-					return "ItemType::Real";
-
-				case "Boolean":
-					return "ItemType::Undefined";
-
-				case "String":
-					return "ItemType::String";
-
-				case "Other":
-					return "ItemType::Undefined";
-			}
-
-		case "Real":
-			switch (type2) {
-				case "Undefined":
-					return "ItemType::Undefined";
-
-				case "Integer":
-					return "ItemType::Real";
-
-				case "Real":
-					return "ItemType::Real";
-
-				case "Boolean":
-					return "ItemType::Undefined";
-
-				case "String":
-					return "ItemType::String";
-
-				case "Other":
-					return "ItemType::Undefined";
-			}
-
-		case "Boolean":
-			switch (type2) {
-				case "Undefined":
-					return "ItemType::Undefined";
-
-				case "Integer":
-					return "ItemType::Undefined";
-
-				case "Real":
-					return "ItemType::Undefined";
-
-				case "Boolean":
-					return "ItemType::Undefined";
-
-				case "String":
-					return "ItemType::String";
-
-				case "Other":
-					return "ItemType::Undefined";
-			}
-
-		case "String":
-			switch (type2) {
-				case "Undefined":
-					return "ItemType::String";
-
-				case "Integer":
-					return "ItemType::String";
-
-				case "Real":
-					return "ItemType::String";
-
-				case "Boolean":
-					return "ItemType::String";
-
-				case "String":
-					return "ItemType::String";
-
-				case "Other":
-					return "ItemType::String";
-			}
-
-		case "Other":
-			return "ItemType::Undefined";
-	}
-
-	return "???";
-}
-
-function EmitHeader(varName) {
-	if (varName == undefined)
-		varName = "arithmeticResult";
+	indent(1);
 
 	§:
-		const ItemType Item::§{varName}[§{types.length}][§{types.length}] = {
+    std::shared_ptr<Item>
+    Item::ExecuteArithmeticOperator(ScriptContext &sc, 
+                                    ArithmeticOperator op, 
+                                    std::shared_ptr<Item> item,
+                                    unsigned int lineNumber) const
+    {
 	:§
 }
 
 function EmitFooter() {
 	§:
-		};
+
+		} // end of method
+	:§
+
+	indent(-1);
+	§:
+
+		} // end of namespace
 	:§
 }
-
-
 

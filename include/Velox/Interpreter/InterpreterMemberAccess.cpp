@@ -9,7 +9,12 @@ namespace velox {
 
     shared_ptr<Item> InterpreterMemberAccess::Evaluate(ScriptContext &sc) {
         auto leftItem = leftHandSide->Evaluate(sc);
+
+        // Make sure item stays alive after evaluation of this member access; required for temporary objects
+        sc.AddItem(leftItem);
+
         auto result = leftItem->FindItem(name);
+
         if (!result) {
             if (!IsLocation()) {
                 throw InterpreterError("Unknown field '" + name + "'", GetLineNumber());

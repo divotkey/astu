@@ -465,6 +465,16 @@ namespace astu {
         }
 
         /**
+         * Binary division operator for a color and a scalar value.
+         *
+         * @param s the right-hand side scalar value
+         * @return a new color representing the result of the operation
+         */
+        Color<T> operator/(T s) const {
+            return Color(r / s, g / s, b / s, a / s);
+        }
+
+        /**
          * Compound assignment and multiplication operator for a color and a scalar value.
          *
          * @param s the right-hand side scalar value
@@ -503,16 +513,6 @@ namespace astu {
         }
 
         /**
-         * Binary division operator for a color and a scalar value.
-         *
-         * @param s the right-hand side scalar value
-         * @return a new color representing the result of the operation
-         */
-        Color<T> operator/(T s) const {
-            return Color(r / s, g / s, b / s, a / s);
-        }
-
-        /**
          * Compound assignment and division operator for a color and a scalar value.
          *
          * @param s the right-hand side scalar value
@@ -524,7 +524,31 @@ namespace astu {
             b /= s;
             a /= s;
             return *this;
-        }    
+        }
+
+        /**
+         * Binary division operator for two colors.
+         *
+         * @param rhs the right-hand color value
+         * @return a new color representing the result of the operation
+         */
+        Color<T> operator/(const Color<T> &rhs) const {
+            return Color(r / rhs.r, g / rhs.g, b / rhs.b, a / rhs.a);
+        }
+
+        /**
+         * Compound assignment and division operator for two colors.
+         *
+         * @param rhs the right-hand color value
+         * @return a reference to this color
+         */
+        Color<T> & operator/=(const Color<T> &rhs) {
+            r /= rhs.r;
+            g /= rhs.g;
+            b /= rhs.b;
+            a /= rhs.a;
+            return *this;
+        }
 
         /**
          * Binary equality operator comparing two colors.
@@ -600,6 +624,18 @@ namespace astu {
 	inline const Color<T> operator*(T s, const Color<T> & c) {
 		return c * s;
 	}
+
+    /**
+     * Binary division operator for a scalar value and a color.
+     *
+     * @param s the left-hand side scalar value
+     * @param c the right-hand color
+     * @return a new color representing the result of the operation
+     */
+    template <typename T>
+    inline const Color<T> operator/(T s, const Color<T> & c) {
+        return Color(s / c.r, s / c.g, s / c.b, s / c.a);
+    }
 
     using Color4f = Color<float>;
     using Color4d = Color<double>;

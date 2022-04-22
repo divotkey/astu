@@ -49,10 +49,6 @@ namespace velox {
         throw InterpreterError("color value expected");
     }
 
-    ItemType ItemState::GetType() const {
-        return ItemType::Other;
-    }
-
     void *ItemState::operator new(size_t count) {
         return gMemoryManager->Allocate(count);
     }

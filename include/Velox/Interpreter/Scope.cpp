@@ -8,6 +8,10 @@ using namespace std;
 
 namespace velox {
 
+    void Scope::AddItem(std::shared_ptr<Item> item) {
+        anonymousItems.push_back(item);
+    }
+
     void Scope::AddItem(const string &name, std::shared_ptr<Item> item) {
         assert(!HasItem(name));
         items[name] = item;
@@ -37,6 +41,9 @@ namespace velox {
 
     void Scope::Clear() {
         items.clear();
+        anonymousItems.clear();
     }
+
+
 
 }

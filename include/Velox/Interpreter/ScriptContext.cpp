@@ -98,6 +98,10 @@ namespace velox {
         scopes.front()->AddItem(name, item);
     }
 
+    void ScriptContext::AddItem(std::shared_ptr<Item> item) {
+        scopes.front()->AddItem(item);
+    }
+
     void ScriptContext::Clear() {
         scopes.clear();
         returnValueStack.clear();
@@ -163,5 +167,7 @@ namespace velox {
     void ScriptContext::AddGlobalItem(const std::string &name, std::shared_ptr<Item> item) {
         scopes.back()->AddItem(name, item);
     }
+
+
 
 }

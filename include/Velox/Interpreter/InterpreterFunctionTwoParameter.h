@@ -35,6 +35,7 @@ namespace velox {
 
         /**
          * Constructor
+         *
          * @param func  the actual function which requires one parameter
          */
         InterpreterFunctionTwoParameter(Func func);

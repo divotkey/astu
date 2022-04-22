@@ -18,7 +18,7 @@ namespace velox {
     {
         // Actual parameters must be less or equal to formal parameters.
         if (formalParameters.size() < actualParameters.NumParameters()) {
-            throw InterpreterError(string("Function call with to many parameters (expected ") +
+            throw InterpreterError(string("function call with to many parameters (expected ") +
                                    std::to_string(formalParameters.size()) + " but got " +
                                    to_string(actualParameters.NumParameters()) + ")", lineNumber);
         }

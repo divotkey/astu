@@ -20,6 +20,14 @@ namespace velox {
         using Func = std::function<std::shared_ptr<Item>(unsigned int lineNumber)>;
 
         /**
+         * Convenient method creating a item of type function.
+         *
+         * @param func  the two-parameter function
+         * @return the newly created item
+         */
+        static std::shared_ptr<Item> CreateItem(Func func);
+
+        /**
          * Constructor
          * @param func  the actual function which requires one parameter
          */

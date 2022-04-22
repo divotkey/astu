@@ -6,16 +6,13 @@
 
 #include "Item.h"
 #include "ItemStateInteger.h"
-#include "ItemStateReal.h"
 #include "ItemStateBool.h"
-#include "ItemStateString.h"
 #include "ItemStateReference.h"
 #include "InterpreterError.h"
 #include "IMemoryManager.h"
 
 // C++ Standard Library
 #include <cassert>
-#include <cmath>
 
 using namespace std;
 
@@ -25,25 +22,6 @@ namespace velox {
 
     const string Item::arithmeticOperatorName[] = {"operator+", "operator-", "operator*", "operator/", "operator%"};
 
-    const ItemType Item::arithmeticResult[6][6] = {
-            // First type 'Undefined'
-            {{ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined},},
-
-            // First type 'Integer'
-            {{ItemType::Undefined}, {ItemType::Integer},   {ItemType::Real},      {ItemType::Undefined}, {ItemType::String},    {ItemType::Undefined},},
-
-            // First type 'Real'
-            {{ItemType::Undefined}, {ItemType::Real},      {ItemType::Real},      {ItemType::Undefined}, {ItemType::String},    {ItemType::Undefined},},
-
-            // First type 'Boolean'
-            {{ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::String},    {ItemType::Undefined},},
-
-            // First type 'String'
-            {{ItemType::String},    {ItemType::String},    {ItemType::String},    {ItemType::String},    {ItemType::String},    {ItemType::String},},
-
-            // First type 'Other'
-            {{ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined}, {ItemType::Undefined},},
-    };
 
     const ItemType Item::relationalType[6][6] = {
             // First type 'Undefined'
@@ -143,56 +121,51 @@ namespace velox {
         return state->ExecuteUnaryMinus();
     }
 
-    std::shared_ptr<Item>
-    Item::ExecuteArithmeticOperator(ScriptContext &sc, ArithmeticOperator op, std::shared_ptr<Item> item,
-                                    unsigned int lineNumber) const {
-
-        // Look for custom operation function within this item for overloaded operators.
-        auto opFunc = state->FindItem(arithmeticOperatorName[static_cast<int>(op)]);
-        if (opFunc) {
-            InterpreterItemParameterList params;
-            params.AddParameter(item);
-            return opFunc->CallAsFunction(sc, params, lineNumber);
-        }
-
-        // Get result type.
-        ItemType resultType = arithmeticResult[TYPE_INDEX(*this)][TYPE_INDEX(*item)];
-
-        switch (resultType) {
-            case ItemType::Undefined:
-                // fall through
-
-            case ItemType::Other:
-                throw InterpreterError("Undefined arithmetic operator between this types");
-
-            case ItemType::Integer:
-                return Item::Create(
-                        std::make_unique<ItemStateInteger>(
-                                ExecuteIntegerArithmetic(state->GetIntegerValue(lineNumber),
-                                                         item->state->GetIntegerValue(lineNumber), op)));
-
-            case ItemType::Real:
-                return Item::Create(
-                        make_unique<ItemStateReal>(
-                                ExecuteRealArithmetic(state->GetRealValue(lineNumber),
-                                                      item->state->GetRealValue(lineNumber), op)));
-
-            case ItemType::Boolean:
-                throw runtime_error(
-                        "internal interpreter error: the result of an arithmetic operation "
-                        "should never be of type boolean");
-
-            case ItemType::String:
-                if (op != ArithmeticOperator::ADD) {
-                    throw InterpreterError("Operation not supported for strings.");
-                }
-                return Item::Create(make_unique<ItemStateString>(state->GetStringValue(sc) + item->state->GetStringValue(
-                        sc)));
-
-            default:
-                throw runtime_error("undefined result type for arithmetic operation");
-        }
-    }
+    //std::shared_ptr<Item>
+    //Item::ExecuteArithmeticOperator(ScriptContext &sc,
+    //                                ArithmeticOperator op,
+    //                                std::shared_ptr<Item> item,
+    //                                unsigned int lineNumber) const
+    //{
+    //
+    //    // Get result type.
+    //    ItemType resultType = arithmeticResult[TYPE_INDEX(*this)][TYPE_INDEX(*item)];
+    //
+    //    switch (resultType) {
+    //        case ItemType::Undefined:
+    //            // fall through
+    //
+    //        case ItemType::Other:
+    //            throw InterpreterError("Undefined arithmetic operator between this types");
+    //
+    //        case ItemType::Integer:
+    //            return Item::Create(
+    //                    std::make_unique<ItemStateInteger>(
+    //                            ExecuteIntegerArithmetic(state->GetIntegerValue(lineNumber),
+    //                                                     item->state->GetIntegerValue(lineNumber), op)));
+    //
+    //        case ItemType::Real:
+    //            return Item::Create(
+    //                    make_unique<ItemStateReal>(
+    //                            ExecuteRealArithmetic(state->GetRealValue(lineNumber),
+    //                                                  item->state->GetRealValue(lineNumber), op)));
+    //
+    //        case ItemType::Boolean:
+    //            throw runtime_error(
+    //                    "internal interpreter error: the result of an arithmetic operation "
+    //                    "should never be of type boolean");
+    //
+    //        case ItemType::String:
+    //            if (op != ArithmeticOperator::ADD) {
+    //                throw InterpreterError("Operation not supported for strings.");
+    //            }
+    //            return Item::Create(make_unique<ItemStateString>(state->GetStringValue(sc) + item->state->GetStringValue(
+    //                    sc)));
+    //
+    //        default:
+    //            throw runtime_error("undefined result type for arithmetic operation");
+    //    }
+    //}
 
     std::shared_ptr<Item> Item::ExecuteRelationalOperator(ScriptContext &sc, RelationalOperator op, const Item &item,
                                                           unsigned int lineNumber) const {
@@ -227,42 +200,6 @@ namespace velox {
 
             default:
                 throw runtime_error("Internal interpreter error: implementation of relational operator is flawed.");
-        }
-    }
-
-    int Item::ExecuteIntegerArithmetic(int a, int b, ArithmeticOperator op) const {
-        switch (op) {
-            case ArithmeticOperator::ADD:
-                return a + b;
-            case ArithmeticOperator::SUB:
-                return a - b;
-            case ArithmeticOperator::MUL:
-                return a * b;
-            case ArithmeticOperator::DIV:
-                return a / b;
-            case ArithmeticOperator::MOD:
-                return a % b;
-
-            default:
-                throw InterpreterError("Unknown arithmetic operator");
-        }
-    }
-
-    double Item::ExecuteRealArithmetic(double a, double b, ArithmeticOperator op) const {
-        switch (op) {
-            case ArithmeticOperator::ADD:
-                return a + b;
-            case ArithmeticOperator::SUB:
-                return a - b;
-            case ArithmeticOperator::MUL:
-                return a * b;
-            case ArithmeticOperator::DIV:
-                return a / b;
-            case ArithmeticOperator::MOD:
-                return std::fmod(a, b);
-
-            default:
-                throw InterpreterError("Unknown arithmetic operator");
         }
     }
 

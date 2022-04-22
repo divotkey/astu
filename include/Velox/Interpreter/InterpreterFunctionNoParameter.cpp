@@ -6,18 +6,24 @@
 
 // Local includes
 #include "InterpreterFunctionNoParameter.h"
+#include "Item.h"
 
 using namespace std;
 
 namespace velox {
+
+    shared_ptr<Item> InterpreterFunctionNoParameter::CreateItem(InterpreterFunctionNoParameter::Func func) {
+        return Item::CreateFunction(make_shared<InterpreterFunctionNoParameter>(func));
+    }
 
     InterpreterFunctionNoParameter::InterpreterFunctionNoParameter(Func func) : func(func)
     {
         // Intentionally left empty.
     }
 
-    std::shared_ptr<Item> InterpreterFunctionNoParameter::DoEvaluate(ScriptContext &sc, unsigned int lineNumber) {
+    shared_ptr<Item> InterpreterFunctionNoParameter::DoEvaluate(ScriptContext &sc, unsigned int lineNumber) {
         return func(lineNumber);
     }
+
 
 }

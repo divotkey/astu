@@ -23,4 +23,8 @@ namespace velox {
         return function->Evaluate(sc, parameters, lineNumber);
     }
 
+    ItemType ItemStateFunction::GetType() const {
+        return ItemType::Other;
+    }
+
 }
