@@ -103,16 +103,16 @@ namespace astu {
             }
 
             if (c.r == max) {
-                // Between Yellow and  Magenta.
-                this->h = (c.g - c.b ) / delta;       
+                // Between Yellow and Magenta.
+                this->h = (c.g - c.b ) / delta;
             }
             else if(c.g == max ) {
                 // Between Cyan and Yellow.
-                this->h = 2 + (c.b - c.r) / delta;   
+                this->h = 2 + (c.b - c.r) / delta;
             }
             else {
                 // Between Magenta and Cyan
-                this->h = 4.0 + (c.r - c.g) / delta;   
+                this->h = 4.0 + (c.r - c.g) / delta;
             }
 
             // Make Degrees.

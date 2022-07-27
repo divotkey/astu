@@ -19,7 +19,9 @@
 #include "ItemStateReal.h"
 #include "ItemStateString.h"
 #include "ItemStateBool.h"
+#include "ItemStateList.h"
 #include "ItemStateColor.h"
+#include "ItemStateVector2.h"
 #include "ItemStateFunction.h"
 #include "ItemStateReference.h"
 
@@ -139,6 +141,15 @@ namespace velox {
         }
 
         /**
+         * Creates a new instance of an item of type "list".
+         *
+         * @return the newly created item
+         */
+        static std::shared_ptr<Item> CreateList() {
+            return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateList>()));
+        }
+
+        /**
          * Creates a new instance of an item of type "color".
          *
          * @param value the initial color value
@@ -146,6 +157,16 @@ namespace velox {
          */
         static std::shared_ptr<Item> CreateColor(const astu::Color4d &value) {
             return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateColor>(value)));
+        }
+
+        /**
+         * Creates a new instance of an item of type "vector2".
+         *
+         * @param value the initial color value
+         * @return the newly created item
+         */
+        static std::shared_ptr<Item> CreateVector2(const astu::Vector2d &value) {
+            return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateVector2>(value)));
         }
 
         /**
@@ -236,6 +257,15 @@ namespace velox {
         const astu::Color4d & GetColorValue() const;
 
         /**
+         * Tries to get a Vector2 value from this item.
+         *
+         * @param sc    the script context under witch to execute this operation
+         * @return the extracted string value
+         * @throws InterpreterException in case this item cannot interpreted as vector value
+         */
+        const astu::Vector2d & GetVector2Value() const;
+
+        /**
          * Carries out an arithmetic operation.
          *
          * @param sc            the the context under this this operation is executed
@@ -259,7 +289,9 @@ namespace velox {
          * @return the result of relational the operation
          * @throws InterpreterException in case the operation is invalid between the two items
          */
-        std::shared_ptr<Item> ExecuteRelationalOperator(ScriptContext &sc, RelationalOperator op, const Item &item,
+        std::shared_ptr<Item> ExecuteRelationalOperator(ScriptContext &sc,
+                                                        RelationalOperator op,
+                                                        std::shared_ptr<Item> item,
                                                         unsigned int lineNumber) const;
 
         /**
@@ -287,14 +319,6 @@ namespace velox {
         std::shared_ptr<Item> FindItem(const std::string& name) const;
 
         /**
-         * Returns whether a sub-item with the specified name exists.
-         *
-         * @param name  the name of the sub-item
-         * @return `true` if ths sub-item exists
-         */
-        bool HasItem(const std::string& name) const;
-
-        /**
          * Returns the actual item.
          *
          * Items which are not in the reference state will return a `nullptr`, reference states will return
@@ -319,11 +343,69 @@ namespace velox {
          */
         std::shared_ptr<ItemData> GetData();
 
+        /**
+         * Retrieves a sub-item with the specified name.
+         *
+         * @param name  the name of the sub-item
+         * @return the requested item
+         * @throws in case no sub-item with the specified name exists
+         */
         Item &GetItem(const std::string& name);
+
+        /**
+         * Retrieves a sub-item with the specified name.
+         *
+         * @param name  the name of the sub-item
+         * @return the requested item
+         * @throws in case no sub-item with the specified name exists
+         */
         const Item &GetItem(const std::string& name) const;
+
+        /**
+         * Retrieves a list element from this item (assuming that this item is of type list).
+         *
+         * @param idx           the index of the list element
+         * @param lineNumber    the line number of this function call in case of an error
+         * @return the requested list element
+         * @throws InterpreterError in case this state has no list elements or the index is invalid
+         */
+        std::shared_ptr<Item> GetListElement(size_t idx, unsigned int lineNumber);
+
+        /**
+         * Append a list element to this item as last element.
+         *
+         * @param elem          the list element to append
+         * @param lineNumber    the line number of this call in case of an error
+         */
+        void AppendListElement(std::shared_ptr<Item> elem);
+
+        /**
+         * Returns whether a sub-item with the specified name exists.
+         *
+         * @param name  the name of the sub-item
+         * @return `true` if ths sub-item exists
+         */
+        bool HasItem(const std::string& name) const;
+
+        /**
+         * Adds all sub-items of this item to the specified scope
+         *
+         * @param sc    the script context used to access the scope
+         */
         void AddItemsToScope(ScriptContext &sc) const;
+
+        /**
+         * Returns the parent item of this item
+         *
+         * @return  the parent item of `nullptr` if this item has no parent
+         */
         std::shared_ptr<Item> GetParent();
 
+        /**
+         * Returns the type of this item.
+         *
+         * @return  the this item's type
+         */
         ItemType GetType() const;
 
         /**
@@ -362,6 +444,22 @@ namespace velox {
             return GetType() == ItemType::Integer;
         }
 
+        /**
+         * Convenient function which returns whether this item is of type other.
+         *
+         * @return `true` if this item is of type other
+         */
+        bool IsOther() const {
+            return GetType() == ItemType::Other;
+        }
+
+        /**
+         * Returns whether this item is referencing another item.
+         *
+         * @return `true` if this item is a reference
+         */
+        bool IsReference() const;
+
     private:
         /** Lookup table for arithmetic results of items according to their types. */
         static const ItemType arithmeticResult[6][6];
@@ -369,8 +467,11 @@ namespace velox {
         /** Lookup table defining the type for relational operations. */
         static const ItemType relationalType[6][6];
 
-        /** Lookup table defining the type for relational operations. */
+        /** Lookup table defining the type for arithmetic operations. */
         static const std::string arithmeticOperatorName[];
+
+        /** Lookup table defining the type for relational operations. */
+        static const std::string relationalOperatorName[];
 
         /** The internal state of this item. */
         std::unique_ptr<ItemState> state;
@@ -384,10 +485,6 @@ namespace velox {
          * @param state the initial state of this item
          */
         Item(std::unique_ptr<ItemState> state) : state(std::move(state)) {}
-
-        bool ExecuteIntegerRelational(int a, int b, RelationalOperator op) const;
-        bool ExecuteRealRelational(double a, double b, RelationalOperator op) const;
-        bool ExecuteStringRelational(const std::string &a, const std::string &b, RelationalOperator op) const;
 
         friend class ItemState;
         friend class ItemStateReference;

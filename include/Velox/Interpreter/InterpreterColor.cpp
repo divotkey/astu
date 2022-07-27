@@ -28,18 +28,22 @@ namespace velox {
 
     void InterpreterColor::SetRedExpression(std::shared_ptr<InterpreterExpression> inRed) {
         red = inRed;
+        red->SetLocation(false);
     }
 
     void InterpreterColor::SetGreenExpression(std::shared_ptr<InterpreterExpression> inGreen) {
         green = inGreen;
+        green->SetLocation(false);
     }
 
     void InterpreterColor::SetBlueExpression(std::shared_ptr<InterpreterExpression> inBlue) {
         blue = inBlue;
+        blue->SetLocation(false);
     }
 
     void InterpreterColor::SetAlphaExpression(std::shared_ptr<InterpreterExpression> inAlpha) {
         alpha = inAlpha;
+        alpha->SetLocation(false);
     }
 
 }

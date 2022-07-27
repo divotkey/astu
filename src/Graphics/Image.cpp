@@ -134,4 +134,71 @@ namespace astu {
         return s;
     }
 
+    void Image::Clear(const Color4d &c) {
+        for (auto &pixel : data) {
+            pixel = c;
+        }
+    }
+
+    void Image::Blend(const Image &source, int sx, int sy, int sw, int sh, int dx, int dy) {
+        for (int j = 0; j < sh; ++j) {
+            for (int i = 0; i < sw; ++i) {
+                size_t dIdx = width * (dy + j) + dx + i;
+                ValidateIndex(dIdx);
+                size_t sIdx = source.width * (sy + j) + sx + i;
+                source.ValidateIndex(sIdx);
+                data[dIdx].Blend(source.data[sIdx]);
+            }
+        }
+    }
+
+    void Image::Blend(const Image &source, int sx, int sy, int sw, int sh, int dx, int dy, const Color4d &tint) {
+        for (int j = 0; j < sh; ++j) {
+            for (int i = 0; i < sw; ++i) {
+                size_t dIdx = width * (dy + j) + dx + i;
+                ValidateIndex(dIdx);
+                size_t sIdx = source.width * (sy + j) + sx + i;
+                source.ValidateIndex(sIdx);
+                data[dIdx].Blend(source.data[sIdx] * tint);
+            }
+        }
+    }
+
+    Color4d Image::GetAverageRegionColor(int x, int y, int w, int h) {
+        Color4d sum;
+
+        for (int j = 0; j < h; ++j) {
+            for (int i = 0; i < w; ++i) {
+                size_t dIdx = width * (y + j) + x + i;
+                ValidateIndex(dIdx);
+                sum += data[dIdx];
+            }
+        }
+        return sum / w * h;
+    }
+
+    double Image::GetAverageRegionBrightness(int x, int y, int w, int h) {
+        double sum;
+
+        for (int j = 0; j < h; ++j) {
+            for (int i = 0; i < w; ++i) {
+                size_t dIdx = width * (y + j) + x + i;
+                ValidateIndex(dIdx);
+                const Color4d &c = data[dIdx];
+                sum += c.r  * 0.299 + c.g  * 0.587 + c.b  * 0.114;
+            }
+        }
+
+        return sum / (w * h);
+    }
+
+    void Image::ConvertToGrayscale() {
+        for (auto &c : data) {
+            double value = c.r  * 0.299 + c.g  * 0.587 + c.b  * 0.114;
+            c.r = value;
+            c.g = value;
+            c.b = value;
+        }
+    }
+
 }

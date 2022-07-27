@@ -55,10 +55,13 @@ namespace velox {
         std::shared_ptr<InterpreterStatement> ParseLoopStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseForStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseClassDefinition(Source &source);
+        std::shared_ptr<InterpreterStatement> ParseInstantDefinition(Source &source);
+        std::shared_ptr<InterpreterExpression> ParseInstantRealization(Source &source);
         std::shared_ptr<InterpreterExpression> ParseNewStatement(Source &source);
         std::shared_ptr<InterpreterExpression> ParseOptionalSelector(Source &source, std::shared_ptr<InterpreterExpression> lValue);
         std::shared_ptr<InterpreterExpression> ParseExpression(Source &source);
         std::shared_ptr<InterpreterExpression> ParseMemberAccess(Source &source, std::shared_ptr<InterpreterExpression> lValue);
+        std::shared_ptr<InterpreterExpression> ParseListAccess(Source &source, std::shared_ptr<InterpreterExpression> lValue);
         std::shared_ptr<InterpreterExpressionSimpleName> ParseSimpleName(Source &source);
         std::shared_ptr<InterpreterExpression> ParseOrExpression(Source &source);
         std::shared_ptr<InterpreterExpression> ParseRelExpression(Source &source);
@@ -67,6 +70,8 @@ namespace velox {
         std::shared_ptr<InterpreterExpression> ParseFactor(Source &source);
         std::shared_ptr<InterpreterExpression> ParseFactorIdent(Source &source);
         std::shared_ptr<InterpreterExpression> ParseColor(Source &source);
+        std::shared_ptr<InterpreterExpression> ParseVector(Source &source);
+        std::shared_ptr<InterpreterExpression> ParseList(Source &source);
 
         std::shared_ptr<InterpreterFunctionCall>
         ParseFunctionCall(Source &source, std::shared_ptr<InterpreterExpression> function);

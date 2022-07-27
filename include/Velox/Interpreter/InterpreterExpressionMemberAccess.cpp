@@ -1,4 +1,4 @@
-#include "InterpreterMemberAccess.h"
+#include "InterpreterExpressionMemberAccess.h"
 #include "InterpreterError.h"
 #include "ItemStateUndefined.h"
 #include "Item.h"
@@ -7,7 +7,7 @@ using namespace std;
 
 namespace velox {
 
-    shared_ptr<Item> InterpreterMemberAccess::Evaluate(ScriptContext &sc) {
+    shared_ptr<Item> InterpreterExpressionMemberAccess::Evaluate(ScriptContext &sc) {
         auto leftItem = leftHandSide->Evaluate(sc);
 
         // Make sure item stays alive after evaluation of this member access; required for temporary objects
@@ -25,11 +25,11 @@ namespace velox {
         return result;
     }
 
-    void InterpreterMemberAccess::SetLeftHandSide(shared_ptr<InterpreterExpression> lhs) {
+    void InterpreterExpressionMemberAccess::SetLeftHandSide(shared_ptr<InterpreterExpression> lhs) {
         leftHandSide = lhs;
     }
 
-    void InterpreterMemberAccess::SetRightHandSide(const string &inName) {
+    void InterpreterExpressionMemberAccess::SetRightHandSide(const string &inName) {
         name = inName;
     }
 

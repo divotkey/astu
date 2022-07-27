@@ -29,6 +29,7 @@ namespace velox {
         if (!funcItem) {
             return ItemState::GetStringValue(sc);
         }
+        // TODO improve this memory usage.
         InterpreterNoParameterList noParams;
         return funcItem->CallAsFunction(sc, noParams, 0)->GetStringValue(sc);
     }
@@ -44,6 +45,13 @@ namespace velox {
 
     std::shared_ptr<ItemData> ItemStateObject::GetData() {
         return data;
+    }
+
+    bool ItemStateObject::Assign(Item &owner, const ItemState &rhs) {
+        if (this == &rhs)
+            return true;
+
+        return false;
     }
 
 }

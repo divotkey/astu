@@ -69,4 +69,8 @@ namespace velox {
         return value->GetData();
     }
 
+    bool ItemStateReference::IsReference() const {
+        return true;
+    }
+
 }

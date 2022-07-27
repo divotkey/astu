@@ -9,6 +9,7 @@
 // Local includes
 #include "ItemType.h"
 #include "Graphics/Color.h"
+#include "Math/Vector2.h"
 
 // C++ Standard Library includes
 #include <memory>
@@ -126,6 +127,15 @@ namespace velox {
         virtual const astu::Color4d & GetColorValue() const;
 
         /**
+         * Tries to get a vector2 value from this item.
+         *
+         * @param sc    the script context under witch to execute this operation
+         * @return the extracted string value
+         * @throws InterpreterException in case this item cannot interpreted as vector value
+         */
+        virtual const astu::Vector2d & GetVector2Value() const;
+
+        /**
          * Looks for a sub-item with the specified name.
          *
          * @param name  the name of the sub-item
@@ -141,6 +151,25 @@ namespace velox {
          * @return `true` if the item has actually been added and hence the parent should be set accordingly
          */
         virtual bool AddItem(const std::string &name, std::shared_ptr<Item> item);
+
+        /**
+         * Retrieves a list element from this item (assuming that this item is of type list).
+         *
+         * @param idx           the index of the list element
+         * @param lineNumber    the line number of this call in case of an error
+         * @return the requested list element
+         * @throws InterpreterError in case this state has no list elements or the index is invalid
+         */
+        virtual std::shared_ptr<Item> GetListElement(size_t idx, unsigned int lineNumber);
+
+        /**
+         * Append a list element to this item as last element.
+         *
+         * @param elem          the list element to append
+         * @param lineNumber    the line number of this call in case of an error
+         * @throws InterpreterError in case this item is not of type list
+         */
+        virtual void AppendListElement(std::shared_ptr<Item> elem);
 
         /**
          * Adds copies of this state's sub-items to the specified target.
@@ -183,6 +212,13 @@ namespace velox {
          * @return the item type.
          */
         virtual ItemType GetType() const = 0;
+
+        /**
+         * Returns whether this item state is referencing another item.
+         *
+         * @return `true` if this item state is a reference
+         */
+        virtual bool IsReference() const;
 
     protected:
 

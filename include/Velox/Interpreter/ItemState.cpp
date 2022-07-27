@@ -49,6 +49,10 @@ namespace velox {
         throw InterpreterError("color value expected");
     }
 
+    const astu::Vector2d &ItemState::GetVector2Value() const {
+        throw InterpreterError("vector2 value expected");
+    }
+
     void *ItemState::operator new(size_t count) {
         return gMemoryManager->Allocate(count);
     }
@@ -65,8 +69,16 @@ namespace velox {
         return nullptr;
     }
 
+    std::shared_ptr<Item> ItemState::GetListElement(size_t idx, unsigned int lineNumber) {
+        throw InterpreterError("Not a list", lineNumber);
+    }
+
+    void ItemState::AppendListElement(std::shared_ptr<Item> elem) {
+        throw InterpreterError("Not a list");
+    }
+
     bool ItemState::AddItem(const string &name, std::shared_ptr<Item> item) {
-        throw InterpreterError("This type of value does not allow to add members.");
+        throw InterpreterError("This type does not allow to add members.");
     }
 
     std::shared_ptr<Item> ItemState::GetParent(Item &context) {
@@ -87,6 +99,10 @@ namespace velox {
 
     std::shared_ptr<Item> ItemState::ExecuteUnaryMinus() const {
         throw InterpreterError(string("unary minus not defined for type ") + std::to_string(static_cast<int>(GetType())));
+    }
+
+    bool ItemState::IsReference() const {
+        return false;
     }
 
 }

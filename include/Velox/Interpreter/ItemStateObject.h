@@ -27,6 +27,9 @@ namespace velox {
         void SetData(std::shared_ptr<ItemData> data) override;
         std::shared_ptr<ItemData> GetData() override;
 
+    protected:
+        bool Assign(Item &owner, const ItemState &rhs) override;
+
     private:
         /** Additional data. */
         std::shared_ptr<ItemData> data;

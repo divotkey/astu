@@ -46,7 +46,15 @@ namespace velox {
          * @param name  the name of the constant
          * @param value the value of the constant
          */
-        void AddConstant(const std::string & name, double value);
+        void AddRealConstant(const std::string & name, double value);
+
+        /**
+         * Adds an global integer constant that is available to all executed script.
+         *
+         * @param name  the name of the constant
+         * @param value the value of the constant
+         */
+        void AddIntConstant(const std::string & name, int value);
 
         /**
          * Queries whether an object type has already been added.

@@ -9,6 +9,7 @@
 #include "Graphics/BmpCodec.h"
 #include "Graphics/Color.h"
 #include "Graphics/Image.h"
+#include "Util/StringUtils.h"
 
 // C++ Standard Library includes
 #include <cassert>
@@ -21,11 +22,16 @@
 #define BI_RLE4			2
 #define BI_BITFIELDS	3
 
+#define BI_INFOHEADER_A 0
+#define BI_INFOHEADER_B 1
+#define BI_INFOHEADER_C 2
+
 #define BYTES_PER_PIXEL 3
 
 #pragma pack(push, 1)
+//#pragma pack(1)
 
-// TODO: use streambuffers instead if file stream.
+// TODO: use stream buffers instead if file stream.
 // https://gcc.gnu.org/onlinedocs/libstdc++/manual/streambufs.html
 
 // Note: Bitmap file format uses Little-endian. This code does assume that
@@ -54,8 +60,43 @@ struct BitmapInfoHeader {
 	uint32_t biClrImportant;	// number of color indexes that are required for displaying the bitmap
 };
 
-#pragma pack(pop)
+struct BitmapV2InfoHeader {
+    uint32_t biSize;			// number of bytes required by the structure
+    int32_t biWidth;			// width of the bitmap, in pixels
+    int32_t biHeight;			// height of the bitmap, in pixels
+    uint16_t biPlanes;			// number of planes for the target device, must be 1
+    uint16_t biBitCount;		// number of bits-per-pixel, must be 1, 4, 8, or 24
+    uint32_t biCompression;		// type of compression for a compressed bottom - up bitmap
+    uint32_t biSizeImage;		// size, in bytes, of the image, may be set to zero for BI_RGB
+    int32_t	biXPelsPerMeter;	// horizontal resolution, in pixels-per-meter
+    int32_t	biYPelsPerMeter;	// vertical resolution, in pixels-per-meter
+    uint32_t biClrUsed;			// number of color indexes in the color table that are actually used
+    uint32_t biClrImportant;	// number of color indexes that are required for displaying the bitmap
+    uint32_t biRedMask;
+    uint32_t biGreenMask;
+    uint32_t biBlueMask;
+};
 
+struct BitmapV3InfoHeader {
+    uint32_t biSize;			// number of bytes required by the structure
+    int32_t biWidth;			// width of the bitmap, in pixels
+    int32_t biHeight;			// height of the bitmap, in pixels
+    uint16_t biPlanes;			// number of planes for the target device, must be 1
+    uint16_t biBitCount;		// number of bits-per-pixel, must be 1, 4, 8, or 24
+    uint32_t biCompression;		// type of compression for a compressed bottom - up bitmap
+    uint32_t biSizeImage;		// size, in bytes, of the image, may be set to zero for BI_RGB
+    int32_t	biXPelsPerMeter;	// horizontal resolution, in pixels-per-meter
+    int32_t	biYPelsPerMeter;	// vertical resolution, in pixels-per-meter
+    uint32_t biClrUsed;			// number of color indexes in the color table that are actually used
+    uint32_t biClrImportant;	// number of color indexes that are required for displaying the bitmap
+    uint32_t biRedMask;
+    uint32_t biGreenMask;
+    uint32_t biBlueMask;
+    uint32_t biAlphaMask;
+};
+
+#pragma pack(pop)
+//#pragma pack()
 
 namespace astu {
 
@@ -190,7 +231,7 @@ namespace astu {
 		}
 
 		// Read info header.
-		BitmapInfoHeader ih;
+        BitmapV3InfoHeader ih;
 
 		is.read(reinterpret_cast<char*>(&ih), sizeof(ih.biSize));
 
@@ -198,32 +239,51 @@ namespace astu {
 			throw std::runtime_error("unable to read reading BMP info header");
 		}
 
-		if (ih.biSize != sizeof(BitmapInfoHeader)) {
-			throw std::runtime_error("unsupported BMP format (size of bitmap info header mismatch, expected " 
-				+ std::to_string(sizeof(BitmapInfoHeader)) 
-				+ " but got " + std::to_string(ih.biSize) + ")");
-		}
+        int ihVersion;
+        switch (ih.biSize) {
+            case sizeof(BitmapInfoHeader):
+                ihVersion = BI_INFOHEADER_A;
+                break;
 
-		is.read(reinterpret_cast<char*>(&ih.biWidth), sizeof(BitmapInfoHeader) - sizeof(ih.biSize));
+            case sizeof(BitmapV2InfoHeader):
+                ihVersion = BI_INFOHEADER_B;
+                break;
 
-		if (!is.good() || is.gcount() != sizeof(BitmapInfoHeader) - sizeof(ih.biSize)) {
+            case sizeof(BitmapV3InfoHeader):
+                ihVersion = BI_INFOHEADER_C;
+                break;
+
+            default:
+                throw std::runtime_error("unsupported BMP format (unknown bitmap info header, header size = "
+                                         + std::to_string(ih.biSize) + ")");
+        }
+
+		is.read(reinterpret_cast<char*>(&ih.biWidth), ih.biSize - sizeof(ih.biSize));
+
+		if (!is.good() || is.gcount() != ih.biSize - sizeof(ih.biSize)) {
 			throw std::runtime_error("unable to read reading BMP info header");
 		}
 
-		if (ih.biCompression != BI_RGB || ih.biBitCount != BYTES_PER_PIXEL * 8) {
+		if (ih.biCompression != BI_RGB && ih.biCompression != BI_BITFIELDS) {
 			throw std::runtime_error("unsupported BMP format");
 		}
 
-		size_t readSoFar = sizeof(BitmapFileHeader) + sizeof(BitmapInfoHeader);
+        if (ih.biBitCount != BYTES_PER_PIXEL * 8 && ih.biBitCount != 4 * 8) {
+            throw std::runtime_error("unsupported BMP format");
+        }
+
+		size_t readSoFar = sizeof(BitmapFileHeader) + ih.biSize;
 		is.ignore(fh.bfOffBits - readSoFar);
 
 		bool flip = ih.biHeight >= 0;
 		ih.biHeight = std::abs(ih.biHeight);
 
-		// Each line must contain number of bytes dividable by four.
-		auto numPadding = CalcNumPadding(ih.biWidth, BYTES_PER_PIXEL);
+        int numBytes = ih.biBitCount / 8;
 
-		buffer.resize(ih.biWidth * 3 + numPadding);
+		// Each line must contain number of bytes dividable by four.
+		auto numPadding = CalcNumPadding(ih.biWidth, numBytes);
+
+		buffer.resize(ih.biWidth * numBytes + numPadding);
 
 		// Read bitmap data.
 		auto result = std::make_unique<Image>(ih.biWidth, ih.biHeight);
@@ -235,11 +295,16 @@ namespace astu {
 			}
 			unsigned char *ptr = buffer.data();
 			for (int i = 0; i < ih.biWidth; ++i) {
-				unsigned char red, green, blue;
+				unsigned char red, green, blue, alpha;
 				blue = *ptr++;
 				green = *ptr++;
 				red = *ptr++;
-				result->SetPixel(i, flip ? result->GetHeight() - 1 - j : j, Color4d::CreateFromRgb(red, green, blue));
+                if (ih.biBitCount == 32) {
+                    alpha = *ptr++;
+                } else {
+                    alpha = 255;
+                }
+				result->SetPixel(i, flip ? result->GetHeight() - 1 - j : j, Color4d::CreateFromRgb(red, green, blue, alpha));
 			}
 		}
 

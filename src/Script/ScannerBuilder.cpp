@@ -253,6 +253,7 @@ namespace astu {
         BuildWhitespaceState();
         BuildEndOfSourceState();
         BuildNumberState();
+        BuildHexNumberState();
 
         for (const auto& it : keywords) {
             if (identStartSymbols.find(it.first[0]) == identStartSymbols.end()) {
@@ -455,6 +456,71 @@ namespace astu {
         nsm.EndState();
     }
 
+    void ScannerBuilder::BuildHexNumberState() {
+        assert(HasSpecialToken(INTEGER_TOKEN_ID));
+        assert(HasSpecialToken(REAL_TOKEN_ID));
+
+        // State for hexadecimal numbers.
+        auto qHex = nsm.BeginState();
+        nsm.SetAccepting(true);
+        int token = specialTokens[INTEGER_TOKEN_ID];
+        nsm.SetEnterFunc([token](char ch, void* ctx) {
+            //cout << "hex state" << endl;
+            if (isdigit(ch)) {
+                static_cast<Scanner*>(ctx)->AddIntValue(ch - '0', 16, NORMAL_PRIORITY);
+            } else if (ch >= 'a' && ch <= 'f') {
+                static_cast<Scanner*>(ctx)->AddIntValue(10 + ch - 'a', 16, NORMAL_PRIORITY);
+            } else {
+                static_cast<Scanner*>(ctx)->AddIntValue(10 + ch - 'A', 16, NORMAL_PRIORITY);
+            }
+            static_cast<Scanner*>(ctx)->SetTokenType(token, NORMAL_PRIORITY);
+        });
+
+        for (char ch = '0'; ch <= '9'; ++ch) {
+            nsm.AddTransition(ch, qHex);
+        }
+
+        for (char ch = 'a'; ch <= 'f'; ++ch) {
+            nsm.AddTransition(ch, qHex);
+        }
+
+        for (char ch = 'A'; ch <= 'F'; ++ch) {
+            nsm.AddTransition(ch, qHex);
+        }
+
+        // Start state for hexadecimal numbers.
+        auto qHexStart2 = nsm.BeginState();
+        nsm.SetAccepting(true);
+        for (char ch = '0'; ch <= '9'; ++ch) {
+            nsm.AddTransition(ch, qHex);
+        }
+
+        for (char ch = 'a'; ch <= 'f'; ++ch) {
+            nsm.AddTransition(ch, qHex);
+        }
+
+        for (char ch = 'A'; ch <= 'F'; ++ch) {
+            nsm.AddTransition(ch, qHex);
+        }
+        //nsm.SetEnterFunc([token](char ch, void* ctx) {
+        //    cout << "hex start state 2" << endl;
+        //});
+        nsm.EndState();
+
+        auto qHexStart1 = nsm.BeginState();
+        nsm.AddTransition('x', qHexStart2);
+        nsm.AddTransition('X', qHexStart2);
+        nsm.SetEnterFunc([token](char ch, void* ctx) {
+            //cout << "hex start state 1" << endl;
+            static_cast<Scanner*>(ctx)->SetTokenType(token, NORMAL_PRIORITY);
+        });
+        nsm.EndState();
+
+        nsm.BeginState(nsm.GetState(START_STATE));
+        nsm.AddTransition('0', qHexStart1);
+        nsm.EndState();
+    }
+
     void ScannerBuilder::BuildNumberState() {
         assert(HasSpecialToken(INTEGER_TOKEN_ID));
         assert(HasSpecialToken(REAL_TOKEN_ID));
@@ -474,6 +540,7 @@ namespace astu {
         }
         nsm.EndState();
 
+        // Start state for integer numbers.
         auto qIntegerStart = nsm.BeginState();
         nsm.SetAccepting(true);
         nsm.AddFlag(Scanner::MARK_TOKEN_START_FLAG);

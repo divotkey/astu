@@ -1,10 +1,12 @@
 // Local includes
 #include "ItemStateColor.h"
+#include "ItemStateRealMember.h"
 #include "InterpreterFunction.h"
 #include "InterpreterError.h"
-#include "Item.h"
+#include "InterpreterFunctionOneParameter.h"
 #include "InterpreterFunctionTwoParameter.h"
 #include "InterpreterFunctionNoParameter.h"
+#include "Item.h"
 
 // C++ Standard Library includes.
 #include <functional>
@@ -13,82 +15,6 @@ using namespace std;
 using namespace astu;
 
 namespace velox {
-
-    //class SaturateFunction : public InterpreterFunction {
-    //public:
-    //
-    //    SaturateFunction(Color4d &color) : color(color) {}
-    //
-    //protected:
-    //
-    //    std::shared_ptr<Item> DoEvaluate(ScriptContext &sc, unsigned int lineNumber) override {
-    //        color.Saturate();
-    //        return nullptr;
-    //    }
-    //
-    //private:
-    //    Color4d &color;
-    //};
-
-    //class LerpMethod : public InterpreterFunction {
-    //public:
-    //    LerpMethod(const Color4d &color) : color (color) {
-    //        AddFormalParameter("c");
-    //        AddFormalParameter("t");
-    //    }
-    //
-    //protected:
-    //    std::shared_ptr<Item> DoEvaluate(ScriptContext &sc, unsigned int lineNumber) override {
-    //        auto &c = sc.GetItem("c");
-    //        if (c.GetType() != ItemType::Color4) {
-    //            throw InterpreterError("first parameter for method 'Lerp' must be of type color", lineNumber);
-    //        }
-    //
-    //        auto &t = sc.GetItem("t");
-    //        if (!t.IsNumber()) {
-    //            throw InterpreterError("second parameter for method 'Lerp' must be a number", lineNumber);
-    //        }
-    //
-    //        return Item::CreateColor(color.Lerp(c.GetColorValue(), t.GetRealValue(lineNumber)));
-    //    }
-    //
-    //private:
-    //    const Color4d &color;
-    //};
-
-    class ItemStateColorMember : public ItemState {
-    public:
-        ItemStateColorMember(double &value) : value(value) {}
-
-        // Inherited via ItemState
-        unique_ptr<ItemState> Copy() const override {
-            return make_unique<ItemStateReal>(value);
-        }
-
-        double GetRealValue(unsigned int lineNumber) const override {
-            return value;
-        }
-
-        int GetIntegerValue(unsigned int lineNumber) const override {
-            return static_cast<int>(value);
-        }
-
-        string GetStringValue(ScriptContext &sc) const override {
-            return to_string(value);
-        }
-
-        bool Assign(Item &owner, const ItemState &rhs) override {
-            value = rhs.GetRealValue(0);
-            return true;
-        }
-
-        ItemType GetType() const override {
-            return ItemType::Real;
-        }
-
-    private:
-        double &value;
-    };
 
     ItemStateColor::ItemStateColor(const Color4d &inValue) : value(inValue) {
 
@@ -112,10 +38,21 @@ namespace velox {
                     return Item::CreateColor(value.Lerp(param1->GetColorValue(), param2->GetRealValue(lineNumber)));
                 }));
 
-        AddItem("red", Item::Create(std::make_unique<ItemStateColorMember>(value.r)));
-        AddItem("green", Item::Create(std::make_unique<ItemStateColorMember>(value.g)));
-        AddItem("blue", Item::Create(std::make_unique<ItemStateColorMember>(value.b)));
-        AddItem("alpha", Item::Create(std::make_unique<ItemStateColorMember>(value.a)));
+        AddItem("Blend", InterpreterFunctionOneParameter::CreateItem(
+                [this](ScriptContext &sc, std::shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item>
+                {
+                    if (param->GetType() != ItemType::Color4) {
+                        throw InterpreterError("parameter for method 'Blend' must be of type color", lineNumber);
+                    }
+
+                    value.Blend(param->GetColorValue());
+                    return Item::CreateUndefined();
+                }));
+
+        AddItem("red", Item::Create(std::make_unique<ItemStateRealMember>(value.r)));
+        AddItem("green", Item::Create(std::make_unique<ItemStateRealMember>(value.g)));
+        AddItem("blue", Item::Create(std::make_unique<ItemStateRealMember>(value.b)));
+        AddItem("alpha", Item::Create(std::make_unique<ItemStateRealMember>(value.a)));
     }
 
     unique_ptr<ItemState> ItemStateColor::Copy() const {

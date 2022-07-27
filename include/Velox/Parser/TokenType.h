@@ -163,6 +163,9 @@ namespace velox {
         /** The keyword for 'new' statements. */
         NEW,
 
+        /** The keyword for 'instant' definitions. */
+        INSTANT,
+
         /** The keyword for 'global' modifier. */
         GLOBAL,
 

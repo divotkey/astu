@@ -8,7 +8,7 @@
 #define KILOBYTE    1024
 #define MEGABYTE    1024 * KILOBYTE
 #define GIGABYTE    1024 * MEGABYTE
-#define MEM_SIZE    64 * KILOBYTE
+#define MEM_SIZE    64 * MEGABYTE
 
 using namespace std;
 

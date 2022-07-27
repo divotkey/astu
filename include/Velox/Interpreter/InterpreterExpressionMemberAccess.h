@@ -8,10 +8,10 @@
 
 namespace velox {
 
-    class InterpreterMemberAccess : public InterpreterExpression {
+    class InterpreterExpressionMemberAccess : public InterpreterExpression {
     public:
 
-        InterpreterMemberAccess(unsigned int lineNumber) : InterpreterExpression(lineNumber, true) { }
+        InterpreterExpressionMemberAccess(unsigned int lineNumber) : InterpreterExpression(lineNumber, true) { }
 
         void SetLeftHandSide(std::shared_ptr<InterpreterExpression> lhs);
         void SetRightHandSide(const std::string& name);

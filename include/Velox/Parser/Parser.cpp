@@ -15,14 +15,17 @@
 #include "Velox/Interpreter/InterpreterPostIncrement.h"
 #include "Velox/Interpreter/InterpreterLogicalOperation.h"
 #include "Velox/Interpreter/InterpreterExpressionSimpleName.h"
-#include "Velox/Interpreter/InterpreterMemberAccess.h"
+#include "Velox/Interpreter/InterpreterExpressionMemberAccess.h"
+#include "Velox/Interpreter/InterpreterExpressionListAccess.h"
 #include "Velox/Interpreter/InterpreterExpressionAssignment.h"
 #include "Velox/Interpreter/InterpreterLiteralInteger.h"
 #include "Velox/Interpreter/InterpreterLiteralReal.h"
 #include "Velox/Interpreter/InterpreterLiteralBoolean.h"
 #include "Velox/Interpreter/InterpreterLiteralString.h"
+#include "Velox/Interpreter/InterpreterLiteralList.h"
 #include "Velox/Interpreter/InterpreterExpressionUndefined.h"
 #include "Velox/Interpreter/InterpreterColor.h"
+#include "Velox/Interpreter/InterpreterVector.h"
 #include "Velox/Interpreter/InterpreterFunctionCall.h"
 #include "Velox/Interpreter/InterpreterFunctionScript.h"
 #include "Velox/Interpreter/InterpreterReturnStatement.h"
@@ -36,6 +39,8 @@
 #include "Velox/Interpreter/InterpreterStatementContinue.h"
 #include "Velox/Interpreter/InterpreterStatementNop.h"
 #include "Velox/Interpreter/InterpreterClassDefinition.h"
+#include "Velox/Interpreter/InterpreterInstantDefinition.h"
+#include "Velox/Interpreter/InterpreterInstantRealization.h"
 #include "Velox/Interpreter/InterpreterExpressionUnaryMinus.h"
 #include "Velox/Interpreter/InterpreterExpressionNew.h"
 
@@ -54,10 +59,11 @@ namespace velox {
                                                  TokenType::FUNCTION, TokenType::RETURN, TokenType::GLOBAL,
                                                  TokenType::IF, TokenType::WHILE, TokenType::DO, TokenType::FOR,
                                                  TokenType::LOOP, TokenType::BREAK, TokenType::CONTINUE,
-                                                 TokenType::CLASS, TokenType::NEW,
+                                                 TokenType::CLASS, TokenType::NEW, TokenType::INSTANT
     };
 
-    const TokenType Parser::LVALUE_CHAIN[] = {TokenType::MEMBER_ACCESS, TokenType::LEFT_PARENTHESIS};
+    const TokenType Parser::LVALUE_CHAIN[] = {TokenType::MEMBER_ACCESS, TokenType::LEFT_BRACKET,
+                                              TokenType::LEFT_PARENTHESIS};
     const TokenType Parser::REL_OP[] = {TokenType::EQUAL, TokenType::NOT_EQUAL, TokenType::LESS_EQUAL,
                                         TokenType::LESS_THAN, TokenType::GREATER_EQUAL, TokenType::GREATER_THAN};
 
@@ -223,8 +229,13 @@ namespace velox {
                 // Fall through
 
             case TokenType::IDENT:
-                result = ParseOptionalAssignment(source, ParseExpression(source));
-                ParseSemicolon(source);
+
+                if (source.PeekNextTokenType() == TokenType::BLOCK_START) {
+                    result = ParseInstantRealization(source);
+                } else {
+                    result = ParseOptionalAssignment(source, ParseExpression(source));
+                    ParseSemicolon(source);
+                }
                 break;
 
             case TokenType::FUNCTION:
@@ -277,6 +288,10 @@ namespace velox {
 
             case TokenType::CLASS:
                 result = ParseClassDefinition(source);
+                break;
+
+            case TokenType::INSTANT:
+                result = ParseInstantDefinition(source);
                 break;
 
             default:
@@ -359,6 +374,10 @@ namespace velox {
                     lValue->SetLocation(false);
                     return ParseOptionalSelector(source, ParseMemberAccess(source, lValue));
 
+                case TokenType::LEFT_BRACKET:
+                    lValue->SetLocation(false);
+                    return ParseOptionalSelector(source, ParseListAccess(source, lValue));
+
                 case TokenType::LEFT_PARENTHESIS:
                     lValue->SetLocation(false);
                     return ParseOptionalSelector(source, ParseFunctionCall(source, lValue));
@@ -374,12 +393,28 @@ namespace velox {
 
         source.GetNextTokenType();
         if (source.GetCurrentTokenType() != TokenType::IDENT) {
-            throw ParserError("Field name expected");
+            throw ParserError("Field name expected", source.GetLineNumber());
         }
 
-        auto result = make_shared<InterpreterMemberAccess>(source.GetLineNumber());
+        auto result = make_shared<InterpreterExpressionMemberAccess>(source.GetLineNumber());
         result->SetLeftHandSide(lValue);
         result->SetRightHandSide(source.GetStringValue());
+        source.GetNextTokenType();
+
+        return result;
+    }
+
+    std::shared_ptr<InterpreterExpression>
+    Parser::ParseListAccess(Source &source, std::shared_ptr<InterpreterExpression> lValue) {
+        assert(source.GetCurrentTokenType() == TokenType::LEFT_BRACKET);
+        auto result = make_shared<InterpreterExpressionListAccess>(source.GetLineNumber());
+        source.GetNextTokenType();
+
+        result->SetLeftHandSide(lValue);
+        result->SetIndex(ParseExpression(source));
+        if (source.GetCurrentTokenType() != TokenType::RIGHT_BRACKET) {
+            throw ParserError("']' expected", source.GetLineNumber());
+        }
         source.GetNextTokenType();
 
         return result;
@@ -553,6 +588,14 @@ namespace velox {
 
             case TokenType::BIN_OR:
                 result = ParseColor(source);
+                break;
+
+            case TokenType::LESS_THAN:
+                result = ParseVector(source);
+                break;
+
+            case TokenType::LEFT_BRACKET:
+                result = ParseList(source);
                 break;
 
             case TokenType::LEFT_PARENTHESIS:
@@ -812,7 +855,32 @@ namespace velox {
             throw ParserError("Identifier expected", source.GetLineNumber());
         }
 
-        auto result = make_shared<InterpreterClassDefinition>(source.GetStringValue());
+        auto result = make_shared<InterpreterClassDefinition>(source.GetStringValue(), source.GetLineNumber());
+        source.GetNextTokenType();
+        ParseBlockStart(source);
+
+        while (source.GetCurrentTokenType() != TokenType::BLOCK_END) {
+            auto functionStart = source.GetLineNumber();
+            auto function = ParseFunctionDefinition(source);
+            if (result->HasFunction(function->GetFunctionName())) {
+                throw ParserError("Ambiguous function name '" + function->GetFunctionName() + "'",
+                                  functionStart);
+            }
+            result->AddFunction(function);
+        }
+
+        ParseBlockEnd(source);
+        return result;
+    }
+
+    std::shared_ptr<InterpreterStatement> Parser::ParseInstantDefinition(Source &source) {
+        assert(source.GetCurrentTokenType() == TokenType::INSTANT);
+        source.GetNextTokenType();
+
+        if (source.GetCurrentTokenType() != TokenType::IDENT) {
+            throw ParserError("Identifier expected", source.GetLineNumber());
+        }
+        auto result = make_shared<InterpreterInstantDefinition>(source.GetStringValue(), source.GetLineNumber());
         source.GetNextTokenType();
         ParseBlockStart(source);
 
@@ -913,6 +981,28 @@ namespace velox {
         return result;
     }
 
+    std::shared_ptr<InterpreterExpression> Parser::ParseVector(Source &source) {
+        assert(source.GetCurrentTokenType() == TokenType::LESS_THAN);
+        auto lineNumber = source.GetLineNumber();
+        source.GetNextTokenType();
+
+        auto result = make_shared<InterpreterVector>();
+        result->SetXValueExpression(ParseSimpleExpression(source));
+        ParseComma(source);
+        result->SetYValueExpression(ParseSimpleExpression(source));
+        if (source.GetCurrentTokenType() == TokenType::COMMA) {
+            ParseComma(source);
+            result->SetZValueExpression(ParseSimpleExpression(source));
+        }
+
+        if (source.GetCurrentTokenType() != TokenType::GREATER_THAN) {
+            throw ParserError("'>' expected", source.GetLineNumber());
+        }
+        source.GetNextTokenType();
+
+        return result;
+    }
+
     std::shared_ptr<InterpreterStatement> Parser::ParseStatementOrBlock(Source &source, bool loopBody) {
         std::shared_ptr<InterpreterStatement> result;
 
@@ -927,5 +1017,43 @@ namespace velox {
         return result;
     }
 
+    std::shared_ptr<InterpreterExpression> Parser::ParseInstantRealization(Source &source) {
+        assert (source.GetCurrentTokenType() == TokenType::IDENT);
+        auto result = make_shared<InterpreterInstantRealization>(source.GetLineNumber());
+        result->SetTypeName(source.GetStringValue());
+        source.GetNextTokenType();
+
+        ParseBlockStart(source);
+
+        while (source.GetCurrentTokenType() != TokenType::BLOCK_END) {
+            result->AddStatement(ParseStatement(source));
+        }
+        ParseBlockEnd(source);
+
+        return result;
+    }
+
+    std::shared_ptr<InterpreterExpression> Parser::ParseList(Source &source) {
+        assert(source.GetCurrentTokenType() == TokenType::LEFT_BRACKET);
+        source.GetNextTokenType();
+
+        auto result = make_shared<InterpreterLiteralList>();
+
+        if (source.GetCurrentTokenType() != TokenType::RIGHT_BRACKET) {
+            result->AddElement(ParseExpression(source));
+
+            while (source.GetCurrentTokenType() == TokenType::COMMA) {
+                source.GetNextTokenType();
+                result->AddElement(ParseExpression(source));
+            }
+        }
+
+        if (source.GetCurrentTokenType() != TokenType::RIGHT_BRACKET) {
+            throw ParserError("']' expected", source.GetLineNumber());
+        }
+
+        source.GetNextTokenType();
+        return result;
+    }
 
 }

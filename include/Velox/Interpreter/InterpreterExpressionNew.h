@@ -26,7 +26,10 @@ namespace velox {
         std::shared_ptr<Item> Evaluate(ScriptContext &sc) override;
 
     private:
+        /** The name of the type of the object which should be created. */
         std::string typeName;
+
+        /** The constructor call of the object to be created. */
         std::shared_ptr<InterpreterConstructorCall> constructorCall;
     };
 

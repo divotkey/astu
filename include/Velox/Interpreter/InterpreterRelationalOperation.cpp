@@ -25,7 +25,7 @@ namespace velox {
         auto lhs = leftHandSide->Evaluate(sc);
         auto rhs = rightHandSide->Evaluate(sc);
 
-        return lhs->ExecuteRelationalOperator(sc, relOp, *rhs, GetLineNumber());
+        return lhs->ExecuteRelationalOperator(sc, relOp, rhs, GetLineNumber());
     }
 
 

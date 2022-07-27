@@ -28,6 +28,7 @@ namespace astu {
             BeginState(state);
             AddTransition(sym, target);
             EndState();
+            return *this;
         }
 
         DStateMachineBuilder& AddTransition(char sym, const std::string& target);

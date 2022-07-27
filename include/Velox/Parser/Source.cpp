@@ -25,38 +25,36 @@ using namespace std;
 
 namespace velox {
 
-    Source::Source() : scanner(BuildScanner()), scanningStarted(false) {
+    Source::Source() : scanner(BuildScanner()), scanningStarted(false), curState(&firstToken) {
         // Intentionally left empty.
     }
 
     TokenType Source::GetNextTokenType() {
-        if (!scanningStarted) {
-            scanner->Reset(GetStream());
-            scanningStarted = true;
-        }
-
-        scanner->GetNextToken();
-        return GetCurrentTokenType();
+        return curState->GetNextToken(*this);
     }
 
     TokenType Source::GetCurrentTokenType() const {
-        return static_cast<TokenType>(scanner->GetToken());
+        return curState->GetCurrentToken(*this);
+    }
+
+    TokenType Source::PeekNextTokenType() {
+        return curState->PeekNextToken(*this);
     }
 
     const std::string &Source::GetStringValue() const {
-        return scanner->GetStringValue();
+        return curState->GetStringValue(*this);
     }
 
     int Source::GetIntegerValue() const {
-        return scanner->GetIntegerValue();
+        return curState->GetIntegerValue(*this);
     }
 
     double Source::GetRealValue() const {
-        return scanner->GetRealValue();
+        return curState->GetRealValue(*this);
     }
 
     unsigned int Source::GetLineNumber() const {
-        return scanner->GetTokenLine();
+        return curState->GetLineNumber(*this);
     }
 
     std::unique_ptr<astu::Scanner> Source::BuildScanner() {
@@ -88,6 +86,8 @@ namespace velox {
         builder.AddKeyword(")", TOK2INT(TokenType::RIGHT_PARENTHESIS));
         builder.AddKeyword("{", TOK2INT(TokenType::BLOCK_START));
         builder.AddKeyword("}", TOK2INT(TokenType::BLOCK_END));
+        builder.AddKeyword("[", TOK2INT(TokenType::LEFT_BRACKET));
+        builder.AddKeyword("]", TOK2INT(TokenType::RIGHT_BRACKET));
         builder.AddKeyword(";", TOK2INT(TokenType::SEMICOLON));
         builder.AddKeyword(".", TOK2INT(TokenType::MEMBER_ACCESS));
         builder.AddKeyword(",", TOK2INT(TokenType::COMMA));
@@ -129,6 +129,7 @@ namespace velox {
         builder.AddKeyword("continue", TOK2INT(TokenType::CONTINUE));
         builder.AddKeyword("for", TOK2INT(TokenType::FOR));
         builder.AddKeyword("class", TOK2INT(TokenType::CLASS));
+        builder.AddKeyword("instant", TOK2INT(TokenType::INSTANT));
         builder.AddKeyword("new", TOK2INT(TokenType::NEW));
         builder.AddKeyword("global", TOK2INT(TokenType::GLOBAL));
         builder.AddKeyword("import", TOK2INT(TokenType::IMPORT));
@@ -139,7 +140,7 @@ namespace velox {
         return builder.Build();
     }
 
-    std::string Source::TokenTypeToString(TokenType type) const {
+    std::string Source::TokenTypeToString(TokenType type) {
         switch (type) {
 
             case TokenType::INVALID:
@@ -244,6 +245,8 @@ namespace velox {
                 return "CLASS";
             case TokenType::NEW:
                 return "NEW";
+            case TokenType::INSTANT:
+                return "INSTANT";
             case TokenType::GLOBAL:
                 return "GLOBAL";
             case TokenType::IMPORT:
@@ -262,6 +265,131 @@ namespace velox {
 
     std::string Source::GetTokenTypeAsString() const {
         return TokenTypeToString(GetCurrentTokenType());
+    }
+
+    /////////////////////////////////////////////////
+    /////// Internal state Source::FirstToken
+    /////////////////////////////////////////////////
+
+    TokenType Source::FirstToken::GetNextToken(Source &source) {
+        source.scanner->Reset(source.GetStream());
+        source.curState = &source.notPeeked;
+        source.scanner->GetNextToken();
+        return static_cast<TokenType>(source.scanner->GetToken());
+    }
+
+    TokenType Source::FirstToken::PeekNextToken(Source &source) {
+        throw std::logic_error("Illegal state, unable to peek next token");
+    }
+
+    TokenType Source::FirstToken::GetCurrentToken(const Source &source) const {
+        return static_cast<TokenType>(source.scanner->GetToken());
+    }
+
+    const std::string &Source::FirstToken::GetStringValue(const Source &source) const {
+        throw std::logic_error("Illegal state, unable to retrieve string from source");
+    }
+
+    int Source::FirstToken::GetIntegerValue(const Source &source) const {
+        throw std::logic_error("Illegal state, unable to retrieve integer value from source");
+    }
+
+    double Source::FirstToken::GetRealValue(const Source &source) const {
+        throw std::logic_error("Illegal state, unable to retrieve real value from source");
+    }
+
+    unsigned int Source::FirstToken::GetLineNumber(const Source& source) const {
+        throw std::logic_error("Illegal state, unable to retrieve line number of token from source");
+    }
+
+    /////////////////////////////////////////////////
+    /////// Internal state Source::NotPeeked
+    /////////////////////////////////////////////////
+
+    TokenType Source::NotPeeked::PeekNextToken(Source &source) {
+        source.peeked.Store(*source.scanner);
+        source.curState = &source.peeked;
+        source.scanner->GetNextToken();
+        return static_cast<TokenType>(source.scanner->GetToken());
+    }
+
+    TokenType Source::NotPeeked::GetNextToken(Source &source) {
+        source.scanner->GetNextToken();
+        return static_cast<TokenType>(source.scanner->GetToken());
+    }
+
+    TokenType Source::NotPeeked::GetCurrentToken(const Source &source) const {
+        return static_cast<TokenType>(source.scanner->GetToken());
+    }
+
+    const std::string &Source::NotPeeked::GetStringValue(const Source &source) const {
+        return source.scanner->GetStringValue();
+    }
+
+    int Source::NotPeeked::GetIntegerValue(const Source &source) const {
+        return source.scanner->GetIntegerValue();
+    }
+
+    double Source::NotPeeked::GetRealValue(const Source &source) const {
+        return source.scanner->GetRealValue();
+    }
+
+    unsigned int Source::NotPeeked::GetLineNumber(const Source& source) const {
+        return source.scanner->GetTokenLine();
+    }
+
+    /////////////////////////////////////////////////
+    /////// Internal state Source::Peeked
+    /////////////////////////////////////////////////
+
+    TokenType Source::Peeked::GetNextToken(Source &source) {
+        auto result = static_cast<TokenType>(source.scanner->GetToken());
+        source.curState = &source.notPeeked;
+        return result;
+    }
+
+    TokenType Source::Peeked::GetCurrentToken(const Source &source) const {
+        return token;
+    }
+
+    const std::string &Source::Peeked::GetStringValue(const Source &source) const {
+        return sValue;
+    }
+
+    int Source::Peeked::GetIntegerValue(const Source &source) const {
+        return iValue;
+    }
+
+    double Source::Peeked::GetRealValue(const Source &source) const {
+        return rValue;
+    }
+
+    unsigned int Source::Peeked::GetLineNumber(const Source& source) const {
+        return lineNumber;
+    }
+
+    void Source::Peeked::Store(Scanner &scanner) {
+        token = static_cast<TokenType>(scanner.GetToken());
+        lineNumber = static_cast<unsigned int>(scanner.GetTokenLine());
+
+        switch (token) {
+            case TokenType::INTEGER:
+                iValue = scanner.GetIntegerValue();
+                break;
+
+            case TokenType::REAL:
+                rValue = scanner.GetRealValue();
+                break;
+
+            case TokenType::IDENT:
+            case TokenType::STRING:
+                sValue = scanner.GetStringValue();
+                break;
+        }
+    }
+
+    TokenType Source::Peeked::PeekNextToken(Source &source) {
+        throw std::logic_error("Illegal state, unable to peek next token from source");
     }
 
 }

@@ -120,6 +120,7 @@ namespace astu {
         void BuildNonIdentKeywordState(const std::string& keyword, int token);
         void BuildIdentKeywordState(const std::string& keyword, int token);
         void BuildNumberState();
+        void BuildHexNumberState();
         void BuildStringState();
         void BuildEscapeStates();
         void BuildBlockCommentStates();

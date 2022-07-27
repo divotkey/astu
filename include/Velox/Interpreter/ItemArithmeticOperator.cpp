@@ -4,6 +4,7 @@
 // which is part of this source code package. See 'AUTHORS' file for a list
 // of contributors.
 
+// Local includes
 #include "Item.h"
 #include "ItemType.h"
 #include "InterpreterError.h"
@@ -135,6 +136,16 @@ namespace velox {
                         }
 
                     case ItemType::Vector2:
+                        switch(op) {
+                            case ArithmeticOperator::MUL:
+                                return Item::CreateVector2(
+                                        state->GetRealValue(lineNumber) * item->state->GetVector2Value());
+                            case ArithmeticOperator::DIV:
+                                return Item::CreateVector2(
+                                        state->GetRealValue(lineNumber) / item->state->GetVector2Value());
+                            default:
+                                throw std::logic_error("Internal interpreter error: unknown arithmetic operator");
+                        }
                         break;
 
                     case ItemType::Vector3:
@@ -204,14 +215,22 @@ namespace velox {
                         switch (op) {
                             case ArithmeticOperator::MUL:
                                 return Item::CreateColor(state->GetRealValue(lineNumber) * item->GetColorValue());
-                            case ArithmeticOperator::DIV:
-                                return Item::CreateColor(state->GetRealValue(lineNumber) / item->GetColorValue());
+
                             default:
                                 throw InterpreterError("undefined arithmetic operator between this types", lineNumber);
                         }
 
                     case ItemType::Vector2:
-                        break;
+                        switch(op) {
+                            case ArithmeticOperator::MUL:
+                                return Item::CreateVector2(
+                                        state->GetRealValue(lineNumber) * item->state->GetVector2Value());
+                            case ArithmeticOperator::DIV:
+                                return Item::CreateVector2(
+                                        state->GetRealValue(lineNumber) / item->state->GetVector2Value());
+                            default:
+                                throw std::logic_error("Internal interpreter error: unknown arithmetic operator");
+                        }
 
                     case ItemType::Vector3:
                         break;
@@ -420,10 +439,25 @@ namespace velox {
                         break;
 
                     case ItemType::Integer:
+                        switch(op) {
+                            case ArithmeticOperator::MUL:
+                                return Item::CreateVector2(state->GetVector2Value() * item->state->GetIntegerValue(lineNumber));
+                            case ArithmeticOperator::DIV:
+                                return Item::CreateVector2(state->GetVector2Value() / item->state->GetIntegerValue(lineNumber));
+                            default:
+                                throw std::logic_error("Internal interpreter error: unknown arithmetic operator");
+                        }
                         break;
 
                     case ItemType::Real:
-                        break;
+                        switch(op) {
+                            case ArithmeticOperator::MUL:
+                                return Item::CreateVector2(state->GetVector2Value() * item->state->GetRealValue(lineNumber));
+                            case ArithmeticOperator::DIV:
+                                return Item::CreateVector2(state->GetVector2Value() / item->state->GetRealValue(lineNumber));
+                            default:
+                                throw std::logic_error("Internal interpreter error: unknown arithmetic operator");
+                        }
 
                     case ItemType::Boolean:
                         break;
@@ -435,7 +469,18 @@ namespace velox {
                         break;
 
                     case ItemType::Vector2:
-                        break;
+                        switch(op) {
+                            case ArithmeticOperator::ADD:
+                                return Item::CreateVector2(state->GetVector2Value() + item->state->GetVector2Value());
+                            case ArithmeticOperator::SUB:
+                                return Item::CreateVector2(state->GetVector2Value() - item->state->GetVector2Value());
+                            case ArithmeticOperator::MUL:
+                                return Item::CreateVector2(state->GetVector2Value() * item->state->GetVector2Value());
+                            case ArithmeticOperator::DIV:
+                                return Item::CreateVector2(state->GetVector2Value() / item->state->GetVector2Value());
+                            default:
+                                throw std::logic_error("Internal interpreter error: unknown arithmetic operator");
+                        }
 
                     case ItemType::Vector3:
                         break;

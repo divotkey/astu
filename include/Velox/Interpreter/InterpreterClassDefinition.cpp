@@ -1,8 +1,10 @@
+// Local includes
 #include "InterpreterClassDefinition.h"
 #include "ItemStateFunction.h"
 #include "ObjectType.h"
 #include "InterpreterError.h"
 
+// C++ Standard Library includes
 #include <cassert>
 
 using namespace std;

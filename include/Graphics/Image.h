@@ -111,6 +111,13 @@ namespace astu {
         void SetPixel(size_t idx, const Color4d & c);
 
         /**
+         * Clears the entire image with the specified color.
+         *
+         * @param c the color used to clear the image
+         */
+        void Clear(const Color4d& c);
+
+        /**
          * Returns the number of pixels of this image.
          * 
          * The number of pixels equals width times height of this image.
@@ -159,6 +166,66 @@ namespace astu {
          * @param y
          */
         void Blit(const Image &source, int x, int y);
+
+        /**
+         * Copies a region of an image to this image using blend operation.
+         *
+         * The blend operation will respect the alpha channel of the source image.
+         *
+         * @param source    the source image
+         * @param sx        the horizontal pixel coordinate of the upper left corner of the source region
+         * @param sy        the vertical pixel coordinate of the upper left corner of the source region
+         * @param sw        the width of the source region
+         * @param sh        the height of the source region
+         * @param dx        the horizontal pixel coordinate of the upper left of the destination region
+         * @param dy        the vertical pixel coordinate of the upper left of the destination region
+         */
+        void Blend(const Image &source, int sx, int sy, int sw, int sh, int dx, int dy);
+
+        /**
+         * Copies a region of an image to this image using blend operation.
+         *
+         * The blend operation will respect the alpha channel of the source image.
+         *
+         * @param source    the source image
+         * @param sx        the horizontal pixel coordinate of the upper left corner of the source region
+         * @param sy        the vertical pixel coordinate of the upper left corner of the source region
+         * @param sw        the width of the source region
+         * @param sh        the height of the source region
+         * @param dx        the horizontal pixel coordinate of the upper left of the destination region
+         * @param dy        the vertical pixel coordinate of the upper left of the destination region
+         * @param tint      a color that is used to tint the source image
+         */
+        void Blend(const Image &source, int sx, int sy, int sw, int sh, int dx, int dy, const Color4d& tint);
+
+        /**
+         * Calculates the average color of an region of this image.
+         *
+         * @param x the x-coordinate of the upper left corner of the region
+         * @param y the y-coordinate of the upper left corner of the region
+         * @param w the width of the region
+         * @param h the height of the region
+         * @return the average color of the region
+         */
+        Color4d GetAverageRegionColor(int x, int y, int w, int h);
+
+        /**
+         * Calculates the average brightness of an region of this image.
+         * The bright ness is calculate by converting each pixel to a
+         * grayscale value.
+         *
+         * @param x the x-coordinate of the upper left corner of the region
+         * @param y the y-coordinate of the upper left corner of the region
+         * @param w the width of the region
+         * @param h the height of the region
+         * @return the average brightness of the region
+         */
+        double GetAverageRegionBrightness(int x, int y, int w, int h);
+
+        /**
+         * Converts this image to an grayscale image.
+         */
+        void ConvertToGrayscale();
 
     private:
         /** The width of the image in pixel. */

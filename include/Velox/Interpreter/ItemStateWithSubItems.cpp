@@ -38,7 +38,9 @@ namespace velox {
 
     void ItemStateWithSubItems::AddItemsToScope(ScriptContext &sc) {
         for (auto it: subItems) {
-            sc.AddItem(it.first, Item::Create(make_unique<ItemStateReference>(it.second)));
+            // TODO check, if the modified version is correct
+            //sc.AddItem(it.first, Item::Create(make_unique<ItemStateReference>(it.second)));
+            sc.AddItem(it.first, it.second);
         }
 
         ItemState::AddItemsToScope(sc);

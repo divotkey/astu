@@ -469,7 +469,20 @@ namespace astu {
 			x *= right.x;
 			y *= right.y;
 			return *this;
-		}   
+		}
+
+        /**
+         * Binary division operator for two vectors.
+         *
+		 * This division does a component-wise multiplication of the two vectors.
+         *
+         * @param right the right hand-side vector
+         * @return a new vector representing the result of the operation
+         */
+        const Vector2<T> operator/(const Vector2<T> & right) const
+        {
+            return Vector2(x / right.x, y / right.y);
+        }
 
         /**
          * Compound assignment and division operator with a scalar value.
@@ -572,6 +585,19 @@ namespace astu {
     template<typename T>
     inline const Vector2<T> operator*(T s, const Vector2<T> & v) {
         return v * s;
+    }
+
+    /**
+     * Binary division operator for a scalar and a vector.
+     * This operator does a component-wise division with the scalar value and the vector.
+     *
+     * @param s	the scalar value
+     * @param v	the vector
+     * @return a new vector representing the result of the operation
+     */
+    template<typename T>
+    inline const Vector2<T> operator/(T s, const Vector2<T> & v) {
+        return Vector2<T>(s/v.x, s/v.y);
     }
 
     template<typename T>

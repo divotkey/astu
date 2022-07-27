@@ -15,6 +15,8 @@
 #include "InterpreterFunctionThreeParameter.h"
 #include "Math/Random.h"
 #include "Math/MathUtils.h"
+#include "Graphics/ColorHsv.h"
+#include "Graphics/Color.h"
 
 // C++ Standard Library includes
 #include <cmath>
@@ -41,8 +43,12 @@ namespace velox {
         superGlobals->AddItem(name, Item::CreateFunction(function));
     }
 
-    void Interpreter::AddConstant(const string &name, double value) {
+    void Interpreter::AddRealConstant(const string &name, double value) {
         superGlobals->AddItem(name, Item::CreateReal(value));
+    }
+
+    void Interpreter::AddIntConstant(const string &name, int value) {
+        superGlobals->AddItem(name, Item::CreateInteger(value));
     }
 
     void Interpreter::AddObjectType(const std::string &name, std::shared_ptr<ObjectType> objType) {
@@ -65,10 +71,12 @@ namespace velox {
 
     void Interpreter::AddStandardFunctions() {
 
-        AddConstant("PI", MathUtils::PId);
-        AddConstant("PI2", MathUtils::PI2d);
-        AddConstant("MAX_REAL", std::numeric_limits<double>::max());
-        AddConstant("MIN_REAL", std::numeric_limits<double>::lowest());
+        AddRealConstant("PI", MathUtils::PId);
+        AddRealConstant("PI2", MathUtils::PI2d);
+        AddRealConstant("MAX_REAL", std::numeric_limits<double>::max());
+        AddRealConstant("MIN_REAL", std::numeric_limits<double>::lowest());
+        AddIntConstant("MAX_INT", std::numeric_limits<int>::max());
+        AddIntConstant("MIN_INT", std::numeric_limits<int>::lowest());
 
         AddFunction("real", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
@@ -171,6 +179,36 @@ namespace velox {
                     return Item::CreateReal(MathUtils::ToRadians(param->GetRealValue(lineNumber)));
                 }));
 
+        AddFunction("extractHue", make_shared<InterpreterFunctionOneParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    ColorHsv hsv(param->GetColorValue());
+                    return Item::CreateReal(hsv.h);
+                }));
+
+        AddFunction("extractSaturation", make_shared<InterpreterFunctionOneParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    ColorHsv hsv(param->GetColorValue());
+                    return Item::CreateReal(hsv.s);
+                }));
+
+        AddFunction("extractBrightness", make_shared<InterpreterFunctionOneParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    ColorHsv hsv(param->GetColorValue());
+                    return Item::CreateReal(hsv.v);
+                }));
+
+        AddFunction("colorFromHue", make_shared<InterpreterFunctionOneParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    ColorHsv hsv(param->GetRealValue(lineNumber), 1.0, 1.0);
+                    return Item::CreateColor(hsv.ToRgb());
+                }));
+
+        AddFunction("colorFromHSV", make_shared<InterpreterFunctionThreeParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, shared_ptr<Item> param3, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    ColorHsv hsv(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber), param3->GetRealValue(lineNumber));
+                    return Item::CreateColor(hsv.ToRgb());
+                }));
+
         AddFunction("clamp", make_shared<InterpreterFunctionThreeParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, shared_ptr<Item> param3, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     if (param1->IsReal() || param2->IsReal() || param3->IsReal()) {
@@ -183,8 +221,6 @@ namespace velox {
                     return Item::CreateInteger(MathUtils::Clamp(param1->GetIntegerValue(),
                                                              param2->GetIntegerValue(),
                                                              param3->GetIntegerValue()));
-
-                    return Item::CreateUndefined();
                 }));
     }
 
