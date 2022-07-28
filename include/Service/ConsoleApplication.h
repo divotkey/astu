@@ -23,7 +23,7 @@ namespace astu {
         /**
          * Virtual destructor.
          */
-        ~ConsoleApplication() {}
+        virtual ~ConsoleApplication() {}
 
 
         /**
