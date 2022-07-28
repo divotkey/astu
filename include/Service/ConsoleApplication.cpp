@@ -38,7 +38,7 @@ namespace astu {
     }
 
     void ConsoleApplication::PrintVersionInfo() {
-        cout << GetInfoString() << endl << endl;
+        cout << GetInfoString() << endl;
         if (HasStringProperty(COPYRIGHT_HOLDER_PROP)) {
             cout << "Copyright ";
             if (HasStringProperty(COPYRIGHT_YEAR_PROP)) {
@@ -47,13 +47,15 @@ namespace astu {
             cout << GetCopyrightHolder() << ". All rights reserved." << endl;
         }
 
-        if (IsFlagSet("SHOW_ASTU_VERSION", true)) {
+        if (IsFlagSet("SHOW_ASTU_VERSION", false)) {
+            cout << endl;
             SayVersion();
-            if (IsFlagSet("SHOW_ASTU_COPYRIGHT")) {
+            if (IsFlagSet("SHOW_ASTU_COPYRIGHT", true)) {
                 SayCopyright();
             }
-            cout << endl;
         }
+
+        cout << endl;
     }
 
     void ConsoleApplication::AddCoreServices() {
