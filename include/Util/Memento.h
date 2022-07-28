@@ -44,15 +44,14 @@ namespace astu {
 		Memento& operator<<(const int64_t & value);
 		const Memento& operator>>(int64_t & value) const;
 
+        Memento& operator<<(const uint64_t & value);
+        const Memento& operator>>(uint64_t & value) const;
+
 		Memento& operator<<(const int & value);
 		const Memento& operator>>(int & value) const;
 
 		Memento& operator<<(const unsigned int & value);
 		const Memento& operator>>(unsigned int & value) const;
-
-        // Does not work on 32-bit system, conflict with other datatype.
-		//Memento& operator<<(const size_t & value);
-		//const Memento& operator>>(size_t & value) const;
 
 		Memento& operator<<(const float & value);
 		const Memento& operator>>(float & value) const;

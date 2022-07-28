@@ -40,6 +40,16 @@ namespace astu {
 		return Read(reinterpret_cast<unsigned char*>(&value), sizeof(value));
 	}
 
+	Memento & Memento::operator<<(const uint64_t & value)
+	{
+		return Write(reinterpret_cast<const unsigned char*>(&value), sizeof(value));
+	}
+
+	const Memento & Memento::operator>>(uint64_t & value) const
+	{
+		return Read(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+	}
+
 	Memento & Memento::operator<<(const int & value)
 	{
 		return Write(reinterpret_cast<const unsigned char*>(&value), sizeof(value));
@@ -59,17 +69,6 @@ namespace astu {
 	{
 		return Read(reinterpret_cast<unsigned char*>(&value), sizeof(value));
 	}
-
-    // Does not work on 32-bit system, conflict with other datatype.
-	//Memento & Memento::operator<<(const size_t & value)
-	//{
-	//	return Write(reinterpret_cast<const unsigned char*>(&value), sizeof(value));
-	//}
-    //
-	//const Memento & Memento::operator>>(size_t & value) const
-	//{
-	//	return Read(reinterpret_cast<unsigned char*>(&value), sizeof(value));
-	//}
 
 	Memento & Memento::operator<<(const float & value)
 	{
