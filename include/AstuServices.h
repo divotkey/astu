@@ -26,6 +26,7 @@
 #include "Service/ActionSignalService.h"
 #include "Service/RenderService.h"
 #include "Service/InteractiveApplication.h"
+#include "Service/ConsoleApplication.h"
 
 namespace astu {
 
