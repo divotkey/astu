@@ -39,7 +39,7 @@ namespace astu {
         /**
          * Virtual destructor.
          */
-        ~InteractiveApplication() {}
+        virtual ~InteractiveApplication() {}
 
         /**
          * Defines whether the application terminates on window-close signals.

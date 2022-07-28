@@ -65,4 +65,12 @@ namespace astu {
         return 0;
     }
 
+    void ConsoleApplication::ConfigureApplication() {
+
+    }
+
+    void ConsoleApplication::Cleanup() {
+
+    }
+
 } // end of namespace
