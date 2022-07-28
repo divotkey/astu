@@ -12,36 +12,24 @@
 // C++ Standard Library includes
 #include <string>
 #include <iostream>
+#include <stdexcept>
 
 using namespace std;
 
 namespace astu {
 
+    const string ConsoleApplication::APP_NAME_PROP = "APP_NAME";
+    const string ConsoleApplication::APP_VERSION_PROP = "APP_VERSION";
+    const string ConsoleApplication::COPYRIGHT_YEAR_PROP = "COPYRIGHT_YEAR";
+    const string ConsoleApplication::COPYRIGHT_HOLDER_PROP = "COPYRIGHT_HOLDER";
+
     ConsoleApplication::ConsoleApplication()
-        : appName("ASTU Console Application")
-        , versionString("1.0.0")
     {
+        SetFlag("PRINT_COPYRIGHT");
+        SetFlag("PRINT_ASTU_INFO");
+        SetStringProperty(APP_NAME_PROP, "ASTU Console Application");
+        SetStringProperty(APP_VERSION_PROP, "1.0.0");
         AddCoreServices();
-    }
-
-    const std::string& ConsoleApplication::GetVersionString() const
-    {
-        return versionString;
-    }
-
-    void ConsoleApplication::SetVersionString(const string& version)
-    {
-        versionString = version;
-    }
-
-    const std::string& ConsoleApplication::GetApplicationName() const
-    {
-        return appName;
-    }
-
-    void ConsoleApplication::SetApplicationName(const string& name)
-    {
-        appName = name;
     }
 
     std::string ConsoleApplication::GetInfoString() const
@@ -49,15 +37,27 @@ namespace astu {
         return GetApplicationName() + " - Version " + GetVersionString();
     }
 
-
     void ConsoleApplication::PrintVersionInfo() {
         cout << GetInfoString() << endl << endl;
-        SayVersion();
-        SayCopyright(true);
+        if (HasStringProperty(COPYRIGHT_HOLDER_PROP)) {
+            cout << "Copyright ";
+            if (HasStringProperty(COPYRIGHT_YEAR_PROP)) {
+                cout << GetCopyrightYear() << " ";
+            }
+            cout << GetCopyrightHolder() << ". All rights reserved." << endl;
+        }
+
+        if (IsFlagSet("SHOW_ASTU_VERSION", true)) {
+            SayVersion();
+            if (IsFlagSet("SHOW_ASTU_COPYRIGHT")) {
+                SayCopyright();
+            }
+            cout << endl;
+        }
     }
 
     void ConsoleApplication::AddCoreServices() {
-
+        // not implemented yet
     }
 
     int ConsoleApplication::Run() {
@@ -66,11 +66,59 @@ namespace astu {
     }
 
     void ConsoleApplication::ConfigureApplication() {
-
+        // not implemented yet
     }
 
     void ConsoleApplication::Cleanup() {
+        // not implemented yet
+    }
 
+    const std::string& ConsoleApplication::GetStringProperty(const string &name) const {
+        auto it = stringProperties.find(name);
+        if (it == stringProperties.end()) {
+            throw std::logic_error("Unknown string property '" + name + "'");
+        }
+        return it->second;
+    }
+
+    const std::string&  ConsoleApplication::GetStringProperty(const string &name, const string &defaultValue) const {
+        auto it = stringProperties.find(name);
+        if (it == stringProperties.end()) {
+            return defaultValue;
+        }
+        return it->second;
+    }
+
+    bool ConsoleApplication::HasStringProperty(const string &name) const {
+        return stringProperties.find(name) != stringProperties.end();
+    }
+
+    void ConsoleApplication::SetStringProperty(const string &name, const string &value) {
+        stringProperties[name] = value;
+    }
+
+    bool ConsoleApplication::IsFlagSet(const string &name, bool defaultValue) const {
+        auto it = boolProperties.find(name);
+        if (it == boolProperties.end()) {
+            return defaultValue;
+        }
+        return it->second;
+    }
+
+    bool ConsoleApplication::IsFlagSet(const string &name) const {
+        auto it = boolProperties.find(name);
+        if (it == boolProperties.end()) {
+            throw std::logic_error("Unknown flag '" + name + "'");
+        }
+        return it->second;
+    }
+
+    void ConsoleApplication::SetFlag(const string &name, bool value) {
+        boolProperties[name] = value;
+    }
+
+    bool ConsoleApplication::HasFlag(const string &name) const {
+        return boolProperties.find(name) != boolProperties.end();
     }
 
 } // end of namespace
