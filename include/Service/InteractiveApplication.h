@@ -42,13 +42,6 @@ namespace astu {
         ~InteractiveApplication() {}
 
         /**
-         * Returns version information as string.
-         * 
-         * @return the version information of this application
-         */
-        const std::string& GetVersionString() const;
-
-        /**
          * Defines whether the application terminates on window-close signals.
          * 
          * @param b set to `true` if the application should terminate
@@ -75,6 +68,13 @@ namespace astu {
          * @return `true` if the application terminates
          */
         bool IsTerminateOnEscapeEnabled() const;
+
+        /**
+         * Returns version information as string.
+         *
+         * @return the version information of this application
+         */
+        const std::string& GetVersionString() const;
 
         /**
          * Sets the version information string for this application.
@@ -242,7 +242,7 @@ namespace astu {
     private:
 
         /**
-         * Adds required core services.         * 
+         * Adds required core services.
          */
         void AddCoreServices();
 

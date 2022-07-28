@@ -19,7 +19,6 @@
 #include "Input/Keyboard.h"
 #include "Util/MessageBox.h"
 
-
 // C++ Standard Library includes
 #include <iostream>
 
@@ -173,7 +172,7 @@ namespace astu {
     void InteractiveApplication::AddCoreServices()
     {
         // The update service functions as the central facility for things 
-        // (services, systems, etc) that need to be updated once within the 
+        // (services, systems, etc.) that need to be updated once within the
         // main application loop.
         ASTU_CREATE_AND_ADD_SERVICE( UpdateService );
 
@@ -201,7 +200,7 @@ namespace astu {
        // Receives and distributes window state signals.
         ASTU_CREATE_AND_ADD_SERVICE( WindowStateSignalService );
 
-        // Mapps game actions and input axis.
+        // Maps game actions and input axis.
         ASTU_CREATE_AND_ADD_SERVICE( InputMappingService );
 
         // Sends string signals, e.g, used to switch game states.
