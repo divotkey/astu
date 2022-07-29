@@ -13,7 +13,7 @@
 namespace astu {
 
     /**
-     * A timer class to be used as stop watch measuring time intervals.
+     * A hTimer class to be used as stop watch measuring time intervals.
      *
 	 * @ingroup misc_group
      */
@@ -26,25 +26,25 @@ namespace astu {
         Timer();
 
         /**
-         * Starts the timer.
+         * Starts the hTimer.
          *
-         * If this timer is already running, calling this method has no effect.
+         * If this hTimer is already running, calling this method has no effect.
          */
         void Start();
 
         /**
-         * Stops the timer.
+         * Stops the hTimer.
          *
-         * If this timer is already stopped, calling this method has no effect.
+         * If this hTimer is already stopped, calling this method has no effect.
          */
         void Stop();
 
         void Resume();
 
         /**
-         * Returns whether this timer is currently running.
+         * Returns whether this hTimer is currently running.
          *
-         * @return `true` if this timer has been started
+         * @return `true` if this hTimer has been started
          */
         bool IsRunning() const {
             return running;
@@ -66,13 +66,13 @@ namespace astu {
 
 
     private:
-        /** Indicates whether this timer is currently running. */
+        /** Indicates whether this hTimer is currently running. */
         bool running;
 
-        /** The point in time this timer has been started. */
+        /** The point in time this hTimer has been started. */
         std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
 
-        /** The elapsed time since this timer has been started. */
+        /** The elapsed time since this hTimer has been started. */
         std::chrono::nanoseconds elapsed;
     };
 

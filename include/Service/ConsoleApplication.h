@@ -9,10 +9,12 @@
 
 // Local includes
 #include "Service/SignalService.h"
+#include "OSAL/IThreadSleep.h"
 
 // C++ Standard Library includes
 #include <string>
 #include <chrono>
+#include <memory>
 #include <map>
 
 namespace astu {
@@ -242,6 +244,9 @@ protected:
         /** Property table for boolean values. */
         std::map<std::string, bool> boolProperties;
 
+        /** Used to suspend the current thread. */
+        std::unique_ptr<IThreadSleep> sleeper;
+
         /** The target delay per cycle to reach certain targeted updates per second. */
         std::chrono::nanoseconds targetDelay;
 
@@ -260,14 +265,8 @@ protected:
 
         /**
          * Runs the application loop, maintaining a certain update rate.
-         *
-         * This method governs the update rate by using C++ standard sleep method.
-         * This is not as precise as governing the update rate with busy wait CPU cycles,
-         * but will relieve the CPU and lower the power consumption.
          */
-        void LoopWithSpinLock();
-
-        void WaitWithSpinLock(std::chrono::nanoseconds duration);
+        void RunLoop();
     };
 
 } // end of namespace

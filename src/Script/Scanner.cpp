@@ -229,7 +229,7 @@ namespace astu {
                 break;
 
             case Type::EMIT_ERROR:
-                throw ScannerError(parent.errorMessages.at(data1), parent.newLines.size() + 1);
+                throw ScannerError(parent.errorMessages.at(data1), static_cast<unsigned int>(parent.newLines.size() + 1));
                 break;
 
             default:

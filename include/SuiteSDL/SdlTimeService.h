@@ -17,7 +17,7 @@
 namespace astu {
 
     /**
-     * Uses the SDL high performance timer to measure elapsed time.
+     * Uses the SDL high performance hTimer to measure elapsed time.
      * 
      * @ingroup sdl_group 
      */

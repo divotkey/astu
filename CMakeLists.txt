@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Fri Jul 29 07:41:50 CEST 2022 with SWORD Interpreter 1.9.1
+# Generated Fri Jul 29 11:15:13 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -77,6 +77,11 @@ list(APPEND astu_SOURCES
 	include/Math/Transform2.h 
 	include/Math/Vector2.h 
 	include/Math/Vector3.h 
+
+	# Module: OSAL
+	src/OSAL/SpinLockSleep.cpp 
+	include/OSAL/IThreadSleep.h 
+	include/OSAL/SpinLockSleep.h 
 
 	# Module: Graphics
 	src/Graphics/AstuGraphics.cpp 
@@ -445,6 +450,26 @@ if(ASTU_USE_JACK)
 endif(ASTU_USE_JACK)    
              
 #################################################
+####### Operating System Specific
+#################################################
+
+IF (WIN32)
+	# Windows Specific
+	list(APPEND astu_SOURCES
+		src/XOS/Windows/XosSleep.cpp 
+		src/XOS/Windows/XosSleep.h 
+	)
+ELSEIF(APPLE)
+	# Apple Specific
+ELSE()
+	# Linux Specific
+	list(APPEND astu_SOURCES
+		src/XOS/Linux/XosSleep.cpp 
+		src/XOS/Linux/XosSleep.h 
+	)
+ENDIF()
+
+#################################################
 ####### Configuration File
 #################################################
 
@@ -466,6 +491,14 @@ target_include_directories(
 		astu PUBLIC "${PROJECT_SOURCE_DIR}/include"
 	)
 
+# Add dependencies for Operating System specific files and libraries
+	IF (WIN32)
+		target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/XOS/Windows)
+	ELSEIF(APPLE)
+		# not implemented yet
+	ELSE()
+		target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/XOS/Linux)
+	ENDIF()
 # Add dependencies for SDL
 if(ASTU_USE_SDL)
 	IF (WIN32)
@@ -507,6 +540,14 @@ target_include_directories(
 		astuShared PUBLIC "${PROJECT_SOURCE_DIR}/include"
 	)
 
+# Add dependencies for Operating System specific files and libraries
+	IF (WIN32)
+		target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/XOS/Windows)
+	ELSEIF(APPLE)
+		# not implemented yet
+	ELSE()
+		target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/XOS/Linux)
+	ENDIF()
 # Add dependencies for SDL
 if(ASTU_USE_SDL)
 	IF (WIN32)

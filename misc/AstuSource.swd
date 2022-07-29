@@ -7,7 +7,7 @@ privateDir = "src";
 publicDir = "include";
 srcVar = "astu_SOURCES";
 coreModules = [
-	"Util", "Math", "Graphics",
+	"Util", "Math", "OSAL", "Graphics",
 	"Audio", "ECS", "Input", 
 	"Service", "Suite2D", "Ai",
 	"FSM",
@@ -16,6 +16,7 @@ coreModules = [
 	];
 sdlModules = ["SuiteSDL"];
 jackModules = ["SuiteJack"];
+xosModules = "XOS";
 
 // Emit CMake file
 rootDir = GetInputDirectory();
@@ -23,6 +24,7 @@ EmitProlog();
 EmitCoreFiles();
 EmitOptionalFiles("Sdl", sdlModules, "Build the ASTU library with support for SDL2");
 EmitOptionalFiles("Jack", jackModules, "Build the ASTU library with support for JACK Audio Connection Kit");
+EmitXosFiles();
 EmitEpilog();
 
 store(0, rootDir + "CMakeLists.txt");
@@ -104,6 +106,19 @@ function EmitIncludesAndLinkLibraries(targetName)
 
 	// This is currently not tested for shared libraries and probably not working.
 	§:
+	# Add dependencies for Operating System specific files and libraries
+		IF (WIN32)
+			target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/§{xosModules}/Windows)
+		ELSEIF(APPLE)
+			# not implemented yet
+		ELSE()
+			target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/§{xosModules}/Linux)
+		ENDIF()
+	:§
+
+
+	// This is currently not tested for shared libraries and probably not working.
+	§:
 	# Add dependencies for SDL
 	if(§{GetOptionName("Sdl")})
 		IF (WIN32)
@@ -132,6 +147,44 @@ function EmitIncludesAndLinkLibraries(targetName)
 		ENDIF()
 	endif(§{GetOptionName("Jack")})    
              
+	:§
+}
+
+/**
+ * Emits operating system dependent files.
+ */ 
+function EmitXosFiles()
+{
+	EmitHeader("Operating System Specific");
+
+	§:
+	IF (WIN32)
+		# Windows Specific
+		list(APPEND astu_SOURCES
+	:§
+	indent(1);
+	EmitFiles(rootDir + privateDir + filePathSeparator() + xosModules + filePathSeparator() + "Windows", true);
+	indent(-1);
+
+	§:
+		)
+	ELSEIF(APPLE)
+		# Apple Specific
+	:§
+	
+	§:
+	ELSE()
+		# Linux Specific
+		list(APPEND astu_SOURCES
+	:§
+	indent(1);
+	EmitFiles(rootDir + privateDir + filePathSeparator() + xosModules + filePathSeparator() + "Linux", true);
+	indent(-1);
+
+	§:
+		)
+	ENDIF()
+
 	:§
 }
 
@@ -200,6 +253,7 @@ function EmitOptionalFiles(option, modules, text)
              
 	:§
 }
+
 
 function EmitModules(modules)
 {

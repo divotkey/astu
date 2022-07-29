@@ -17,7 +17,7 @@
 namespace astu {
 
     /**
-     * Interface for an services which manages application windows.
+     * Interface for an services which manages application XOS.
      * 
      * @ingroup srv_group
      */

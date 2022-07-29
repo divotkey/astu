@@ -812,18 +812,18 @@ int ClearBit(int value, int bit);
  * This module uses an internal representation of the currently measured time.
  * According to API-Level 0 this module does not expose any functions or
  * structures from the used C++ Standard Library. However, the current
- * implementation uses the high performance timer offered by the `<chrono>` 
+ * implementation uses the high performance hTimer offered by the `<chrono>`
  * header of the C++ Standard library.
  * 
- * This module offers only one timer and hence cannot be used to
+ * This module offers only one hTimer and hence cannot be used to
  * measure the duration of calculation at once.
  * @{
  */
 
 /**
- * Starts the internal timer.
+ * Starts the internal hTimer.
  * When this function is called, the internal time measurement is reset to
- * zero and the timer is started.
+ * zero and the hTimer is started.
  * This function is used in combination with StopTimer().
  * 
  * @sa GetMilliseconds()
@@ -848,8 +848,8 @@ int ClearBit(int value, int bit);
 void StartTimer();
 
 /**
- * Stops the internal timer.
- * Calling this function will stop the internal timer.
+ * Stops the internal hTimer.
+ * Calling this function will stop the internal hTimer.
  * 
  * @sa StartTimer()
  */

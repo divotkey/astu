@@ -6,11 +6,14 @@
 
 // Local includes
 #include "Service/ConsoleApplication.h"
-#include "AstUtils.h"
 #include "Service/UpdateService.h"
 #include "Service/TaskService.h"
 #include "Service/StateService.h"
 #include "Service/ConsoleTimeService.h"
+#include "OSAL/SpinLockSleep.h"
+#include "Util/VersionInfo.h"
+#include "Util/Timer.h"
+#include "XosSleep.h"
 
 // C++ Standard Library includes
 #include <string>
@@ -34,6 +37,8 @@ namespace astu {
 
     ConsoleApplication::ConsoleApplication()
         : terminated(true)
+        //, sleeper(make_unique<SpinLockSleep>())
+        , sleeper(make_unique<XosSleep>())
     {
         // Configure predefined flags and properties.
         SetFlag(SHOW_APP_INFO_PROP);
@@ -70,9 +75,9 @@ namespace astu {
 
         if (IsFlagSet("SHOW_ASTU_VERSION", false)) {
             cout << endl;
-            SayVersion();
+            cout << GetVersionInfo << endl;
             if (IsFlagSet("SHOW_ASTU_COPYRIGHT", true)) {
-                SayCopyright();
+                cout << GetCopyrightInfo() << endl;
             }
         }
 
@@ -112,7 +117,7 @@ namespace astu {
             ASTU_STARTUP_SERVICES();
 
             terminated = false;
-            LoopWithSpinLock();
+            RunLoop();
 
             ASTU_SHUTDOWN_SERVICES();
             ASTU_SERVICE(SignalService<string>).RemoveListener(*this);
@@ -193,7 +198,7 @@ namespace astu {
     /////// Method related to application loop
     /////////////////////////////////////////////////
 
-    void ConsoleApplication::LoopWithSpinLock() {
+    void ConsoleApplication::RunLoop() {
 
         auto & updater = ASTU_SERVICE(UpdateService);
         auto & timeSrv = ASTU_SERVICE(TimeService);
@@ -207,18 +212,17 @@ namespace astu {
 
             auto elapsed = chrono::duration_cast<chrono::nanoseconds>(cycleClock - nextClock);
             if (elapsed < targetDelay) {
-                WaitWithSpinLock(targetDelay - elapsed);
+                //cout << "sleeping " << (targetDelay - elapsed).count() << " ("<< (targetDelay - elapsed).count() / 1e9 * 1000 << " ms)" << endl;
+                sleeper->Sleep(targetDelay - elapsed);
+            } else {
+                cout << "skipped" << endl;
             }
             prevClock = nextClock;
 
             // Note: deltaTime is currently not used, but might be useful to set the delta time for the
             // time service instead of measuring the delta time within the time service.
+            //cout << "dt = " << deltaTime << endl;
         }
-    }
-
-    void ConsoleApplication::WaitWithSpinLock(std::chrono::nanoseconds duration) {
-        auto targetTime = chrono::high_resolution_clock ::now() + duration;
-        while (targetTime > chrono::high_resolution_clock::now());
     }
 
     void ConsoleApplication::Terminate() {
