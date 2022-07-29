@@ -24,14 +24,14 @@ namespace astu {
 
     void Timer::Stop() {
         if (!running) return;
-        elapsed = chrono::steady_clock::now() - startTime;
+        elapsed = chrono::high_resolution_clock::now() - startTime;
         running = false;
     }
 
     void Timer::Resume() {
         if (!running) return;
         running = true;
-        startTime = chrono::steady_clock::now();
+        startTime = chrono::high_resolution_clock::now();
     }
 
     unsigned int Timer::GetMilliseconds() const {
