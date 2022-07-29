@@ -11,7 +11,7 @@
 namespace astu {
 
     const std::string kCopyrightHolder  = "AST Utilities Development Team";
-    const std::string kCopyrightYear    = "2020, 2021";
+    const std::string kCopyrightYear    = "2020 - 2022";
 
     std::string GetVersionInfo()
     {

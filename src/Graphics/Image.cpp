@@ -178,7 +178,7 @@ namespace astu {
     }
 
     double Image::GetAverageRegionBrightness(int x, int y, int w, int h) {
-        double sum;
+        double sum = 0.0;
 
         for (int j = 0; j < h; ++j) {
             for (int i = 0; i < w; ++i) {

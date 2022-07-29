@@ -7,13 +7,17 @@
 
 #pragma once
 
+// Local includes
+#include "Service/SignalService.h"
+
 // C++ Standard Library includes
 #include <string>
+#include <chrono>
 #include <map>
 
 namespace astu {
 
-    class ConsoleApplication {
+class ConsoleApplication : public ISignalListener<std::string> {
     public:
 
         /** Predefined string property name defining the application name. */
@@ -27,6 +31,9 @@ namespace astu {
 
         /** Predefined string property name defining the application copyright holder. */
         static const std::string COPYRIGHT_HOLDER_PROP;
+
+        /** Predefined string property name defining whether application info should be printed. */
+        static const std::string SHOW_APP_INFO_PROP;
 
         /**
          * Constructor.
@@ -118,6 +125,20 @@ namespace astu {
         std::string GetInfoString() const;
 
         /**
+         * Sets the updates per seconds this application should do.
+         *
+         * @param ups updates per second
+         */
+        void SetUpdatesPerSecond(double ups);
+
+        /**
+         * Returns the updates per second this application is supposed to do.
+         *
+         * @return updates per second
+         */
+        double GetUpdatesPerSecond() const;
+
+        /**
          * Starts all services and runs the main loop of this application.
          *
          * @return zero if the application has terminated successfully
@@ -194,7 +215,15 @@ namespace astu {
          */
         bool HasFlag(const std::string& name) const;
 
-    protected:
+        /**
+         * Schedules the termination of this application.
+         */
+        void Terminate();
+
+        // Inherited via ISignalListener<std::string>
+        virtual bool OnSignal(const std::string & signal) override;
+
+protected:
 
         /**
          * Configures services according to application specific settings.
@@ -213,6 +242,12 @@ namespace astu {
         /** Property table for boolean values. */
         std::map<std::string, bool> boolProperties;
 
+        /** The target delay per cycle to reach certain targeted updates per second. */
+        std::chrono::nanoseconds targetDelay;
+
+        /** Indicates that this application has been terminated ans scheduled to stop running. */
+        bool terminated;
+
         /**
          * Adds required core services.
          */
@@ -222,6 +257,17 @@ namespace astu {
          * Prints version information to the terminal.
          */
         void PrintVersionInfo();
+
+        /**
+         * Runs the application loop, maintaining a certain update rate.
+         *
+         * This method governs the update rate by using C++ standard sleep method.
+         * This is not as precise as governing the update rate with busy wait CPU cycles,
+         * but will relieve the CPU and lower the power consumption.
+         */
+        void LoopWithSpinLock();
+
+        void WaitWithSpinLock(std::chrono::nanoseconds duration);
     };
 
 } // end of namespace

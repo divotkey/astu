@@ -472,7 +472,7 @@ namespace astu {
     class WindowState {
     public:
     
-        /** The possile types of this window signal. */
+        /** The possible types of this window signal. */
         enum class Type {CLOSE, MINIMIZED, MAXIMIZED, SHOWN};
 
         /** The type if this window signal. */
@@ -498,7 +498,6 @@ namespace astu {
      * @ingroup input_group
      */
     using WindowStateSignalService = SignalService<WindowState>;
-
 
     /////////////////////////////////////////////////
     /////// Drag and Drop

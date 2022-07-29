@@ -70,7 +70,7 @@ namespace astu {
         bool running;
 
         /** The point in time this timer has been started. */
-        std::chrono::time_point<std::chrono::steady_clock> startTime;
+        std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
 
         /** The elapsed time since this timer has been started. */
         std::chrono::nanoseconds elapsed;

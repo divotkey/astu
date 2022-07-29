@@ -19,7 +19,7 @@ namespace astu {
         if (running) return;
         running = true;
         elapsed = std::chrono::milliseconds::zero();
-        startTime = chrono::steady_clock::now();
+        startTime = chrono::high_resolution_clock::now();
     }
 
     void Timer::Stop() {
@@ -36,7 +36,7 @@ namespace astu {
 
     unsigned int Timer::GetMilliseconds() const {
         if (running) {
-            auto delta = chrono::steady_clock::now() - startTime;
+            auto delta = chrono::high_resolution_clock::now() - startTime;
             return static_cast<unsigned int>(chrono::duration_cast<chrono::milliseconds>(elapsed + delta).count());
         }
 
@@ -45,7 +45,7 @@ namespace astu {
 
     unsigned int Timer::GetMicroseconds() const {
         if (running) {
-            auto delta = chrono::steady_clock::now() - startTime;
+            auto delta = chrono::high_resolution_clock::now() - startTime;
             return static_cast<unsigned int>(chrono::duration_cast<chrono::microseconds>(elapsed + delta).count());
         }
 

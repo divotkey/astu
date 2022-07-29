@@ -335,7 +335,7 @@ namespace velox {
     }
 
     unsigned int Source::NotPeeked::GetLineNumber(const Source& source) const {
-        return source.scanner->GetTokenLine();
+        return static_cast<unsigned int>(source.scanner->GetTokenLine());
     }
 
     /////////////////////////////////////////////////
