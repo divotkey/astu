@@ -220,166 +220,166 @@ list(APPEND astu_SOURCES
 	include/Script/ScannerError.h 
 
 	# Module: Velox
-	include/Velox/Interpreter/IMemoryManager.h 
-	include/Velox/Interpreter/Interpreter.cpp 
-	include/Velox/Interpreter/Interpreter.h 
-	include/Velox/Interpreter/InterpreterActualParameterList.cpp 
-	include/Velox/Interpreter/InterpreterActualParameterList.h 
-	include/Velox/Interpreter/InterpreterArithmeticOperation.cpp 
-	include/Velox/Interpreter/InterpreterArithmeticOperation.h 
-	include/Velox/Interpreter/InterpreterAssignmentOperator.cpp 
-	include/Velox/Interpreter/InterpreterAssignmentOperator.h 
-	include/Velox/Interpreter/InterpreterClass.cpp 
-	include/Velox/Interpreter/InterpreterClass.h 
-	include/Velox/Interpreter/InterpreterClassDefinition.cpp 
-	include/Velox/Interpreter/InterpreterClassDefinition.h 
-	include/Velox/Interpreter/InterpreterColor.cpp 
-	include/Velox/Interpreter/InterpreterColor.h 
-	include/Velox/Interpreter/InterpreterConstructorCall.cpp 
-	include/Velox/Interpreter/InterpreterConstructorCall.h 
-	include/Velox/Interpreter/InterpreterError.h 
-	include/Velox/Interpreter/InterpreterExpression.cpp 
-	include/Velox/Interpreter/InterpreterExpression.h 
-	include/Velox/Interpreter/InterpreterExpressionAssignment.cpp 
-	include/Velox/Interpreter/InterpreterExpressionAssignment.h 
-	include/Velox/Interpreter/InterpreterExpressionListAccess.cpp 
-	include/Velox/Interpreter/InterpreterExpressionListAccess.h 
-	include/Velox/Interpreter/InterpreterExpressionMemberAccess.cpp 
-	include/Velox/Interpreter/InterpreterExpressionMemberAccess.h 
-	include/Velox/Interpreter/InterpreterExpressionNew.cpp 
-	include/Velox/Interpreter/InterpreterExpressionNew.h 
-	include/Velox/Interpreter/InterpreterExpressionSimpleName.cpp 
-	include/Velox/Interpreter/InterpreterExpressionSimpleName.h 
-	include/Velox/Interpreter/InterpreterExpressionUnaryMinus.cpp 
-	include/Velox/Interpreter/InterpreterExpressionUnaryMinus.h 
-	include/Velox/Interpreter/InterpreterExpressionUndefined.cpp 
-	include/Velox/Interpreter/InterpreterExpressionUndefined.h 
-	include/Velox/Interpreter/InterpreterFormalParameterList.cpp 
-	include/Velox/Interpreter/InterpreterFormalParameterList.h 
-	include/Velox/Interpreter/InterpreterFunction.cpp 
-	include/Velox/Interpreter/InterpreterFunction.h 
-	include/Velox/Interpreter/InterpreterFunctionCall.cpp 
-	include/Velox/Interpreter/InterpreterFunctionCall.h 
-	include/Velox/Interpreter/InterpreterFunctionDefinition.cpp 
-	include/Velox/Interpreter/InterpreterFunctionDefinition.h 
-	include/Velox/Interpreter/InterpreterFunctionNoParameter.cpp 
-	include/Velox/Interpreter/InterpreterFunctionNoParameter.h 
-	include/Velox/Interpreter/InterpreterFunctionOneParameter.cpp 
-	include/Velox/Interpreter/InterpreterFunctionOneParameter.h 
-	include/Velox/Interpreter/InterpreterFunctionPrint.cpp 
-	include/Velox/Interpreter/InterpreterFunctionPrint.h 
-	include/Velox/Interpreter/InterpreterFunctionScript.cpp 
-	include/Velox/Interpreter/InterpreterFunctionScript.h 
-	include/Velox/Interpreter/InterpreterFunctionThreeParameter.cpp 
-	include/Velox/Interpreter/InterpreterFunctionThreeParameter.h 
-	include/Velox/Interpreter/InterpreterFunctionTwoParameter.cpp 
-	include/Velox/Interpreter/InterpreterFunctionTwoParameter.h 
-	include/Velox/Interpreter/InterpreterInstantDefinition.cpp 
-	include/Velox/Interpreter/InterpreterInstantDefinition.h 
-	include/Velox/Interpreter/InterpreterInstantRealization.cpp 
-	include/Velox/Interpreter/InterpreterInstantRealization.h 
-	include/Velox/Interpreter/InterpreterLiteralBoolean.cpp 
-	include/Velox/Interpreter/InterpreterLiteralBoolean.h 
-	include/Velox/Interpreter/InterpreterLiteralColor.cpp 
-	include/Velox/Interpreter/InterpreterLiteralColor.h 
-	include/Velox/Interpreter/InterpreterLiteralInteger.cpp 
-	include/Velox/Interpreter/InterpreterLiteralInteger.h 
-	include/Velox/Interpreter/InterpreterLiteralList.cpp 
-	include/Velox/Interpreter/InterpreterLiteralList.h 
-	include/Velox/Interpreter/InterpreterLiteralReal.cpp 
-	include/Velox/Interpreter/InterpreterLiteralReal.h 
-	include/Velox/Interpreter/InterpreterLiteralString.cpp 
-	include/Velox/Interpreter/InterpreterLiteralString.h 
-	include/Velox/Interpreter/InterpreterLogicalOperation.cpp 
-	include/Velox/Interpreter/InterpreterLogicalOperation.h 
-	include/Velox/Interpreter/InterpreterPostIncrement.cpp 
-	include/Velox/Interpreter/InterpreterPostIncrement.h 
-	include/Velox/Interpreter/InterpreterPreIncrement.cpp 
-	include/Velox/Interpreter/InterpreterPreIncrement.h 
-	include/Velox/Interpreter/InterpreterRelationalOperation.cpp 
-	include/Velox/Interpreter/InterpreterRelationalOperation.h 
-	include/Velox/Interpreter/InterpreterReturnStatement.cpp 
-	include/Velox/Interpreter/InterpreterReturnStatement.h 
-	include/Velox/Interpreter/InterpreterStatement.h 
-	include/Velox/Interpreter/InterpreterStatementBlock.cpp 
-	include/Velox/Interpreter/InterpreterStatementBlock.h 
-	include/Velox/Interpreter/InterpreterStatementBreak.cpp 
-	include/Velox/Interpreter/InterpreterStatementBreak.h 
-	include/Velox/Interpreter/InterpreterStatementContinue.cpp 
-	include/Velox/Interpreter/InterpreterStatementContinue.h 
-	include/Velox/Interpreter/InterpreterStatementDoWhile.cpp 
-	include/Velox/Interpreter/InterpreterStatementDoWhile.h 
-	include/Velox/Interpreter/InterpreterStatementFor.cpp 
-	include/Velox/Interpreter/InterpreterStatementFor.h 
-	include/Velox/Interpreter/InterpreterStatementGlobal.cpp 
-	include/Velox/Interpreter/InterpreterStatementGlobal.h 
-	include/Velox/Interpreter/InterpreterStatementIf.cpp 
-	include/Velox/Interpreter/InterpreterStatementIf.h 
-	include/Velox/Interpreter/InterpreterStatementLoop.cpp 
-	include/Velox/Interpreter/InterpreterStatementLoop.h 
-	include/Velox/Interpreter/InterpreterStatementNop.cpp 
-	include/Velox/Interpreter/InterpreterStatementNop.h 
-	include/Velox/Interpreter/InterpreterStatementWhile.cpp 
-	include/Velox/Interpreter/InterpreterStatementWhile.h 
-	include/Velox/Interpreter/InterpreterVector.cpp 
-	include/Velox/Interpreter/InterpreterVector.h 
-	include/Velox/Interpreter/Item.cpp 
-	include/Velox/Interpreter/Item.h 
-	include/Velox/Interpreter/ItemArithmeticOperator.cpp 
-	include/Velox/Interpreter/ItemRelationalOperator.cpp 
-	include/Velox/Interpreter/ItemState.cpp 
-	include/Velox/Interpreter/ItemState.h 
-	include/Velox/Interpreter/ItemStateBool.cpp 
-	include/Velox/Interpreter/ItemStateBool.h 
-	include/Velox/Interpreter/ItemStateColor.cpp 
-	include/Velox/Interpreter/ItemStateColor.h 
-	include/Velox/Interpreter/ItemStateFunction.cpp 
-	include/Velox/Interpreter/ItemStateFunction.h 
-	include/Velox/Interpreter/ItemStateInteger.cpp 
-	include/Velox/Interpreter/ItemStateInteger.h 
-	include/Velox/Interpreter/ItemStateList.cpp 
-	include/Velox/Interpreter/ItemStateList.h 
-	include/Velox/Interpreter/ItemStateObject.cpp 
-	include/Velox/Interpreter/ItemStateObject.h 
-	include/Velox/Interpreter/ItemStateReal.cpp 
-	include/Velox/Interpreter/ItemStateReal.h 
-	include/Velox/Interpreter/ItemStateRealMember.h 
-	include/Velox/Interpreter/ItemStateReference.cpp 
-	include/Velox/Interpreter/ItemStateReference.h 
-	include/Velox/Interpreter/ItemStateString.cpp 
-	include/Velox/Interpreter/ItemStateString.h 
-	include/Velox/Interpreter/ItemStateUndefined.cpp 
-	include/Velox/Interpreter/ItemStateUndefined.h 
-	include/Velox/Interpreter/ItemStateVector2.cpp 
-	include/Velox/Interpreter/ItemStateVector2.h 
-	include/Velox/Interpreter/ItemStateWithSubItems.cpp 
-	include/Velox/Interpreter/ItemStateWithSubItems.h 
-	include/Velox/Interpreter/ItemType.h 
-	include/Velox/Interpreter/MemoryManager.cpp 
-	include/Velox/Interpreter/MemoryManager.h 
-	include/Velox/Interpreter/ObjectType.cpp 
-	include/Velox/Interpreter/ObjectType.h 
-	include/Velox/Interpreter/Operators.h 
-	include/Velox/Interpreter/Scope.cpp 
-	include/Velox/Interpreter/Scope.h 
-	include/Velox/Interpreter/ScriptContext.cpp 
-	include/Velox/Interpreter/ScriptContext.h 
-	include/Velox/Interpreter/SimpleMemoryManager.cpp 
-	include/Velox/Interpreter/SimpleMemoryManager.h 
-	include/Velox/Parser/Parser.cpp 
-	include/Velox/Parser/Parser.h 
-	include/Velox/Parser/ParserError.h 
-	include/Velox/Parser/Source.cpp 
-	include/Velox/Parser/Source.h 
-	include/Velox/Parser/SourceFile.cpp 
-	include/Velox/Parser/SourceFile.h 
-	include/Velox/Parser/SourceString.cpp 
-	include/Velox/Parser/SourceString.h 
-	include/Velox/Parser/Token.cpp 
-	include/Velox/Parser/Token.h 
-	include/Velox/Parser/TokenType.h 
-	include/Velox/Parser/VeloxScanner.cpp 
-	include/Velox/Parser/VeloxScanner.h 
+	# include/Velox/Interpreter/IMemoryManager.h 
+	# include/Velox/Interpreter/Interpreter.cpp 
+	# include/Velox/Interpreter/Interpreter.h 
+	# include/Velox/Interpreter/InterpreterActualParameterList.cpp 
+	# include/Velox/Interpreter/InterpreterActualParameterList.h 
+	# include/Velox/Interpreter/InterpreterArithmeticOperation.cpp 
+	# include/Velox/Interpreter/InterpreterArithmeticOperation.h 
+	# include/Velox/Interpreter/InterpreterAssignmentOperator.cpp 
+	# include/Velox/Interpreter/InterpreterAssignmentOperator.h 
+	# include/Velox/Interpreter/InterpreterClass.cpp 
+	# include/Velox/Interpreter/InterpreterClass.h 
+	# include/Velox/Interpreter/InterpreterClassDefinition.cpp 
+	# include/Velox/Interpreter/InterpreterClassDefinition.h 
+	# include/Velox/Interpreter/InterpreterColor.cpp 
+	# include/Velox/Interpreter/InterpreterColor.h 
+	# include/Velox/Interpreter/InterpreterConstructorCall.cpp 
+	# include/Velox/Interpreter/InterpreterConstructorCall.h 
+	# include/Velox/Interpreter/InterpreterError.h 
+	# include/Velox/Interpreter/InterpreterExpression.cpp 
+	# include/Velox/Interpreter/InterpreterExpression.h 
+	# include/Velox/Interpreter/InterpreterExpressionAssignment.cpp 
+	# include/Velox/Interpreter/InterpreterExpressionAssignment.h 
+	# include/Velox/Interpreter/InterpreterExpressionListAccess.cpp 
+	# include/Velox/Interpreter/InterpreterExpressionListAccess.h 
+	# include/Velox/Interpreter/InterpreterExpressionMemberAccess.cpp 
+	# include/Velox/Interpreter/InterpreterExpressionMemberAccess.h 
+	# include/Velox/Interpreter/InterpreterExpressionNew.cpp 
+	# include/Velox/Interpreter/InterpreterExpressionNew.h 
+	# include/Velox/Interpreter/InterpreterExpressionSimpleName.cpp 
+	# include/Velox/Interpreter/InterpreterExpressionSimpleName.h 
+	# include/Velox/Interpreter/InterpreterExpressionUnaryMinus.cpp 
+	# include/Velox/Interpreter/InterpreterExpressionUnaryMinus.h 
+	# include/Velox/Interpreter/InterpreterExpressionUndefined.cpp 
+	# include/Velox/Interpreter/InterpreterExpressionUndefined.h 
+	# include/Velox/Interpreter/InterpreterFormalParameterList.cpp 
+	# include/Velox/Interpreter/InterpreterFormalParameterList.h 
+	# include/Velox/Interpreter/InterpreterFunction.cpp 
+	# include/Velox/Interpreter/InterpreterFunction.h 
+	# include/Velox/Interpreter/InterpreterFunctionCall.cpp 
+	# include/Velox/Interpreter/InterpreterFunctionCall.h 
+	# include/Velox/Interpreter/InterpreterFunctionDefinition.cpp 
+	# include/Velox/Interpreter/InterpreterFunctionDefinition.h 
+	# include/Velox/Interpreter/InterpreterFunctionNoParameter.cpp 
+	# include/Velox/Interpreter/InterpreterFunctionNoParameter.h 
+	# include/Velox/Interpreter/InterpreterFunctionOneParameter.cpp 
+	# include/Velox/Interpreter/InterpreterFunctionOneParameter.h 
+	# include/Velox/Interpreter/InterpreterFunctionPrint.cpp 
+	# include/Velox/Interpreter/InterpreterFunctionPrint.h 
+	# include/Velox/Interpreter/InterpreterFunctionScript.cpp 
+	# include/Velox/Interpreter/InterpreterFunctionScript.h 
+	# include/Velox/Interpreter/InterpreterFunctionThreeParameter.cpp 
+	# include/Velox/Interpreter/InterpreterFunctionThreeParameter.h 
+	# include/Velox/Interpreter/InterpreterFunctionTwoParameter.cpp 
+	# include/Velox/Interpreter/InterpreterFunctionTwoParameter.h 
+	# include/Velox/Interpreter/InterpreterInstantDefinition.cpp 
+	# include/Velox/Interpreter/InterpreterInstantDefinition.h 
+	# include/Velox/Interpreter/InterpreterInstantRealization.cpp 
+	# include/Velox/Interpreter/InterpreterInstantRealization.h 
+	# include/Velox/Interpreter/InterpreterLiteralBoolean.cpp 
+	# include/Velox/Interpreter/InterpreterLiteralBoolean.h 
+	# include/Velox/Interpreter/InterpreterLiteralColor.cpp 
+	# include/Velox/Interpreter/InterpreterLiteralColor.h 
+	# include/Velox/Interpreter/InterpreterLiteralInteger.cpp 
+	# include/Velox/Interpreter/InterpreterLiteralInteger.h 
+	# include/Velox/Interpreter/InterpreterLiteralList.cpp 
+	# include/Velox/Interpreter/InterpreterLiteralList.h 
+	# include/Velox/Interpreter/InterpreterLiteralReal.cpp 
+	# include/Velox/Interpreter/InterpreterLiteralReal.h 
+	# include/Velox/Interpreter/InterpreterLiteralString.cpp 
+	# include/Velox/Interpreter/InterpreterLiteralString.h 
+	# include/Velox/Interpreter/InterpreterLogicalOperation.cpp 
+	# include/Velox/Interpreter/InterpreterLogicalOperation.h 
+	# include/Velox/Interpreter/InterpreterPostIncrement.cpp 
+	# include/Velox/Interpreter/InterpreterPostIncrement.h 
+	# include/Velox/Interpreter/InterpreterPreIncrement.cpp 
+	# include/Velox/Interpreter/InterpreterPreIncrement.h 
+	# include/Velox/Interpreter/InterpreterRelationalOperation.cpp 
+	# include/Velox/Interpreter/InterpreterRelationalOperation.h 
+	# include/Velox/Interpreter/InterpreterReturnStatement.cpp 
+	# include/Velox/Interpreter/InterpreterReturnStatement.h 
+	# include/Velox/Interpreter/InterpreterStatement.h 
+	# include/Velox/Interpreter/InterpreterStatementBlock.cpp 
+	# include/Velox/Interpreter/InterpreterStatementBlock.h 
+	# include/Velox/Interpreter/InterpreterStatementBreak.cpp 
+	# include/Velox/Interpreter/InterpreterStatementBreak.h 
+	# include/Velox/Interpreter/InterpreterStatementContinue.cpp 
+	# include/Velox/Interpreter/InterpreterStatementContinue.h 
+	# include/Velox/Interpreter/InterpreterStatementDoWhile.cpp 
+	# include/Velox/Interpreter/InterpreterStatementDoWhile.h 
+	# include/Velox/Interpreter/InterpreterStatementFor.cpp 
+	# include/Velox/Interpreter/InterpreterStatementFor.h 
+	# include/Velox/Interpreter/InterpreterStatementGlobal.cpp 
+	# include/Velox/Interpreter/InterpreterStatementGlobal.h 
+	# include/Velox/Interpreter/InterpreterStatementIf.cpp 
+	# include/Velox/Interpreter/InterpreterStatementIf.h 
+	# include/Velox/Interpreter/InterpreterStatementLoop.cpp 
+	# include/Velox/Interpreter/InterpreterStatementLoop.h 
+	# include/Velox/Interpreter/InterpreterStatementNop.cpp 
+	# include/Velox/Interpreter/InterpreterStatementNop.h 
+	# include/Velox/Interpreter/InterpreterStatementWhile.cpp 
+	# include/Velox/Interpreter/InterpreterStatementWhile.h 
+	# include/Velox/Interpreter/InterpreterVector.cpp 
+	# include/Velox/Interpreter/InterpreterVector.h 
+	# include/Velox/Interpreter/Item.cpp 
+	# include/Velox/Interpreter/Item.h 
+	# include/Velox/Interpreter/ItemArithmeticOperator.cpp 
+	# include/Velox/Interpreter/ItemRelationalOperator.cpp 
+	# include/Velox/Interpreter/ItemState.cpp 
+	# include/Velox/Interpreter/ItemState.h 
+	# include/Velox/Interpreter/ItemStateBool.cpp 
+	# include/Velox/Interpreter/ItemStateBool.h 
+	# include/Velox/Interpreter/ItemStateColor.cpp 
+	# include/Velox/Interpreter/ItemStateColor.h 
+	# include/Velox/Interpreter/ItemStateFunction.cpp 
+	# include/Velox/Interpreter/ItemStateFunction.h 
+	# include/Velox/Interpreter/ItemStateInteger.cpp 
+	# include/Velox/Interpreter/ItemStateInteger.h 
+	# include/Velox/Interpreter/ItemStateList.cpp 
+	# include/Velox/Interpreter/ItemStateList.h 
+	# include/Velox/Interpreter/ItemStateObject.cpp 
+	# include/Velox/Interpreter/ItemStateObject.h 
+	# include/Velox/Interpreter/ItemStateReal.cpp 
+	# include/Velox/Interpreter/ItemStateReal.h 
+	# include/Velox/Interpreter/ItemStateRealMember.h 
+	# include/Velox/Interpreter/ItemStateReference.cpp 
+	# include/Velox/Interpreter/ItemStateReference.h 
+	# include/Velox/Interpreter/ItemStateString.cpp 
+	# include/Velox/Interpreter/ItemStateString.h 
+	# include/Velox/Interpreter/ItemStateUndefined.cpp 
+	# include/Velox/Interpreter/ItemStateUndefined.h 
+	# include/Velox/Interpreter/ItemStateVector2.cpp 
+	# include/Velox/Interpreter/ItemStateVector2.h 
+	# include/Velox/Interpreter/ItemStateWithSubItems.cpp 
+	# include/Velox/Interpreter/ItemStateWithSubItems.h 
+	# include/Velox/Interpreter/ItemType.h 
+	# include/Velox/Interpreter/MemoryManager.cpp 
+	# include/Velox/Interpreter/MemoryManager.h 
+	# include/Velox/Interpreter/ObjectType.cpp 
+	# include/Velox/Interpreter/ObjectType.h 
+	# include/Velox/Interpreter/Operators.h 
+	# include/Velox/Interpreter/Scope.cpp 
+	# include/Velox/Interpreter/Scope.h 
+	# include/Velox/Interpreter/ScriptContext.cpp 
+	# include/Velox/Interpreter/ScriptContext.h 
+	# include/Velox/Interpreter/SimpleMemoryManager.cpp 
+	# include/Velox/Interpreter/SimpleMemoryManager.h 
+	# include/Velox/Parser/Parser.cpp 
+	# include/Velox/Parser/Parser.h 
+	# include/Velox/Parser/ParserError.h 
+	# include/Velox/Parser/Source.cpp 
+	# include/Velox/Parser/Source.h 
+	# include/Velox/Parser/SourceFile.cpp 
+	# include/Velox/Parser/SourceFile.h 
+	# include/Velox/Parser/SourceString.cpp 
+	# include/Velox/Parser/SourceString.h 
+	# include/Velox/Parser/Token.cpp 
+	# include/Velox/Parser/Token.h 
+	# include/Velox/Parser/TokenType.h 
+	# include/Velox/Parser/VeloxScanner.cpp 
+	# include/Velox/Parser/VeloxScanner.h 
 
 	)
 
@@ -464,8 +464,8 @@ ELSEIF(APPLE)
 ELSE()
 	# Linux Specific
 	list(APPEND astu_SOURCES
-		src/XOS/Linux/XosSleep.cpp 
-		src/XOS/Linux/XosSleep.h 
+			XOS/Linux/XosSleep.cpp
+			XOS/Linux/XosSleep.h
 	)
 ENDIF()
 
@@ -485,20 +485,23 @@ configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 add_library(astu ${astu_SOURCES})
 
 # Set include directories for target astu
+message("PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
 target_include_directories(
-		astu PRIVATE "${PROJECT_BINARY_DIR}"
-		astu PRIVATE "${PROJECT_SOURCE_DIR}/src"
-		astu PUBLIC "${PROJECT_SOURCE_DIR}/include"
+	astu PRIVATE "${PROJECT_BINARY_DIR}"
+#	astu PRIVATE "${PROJECT_SOURCE_DIR}/XOS/Linux"
+	astu PRIVATE "${PROJECT_SOURCE_DIR}/src"
+	astu PUBLIC "${PROJECT_SOURCE_DIR}/include"
 	)
 
 # Add dependencies for Operating System specific files and libraries
-	IF (WIN32)
-		target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/XOS/Windows)
-	ELSEIF(APPLE)
-		# not implemented yet
-	ELSE()
-		target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/XOS/Linux)
-	ENDIF()
+	 IF (WIN32)
+	 	target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/XOS/Windows)
+	 ELSEIF(APPLE)
+	 	# not implemented yet
+	 ELSE()
+	 	target_include_directories(astu PRIVATE "${PROJECT_SOURCE_DIR}/XOS/Linux")
+	 ENDIF()
+
 # Add dependencies for SDL
 if(ASTU_USE_SDL)
 	IF (WIN32)
@@ -541,13 +544,14 @@ target_include_directories(
 	)
 
 # Add dependencies for Operating System specific files and libraries
-	IF (WIN32)
-		target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/XOS/Windows)
-	ELSEIF(APPLE)
-		# not implemented yet
-	ELSE()
-		target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/XOS/Linux)
-	ENDIF()
+	# IF (WIN32)
+	# 	target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/XOS/Windows)
+	# ELSEIF(APPLE)
+	# 	# not implemented yet
+	# ELSE()
+	# 	target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/XOS/Linux)
+	# ENDIF()
+
 # Add dependencies for SDL
 if(ASTU_USE_SDL)
 	IF (WIN32)

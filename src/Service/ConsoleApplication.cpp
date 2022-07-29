@@ -38,7 +38,7 @@ namespace astu {
     ConsoleApplication::ConsoleApplication()
         : terminated(true)
         //, sleeper(make_unique<SpinLockSleep>())
-        , sleeper(make_unique<XosSleep>())
+         , sleeper(make_unique<XosSleep>())
     {
         // Configure predefined flags and properties.
         SetFlag(SHOW_APP_INFO_PROP);
