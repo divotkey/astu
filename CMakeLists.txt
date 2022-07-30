@@ -494,7 +494,7 @@ configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 #################################################
 
 # Define static library target.
-add_library(astu ${astu_SOURCES} include/Network/Network.cpp include/Network/Network.h include/Network/Peer.cpp include/Network/Peer.h)
+add_library(astu ${astu_SOURCES} include/Network/Network.cpp include/Network/Network.h include/Network/Peer.cpp include/Network/Peer.h src/System/Linux/UdpSocket.cpp src/System/Linux/UdpSocket.h include/Network/IUdpSocket.h src/System/Linux/NetworkImpl.cpp src/System/Linux/NetworkImpl.h)
 
 # Set include directories for target astu
 target_include_directories(

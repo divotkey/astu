@@ -7,13 +7,25 @@
 
 #pragma once
 
+// Local includes
+#include "IUdpSocket.h"
+
+// C++ Standard Library includes
+#include <memory>
+
 namespace astu {
 
-    /**
-     * Implements a connection oriented network communication based on UDP.
-     */
     class Network {
     public:
+
+        /** Constructor. */
+        Network();
+
+        /** Destructor. */
+        ~Network();
+
+        std::unique_ptr<IUdpSocket> CreateUdpSocket();
+
     private:
 
     };
