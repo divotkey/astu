@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Sat Jul 30 07:55:25 CEST 2022 with SWORD Interpreter 1.9.1
+# Generated Sat Jul 30 09:36:08 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -150,6 +150,13 @@ list(APPEND astu_SOURCES
 	include/Input/Keyboard.h 
 	include/Input/Keys.h 
 	include/Input/Mouse.h 
+
+	# Module: Network
+	include/Network/IUdpSocket.h 
+	include/Network/Network.cpp 
+	include/Network/Network.h 
+	include/Network/Peer.cpp 
+	include/Network/Peer.h 
 
 	# Module: Service
 	src/Service/ActionSignalService.cpp 
@@ -478,6 +485,10 @@ ELSE()
 	list(APPEND astu_SOURCES
 		src/System/Linux/DeepSleep.cpp 
 		src/System/Linux/DeepSleep.h 
+		src/System/Linux/NetworkImpl.cpp 
+		src/System/Linux/NetworkImpl.h 
+		src/System/Linux/UdpSocket.cpp 
+		src/System/Linux/UdpSocket.h 
 	)
 ENDIF()
 
@@ -494,7 +505,7 @@ configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 #################################################
 
 # Define static library target.
-add_library(astu ${astu_SOURCES} include/Network/Network.cpp include/Network/Network.h include/Network/Peer.cpp include/Network/Peer.h src/System/Linux/UdpSocket.cpp src/System/Linux/UdpSocket.h include/Network/IUdpSocket.h src/System/Linux/NetworkImpl.cpp src/System/Linux/NetworkImpl.h)
+add_library(astu ${astu_SOURCES})
 
 # Set include directories for target astu
 target_include_directories(
