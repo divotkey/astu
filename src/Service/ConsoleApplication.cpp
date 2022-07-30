@@ -36,10 +36,7 @@ namespace astu {
     const string ConsoleApplication::COPYRIGHT_HOLDER_PROP  = "COPYRIGHT_HOLDER";
     const string ConsoleApplication::SHOW_APP_INFO_PROP     = "SHOW_APP_INFO";
 
-    ConsoleApplication::ConsoleApplication()
-        : terminated(true)
-        //, sleeper(make_unique<SpinLockSleep>())
-         , sleeper(make_unique<DeepSleep>())
+    ConsoleApplication::ConsoleApplication() : terminated(true)
     {
         // Configure predefined flags and properties.
         SetFlag(SHOW_APP_INFO_PROP);
