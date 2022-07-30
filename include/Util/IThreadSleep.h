@@ -12,7 +12,7 @@
 namespace astu {
 
     /**
-     * Interface for XOS specific thread suspension.
+     * Interface for OS specific thread suspension.
      */
     class IThreadSleep {
     public:

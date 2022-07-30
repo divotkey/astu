@@ -5,15 +5,19 @@
 // of contributors.
 
 // Local includes
-#include "OSAL/SpinLockSleep.h"
+#include "StdSleep.h"
+
+// C++ Standard Library includes
+#include <thread>
+
+using namespace std::this_thread;
 
 using namespace std::chrono;
 
 namespace astu {
 
-    void SpinLockSleep::Sleep(nanoseconds ns) {
-        auto targetTime = high_resolution_clock ::now() + ns;
-        while (targetTime > high_resolution_clock::now());
+    void StdSleep::Sleep(nanoseconds ns) {
+        sleep_for(ns);
     }
 
 } // end of namespace

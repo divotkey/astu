@@ -10,10 +10,11 @@
 #include "Service/TaskService.h"
 #include "Service/StateService.h"
 #include "Service/ConsoleTimeService.h"
-#include "OSAL/SpinLockSleep.h"
+#include "Util/SpinLockSleep.h"
+#include "Util/StdSleep.h"
 #include "Util/VersionInfo.h"
 #include "Util/Timer.h"
-#include "XosSleep.h"
+#include "DeepSleep.h"
 
 // C++ Standard Library includes
 #include <string>
@@ -38,7 +39,7 @@ namespace astu {
     ConsoleApplication::ConsoleApplication()
         : terminated(true)
         //, sleeper(make_unique<SpinLockSleep>())
-         , sleeper(make_unique<XosSleep>())
+         , sleeper(make_unique<DeepSleep>())
     {
         // Configure predefined flags and properties.
         SetFlag(SHOW_APP_INFO_PROP);
@@ -48,6 +49,9 @@ namespace astu {
 
         // Add core services required for all service-based applications.
         AddCoreServices();
+
+        // Set default loop mode
+        SetLoopMode(LoopMode::OSI_SLEEP);
     }
 
     void ConsoleApplication::SetUpdatesPerSecond(double ups) {
@@ -235,6 +239,29 @@ namespace astu {
         }
 
         return true;
+    }
+
+    void ConsoleApplication::SetLoopMode(ConsoleApplication::LoopMode mode) {
+        switch (mode) {
+            case LoopMode::SPIN_LOCK:
+                loopMode = LoopMode::SPIN_LOCK;
+                sleeper = make_unique<SpinLockSleep>();
+                break;
+
+            case LoopMode::OS_SLEEP:
+                loopMode = LoopMode::OS_SLEEP;
+                sleeper = make_unique<DeepSleep>();
+                break;
+
+            case LoopMode::OSI_SLEEP:
+                loopMode = LoopMode::OSI_SLEEP;
+                sleeper = make_unique<StdSleep>();
+                break;
+        }
+    }
+
+    ConsoleApplication::LoopMode ConsoleApplication::GetLoopMode() const {
+        return ConsoleApplication::LoopMode::OS_SLEEP;
     }
 
 } // end of namespace

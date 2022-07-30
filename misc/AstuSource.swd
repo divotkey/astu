@@ -1,5 +1,5 @@
 // SWORD Script: AST-Utilities, CMAKE
-// Copyright 2021 Roman Divotkey. All rights reserved.
+// Copyright 2021, 2022 Roman Divotkey. All rights reserved.
 
 // Configuration
 astuVersion = "0.11.0";
@@ -7,7 +7,7 @@ privateDir = "src";
 publicDir = "include";
 srcVar = "astu_SOURCES";
 coreModules = [
-	"Util", "Math", "OSAL", "Graphics",
+	"Util", "Math", "Graphics",
 	"Audio", "ECS", "Input", 
 	"Service", "Suite2D", "Ai",
 	"FSM",
@@ -16,7 +16,7 @@ coreModules = [
 	];
 sdlModules = ["SuiteSDL"];
 jackModules = ["SuiteJack"];
-xosModules = "XOS";
+osModules = "System";
 
 // Emit CMake file
 rootDir = GetInputDirectory();
@@ -24,7 +24,7 @@ EmitProlog();
 EmitCoreFiles();
 EmitOptionalFiles("Sdl", sdlModules, "Build the ASTU library with support for SDL2");
 EmitOptionalFiles("Jack", jackModules, "Build the ASTU library with support for JACK Audio Connection Kit");
-EmitXosFiles();
+EmitOsFiles();
 EmitEpilog();
 
 store(0, rootDir + "CMakeLists.txt");
@@ -107,13 +107,14 @@ function EmitIncludesAndLinkLibraries(targetName)
 	// This is currently not tested for shared libraries and probably not working.
 	§:
 	# Add dependencies for Operating System specific files and libraries
-		IF (WIN32)
-			target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/§{xosModules}/Windows)
-		ELSEIF(APPLE)
-			# not implemented yet
-		ELSE()
-			target_include_directories(astu PRIVATE ${PROJECT_SOURCE_DIR}/src/§{xosModules}/Linux)
-		ENDIF()
+	IF (WIN32)
+		target_include_directories(astu PRIVATE "${PROJECT_SOURCE_DIR}/src/§{osModules}/Windows")
+	ELSEIF(APPLE)
+		# not implemented yet
+	ELSE()
+		target_include_directories(astu PRIVATE "${PROJECT_SOURCE_DIR}/src/§{osModules}/Linux")
+	ENDIF()
+
 	:§
 
 
@@ -153,7 +154,7 @@ function EmitIncludesAndLinkLibraries(targetName)
 /**
  * Emits operating system dependent files.
  */ 
-function EmitXosFiles()
+function EmitOsFiles()
 {
 	EmitHeader("Operating System Specific");
 
@@ -163,7 +164,8 @@ function EmitXosFiles()
 		list(APPEND astu_SOURCES
 	:§
 	indent(1);
-	EmitFiles(rootDir + privateDir + filePathSeparator() + xosModules + filePathSeparator() + "Windows", true);
+	print("windows specific: " + rootDir + privateDir + filePathSeparator() + osModules + filePathSeparator() + "Windows");
+	EmitFiles(rootDir + privateDir + filePathSeparator() + osModules + filePathSeparator() + "Windows", true);
 	indent(-1);
 
 	§:
@@ -178,7 +180,7 @@ function EmitXosFiles()
 		list(APPEND astu_SOURCES
 	:§
 	indent(1);
-	EmitFiles(rootDir + privateDir + filePathSeparator() + xosModules + filePathSeparator() + "Linux", true);
+	EmitFiles(rootDir + privateDir + filePathSeparator() + osModules + filePathSeparator() + "Linux", true);
 	indent(-1);
 
 	§:

@@ -5,7 +5,7 @@
 // of contributors.
 
 // Local includes
-#include "XosSleep.h"
+#include "DeepSleep.h"
 
 namespace astu {
 

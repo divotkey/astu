@@ -10,7 +10,7 @@
 namespace astu {
 
     /**
-     * Describes common resolutions for application XOS.
+     * Describes common resolutions for application System.
      * 
      * @ingroup srv_group
      */

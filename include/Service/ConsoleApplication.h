@@ -9,7 +9,7 @@
 
 // Local includes
 #include "Service/SignalService.h"
-#include "OSAL/IThreadSleep.h"
+#include "Util/IThreadSleep.h"
 
 // C++ Standard Library includes
 #include <string>
@@ -21,6 +21,20 @@ namespace astu {
 
 class ConsoleApplication : public ISignalListener<std::string> {
     public:
+
+        /**
+         * Describes the different types of main loop strategies.
+         */
+        enum class LoopMode {
+            /** Uses a busy wait mechanism, using CPU to wait for the next loop cycle. */
+            SPIN_LOCK,
+
+            /** Uses a operating system dependent method to suspend the main loop thread. */
+            OS_SLEEP,
+
+            /** Uses a operating system independent method to suspend the main loop thread. */
+            OSI_SLEEP
+        };
 
         /** Predefined string property name defining the application name. */
         static const std::string APP_NAME_PROP;
@@ -46,6 +60,18 @@ class ConsoleApplication : public ISignalListener<std::string> {
          * Virtual destructor.
          */
         virtual ~ConsoleApplication() {}
+
+        /**
+         * Sets strategy how to suspend the thread within the main loop.
+         */
+        void SetLoopMode(LoopMode mode);
+
+        /**
+         * Returns the current strategy of the thread suspension.
+         *
+         * @return the current main loop strategy
+         */
+        LoopMode GetLoopMode() const;
 
         /**
          * Convenient method to retrieve the version information as string.
@@ -246,6 +272,9 @@ protected:
 
         /** Used to suspend the current thread. */
         std::unique_ptr<IThreadSleep> sleeper;
+
+        /** The currently set loop mode. */
+        LoopMode loopMode;
 
         /** The target delay per cycle to reach certain targeted updates per second. */
         std::chrono::nanoseconds targetDelay;

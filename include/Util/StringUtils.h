@@ -212,7 +212,7 @@ namespace astu {
 		// static std::string extractExtension(const std::string & s);
 
 		/**
-		 * Returns the XOS specific file path separator.
+		 * Returns the System specific file path separator.
 		 *
 		 * @return the file path separator
 		 */

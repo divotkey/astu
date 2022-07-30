@@ -5,25 +5,25 @@
 // of contributors.
 
 // Local includes
-#include "XosSleep.h"
+#include "DeepSleep.h"
 
 // C++ Standard Library includes
 #include <stdexcept>
 
 namespace astu {
 
-    XosSleep::XosSleep() {
+    DeepSleep::DeepSleep() {
         if(!(hTimer = CreateWaitableTimer(NULL, TRUE, NULL)))  {
             throw std::runtime_error("Unable to create windows hTimer");
         }
     }
 
-    XosSleep::~XosSleep() {
+    DeepSleep::~DeepSleep() {
         if (hTimer)
             CloseHandle(hTimer);
     }
 
-    void XosSleep::Sleep(std::chrono::nanoseconds ns) {
+    void DeepSleep::Sleep(std::chrono::nanoseconds ns) {
         LARGE_INTEGER li;
         li.QuadPart = -ns.count() / 100;
         if (!SetWaitableTimer(hTimer, &li, 0, NULL, NULL, FALSE)) {

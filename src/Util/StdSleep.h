@@ -7,34 +7,23 @@
 #pragma once
 
 // Local includes
-#include "OSAL/IThreadSleep.h"
-
-// Linux API includes
-#define WIN32_LEAN_AND_MEAN
-#include <time.h>
-#include <errno.h>
+#include "Util/IThreadSleep.h"
 
 namespace astu {
 
     /**
-     * Implementation of the IThreadSleep interface using Linux API.
+     * Implements the IThreadSleep interface using a busy waiting strategy.
+     * This implementation does not actually suspend the thread, but actively
+     * waits until the requested amount of time has passed.
      */
-    class XosSleep : public IThreadSleep {
+    class StdSleep : public IThreadSleep {
     public:
-
-        /**
-         * Constructor.
-         */
-        XosSleep();
-
-        /**
-         * Destructor.
-         */
-        virtual ~XosSleep();
 
         // Inherited via IThreadSleep
         virtual void Sleep(std::chrono::nanoseconds ns) override;
     };
 
 } // end of namespace
+
+
 
