@@ -19,18 +19,18 @@ namespace astu {
     /**
      * Implementation of the IThreadSleep interface using Linux API.
      */
-    class XosSleep : public IThreadSleep {
+    class DeepSleep : public IThreadSleep {
     public:
 
         /**
          * Constructor.
          */
-        XosSleep();
+        DeepSleep();
 
         /**
          * Destructor.
          */
-        virtual ~XosSleep();
+        virtual ~DeepSleep();
 
         // Inherited via IThreadSleep
         virtual void Sleep(std::chrono::nanoseconds ns) override;

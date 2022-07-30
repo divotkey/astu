@@ -9,15 +9,15 @@
 
 namespace astu {
 
-    XosSleep::XosSleep() {
+    DeepSleep::DeepSleep() {
         // Intentionally left empty.
     }
 
-    XosSleep::~XosSleep() {
+    DeepSleep::~DeepSleep() {
         // Intentionally left empty.
     }
 
-    void XosSleep::Sleep(std::chrono::nanoseconds ns) {
+    void DeepSleep::Sleep(std::chrono::nanoseconds ns) {
         struct timespec ts;
         ts.tv_sec = ns.count() / 1000000000;
         ts.tv_nsec = ns.count() % 1000000000;
