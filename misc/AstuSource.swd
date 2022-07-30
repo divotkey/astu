@@ -46,6 +46,18 @@ function EmitProlog()
 	# Define C++ Standard
 	set(CMAKE_CXX_STANDARD 17)
 
+	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+		# using Clang
+	elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+		# using GCC
+		# Disable warning regarding Application Binary Interfaces (API) changes.
+		set(CMAKE_CXX_FLAGS "-Wno-psabi")
+	elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+		# using Intel C++
+	elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		# using Visual Studio C++
+	endif()
+
 	:§
 }
 

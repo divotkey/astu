@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Sat Jul 30 06:32:02 CEST 2022 with SWORD Interpreter 1.9.1
+# Generated Sat Jul 30 07:54:33 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -9,6 +9,18 @@ project(ASTU VERSION 0.11.0)
 
 # Define C++ Standard
 set(CMAKE_CXX_STANDARD 17)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	# using Clang
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	# using GCC
+	# Disable warning regarding Application Binary Interfaces (API) changes.
+	set(CMAKE_CXX_FLAGS "-Wno-psabi")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+	# using Intel C++
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# using Visual Studio C++
+endif()
 
 #################################################
 ####### ASTU Core Files
