@@ -5,8 +5,15 @@
  * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
-#include "Network.h"
+#pragma once
 
 namespace astu {
+
+    class Inet4Address {
+    public:
+
+        /** Virtual destructor. */
+        virtual ~Inet4Address() {}
+    };
 
 } // end of namespace

@@ -5,7 +5,7 @@
  * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
-#include "Peer.h"
+#include "Network/Peer.h"
 
 namespace astu {
 

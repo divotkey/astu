@@ -7,10 +7,16 @@
 
 #pragma once
 
+// C++ Standard Library includes
+#include <string>
+
 namespace astu {
 
     class IUdpSocket {
     public:
+
+        virtual void Bind(int port);
+
     private:
 
     };

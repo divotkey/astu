@@ -7,7 +7,13 @@
 
 #pragma once
 
-namespace atsu {
+// C++ Standard Library includes
+#include <memory>
+
+namespace astu {
+
+    // Forward declaration
+    class UdpSocket;
 
     /**
      * Operating system specific implementation of the network module.
@@ -24,6 +30,8 @@ namespace atsu {
          * Destructor.
          */
         ~NetworkImpl();
+
+        std::unique_ptr<UdpSocket> CreateUdpSocket(uint16_t port = 0);
 
     private:
     };
