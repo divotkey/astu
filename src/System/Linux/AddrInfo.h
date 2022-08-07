@@ -6,6 +6,9 @@
  */
 #pragma once
 
+// Local includes
+#include "Network/IpMode.h"
+
 // Linux API includes
 #include <netdb.h>
 
@@ -20,11 +23,6 @@ namespace astu {
      */
     class AddrInfo {
     public:
-
-        /**
-         * Describes the allowed IP address versions.
-         */
-        enum class IpMode {IPv4, IPv6, IPv4_And_IPv6};
 
         /** Constructor. */
         AddrInfo();
@@ -50,7 +48,7 @@ namespace astu {
          * @param port  the server port
          * @throws std::runtime_error in case of an error
          */
-        void GetUdpAddresses(const std::string &host, uint16_t port);
+        void RetrieveUdpAddresses(const std::string &host, uint16_t port);
 
         /**
          * Queries addresses of this machine with the intention to use UDP.
@@ -61,7 +59,7 @@ namespace astu {
          * @param port the UDP port to be used
          * @throws std::runtime_error in case of an error
          */
-        void GetUdpAddresses(uint16_t port);
+        void RetrieveUdpAddresses(uint16_t port);
 
         /**
          * Return the number of retrieved addresses.
@@ -84,6 +82,41 @@ namespace astu {
          */
         void NextAddress();
 
+        /**
+         * Returns the protocol family (domain) of the current address.
+         *
+         * @return the domain
+         */
+        int GetDomain() const;
+
+        /**
+         * Returns the communication semantics of the address family.
+         *
+         * @return the socket type of communication of the address family
+         */
+        int GetType() const;
+
+        /**
+         * Return the protocol used for this address.
+         *
+         * @return the protocol
+         */
+        int GetProtocol() const;
+
+        /**
+         * Return the socket address of the current address info.
+         *
+         * @return the socket address
+         */
+        const struct sockaddr * GetAddr() const;
+
+        /**
+         * Returns the length of the current socket address structure.
+         *
+         * @return the length of the socket address structure
+         */
+        socklen_t GetAddrLen() const;
+
     private:
         /** Describes the allowed IP address mode. */
         IpMode ipMode;
@@ -96,6 +129,7 @@ namespace astu {
 
         void SetFamily(struct addrinfo& info);
         void Cleanup();
+        void VerifyAddressInfo() const;
 
         friend std::ostream& operator<<(std::ostream&, const AddrInfo &);
     };

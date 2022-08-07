@@ -8,16 +8,19 @@
 // Local includes
 #include "NetworkImpl.h"
 #include "AddrInfo.h"
-#include "UdpSocket.h"
+#include "Socket.h"
+#include "InetSocketAddress.h"
 
 // C++ Standard Library includes
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
 namespace astu {
 
     NetworkImpl::NetworkImpl()
+        : ipMode(IpMode::IPv4_And_IPv6)
     {
         // Intentionally left empty
     }
@@ -27,20 +30,106 @@ namespace astu {
         // Intentionally left empty
     }
 
-    std::unique_ptr<UdpSocket> NetworkImpl::CreateUdpSocket(uint16_t port)
+    std::unique_ptr<Socket> NetworkImpl::CreateUdpSocket(uint16_t port)
+    {
+        // Query UDP addresses.
+        AddrInfo addrInfo;
+        addrInfo.SetIpMode(ipMode);
+        addrInfo.RetrieveUdpAddresses(port);
+
+        // TODO log debug message about number of found addresses.
+        //cout << "found " << addrInfo.NumAddresses() << " addresses" << endl;
+        //while (addrInfo.HasAddress()) {
+        //    cout << addrInfo << endl;
+        //    addrInfo.NextAddress();
+        //}
+        //addrInfo.RetrieveUdpAddresses(port);
+
+        return CreateSocket(addrInfo);
+    }
+
+    std::unique_ptr<Socket> NetworkImpl::CreateUdpSocket(const string &host, uint16_t port)
     {
         AddrInfo addrInfo;
-        addrInfo.SetIpMode(AddrInfo::IpMode::IPv4);
-        addrInfo.GetUdpAddresses(port);
+        addrInfo.SetIpMode(ipMode);
+        addrInfo.RetrieveUdpAddresses(host, port);
 
-        cout << "found " << addrInfo.NumAddresses() << " address(es)" << endl;
+        return CreateSocket(addrInfo);
+    }
 
-        while (addrInfo.HasAddress()) {
-            cout << addrInfo << endl;
-            addrInfo.NextAddress();
+    std::unique_ptr<Socket> NetworkImpl::CreateSocket(AddrInfo &addrInfo)
+    {
+        unique_ptr<Socket> socket;
+        while (addrInfo.HasAddress() && !socket) {
+            // TODO log debug message about attempt to create UDP socket
+
+            try {
+                socket = make_unique<Socket>(
+                        shared_from_this(),
+                        addrInfo.GetDomain(),
+                        addrInfo.GetType(),
+                        addrInfo.GetProtocol());
+
+                socket->Bind(addrInfo.GetAddr(), addrInfo.GetAddrLen());
+            } catch (const std::runtime_error & e) {
+                // TODO log info/warning message about failed socket creation
+                cerr << "unable to create socket for address " << addrInfo << endl;
+                socket = nullptr;
+            }
+
+            if (!socket)
+                addrInfo.NextAddress();
         }
 
-        return nullptr;
+        if (!socket) {
+            throw std::runtime_error("Unable to create socket");
+        }
+
+        return socket;
+    }
+
+    std::unique_ptr<IInetSocketAddress> NetworkImpl::CreateUdpSocketAddress(const string &host, uint16_t port)
+    {
+        AddrInfo addrInfo;
+        addrInfo.SetIpMode(ipMode);
+        addrInfo.RetrieveUdpAddresses(host, port);
+
+        if (!addrInfo.HasAddress()) {
+            throw std::runtime_error(
+                    "Unable to resolve UDP socket address for host '"
+                    + host + "' at port " + to_string(port));
+        }
+
+        assert(addrInfo.GetType() == SOCK_DGRAM);
+        assert(addrInfo.GetProtocol() == IPPROTO_UDP);
+
+        return make_unique<UniversalInetSocketAddress>(addrInfo.GetAddr());
+
+        //switch (addrInfo.GetDomain()) {
+        //    case AF_INET:
+        //        // IPv4 address.
+        //
+        //        return make_unique<InetSocketAddressIpv4>(
+        //                reinterpret_cast<const struct sockaddr_in *>(addrInfo.GetAddr()));
+        //
+        //    case AF_INET6:
+        //        // IPv6 address.
+        //        return make_unique<InetSocketAddressIpv6>(
+        //                reinterpret_cast<const struct sockaddr_in6 *>(addrInfo.GetAddr()));
+        //
+        //    default:
+        //        throw std::runtime_error("Unknown address family");
+        //}
+    }
+
+    void NetworkImpl::SetIpMode(IpMode mode)
+    {
+        ipMode = mode;
+    }
+
+    IpMode NetworkImpl::GetIpMode() const
+    {
+        return ipMode;
     }
 
 } // end of namespace

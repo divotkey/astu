@@ -8,7 +8,7 @@
 // Local includes
 #include "Network/Network.h"
 #include "NetworkImpl.h"
-#include "UdpSocket.h"
+#include "Socket.h"
 
 using namespace std;
 
@@ -24,9 +24,24 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    std::unique_ptr<IUdpSocket> Network::CreateUdpSocket(uint16_t port)
+    std::unique_ptr<ISocket> Network::CreateUdpSocket(uint16_t port)
     {
         return nwImpl->CreateUdpSocket(port);
+    }
+
+    std::unique_ptr<ISocket> Network::CreateUdpSocket(const string &host, uint16_t port)
+    {
+        return nwImpl->CreateUdpSocket(host, port);
+    }
+
+    std::unique_ptr<IInetSocketAddress> Network::CreateUdpSocketAddress(const string &host, uint16_t port)
+    {
+        return nwImpl->CreateUdpSocketAddress(host, port);
+    }
+
+    void Network::SetIpMode(IpMode mode)
+    {
+        nwImpl->SetIpMode(mode);
     }
 
 } // end of namespace

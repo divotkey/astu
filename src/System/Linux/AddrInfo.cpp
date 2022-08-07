@@ -31,14 +31,14 @@ namespace astu {
         Cleanup();
     }
 
-    void AddrInfo::GetUdpAddresses(const std::string &host, uint16_t port)
+    void AddrInfo::RetrieveUdpAddresses(const std::string &host, uint16_t port)
     {
         Cleanup();
 
         struct addrinfo hints = {};
         SetFamily(hints);
         hints.ai_socktype = SOCK_DGRAM;
-        hints.ai_flags = 0;
+        hints.ai_flags = AI_PASSIVE;
         hints.ai_protocol = IPPROTO_UDP;
 
         int err = getaddrinfo(
@@ -57,7 +57,7 @@ namespace astu {
         current = result;
     }
 
-    void AddrInfo::GetUdpAddresses(uint16_t port)
+    void AddrInfo::RetrieveUdpAddresses(uint16_t port)
     {
         Cleanup();
 
@@ -97,7 +97,7 @@ namespace astu {
         current = current->ai_next;
     }
 
-    AddrInfo &AddrInfo::SetIpMode(AddrInfo::IpMode mode)
+    AddrInfo &AddrInfo::SetIpMode(IpMode mode)
     {
         ipMode = mode;
         return *this;
@@ -140,6 +140,42 @@ namespace astu {
         }
     }
 
+    int AddrInfo::GetDomain() const
+    {
+        VerifyAddressInfo();
+        return current->ai_family;
+    }
+
+    int AddrInfo::GetType() const
+    {
+        VerifyAddressInfo();
+        return current->ai_socktype;
+    }
+
+    int AddrInfo::GetProtocol() const
+    {
+        VerifyAddressInfo();
+        return current->ai_protocol;
+    }
+
+    const struct sockaddr *AddrInfo::GetAddr() const
+    {
+        VerifyAddressInfo();
+        return current->ai_addr;
+    }
+
+    socklen_t AddrInfo::GetAddrLen() const
+    {
+        VerifyAddressInfo();
+        return current->ai_addrlen;
+    }
+
+    void AddrInfo::VerifyAddressInfo() const
+    {
+        if (!current) {
+            throw std::logic_error("End of address info list reached");
+        }
+    }
 
     std::ostream &operator<<(ostream &os, const AddrInfo &addrInfo)
     {
@@ -162,7 +198,7 @@ namespace astu {
 
                 port = ntohs(sockAddrIp4->sin_port);
             }
-            break;
+                break;
 
             case AF_INET6: {
                 struct sockaddr_in6 *sockAddrIp6;
@@ -175,7 +211,7 @@ namespace astu {
 
                 port = ntohs(sockAddrIp6->sin6_port);
             }
-            break;
+                break;
 
             default:
                 throw std::runtime_error("unknown address family");
@@ -183,9 +219,14 @@ namespace astu {
 
         if(!result) {
             throw runtime_error("unable to convert address to text: "
-            + to_string(errno));
+                                + to_string(errno));
         }
-        os << result << ":" << port;
+
+        if (sockAddr->sa_family == AF_INET6) {
+            os << "[" << result << "]:" << port;
+        } else {
+            os << result << ":" << port;
+        }
 
         return os;
     }

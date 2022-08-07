@@ -7,18 +7,24 @@
 
 #pragma once
 
+// Local includes
+#include "InetSocketAddress.h"
+#include "Socket.h"
+#include "Network/IpMode.h"
+
+
 // C++ Standard Library includes
 #include <memory>
 
 namespace astu {
 
     // Forward declaration
-    class UdpSocket;
+    class AddrInfo;
 
     /**
      * Operating system specific implementation of the network module.
      */
-    class NetworkImpl {
+    class NetworkImpl : public std::enable_shared_from_this<NetworkImpl>{
     public:
 
         /**
@@ -31,9 +37,16 @@ namespace astu {
          */
         ~NetworkImpl();
 
-        std::unique_ptr<UdpSocket> CreateUdpSocket(uint16_t port = 0);
+        void SetIpMode(IpMode mode);
+        IpMode GetIpMode() const;
+        std::unique_ptr<Socket> CreateUdpSocket(uint16_t port);
+        std::unique_ptr<Socket> CreateUdpSocket(const std::string &host, uint16_t port);
+        std::unique_ptr<IInetSocketAddress> CreateUdpSocketAddress(const std::string & host, uint16_t port);
 
     private:
+        IpMode ipMode;
+        std::unique_ptr<Socket> CreateSocket(AddrInfo &addrInfo);
+
     };
 
 } // end of namespace

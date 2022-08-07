@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Mon Aug 01 08:32:39 CEST 2022 with SWORD Interpreter 1.9.1
+# Generated Wed Aug 03 05:54:08 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -155,9 +155,10 @@ list(APPEND astu_SOURCES
 	# Module: Network
 	src/Network/Peer.cpp 
 	src/Network/Network.cpp 
-	include/Network/Inet4Address.h 
+	include/Network/ISocket.h 
 	include/Network/Peer.h 
-	include/Network/IUdpSocket.h 
+	include/Network/IpMode.h 
+	include/Network/IInetSocketAddress.h 
 	include/Network/Network.h 
 
 	# Module: Service
@@ -487,13 +488,13 @@ ELSE()
 	list(APPEND astu_SOURCES
 		src/System/Linux/NetworkImpl.cpp 
 		src/System/Linux/DeepSleep.h 
-		src/System/Linux/Inet4SocketAddress.cpp 
-		src/System/Linux/Inet4SocketAddress.h 
+		src/System/Linux/Socket.h 
 		src/System/Linux/AddrInfo.h 
-		src/System/Linux/UdpSocket.h 
+		src/System/Linux/InetSocketAddress.h 
 		src/System/Linux/AddrInfo.cpp 
-		src/System/Linux/UdpSocket.cpp 
+		src/System/Linux/InetSocketAddress.cpp 
 		src/System/Linux/DeepSleep.cpp 
+		src/System/Linux/Socket.cpp 
 		src/System/Linux/NetworkImpl.h 
 	)
 ENDIF()

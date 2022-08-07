@@ -9,11 +9,13 @@
 
 namespace astu {
 
-    class Inet4Address {
-    public:
-
-        /** Virtual destructor. */
-        virtual ~Inet4Address() {}
+    /**
+     * Describes the allowed IP address versions.
+     */
+    enum class IpMode {
+        IPv4,
+        IPv6,
+        IPv4_And_IPv6
     };
 
 } // end of namespace
