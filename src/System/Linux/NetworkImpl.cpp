@@ -132,4 +132,62 @@ namespace astu {
         return ipMode;
     }
 
+    int NetworkImpl::CreateAddressHandle(const string &host, uint16_t port)
+    {
+        AddrInfo addrInfo;
+        addrInfo.SetIpMode(ipMode);
+        addrInfo.RetrieveUdpAddresses(host, port);
+
+        if (!addrInfo.HasAddress()) {
+            throw std::runtime_error(
+                    "Unable to resolve UDP socket address for host '"
+                    + host + "' at port " + to_string(port));
+        }
+
+        assert(addrInfo.GetType() == SOCK_DGRAM);
+        assert(addrInfo.GetProtocol() == IPPROTO_UDP);
+
+        return CreateHandle(addrInfo.GetAddr());
+    }
+
+    bool NetworkImpl::HasHandle(const UniversalInetSocketAddress &addr) const
+    {
+        return addressToHandle.find(addr) != addressToHandle.end();
+    }
+
+    int NetworkImpl::CreateHandle(const UniversalInetSocketAddress &addr)
+    {
+        if (HasHandle(addr)) {
+            throw std::logic_error("Handle for address "
+                + addr.GetAddressString() + " already created");
+        }
+
+        const int handle = ++cntHandles;
+        addressToHandle.insert({addr, handle});
+        handleToAddress.insert({handle, addr});
+
+        return handle;
+    }
+
+    int NetworkImpl::GetHandle(const UniversalInetSocketAddress &addr) const
+    {
+        auto it = addressToHandle.find(addr);
+        if (it == addressToHandle.end()) {
+            throw std::logic_error("Unable to retrieve address handle, unknown address"
+                + addr.GetAddressString());
+        }
+
+        return it->second;
+    }
+
+    const UniversalInetSocketAddress &NetworkImpl::GetAddress(int hAddr) const
+    {
+        auto it = handleToAddress.find(hAddr);
+        if (it == handleToAddress.end()) {
+            throw std::logic_error("unknown address handle " + to_string(hAddr));
+        }
+
+        return it->second;
+    }
+
 } // end of namespace

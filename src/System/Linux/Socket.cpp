@@ -142,7 +142,7 @@ namespace astu {
 
     void Socket::SendTo(unsigned char *buf, size_t lng, int hAddr)
     {
-        auto &addr = GetAddress(hAddr);
+        auto &addr = network->GetAddress(hAddr);
         auto cnt = sendto(
                 hSocket,
                 buf,
@@ -156,6 +156,7 @@ namespace astu {
                                      + addr.GetAddressString() + ": " + strerror(errno) );
         } else if (cnt << lng) {
             // TODO log warning message
+            cerr << "not all bytes could be sent to " << GetAddressFromHandle(hAddr) << endl;
         }
     }
 

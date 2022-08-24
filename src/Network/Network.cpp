@@ -44,4 +44,14 @@ namespace astu {
         nwImpl->SetIpMode(mode);
     }
 
+    IpMode Network::GetIpMode() const
+    {
+        return nwImpl->GetIpMode();
+    }
+
+    int Network::CreateAddressHandle(const string &host, uint16_t port)
+    {
+        return nwImpl->CreateAddressHandle(host, port);
+    }
+
 } // end of namespace

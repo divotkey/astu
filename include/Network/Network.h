@@ -27,7 +27,6 @@ namespace astu {
     class Network {
     public:
 
-
         /** Constructor. */
         Network();
 
@@ -41,6 +40,15 @@ namespace astu {
          * @return reference to this class for method chaining
          */
         void SetIpMode(IpMode mode);
+
+        /**
+         * Returns the currently set IP mode.
+         *
+         * @return the current IP mode
+         */
+        IpMode GetIpMode() const;
+
+        int CreateAddressHandle(const std::string& host, uint16_t port);
 
         /**
          * Creates a UDP socket.
