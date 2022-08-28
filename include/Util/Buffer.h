@@ -257,6 +257,20 @@ namespace astu {
          */
         const unsigned char *GetData() const;
 
+        /**
+         * Returns access to the current position of the raw memory storage.
+         *
+         * @return the current position within the raw memory storage
+         */
+        unsigned char* GetCurrentData();
+
+        /**
+         * Returns access to the current position of the raw memory storage.
+         *
+         * @return the current position within the raw memory storage
+         */
+        const unsigned char* GetCurrentData() const;
+
     private:
         /** The actual storage memory of this buffer. */
         std::unique_ptr<unsigned char[]> data;

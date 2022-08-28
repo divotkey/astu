@@ -8,7 +8,7 @@
 // Local includes
 #include "NetworkImpl.h"
 #include "AddrInfo.h"
-#include "Socket.h"
+#include "SocketImpl.h"
 #include "InetSocketAddress.h"
 
 // C++ Standard Library includes
@@ -30,25 +30,17 @@ namespace astu {
         // Intentionally left empty
     }
 
-    std::unique_ptr<Socket> NetworkImpl::CreateUdpSocket(uint16_t port)
+    std::unique_ptr<SocketImpl> NetworkImpl::CreateUdpSocket(uint16_t port)
     {
         // Query UDP addresses.
         AddrInfo addrInfo;
         addrInfo.SetIpMode(ipMode);
         addrInfo.RetrieveUdpAddresses(port);
 
-        // TODO log debug message about number of found addresses.
-        //cout << "found " << addrInfo.NumAddresses() << " addresses" << endl;
-        //while (addrInfo.HasAddress()) {
-        //    cout << addrInfo << endl;
-        //    addrInfo.NextAddress();
-        //}
-        //addrInfo.RetrieveUdpAddresses(port);
-
         return CreateSocket(addrInfo);
     }
 
-    std::unique_ptr<Socket> NetworkImpl::CreateUdpSocket(const string &host, uint16_t port)
+    std::unique_ptr<SocketImpl> NetworkImpl::CreateUdpSocket(const string &host, uint16_t port)
     {
         AddrInfo addrInfo;
         addrInfo.SetIpMode(ipMode);
@@ -57,14 +49,14 @@ namespace astu {
         return CreateSocket(addrInfo);
     }
 
-    std::unique_ptr<Socket> NetworkImpl::CreateSocket(AddrInfo &addrInfo)
+    std::unique_ptr<SocketImpl> NetworkImpl::CreateSocket(AddrInfo &addrInfo)
     {
-        unique_ptr<Socket> socket;
+        unique_ptr<SocketImpl> socket;
         while (addrInfo.HasAddress() && !socket) {
             // TODO log debug message about attempt to create UDP socket
 
             try {
-                socket = make_unique<Socket>(
+                socket = make_unique<SocketImpl>(
                         shared_from_this(),
                         addrInfo.GetDomain(),
                         addrInfo.GetType(),
@@ -88,39 +80,39 @@ namespace astu {
         return socket;
     }
 
-    std::unique_ptr<IInetSocketAddress> NetworkImpl::CreateUdpSocketAddress(const string &host, uint16_t port)
-    {
-        AddrInfo addrInfo;
-        addrInfo.SetIpMode(ipMode);
-        addrInfo.RetrieveUdpAddresses(host, port);
-
-        if (!addrInfo.HasAddress()) {
-            throw std::runtime_error(
-                    "Unable to resolve UDP socket address for host '"
-                    + host + "' at port " + to_string(port));
-        }
-
-        assert(addrInfo.GetType() == SOCK_DGRAM);
-        assert(addrInfo.GetProtocol() == IPPROTO_UDP);
-
-        return make_unique<UniversalInetSocketAddress>(addrInfo.GetAddr());
-
-        //switch (addrInfo.GetDomain()) {
-        //    case AF_INET:
-        //        // IPv4 address.
-        //
-        //        return make_unique<InetSocketAddressIpv4>(
-        //                reinterpret_cast<const struct sockaddr_in *>(addrInfo.GetAddr()));
-        //
-        //    case AF_INET6:
-        //        // IPv6 address.
-        //        return make_unique<InetSocketAddressIpv6>(
-        //                reinterpret_cast<const struct sockaddr_in6 *>(addrInfo.GetAddr()));
-        //
-        //    default:
-        //        throw std::runtime_error("Unknown address family");
-        //}
-    }
+    //std::unique_ptr<IInetSocketAddress> NetworkImpl::CreateUdpSocketAddress(const string &host, uint16_t port)
+    //{
+    //    AddrInfo addrInfo;
+    //    addrInfo.SetIpMode(ipMode);
+    //    addrInfo.RetrieveUdpAddresses(host, port);
+    //
+    //    if (!addrInfo.HasAddress()) {
+    //        throw std::runtime_error(
+    //                "Unable to resolve UDP socket address for host '"
+    //                + host + "' at port " + to_string(port));
+    //    }
+    //
+    //    assert(addrInfo.GetType() == SOCK_DGRAM);
+    //    assert(addrInfo.GetProtocol() == IPPROTO_UDP);
+    //
+    //    return make_unique<UniversalInetSocketAddress>(addrInfo.GetAddr());
+    //
+    //    //switch (addrInfo.GetDomain()) {
+    //    //    case AF_INET:
+    //    //        // IPv4 address.
+    //    //
+    //    //        return make_unique<InetSocketAddressIpv4>(
+    //    //                reinterpret_cast<const struct sockaddr_in *>(addrInfo.GetAddr()));
+    //    //
+    //    //    case AF_INET6:
+    //    //        // IPv6 address.
+    //    //        return make_unique<InetSocketAddressIpv6>(
+    //    //                reinterpret_cast<const struct sockaddr_in6 *>(addrInfo.GetAddr()));
+    //    //
+    //    //    default:
+    //    //        throw std::runtime_error("Unknown address family");
+    //    //}
+    //}
 
     void NetworkImpl::SetIpMode(IpMode mode)
     {
@@ -181,7 +173,7 @@ namespace astu {
     {
         auto it = handleToAddress.find(hAddr);
         if (it == handleToAddress.end()) {
-            throw std::logic_error("unknown address handle " + to_string(hAddr));
+            throw std::logic_error("Unknown address handle " + to_string(hAddr));
         }
 
         return it->second;

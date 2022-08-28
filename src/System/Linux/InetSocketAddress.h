@@ -95,6 +95,12 @@ namespace astu {
         static bool IsLess(const struct sockaddr_in6 &lhs, const struct sockaddr_in6 &rhs);
     };
 
+    /**
+     * This base class implements the IInetSocketAddress and uses polymorphism to
+     * handle IPv4 and IPv6 addresses.
+     *
+     * Note: this implementation is currently not used and reserved for future extensions.
+     */
     class InetSocketAddress : public IInetSocketAddress {
     public:
 
@@ -120,6 +126,12 @@ namespace astu {
         virtual void FetchAddressString() const = 0;
     };
 
+    /**
+     * This class implements the IInetSocketAddress and uses polymorphism to
+     * handle IPv4 addresses.
+     *
+     * Note: this implementation is currently not used and reserved for future extensions.
+     */
     class InetSocketAddressIpv4 : public InetSocketAddress {
     public:
 
@@ -146,6 +158,12 @@ namespace astu {
         struct sockaddr_in addr;
     };
 
+    /**
+     * This class implements the IInetSocketAddress and uses polymorphism to
+     * handle IPv4 addresses.
+     *
+     * Note: this implementation is currently not used and reserved for future extensions.
+     */
     class InetSocketAddressIpv6 : public InetSocketAddress {
     public:
 

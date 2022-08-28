@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "Socket.h"
+#include "SocketImpl.h"
 #include "InetSocketAddress.h"
 #include "AddrInfo.h"
 #include "NetworkImpl.h"
@@ -26,40 +26,17 @@ using namespace std;
 
 namespace astu {
 
-    std::unique_ptr<Socket> Socket::Create(std::shared_ptr<NetworkImpl> network, int domain, int type, int protocol)
-    {
-        int hSocket = socket(domain, type, protocol);
-        if (hSocket < 0)
-            return nullptr;
-
-        return make_unique<Socket>(network, hSocket);
-    }
-
-    std::unique_ptr<Socket>
-    Socket::Create(std::shared_ptr<NetworkImpl> network, int domain, int type, int protocol, const struct sockaddr *addr, socklen_t len)
-    {
-        int hSocket = socket(domain, type, protocol);
-        if (hSocket < 0) {
-            return nullptr;
-        }
-
-        if (bind(hSocket, addr, len) < 0) {
-            return nullptr;
-        }
-
-        return make_unique<Socket>(network, hSocket);
-    }
-
-    Socket::Socket(std::shared_ptr<NetworkImpl> network, int _hSocket)
+    SocketImpl::SocketImpl(std::shared_ptr<NetworkImpl> network, int _hSocket)
         : network(network), hSocket(_hSocket)
     {
         if (hSocket < 0) {
             throw logic_error("Invalid socket handle");
         }
-        InitPoolFds();
+
+        InitSocket();
     }
 
-    astu::Socket::Socket(std::shared_ptr<NetworkImpl> network, int domain, int type, int protocol)
+    astu::SocketImpl::SocketImpl(std::shared_ptr<NetworkImpl> network, int domain, int type, int protocol)
         : network(network), hSocket(-1)
     {
         // Create socket
@@ -70,23 +47,20 @@ namespace astu {
                     + strerror(errno));
         }
 
-        InitPoolFds();
-        SetToNonBlocking();
+        InitSocket();
     }
 
-    Socket::~Socket()
+    SocketImpl::~SocketImpl()
     {
         if (hSocket >= 0) {
             close(hSocket);
         }
     }
 
-    void Socket::Bind(const struct sockaddr *addr, socklen_t len)
+    void SocketImpl::Bind(const struct sockaddr *addr, socklen_t len)
     {
         assert(hSocket >= 0);
         if (bind(hSocket, addr, len) < 0) {
-            // TODO log error
-            cerr << "unable to bind socket (" << errno << "): " << strerror(errno) << endl;
             throw std::runtime_error(
                     "Unable to bind socket ("
                     + to_string(errno) + "): "
@@ -94,16 +68,8 @@ namespace astu {
         }
     }
 
-    //void Socket::Update()
-    //{
-    //    Poll();
-    //
-    //    dirty = true;
-    //}
-
-    void Socket::Poll()
+    void SocketImpl::Poll()
     {
-        //InitPoolFds();
         auto result = poll(&pfd, 1, 0);
         if (result < 0) {
             throw std::runtime_error("Error polling socket ("
@@ -111,12 +77,12 @@ namespace astu {
         }
     }
 
-    bool Socket::IsReadyToRead() const
+    bool SocketImpl::IsReadyToReceive() const
     {
         return pfd.revents & POLLIN;
     }
 
-    void Socket::InitPoolFds()
+    void SocketImpl::InitPoolFds()
     {
         assert(hSocket >= 0);
         pfd.fd = hSocket;
@@ -124,7 +90,7 @@ namespace astu {
         pfd.revents = 0;
     }
 
-    void Socket::SendTo(const unsigned char *buf, size_t lng, int hAddr)
+    void SocketImpl::SendTo(const unsigned char *buf, size_t lng, int hAddr)
     {
         auto &addr = network->GetAddress(hAddr);
         auto cnt = sendto(
@@ -144,30 +110,51 @@ namespace astu {
         }
     }
 
-    int Socket::Receive(Buffer &buffer)
+    //int SocketImpl::Receive(Buffer &buffer)
+    //{
+    //    struct sockaddr addr;
+    //    socklen_t addrLen;
+    //
+    //    buffer.Clear();
+    //    auto ret = recvfrom(hSocket,
+    //             buffer.GetData(),
+    //             buffer.GetCapacity(),
+    //             MSG_DONTWAIT,
+    //             &addr,
+    //             &addrLen);
+    //
+    //    if (ret < 0) {
+    //        throw std::logic_error("recvfrom returned " + to_string(ret) + ", error: " + strerror(errno) );
+    //    }
+    //
+    //    buffer.SetLimit(ret);
+    //
+    //    return network->GetOrCreateAddressHandle(UniversalInetSocketAddress(&addr));
+    //}
+
+    size_t SocketImpl::Receive(unsigned char *buffer, size_t bufferLng, int &hDestAddr)
     {
         struct sockaddr addr;
         socklen_t addrLen;
 
-        buffer.Clear();
         auto ret = recvfrom(hSocket,
-                 buffer.GetData(),
-                 buffer.GetCapacity(),
-                 MSG_DONTWAIT,
-                 //0,
-                 &addr,
-                 &addrLen);
+                            buffer,
+                            bufferLng,
+                            MSG_DONTWAIT,
+                            &addr,
+                            &addrLen);
 
         if (ret < 0) {
-            throw std::logic_error("recvfrom returned " + to_string(ret) + ", error: " + strerror(errno) );
+            throw std::logic_error(
+                    "recvfrom returned " + to_string(ret) + ", error (" + to_string(errno) + "): " + strerror(errno));
         }
 
-        buffer.SetLimit(ret);
-
-        return network->GetOrCreateAddressHandle(UniversalInetSocketAddress(&addr));
+        hDestAddr = network->GetOrCreateAddressHandle(UniversalInetSocketAddress(&addr));
+        return ret;
     }
 
-    void Socket::SetToNonBlocking()
+
+    void SocketImpl::SetToNonBlocking()
     {
         int flags = fcntl(hSocket, F_GETFL);
         if (flags == -1) {
@@ -177,6 +164,12 @@ namespace astu {
         if (fcntl(hSocket, F_SETFL, flags | O_NONBLOCK) == -1) {
             throw runtime_error(string("Unable to set socket flags: ") + strerror(errno));
         }
+    }
+
+    void SocketImpl::InitSocket()
+    {
+        InitPoolFds();
+        SetToNonBlocking();
     }
 
 } // end of namespace

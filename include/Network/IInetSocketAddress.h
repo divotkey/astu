@@ -14,6 +14,11 @@
 
 namespace astu {
 
+    /**
+     * Interface to socket addresses.
+     *
+     * Note: this interface is currently not used and reserved for future extensions.
+     */
     class IInetSocketAddress {
     public:
 

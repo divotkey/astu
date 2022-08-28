@@ -275,4 +275,15 @@ namespace astu {
         return data.get();
     }
 
+    unsigned char *Buffer::GetCurrentData()
+    {
+        return pCur;
+    }
+
+    const unsigned char *Buffer::GetCurrentData() const
+    {
+        return pCur;
+    }
+
+
 } // end of namespace
