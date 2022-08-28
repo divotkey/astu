@@ -49,6 +49,8 @@ namespace astu {
         IpMode GetIpMode() const;
 
         int CreateAddressHandle(const std::string& host, uint16_t port);
+        bool HasAddressHandle(const std::string& host, uint16_t port) const;
+        int GetAddressHandle(const std::string& host, uint16_t port);
 
         /**
          * Creates a UDP socket.

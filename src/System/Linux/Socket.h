@@ -109,15 +109,12 @@ namespace astu {
 
         // Inherited via ISocket
         void Poll() override;
-        void SendTo(unsigned char *buf, size_t lng, const IInetSocketAddress &addr) override;
-        void SendTo(unsigned char *buf, size_t lng, int hAddr) override;
+        void SendTo(const unsigned char *buf, size_t lng, int hAddr) override;
 
         bool IsReadyToRead() const override;
+        int Receive(Buffer &buffer) override;
         void Read();
 
-        int CreateAddressHandle(const std::string & host, uint16_t port) override;
-        bool HasAddressHandle(int hAddr) const override;
-        const IInetSocketAddress& GetAddressFromHandle(int hAddr) const override;
 
     private:
         /** The implementation of the network core system. */
@@ -126,20 +123,11 @@ namespace astu {
         /** The socket handle. */
         int hSocket;
 
-        /** Counts the number of generated address handles. */
-        int cntHandles;
-
         /** Poll file descriptor used to poll the status of this socket. */
         struct pollfd pfd;
 
-        /** Associates integers (handles) with socket addresses. */
-        std::map<int, UniversalInetSocketAddress> handleToAddress;
-
-        /** Associates socket addresses  with integers (handles). */
-        std::map<UniversalInetSocketAddress, int> addressToHandle;
-
         void InitPoolFds();
-        const UniversalInetSocketAddress& GetAddress(int hAddr) const;
+        void SetToNonBlocking();
     };
 
 } // namespace astu

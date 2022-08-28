@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Wed Aug 03 05:54:08 CEST 2022 with SWORD Interpreter 1.9.1
+# Generated Sat Aug 27 09:01:02 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -68,6 +68,8 @@ list(APPEND astu_SOURCES
 	include/Util/CommandQueue.h 
 	include/Util/StringUtils.h 
 	include/Util/VersionInfo.h 
+	include/Util/Buffer.h 
+	include/Util/Buffer.cpp 
 	include/Util/Controller.h 
 	include/Util/Timer.h 
 	include/Util/Pooled.h 

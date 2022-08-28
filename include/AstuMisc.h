@@ -22,6 +22,7 @@
 #include "Util/StringUtils.h"
 #include "Util/StateMachine.h"
 #include "Util/Timer.h"
+#include "Util/Buffer.h"
 
 namespace astu {
 

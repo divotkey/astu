@@ -14,6 +14,7 @@
 // Linux API includes
 #include <unistd.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <string.h>
 
 // C++ Standard Library includes
@@ -50,7 +51,7 @@ namespace astu {
     }
 
     Socket::Socket(std::shared_ptr<NetworkImpl> network, int _hSocket)
-        : network(network), hSocket(_hSocket), cntHandles(0)
+        : network(network), hSocket(_hSocket)
     {
         if (hSocket < 0) {
             throw logic_error("Invalid socket handle");
@@ -59,7 +60,7 @@ namespace astu {
     }
 
     astu::Socket::Socket(std::shared_ptr<NetworkImpl> network, int domain, int type, int protocol)
-        : network(network), hSocket(-1), cntHandles(0)
+        : network(network), hSocket(-1)
     {
         // Create socket
         hSocket = socket(domain, type, protocol);
@@ -70,6 +71,7 @@ namespace astu {
         }
 
         InitPoolFds();
+        SetToNonBlocking();
     }
 
     Socket::~Socket()
@@ -101,6 +103,7 @@ namespace astu {
 
     void Socket::Poll()
     {
+        //InitPoolFds();
         auto result = poll(&pfd, 1, 0);
         if (result < 0) {
             throw std::runtime_error("Error polling socket ("
@@ -110,37 +113,18 @@ namespace astu {
 
     bool Socket::IsReadyToRead() const
     {
-        return pfd.revents | POLLOUT;
+        return pfd.revents & POLLIN;
     }
 
     void Socket::InitPoolFds()
     {
         assert(hSocket >= 0);
         pfd.fd = hSocket;
-        pfd.events = POLLIN & POLLOUT;
+        pfd.events = POLLIN | POLLOUT;
         pfd.revents = 0;
     }
 
-    void Socket::SendTo(unsigned char *buf, size_t lng, const IInetSocketAddress &addr)
-    {
-        auto &addrImpl = UniversalInetSocketAddress::Cast(addr);
-        auto cnt = sendto(
-                hSocket,
-                buf,
-                lng,
-                0,
-                addrImpl.GetAddress(),
-                addrImpl.GetAddressLength());
-
-        if (cnt < 0) {
-            throw std::runtime_error("Unable to send message to "
-                + addr.GetAddressString() + ": " + strerror(errno) );
-        } else if (cnt << lng) {
-            // TODO log warning message
-        }
-    }
-
-    void Socket::SendTo(unsigned char *buf, size_t lng, int hAddr)
+    void Socket::SendTo(const unsigned char *buf, size_t lng, int hAddr)
     {
         auto &addr = network->GetAddress(hAddr);
         auto cnt = sendto(
@@ -154,68 +138,45 @@ namespace astu {
         if (cnt < 0) {
             throw std::runtime_error("Unable to send message to "
                                      + addr.GetAddressString() + ": " + strerror(errno) );
-        } else if (cnt << lng) {
+        } else if (cnt < lng) {
             // TODO log warning message
-            cerr << "not all bytes could be sent to " << GetAddressFromHandle(hAddr) << endl;
+            cerr << "not all bytes could be sent to " << network->GetAddress(hAddr) << endl;
         }
     }
 
-
-    int Socket::CreateAddressHandle(const string &host, uint16_t port)
+    int Socket::Receive(Buffer &buffer)
     {
-        AddrInfo addrInfo;
-        addrInfo.SetIpMode(network->GetIpMode());
-        addrInfo.RetrieveUdpAddresses(host, port);
+        struct sockaddr addr;
+        socklen_t addrLen;
 
-        if (!addrInfo.HasAddress()) {
-            throw std::runtime_error(
-                    "Unable to resolve UDP socket address for host '"
-                    + host + "' at port " + to_string(port));
+        buffer.Clear();
+        auto ret = recvfrom(hSocket,
+                 buffer.GetData(),
+                 buffer.GetCapacity(),
+                 MSG_DONTWAIT,
+                 //0,
+                 &addr,
+                 &addrLen);
+
+        if (ret < 0) {
+            throw std::logic_error("recvfrom returned " + to_string(ret) + ", error: " + strerror(errno) );
         }
 
-        assert(addrInfo.GetType() == SOCK_DGRAM);
-        assert(addrInfo.GetProtocol() == IPPROTO_UDP);
+        buffer.SetLimit(ret);
 
-        assert(handleToAddress.size() == addressToHandle.size());
-
-        UniversalInetSocketAddress addr(addrInfo.GetAddr());
-        auto it = addressToHandle.find(addr);
-        if (it == addressToHandle.end()) {
-            addressToHandle[addr] = ++cntHandles;
-            assert(!HasAddressHandle(cntHandles));
-            handleToAddress.insert({cntHandles, addr});
-            assert(handleToAddress.size() == addressToHandle.size());
-            return cntHandles;
-        }
-
-        return it->second;
+        return network->GetOrCreateAddressHandle(UniversalInetSocketAddress(&addr));
     }
 
-    bool Socket::HasAddressHandle(int hAddr) const
+    void Socket::SetToNonBlocking()
     {
-        return handleToAddress.find(hAddr) != handleToAddress.end();
-    }
-
-    const IInetSocketAddress &Socket::GetAddressFromHandle(int hAddr) const
-    {
-        auto it = handleToAddress.find(hAddr);
-        if (it == handleToAddress.end()) {
-            throw std::logic_error("unknown address handle " + to_string(hAddr));
+        int flags = fcntl(hSocket, F_GETFL);
+        if (flags == -1) {
+            throw runtime_error(string("Unable to get socket flags: ") + strerror(errno));
         }
 
-        return it->second;
-    }
-
-    const UniversalInetSocketAddress &Socket::GetAddress(int hAddr) const
-    {
-        assert(handleToAddress.size() == addressToHandle.size());
-
-        auto it = handleToAddress.find(hAddr);
-        if (it == handleToAddress.end()) {
-            throw std::logic_error("unknown address handle " + to_string(hAddr));
+        if (fcntl(hSocket, F_SETFL, flags | O_NONBLOCK) == -1) {
+            throw runtime_error(string("Unable to set socket flags: ") + strerror(errno));
         }
-
-        return it->second;
     }
 
 } // end of namespace

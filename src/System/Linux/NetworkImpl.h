@@ -53,11 +53,26 @@ namespace astu {
         IpMode GetIpMode() const;
 
         int CreateAddressHandle(const std::string& host, uint16_t port);
+        bool HasAddressHandle(const std::string& host, uint16_t port) const;
+        int GetAddressHandle(const std::string& host, uint16_t port) const;
         const UniversalInetSocketAddress& GetAddress(int hAddr) const;
+
+        bool HasAddressHandle(const UniversalInetSocketAddress &addr) const;
+        int CreateAddressHandle(const UniversalInetSocketAddress & addr);
+        int GetAddressHandle(const UniversalInetSocketAddress & addr) const;
+
+        int GetOrCreateAddressHandle(const UniversalInetSocketAddress & addr) {
+            if (HasAddressHandle(addr)) {
+                return GetAddressHandle(addr);
+            }
+            return CreateAddressHandle(addr);
+        }
 
         std::unique_ptr<Socket> CreateUdpSocket(uint16_t port);
         std::unique_ptr<Socket> CreateUdpSocket(const std::string &host, uint16_t port);
         std::unique_ptr<IInetSocketAddress> CreateUdpSocketAddress(const std::string & host, uint16_t port);
+
+
 
     private:
         /** Defines whether to use IPv4 or IPv6 or both address spaces. */
@@ -74,15 +89,13 @@ namespace astu {
 
 
         std::unique_ptr<Socket> CreateSocket(AddrInfo &addrInfo);
-        bool HasHandle(const UniversalInetSocketAddress &addr) const;
-        int CreateHandle(const UniversalInetSocketAddress & addr);
-        int GetHandle(const UniversalInetSocketAddress & addr) const;
+        UniversalInetSocketAddress CreateAddress(const std::string& host, uint16_t port) const;
 
         int GetOrCreateHandle(const UniversalInetSocketAddress & addr) {
-            if (HasHandle(addr)) {
-                return CreateHandle(addr);
+            if (HasAddressHandle(addr)) {
+                return CreateAddressHandle(addr);
             } else {
-                return GetHandle(addr);
+                return GetAddressHandle(addr);
             }
         }
     };
