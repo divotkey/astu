@@ -93,6 +93,22 @@ namespace astu {
         int GetAddressHandle(const std::string& host, uint16_t port) const;
 
         /**
+         * Convenient method used to get a address handle for the specified socket address.
+         * In case the specified socket address has not yet been associated with an address handle,
+         * a new address handle is created.
+         *
+         * The host name is a string with either an ip address or a domain name.
+         * e.g "192.168.0.17" or "platypus.com".
+         *
+         * @param host  the host name
+         * @param port  the port number
+         * @return the address handle
+         * @throws std::runtime_error in case the socket address could not be
+         *  translated into an internal address structure use for comparison
+         */
+        int GetOrCreateAddressHandle(const std::string& host, uint16_t port);
+
+        /**
          * Returns the socket address associated by the specified handle.
          *
          * @param hAddr the handle of the socket address

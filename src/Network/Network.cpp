@@ -59,4 +59,9 @@ namespace astu {
         return nwImpl->GetAddressHandle(host, port);
     }
 
+    int Network::GetOrCreateAddressHandle(const string &host, uint16_t port)
+    {
+        return nwImpl->GetOrCreateAddressHandle(host, port);
+    }
+
 } // end of namespace

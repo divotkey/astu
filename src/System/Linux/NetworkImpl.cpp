@@ -196,4 +196,9 @@ namespace astu {
         return addrInfo.GetAddr();
     }
 
+    int NetworkImpl::GetOrCreateAddressHandle(const string &host, uint16_t port)
+    {
+        return GetOrCreateAddressHandle( CreateAddress(host, port) );
+    }
+
 } // end of namespace
