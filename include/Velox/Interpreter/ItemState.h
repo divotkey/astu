@@ -7,7 +7,7 @@
 #pragma once
 
 // Local includes
-#include "ItemType.h"
+#include "Velox/Interpreter/ItemType.h"
 #include "Graphics/Color.h"
 #include "Math/Vector2.h"
 

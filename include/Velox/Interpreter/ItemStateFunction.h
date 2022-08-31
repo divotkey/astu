@@ -8,7 +8,7 @@
 
 // Local includes
 #include "ItemState.h"
-#include "InterpreterFunction.h"
+#include "Velox/Interpreter/InterpreterFunction.h"
 
 namespace velox {
 

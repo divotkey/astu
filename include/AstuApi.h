@@ -7,7 +7,7 @@
 
 #ifdef ASTU_EXPORT
 #define ASTU_API __declspec(dllexport)
-#elif ASTU_IMPORT
+#elifdef ASTU_IMPORT
 #define ASTU_API __declspec(dllimport)
 #else
 #define ASTU_API

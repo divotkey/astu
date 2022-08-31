@@ -7,8 +7,8 @@
 #pragma once
 
 // Local includes
-#include "InterpreterStatement.h"
-#include "InterpreterExpression.h"
+#include "Velox/Interpreter/InterpreterStatement.h"
+#include "Velox/Interpreter/InterpreterExpression.h"
 
 namespace velox {
 

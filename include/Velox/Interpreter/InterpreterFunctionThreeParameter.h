@@ -7,7 +7,7 @@
 #pragma once
 
 // Local includes
-#include "InterpreterFunction.h"
+#include "Velox/Interpreter/InterpreterFunction.h"
 
 // C++ Standard Library includes
 #include <functional>

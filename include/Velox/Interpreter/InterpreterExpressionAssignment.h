@@ -1,8 +1,8 @@
 #pragma once
 
 // Local includes
-#include "InterpreterExpression.h"
-#include "InterpreterStatement.h"
+#include "Velox/Interpreter/InterpreterExpression.h"
+#include "Velox/Interpreter/InterpreterStatement.h"
 
 // C++ Standard Library includes
 #include <string>

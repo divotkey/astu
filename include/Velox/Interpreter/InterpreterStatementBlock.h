@@ -7,8 +7,8 @@
 #pragma once
 
 // Local includes
-#include "ScriptContext.h"
-#include "InterpreterStatement.h"
+#include "Velox/Interpreter/ScriptContext.h"
+#include "Velox/Interpreter/InterpreterStatement.h"
 
 // C++ Standard Library includes
 #include <vector>
