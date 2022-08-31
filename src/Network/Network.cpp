@@ -8,7 +8,6 @@
 // Local includes
 #include "Network/Network.h"
 #include "NetworkImpl.h"
-#include "SocketImpl.h"
 
 using namespace std;
 

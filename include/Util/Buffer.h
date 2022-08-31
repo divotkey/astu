@@ -11,6 +11,7 @@
 #include <stddef.h>
 #include <cassert>
 #include <memory>
+#include <string>
 
 namespace astu {
 
