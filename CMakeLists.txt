@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.0
-# Generated Wed Aug 31 11:13:25 CEST 2022 with SWORD Interpreter 1.9.1
+# Generated Wed Aug 31 11:26:20 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -244,6 +244,14 @@ list(APPEND astu_SOURCES
 	include/Script/ScannerError.h 
 
 	# Module: Velox
+	src/Velox/Parser/Parser.cpp 
+	src/Velox/Parser/Source.cpp 
+	src/Velox/Parser/SourceFile.cpp 
+	src/Velox/Parser/SourceString.cpp 
+	src/Velox/Parser/SourceString.h 
+	src/Velox/Parser/Token.cpp 
+	src/Velox/Parser/VeloxScanner.cpp 
+	src/Velox/Parser/VeloxScanner.h 
 	include/Velox/Interpreter/IMemoryManager.h 
 	include/Velox/Interpreter/Interpreter.cpp 
 	include/Velox/Interpreter/Interpreter.h 
@@ -390,20 +398,12 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/ScriptContext.h 
 	include/Velox/Interpreter/SimpleMemoryManager.cpp 
 	include/Velox/Interpreter/SimpleMemoryManager.h 
-	include/Velox/Parser/Parser.cpp 
 	include/Velox/Parser/Parser.h 
 	include/Velox/Parser/ParserError.h 
-	include/Velox/Parser/Source.cpp 
 	include/Velox/Parser/Source.h 
-	include/Velox/Parser/SourceFile.cpp 
 	include/Velox/Parser/SourceFile.h 
-	include/Velox/Parser/SourceString.cpp 
-	include/Velox/Parser/SourceString.h 
-	include/Velox/Parser/Token.cpp 
 	include/Velox/Parser/Token.h 
 	include/Velox/Parser/TokenType.h 
-	include/Velox/Parser/VeloxScanner.cpp 
-	include/Velox/Parser/VeloxScanner.h 
 
 	)
 

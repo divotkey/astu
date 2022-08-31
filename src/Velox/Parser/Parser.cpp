@@ -5,8 +5,8 @@
 // of contributors.
 
 // Local includes
-#include "Parser.h"
-#include "ParserError.h"
+#include "Velox/Parser/Parser.h"
+#include "Velox/Parser/ParserError.h"
 #include "Script/ScannerError.h"
 #include "Velox/Interpreter/InterpreterArithmeticOperation.h"
 #include "Velox/Interpreter/InterpreterAssignmentOperator.h"

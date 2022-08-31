@@ -4,7 +4,7 @@
 // which is part of this source code package. See 'AUTHORS' file for a list
 // of contributors.
 
-#include "SourceFile.h"
+#include "Velox/Parser/SourceFile.h"
 
 // C++ Standard Library includes
 #include <fstream>

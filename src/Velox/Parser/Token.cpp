@@ -4,7 +4,7 @@
 // which is part of this source code package. See 'AUTHORS' file for a list
 // of contributors.
 
-#include "Token.h"
+#include "Velox/Parser/Token.h"
 
 const std::string velox::Token::GetTypeAsString() const {
     switch (type) {

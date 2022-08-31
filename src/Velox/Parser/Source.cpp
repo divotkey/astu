@@ -5,7 +5,7 @@
 // of contributors.
 
 // Local includes
-#include "Source.h"
+#include "Velox/Parser/Source.h"
 #include "Script/ScannerBuilder.h"
 
 // C++ Standard Library includes

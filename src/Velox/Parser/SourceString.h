@@ -7,7 +7,7 @@
 #pragma once
 
 // Local includes
-#include "Source.h"
+#include "Velox/Parser/Source.h"
 
 // C++ Standard Library includes
 #include <sstream>

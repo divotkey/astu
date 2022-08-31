@@ -7,8 +7,8 @@
 #pragma once
 
 // Local includes
-#include "TokenType.h"
-#include "Source.h"
+#include "Velox/Parser/TokenType.h"
+#include "Velox/Parser/Source.h"
 #include "Velox/Interpreter/InterpreterStatementBlock.h"
 #include "Velox/Interpreter/InterpreterFunctionDefinition.h"
 #include "Velox/Interpreter/InterpreterConstructorCall.h"
