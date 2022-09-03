@@ -1,11 +1,11 @@
-# CMake file for AST-Utilities Version 0.11.0
-# Generated Wed Aug 31 12:00:53 CEST 2022 with SWORD Interpreter 1.9.1
+# CMake file for AST-Utilities Version 0.11.1
+# Generated Fri Sep 02 08:21:18 CEST 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
 
 # Add version information
-project(ASTU VERSION 0.11.0)
+project(ASTU VERSION 0.11.1)
 
 # Define C++ Standard
 set(CMAKE_CXX_STANDARD 17)
@@ -163,6 +163,9 @@ list(APPEND astu_SOURCES
 	include/Network/Peer.h 
 	include/Network/Socket.h 
 
+	# Module: Logging
+	include/Logging/LogLevel.h 
+
 	# Module: Service
 	src/Service/ActionSignalService.cpp 
 	src/Service/ConsoleApplication.cpp 
@@ -178,6 +181,8 @@ list(APPEND astu_SOURCES
 	include/Service/ConsoleApplication.h 
 	include/Service/ConsoleTimeService.h 
 	include/Service/InteractiveApplication.h 
+	include/Service/LoggingService.h 
+	include/Service/NetworkService.h 
 	include/Service/Priority.h 
 	include/Service/RenderService.h 
 	include/Service/Resolution.h 

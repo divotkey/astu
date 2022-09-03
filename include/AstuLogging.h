@@ -12,13 +12,12 @@
 
 #pragma once
 
-#include "Network/Network.h"
-#include "Network/Socket.h"
+#include "Logging/LogLevel.h"
 
 namespace astu {
 
     /**
-     * @defgroup network_group Input
+     * @defgroup logging_group Input
      * @brief This module contains templates, classes and functions dedicated network communication.
      * @{
      */

@@ -14,6 +14,7 @@
 
 #include "Service/Service.h"
 #include "Service/ServiceManager.h"
+#include "Service/LoggingService.h"
 #include "Service/UpdateService.h"
 #include "Service/UpdateService.h"
 #include "Service/SignalService.h"

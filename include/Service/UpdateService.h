@@ -7,13 +7,13 @@
 
 #pragma once
 
-// C++ Standard Library includes
-#include <vector>
-
 // Local includes.
 #include "Service.h"
 #include "Priority.h"
 #include "Util/ListenerManager.h"
+
+// C++ Standard Library includes
+#include <vector>
 
 namespace astu {
 
