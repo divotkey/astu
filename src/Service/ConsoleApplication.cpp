@@ -10,6 +10,7 @@
 #include "Service/TaskService.h"
 #include "Service/StateService.h"
 #include "Service/ConsoleTimeService.h"
+#include "Logging/ConsoleLoggingService.h"
 #include "Util/SpinLockSleep.h"
 #include "Util/StdSleep.h"
 #include "Util/VersionInfo.h"
@@ -86,6 +87,9 @@ namespace astu {
     }
 
     void ConsoleApplication::AddCoreServices() {
+
+        // Add logging facility.
+        ASTU_CREATE_AND_ADD_SERVICE( ConsoleLoggingService );
 
         // Measures the elapsed time using functions from the Standard C++ Library.
         ASTU_CREATE_AND_ADD_SERVICE( ConsoleTimeService );

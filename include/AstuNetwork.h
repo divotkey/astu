@@ -14,6 +14,7 @@
 
 #include "Network/Network.h"
 #include "Network/Socket.h"
+#include "Network/BasicNetworkService.h"
 
 namespace astu {
 
