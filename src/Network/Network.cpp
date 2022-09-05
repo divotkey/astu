@@ -58,6 +58,11 @@ namespace astu {
         return nwImpl->GetAddressHandle(host, port);
     }
 
+    std::string Network::GetAddressString(int hAddr) const
+    {
+        return nwImpl->GetAddressString(hAddr);
+    }
+
     int Network::GetOrCreateAddressHandle(const string &host, uint16_t port)
     {
         return nwImpl->GetOrCreateAddressHandle(host, port);

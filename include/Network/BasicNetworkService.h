@@ -32,6 +32,7 @@ namespace astu {
         bool HasAddressHandle(const std::string &host, uint16_t port) const override;
         int GetAddressHandle(const std::string &host, uint16_t port) override;
         int GetOrCreateAddressHandle(const std::string &host, uint16_t port) override;
+        std::string GetAddressString(int hAddr) const override;
         std::unique_ptr<Socket> CreateUdpSocket(uint16_t port) override;
 
     private:

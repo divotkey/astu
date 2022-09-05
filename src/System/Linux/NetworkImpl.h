@@ -171,6 +171,15 @@ namespace astu {
         std::unique_ptr<SocketImpl> CreateUdpSocket(uint16_t port);
 
         /**
+         * Return a human readable from of a socket address.
+         *
+         * @param hAddr the handle of the socket address
+         * @return a string representation of the socket address
+         * @throws std::logic_error if the socket handle is invalid
+         */
+        std::string GetAddressString(int hAddr) const;
+
+        /**
          * Creates a UDP socket.
          *
          * This method requires a local host address. This method is useful in

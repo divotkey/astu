@@ -43,4 +43,9 @@ namespace astu {
         return network.CreateUdpSocket(port);
     }
 
+    std::string BasicNetworkService::GetAddressString(int hAddr) const
+    {
+        return network.GetAddressString(hAddr);
+    }
+
 } // end of namespace
