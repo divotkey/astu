@@ -139,8 +139,8 @@ namespace astu {
 
     size_t SocketImpl::Receive(unsigned char *buffer, size_t bufferLng, int &hDestAddr)
     {
-        struct sockaddr addr;
-        socklen_t addrLen;
+        sockaddr addr;
+        socklen_t addrLen = sizeof(sockaddr);
 
         auto ret = recvfrom(hSocket,
                             buffer,
