@@ -176,12 +176,28 @@ namespace astu {
         int32_t ReadInt32() const;
 
         /**
-         * Writes a 32 bit integer to this buffer.
+         * Writes a 32 bit signed integer to this buffer.
          *
          * @param value the 32 bit integer value
          * @throws std::logic_error in case of a buffer overflow
          */
         void WriteInt32(int32_t value);
+
+        /**
+         * Reads a 32 bit unsigned integer value from this buffer.
+         *
+         * @return the 32 bit integer value
+         * @throws std::logic_error in case of a buffer underrun
+         */
+        uint32_t ReadUInt32() const;
+
+        /**
+         * Writes a 32 bit unsigned integer to this buffer.
+         *
+         * @param value the 32 bit integer value
+         * @throws std::logic_error in case of a buffer overflow
+         */
+        void WriteUInt32(uint32_t value);
 
         /**
          * Reads a 64 bit signed integer value from this buffer.
@@ -232,11 +248,15 @@ namespace astu {
          */
         void Flip();
 
+        void Mark();
+        void Reset();
+
         /**
          * Rewinds this buffer.
+         *
          * The position is set to zero.
          */
-        void Rewind();
+        void Rewind() const;
 
         /**
          *
@@ -281,6 +301,10 @@ namespace astu {
 
         /** The current reading position. */
         mutable unsigned char *pCur;
+
+        /** The currently marked position. */
+        unsigned char *pMark;
+
 
         /** The limit pointer, used to define the available bytes for reading/writing. */
         unsigned char *pLimit;

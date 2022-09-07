@@ -97,6 +97,14 @@ namespace astu {
          */
         virtual std::unique_ptr<Socket> CreateUdpSocket(uint16_t port = 0) = 0;
 
+        /**
+         * Return a human readable from of a socket address.
+         *
+         * @param hAddr the handle of the socket address
+         * @return a string representation of the socket address
+         * @throws std::logic_error if the socket handle is invalid
+         */
+        virtual std::string GetAddressString(int hAddr) const = 0;
     };
 
 } // end of namespace

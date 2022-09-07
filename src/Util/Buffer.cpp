@@ -32,17 +32,29 @@ namespace astu {
     {
         pCur = data.get();
         pLimit = pEnd;
+        pMark = data.get();
     }
 
     void Buffer::Flip()
     {
         pLimit = pCur;
         pCur = data.get();
+        pMark = data.get();
     }
 
-    void Buffer::Rewind()
+    void Buffer::Rewind() const
     {
         pCur = data.get();
+    }
+
+    void Buffer::Mark()
+    {
+        pMark = pCur;
+    }
+
+    void Buffer::Reset()
+    {
+        pCur = pMark;
     }
 
     void Buffer::SetLimit(size_t inLimit)
@@ -117,12 +129,22 @@ namespace astu {
 
     int32_t Buffer::ReadInt32() const
     {
-        if (GetRemaining() < sizeof(int16_t)) {
+        if (GetRemaining() < sizeof(int32_t)) {
             throw std::logic_error(
                     "Buffer underrun, unable to read 16bit integer value, only " + to_string(GetRemaining()) + " bytes left");
         }
 
         return Read<int32_t>();
+    }
+
+    uint32_t Buffer::ReadUInt32() const
+    {
+        if (GetRemaining() < sizeof(uint32_t)) {
+            throw std::logic_error(
+                    "Buffer underrun, unable to read 16bit integer value, only " + to_string(GetRemaining()) + " bytes left");
+        }
+
+        return Read<uint32_t>();
     }
 
     int64_t Buffer::ReadInt64() const
@@ -238,6 +260,17 @@ namespace astu {
         Write<int32_t>(value);
     }
 
+    void Buffer::WriteUInt32(uint32_t value)
+    {
+        if (GetRemaining() < sizeof(uint32_t)) {
+            throw std::logic_error(
+                    "Buffer overflow, unable to write 32 bit integer value, only " + to_string(GetRemaining()) +
+                    " bytes left");
+        }
+
+        Write<uint32_t>(value);
+    }
+
     void Buffer::WriteInt64(int64_t value)
     {
         if (GetRemaining() < sizeof(int64_t)) {
@@ -283,6 +316,5 @@ namespace astu {
     {
         return pCur;
     }
-
 
 } // end of namespace

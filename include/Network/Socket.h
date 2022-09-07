@@ -42,6 +42,14 @@ namespace astu {
         virtual bool IsReadyToReceive() const = 0;
 
         /**
+         * Checks whether messages can be sent via this socket.
+         * Call `Poll` on each main loop cycle before using this method.
+         *
+         * @return `true` if this socket can write messages
+         */
+        virtual bool IsReadyToSend() const = 0;
+
+        /**
          * Sends a message through this socket.
          *
          * @param data      a vector containing the message content

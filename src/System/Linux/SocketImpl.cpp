@@ -82,6 +82,11 @@ namespace astu {
         return pfd.revents & POLLIN;
     }
 
+    bool SocketImpl::IsReadyToSend() const
+    {
+        return pfd.revents & POLLOUT;
+    }
+
     void SocketImpl::InitPoolFds()
     {
         assert(hSocket >= 0);
@@ -171,5 +176,6 @@ namespace astu {
         InitPoolFds();
         SetToNonBlocking();
     }
+
 
 } // end of namespace

@@ -80,6 +80,7 @@ namespace astu {
         void SendTo(const unsigned char *buf, size_t lng, int hAddr) override;
 
         bool IsReadyToReceive() const override;
+        bool IsReadyToSend() const override;
         size_t Receive(unsigned char *buffer, size_t bufferLng, int &hDestAddr) override;
         //int Receive(Buffer &buffer) override;
 

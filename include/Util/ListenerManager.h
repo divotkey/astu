@@ -115,6 +115,15 @@ namespace astu {
             commandQueue.Execute();
         }
 
+        /**
+         * Returns the number of registered listeners.
+         *
+         * @return the current number of listeners
+         */
+        size_t NumListeners() const {
+            return listeners.size();
+        }
+
     private:
 
         /**
@@ -145,7 +154,6 @@ namespace astu {
 
         /** Pending pendingCommands. */
         CommandQueue commandQueue;
-
 
         void AddListenerInternal(const std::shared_ptr<T> & listener) {
             if (HasListener(listener)) {
