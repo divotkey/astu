@@ -82,10 +82,14 @@ namespace astu {
 
     void Buffer::Write(const unsigned char *src, size_t cnt)
     {
+        if (cnt == 0)
+            return;
+
         if (GetRemaining() < cnt) {
             throw logic_error("Buffer overflow, request to write " + to_string(cnt) + " bytes, but only " +
                               to_string(GetRemaining()) + "bytes are available");
         }
+
         assert(GetRemaining() >= cnt);
         memcpy(pCur, src, cnt);
         pCur += cnt;
