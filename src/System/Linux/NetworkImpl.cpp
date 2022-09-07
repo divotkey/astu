@@ -198,7 +198,8 @@ namespace astu {
 
     std::string NetworkImpl::GetAddressString(int hAddr) const
     {
-        return GetAddress(hAddr).GetAddressString();
+        auto & addr = GetAddress(hAddr);
+        return addr.GetAddressString() + ":" + to_string(addr.GetPort());
     }
 
     int NetworkImpl::GetOrCreateAddressHandle(const string &host, uint16_t port)
