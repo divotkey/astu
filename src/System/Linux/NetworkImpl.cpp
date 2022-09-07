@@ -141,7 +141,13 @@ namespace astu {
 
     bool NetworkImpl::HasAddressHandle(const UniversalInetSocketAddress &addr) const
     {
-        return addressToHandle.find(addr) != addressToHandle.end();
+        for (auto it : handleToAddress) {
+            if (it.second == addr)
+                return true;
+        }
+        return false;
+
+        // return addressToHandle.find(addr) != addressToHandle.end();
     }
 
     int NetworkImpl::CreateAddressHandle(const UniversalInetSocketAddress &addr)

@@ -374,7 +374,7 @@ namespace astu {
 
         size_t n = min(n1, n2);
 
-        return memcmp(&addr, &rhs.addr, min(n1, n2)) == 0;
+        return memcmp(&addr, &rhs.addr, n) == 0;
     }
 
 } // end of namespace
