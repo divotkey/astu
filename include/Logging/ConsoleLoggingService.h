@@ -27,17 +27,8 @@ namespace astu {
 
         void Log(LogLevel level, const std::string &tag, const std::string message) const override;
 
-        void SetMaxLevel(LogLevel level) {
-            maxLevel = level;
-        }
-
-        LogLevel GetMaxLevel() const {
-            return maxLevel;
-        }
-
     private:
         static const std::string LOG_LEVELS[];
-        LogLevel maxLevel;
     };
 
 

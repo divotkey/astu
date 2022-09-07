@@ -20,14 +20,13 @@ namespace astu {
 
     ConsoleLoggingService::ConsoleLoggingService()
         : Service("Console Logging Service")
-        , maxLevel(LogLevel::Debug)
     {
         // Intentionally left empty.
     }
 
     void ConsoleLoggingService::Log(LogLevel level, const string &tag, const std::string message) const
     {
-        if (static_cast<int>(level) > static_cast<int>(maxLevel))
+        if (static_cast<int>(level) > static_cast<int>(GetMaxLevel()))
             return;
 
         cout << LOG_LEVELS[static_cast<int>(level)] << " [" << tag << "] " << message << endl;

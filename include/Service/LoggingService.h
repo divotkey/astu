@@ -24,6 +24,8 @@ namespace astu {
     class LoggingService {
     public:
 
+        LoggingService() : maxLevel(LogLevel::Debug) {};
+
         /**
          * Virtual destructor.
          */
@@ -65,6 +67,17 @@ namespace astu {
         void LogVerbose(const std::string& tag, const std::string message) const {
             Log(LogLevel::Verbose, tag, message);
         }
+
+        void SetMaxLevel(LogLevel level) {
+            maxLevel = level;
+        }
+
+        LogLevel GetMaxLevel() const {
+            return maxLevel;
+        }
+
+    private:
+        LogLevel maxLevel;
     };
 
     /**
