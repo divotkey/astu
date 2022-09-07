@@ -67,4 +67,8 @@ namespace astu {
         return nullptr;
     }
 
+    std::string NetworkImpl::GetAddressString(int hAddr) const {
+        return "";
+    }
+
 } // end of namespace

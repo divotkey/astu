@@ -106,6 +106,7 @@ namespace astu {
 
         std::unique_ptr<Socket> CreateUdpSocket(uint16_t port);
         std::unique_ptr<Socket> CreateUdpSocket(const std::string &host, uint16_t port);
+        std::string GetAddressString(int hAddr) const;
 
     private:
         /** Defines whether to use IPv4 or IPv6 or both address spaces. */
