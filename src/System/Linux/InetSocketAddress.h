@@ -75,6 +75,7 @@ namespace astu {
          * @param rhs the right hand side for this operator
          * @return 'true' if this address is considers "less" than the rhs
          */
+        bool operator== (const UniversalInetSocketAddress& rhs) const;
         bool operator< (const UniversalInetSocketAddress& rhs) const;
 
         // Inherited via IInetSocketAddress

@@ -367,4 +367,14 @@ namespace astu {
         return *this < UniversalInetSocketAddress::Cast(rhs);
     }
 
+    bool UniversalInetSocketAddress::operator==(const UniversalInetSocketAddress &rhs) const
+    {
+        size_t n1 = addr.ss_family == AF_INET ? sizeof(struct sockaddr_in) : sizeof(struct sockaddr_in6);
+        size_t n2 = rhs.addr.ss_family == AF_INET ? sizeof(struct sockaddr_in6) : sizeof(struct sockaddr_in6);
+
+        size_t n = min(n1, n2);
+
+        return memcmp(&addr, &rhs.addr, min(n1, n2)) == 0;
+    }
+
 } // end of namespace

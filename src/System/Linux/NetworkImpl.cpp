@@ -160,13 +160,21 @@ namespace astu {
 
     int NetworkImpl::GetAddressHandle(const UniversalInetSocketAddress &addr) const
     {
-        auto it = addressToHandle.find(addr);
-        if (it == addressToHandle.end()) {
-            throw std::logic_error("Unable to retrieve address handle, unknown address. Use HasAddressHandle() and CreateAddressHandle()."
-                + addr.GetAddressString());
+        for (auto it : handleToAddress) {
+            if (it.second == addr)
+                return it.first;
         }
 
-        return it->second;
+        throw std::logic_error("Unable to retrieve address handle, unknown address. Use HasAddressHandle() and CreateAddressHandle()."
+                               + addr.GetAddressString());
+
+        //auto it = addressToHandle.find(addr);
+        //if (it == addressToHandle.end()) {
+        //    throw std::logic_error("Unable to retrieve address handle, unknown address. Use HasAddressHandle() and CreateAddressHandle()."
+        //        + addr.GetAddressString());
+        //}
+        //
+        //return it->second;
     }
 
     const UniversalInetSocketAddress &NetworkImpl::GetAddress(int hAddr) const
