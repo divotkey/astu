@@ -99,7 +99,7 @@ namespace astu {
         /** Virtual destructor. */
         virtual ~LoggingClient() { }
 
-    protected:
+    public:
 
         void LogFatal(const std::string& tag, const std::string message) const {
             loggingSrv->Log(LogLevel::Fatal, tag, message);

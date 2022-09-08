@@ -250,6 +250,15 @@ namespace astu {
         }
 
         /**
+         * Returns the number of registered listeners.
+         *
+         * @return the current number of listeners
+         */
+        size_t NumListeners() const {
+            return listeners.size();
+        }
+
+        /**
          * Calls a given function for all listeners.
          * 
          * The function must take a reference to a listener
@@ -405,6 +414,15 @@ namespace astu {
         }
 
         /**
+         * Returns the number of registered listeners.
+         *
+         * @return the current number of listeners
+         */
+        size_t NumListeners() const {
+            return listeners.size();
+        }
+
+        /**
          * Calls a given function for all listeners.
          * 
          * The function must take a reference to a listener
@@ -429,7 +447,7 @@ namespace astu {
     private:
 
         /**
-         * Inner class used to decorate the listeneres with 'removed' flag.
+         * Inner class used to decorate the listeners with 'removed' flag.
          */
         class Decorator {
         public:
@@ -565,6 +583,15 @@ namespace astu {
             }
 
             return it->priority;
+        }
+
+        /**
+         * Returns the number of registered listeners.
+         *
+         * @return the current number of listeners
+         */
+        size_t NumListeners() const {
+            return listeners.size();
         }
 
         /**
