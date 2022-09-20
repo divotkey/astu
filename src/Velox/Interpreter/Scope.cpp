@@ -20,6 +20,9 @@ namespace velox {
 
     void Scope::AddItem(const string &name, std::shared_ptr<Item> item) {
         assert(!HasItem(name));
+        if (HasItem(name)) {
+            int x = 12;
+        }
         items[name] = item;
     }
 

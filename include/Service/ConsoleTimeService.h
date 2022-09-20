@@ -59,6 +59,9 @@ namespace astu {
         /** Represents the absolute time since this service has been started. */
         std::chrono::nanoseconds timeInNs;
 
+        /** use to avoid issues while debugging or drop of update rate. */
+        double maxDeltaTime;
+
         /** The elapsed time since the last update. */
         double deltaTime;
 

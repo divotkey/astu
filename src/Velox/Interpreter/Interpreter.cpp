@@ -224,4 +224,24 @@ namespace velox {
                 }));
     }
 
+    void Interpreter::CallWithNoParams(Item &item)
+    {
+        InterpreterNoParameterList noParams;
+        Call(item, noParams);
+    }
+
+    void Interpreter::CallWithIntParam(Item &item, int value)
+    {
+        InterpreterItemParameterList params;
+        params.AddParameter(Item::CreateInteger(value));
+        Call(item, params);
+    }
+
+    void Interpreter::Call(Item &item, InterpreterActualParameterList &params)
+    {
+        context.PushScope(make_shared<Scope>(true));
+        item.CallAsFunction(context, params, 0);
+        context.PopScope();
+    }
+
 }

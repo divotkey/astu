@@ -2,6 +2,7 @@
 
 // Local includes
 #include "InterpreterStatement.h"
+#include "InterpreterActualParameterList.h"
 #include "ScriptContext.h"
 #include "Scope.h"
 
@@ -67,6 +68,10 @@ namespace velox {
 
 
         void Execute(std::shared_ptr<InterpreterStatement> program);
+        void CallWithNoParams(Item& item);
+        void CallWithIntParam(Item& item, int value);
+        void CallWithOneParam(Item& item, std::shared_ptr<Item> param);
+        void Call(Item& item, InterpreterActualParameterList &params);
 
         void ClearVariables();
 

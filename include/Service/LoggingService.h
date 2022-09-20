@@ -129,6 +129,10 @@ namespace astu {
             loggingSrv->Log(LogLevel::Verbose, tag, message);
         }
 
+        void Log(LogLevel level, const std::string& tag, const std::string message) const {
+            loggingSrv->Log(level, tag, message);
+        }
+
     private:
         /** The logging service used by this class. */
         std::shared_ptr<LoggingService> loggingSrv;
