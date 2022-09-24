@@ -28,12 +28,6 @@ namespace astu {
         running = false;
     }
 
-    void Timer::Resume() {
-        if (!running) return;
-        running = true;
-        startTime = chrono::high_resolution_clock::now();
-    }
-
     unsigned int Timer::GetMilliseconds() const {
         if (running) {
             auto delta = chrono::high_resolution_clock::now() - startTime;
