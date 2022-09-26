@@ -222,7 +222,7 @@ namespace astu {
 		return SEPARATOR;
 	}
 
-	string & StringUtils::replace(string & s, const string & from, const string & to)
+	string & StringUtils::Replace(string & s, const string & from, const string & to)
 	{
 		size_t start_pos = 0;
 		while ((start_pos = s.find(from, start_pos)) != string::npos) {

@@ -226,7 +226,7 @@ namespace astu {
 		 * @param to	the string used as replacement
 		 * @return		reference to the processed string
 		 */
-		static std::string & replace(std::string & s, const std::string & from, const std::string & to);
+		static std::string & Replace(std::string & s, const std::string & from, const std::string & to);
 
         /**
          * Extracts the file extension from a given filename.
