@@ -42,9 +42,9 @@ namespace astu {
          * pA + vA * s1 or pB + vB * s2.
          * 
          * @param pA    the origin of the first line
-         * @param vA    the diretion of the first line
+         * @param vA    the direction of the first line
          * @param pB    the origin of the second line
-         * @param vB    the diretion of the second line
+         * @param vB    the direction of the second line
          * @param outS1 receives the scaling factor for the first line
          * @param outS2 receives the scaling factor for the second line
          * @return  `true` if the two lines intersect or false if the two lines 
