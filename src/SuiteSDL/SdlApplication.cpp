@@ -60,6 +60,7 @@ namespace astu {
         ASTU_CREATE_AND_ADD_SERVICE( SdlSceneGraph2D );    
         ASTU_CREATE_AND_ADD_SERVICE( SdlLineRenderer );    
         ASTU_CREATE_AND_ADD_SERVICE( SdlVertexBufferBuilderService2D );
+        ASTU_CREATE_AND_ADD_SERVICE( SdlTextureFactoryService );
     }
 
     void SdlApplication::RemoveSdl2DServices()

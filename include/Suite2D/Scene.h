@@ -10,6 +10,7 @@
 // Local includes
 #include "Service/Service.h"
 #include "Graphics/VertexBuffer2.h"
+#include "Graphics/Texture.h"
 #include "Util/Controllable.h"
 #include "Graphics/WebColors.h"
 #include "Math/Vector2.h"
@@ -27,6 +28,7 @@ namespace astu::suite2d {
 
     // Forward declaration
     class Polyline;
+    class Sprite;
     class Node;
 
     /////////////////////////////////////////////////
@@ -47,12 +49,20 @@ namespace astu::suite2d {
         virtual ~SceneRenderer2D() {}
 
         /**
-         * Renders a polyine node.
+         * Renders a polyline node.
          * 
          * @param polyline  the polyline node to render
          * @param alpha     the transparency
          */
         virtual void Render(Polyline& polyline, float alpha) = 0;
+
+        /**
+         * Renders a sprite node.
+         *
+         * @param polyline  the sprite node to render
+         * @param alpha     the transparency
+         */
+        virtual void Render(Sprite &sprite, float alpha) = 0;
     };
 
     /////////////////////////////////////////////////
@@ -101,7 +111,7 @@ namespace astu::suite2d {
         }
 
         /**
-         * Retrieves the local transformation matrix  of this spatial.
+         * Retrieves the local transformation matrix of this spatial.
          * 
          * @return the local transformation
          */
@@ -110,7 +120,7 @@ namespace astu::suite2d {
         }
 
         /**
-         * Retrieves the local transormation matrix  of this spatial.
+         * Retrieves the local transformation matrix of this spatial.
          * 
          * @return the local transformation
          */
@@ -166,11 +176,11 @@ namespace astu::suite2d {
         }
 
         /**
-         * Sets the transparance of this spatial.
+         * Sets the transparency of this spatial.
          * 
-         * @param alpha the transparance within the range [0, 1]
+         * @param alpha the transparency within the range [0, 1]
          */
-        void SetTransparance(float alpha);
+        void SetTransparency(float alpha);
 
         /**
          * Returns the transparency of this spatial.
@@ -195,7 +205,7 @@ namespace astu::suite2d {
         /** The name of this spatial. */
         std::string name;
 
-        /** The transparancy. */
+        /** The transparency. */
         float alpha;
 
         /**
@@ -254,7 +264,7 @@ namespace astu::suite2d {
     public:
 
         /**
-         * Tests whether the specified spatial has alreaedy been added.
+         * Tests whether the specified spatial has already been added.
          * 
          * @return child    the spatial to test
          * @return `true` if the spatial has already been added as child
@@ -265,7 +275,7 @@ namespace astu::suite2d {
          * Attaches a child to this node.
          * 
          * The specified child must neither be child of any other node, 
-         * nor a child of this node, other wise the behaviour is undefied and
+         * nor a child of this node, other wise the behaviour is undefined and
          * might result in an exception.
          * 
          * @param child the child to attach
@@ -419,6 +429,92 @@ namespace astu::suite2d {
 
         /** The color of this polyline. */
         Color4f color;
+    };
+
+    /**
+     * The sprite class represents a leaf element within the scene graph.
+     * It consists of a texture as well as size information in world space.
+     *
+     * @ingroup suite2d_group
+     */
+    class Sprite final : public Spatial {
+    public:
+
+        /**
+         * Constructor.
+         *
+         * @param texture   the texture used by this sprite
+         */
+        Sprite(std::shared_ptr<Texture> texture);
+
+        /**
+         * Constructor.
+         *
+         * @param texture   the texture used by this sprite
+         * @parma width     the width of this sprite in world space
+         * @parma height    the height of this sprite in world space
+         */
+        Sprite(std::shared_ptr<Texture> texture, float width, float height);
+
+        /**
+         * Returns the width of this sprite in world space.
+         *
+         * @return the width of this sprite in the game world
+         */
+        float GetWidth() const {
+            return width;
+        }
+
+        /**
+         * Sets the width of this sprite in world space.
+         *
+         * @param w width in world space
+         */
+        void SetWidth(float w);
+
+        /**
+         * Returns the height of this sprite in world space.
+         *
+         * @return the height of this sprite in the game world
+         */
+        float GetHeight() const {
+            return height;
+        }
+
+        /**
+         * Sets the height of this sprite in world space.
+         *
+         * @param h height in world space
+         */
+        void SetHeight(float h);
+
+        /**
+         * Returns the texture used by this sprite.
+         *
+         * @return the sprite's texture
+         */
+        Texture &GetTexture();
+
+        /**
+         * Returns the texture used by this sprite.
+         *
+         * @return the sprite's texture
+         */
+        const Texture &GetTexture() const;
+
+        // Inherited via Node2/Spatial2
+        virtual void Render(SceneRenderer2D& renderer, float alpha) override;
+        virtual std::shared_ptr<Spatial> Clone() const override;
+
+    private:
+        /** The texture representing the visual representation of this sprite. */
+        std::shared_ptr<Texture> texture;
+
+        /** The width of this sprite in world space. */
+        float width;
+
+        /** The height of this sprite in world space. */
+        float height;
     };
 
     /////////////////////////////////////////////////

@@ -67,7 +67,7 @@ namespace astu::suite2d {
          * Polyline mode will close the shaped by duplicating
          * the first vertex.
          */
-        ShapeGenerator& PolygoneMode() {
+        ShapeGenerator& PolygonMode() {
             duplicateStartVertex = false;
             return *this;
         }
@@ -97,7 +97,7 @@ namespace astu::suite2d {
          * 
          * @return `true` if this generator is in polygon mode
          */
-        bool IsPolygoneMode() const {
+        bool IsPolygonMode() const {
             return !duplicateStartVertex;
         }
 

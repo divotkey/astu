@@ -9,12 +9,16 @@
 #include "SuiteSDL/SdlSceneGraph2D.h"
 #include "SuiteSDL/SdlSceneRenderer2D.h"
 #include "SuiteSDL/SdlRecordingSceneRenderer2D.h"
+#include "SuiteSDL/SdlTexture.h"
+#include "Graphics/Image.h"
 
 // Simple Direct Layer (SDL) includes
 #include <SDL2/SDL.h>
 
 // C++ Standard Library includes
-#include <cassert>     
+#include <cassert>
+#include <memory>
+#include <string>
 
 namespace astu {
 
@@ -61,6 +65,74 @@ namespace astu {
         auto result = std::make_shared<SdlVertexBuffer2D>();
         result->vertices = vertices;
         return result;
+    }
+
+    /////////////////////////////////////////////////
+    /////// TextureFactory
+    /////////////////////////////////////////////////
+
+    SdlTextureFactoryService::SdlTextureFactoryService()
+            : Service("SDL Texture Factory Service")
+    {
+        // Intentionally left empty.
+    }
+
+    std::shared_ptr<Texture> SdlTextureFactoryService::CreateFromImage(const Image &image) const
+    {
+        // Create surface with appropriate size and properties.
+        SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormat(
+                0,
+                image.GetWidth(),
+                image.GetHeight(),
+                32,
+                SDL_PixelFormatEnum::SDL_PIXELFORMAT_ABGR32
+                );
+
+
+        // Transfer pixel data.
+        char  *pixelBytes = reinterpret_cast<char*>(surface->pixels);
+
+        for (int y = 0; y < image.GetHeight(); ++y) {
+            for (int x = 0; x < image.GetWidth(); ++x) {
+                Color4d col = image.GetPixel(x, y);
+                *reinterpret_cast<int32_t*>(pixelBytes + y * surface->pitch + x * surface->format->BytesPerPixel) = col.ToRgba();
+            }
+        }
+        //for (size_t i = 0; i < image.NumberOfPixels(); ++i) {
+        //    Color4d col = image.GetPixel(i);
+        //
+        //    col.ToRgba()
+        //
+        //}
+
+        // Create texture from surface.
+        SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(ASTU_SERVICE(SdlRenderService).GetRenderer(), surface);
+        if (!sdlTexture) {
+            SDL_FreeSurface(surface);
+            throw std::runtime_error(std::string("Unable to create SDL texture: ") + SDL_GetError());
+        }
+        SDL_FreeSurface(surface);
+
+        // Create and return wrapper class.
+        return std::make_shared<SdlTexture>(sdlTexture);
+    }
+
+    std::shared_ptr<Texture> SdlTextureFactoryService::CreateFromBmp(const std::string &filepath) const
+    {
+        SDL_Surface* surface = SDL_LoadBMP(filepath.c_str());
+        if (!surface) {
+            throw std::runtime_error("Unable to load .BMP file '" + filepath + "': " + SDL_GetError());
+        }
+
+        SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(ASTU_SERVICE(SdlRenderService).GetRenderer(), surface);
+        if (!sdlTexture) {
+            SDL_FreeSurface(surface);
+            throw std::runtime_error("Unable to create SDL texture using .BMP file '" + filepath + "': " + SDL_GetError());
+        }
+
+        SDL_FreeSurface(surface);
+
+        return std::make_shared<SdlTexture>(sdlTexture);
     }
 
     /////////////////////////////////////////////////

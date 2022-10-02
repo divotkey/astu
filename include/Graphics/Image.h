@@ -207,7 +207,7 @@ namespace astu {
          * @param h the height of the region
          * @return the average color of the region
          */
-        Color4d GetAverageRegionColor(int x, int y, int w, int h);
+        Color4d GetAverageRegionColor(int x, int y, int w, int h) const;
 
         /**
          * Calculates the average brightness of an region of this image.
@@ -220,7 +220,7 @@ namespace astu {
          * @param h the height of the region
          * @return the average brightness of the region
          */
-        double GetAverageRegionBrightness(int x, int y, int w, int h);
+        double GetAverageRegionBrightness(int x, int y, int w, int h) const;
 
         /**
          * Converts this image to an grayscale image.

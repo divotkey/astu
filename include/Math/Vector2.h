@@ -311,6 +311,32 @@ namespace astu {
         }
 
         /**
+         * The angle in radians of this vector (point) relative to the x-axis.
+         * Angles are towards the positive y-axis.
+         *
+         * @return the angle in degrees
+         */
+        T AngleDeg() const
+        {
+            T angle =  MathUtils::ToDegrees(std::atan2(y, x));
+            if (angle < 0)
+                angle += static_cast<T>(360);
+
+            return angle;
+        }
+
+        /**
+         * The angle in radians of this vector (point) relative to the x-axis.
+         * Angles are towards the positive y-axis.
+         *
+         * @return the angle in radians
+         */
+        T Angle() const
+        {
+            return std::atan2(y, x);
+        }
+
+        /**
          * Sets this vector to perpendicular version of itself.
          * 
          * @return reference to this vector for method chaining

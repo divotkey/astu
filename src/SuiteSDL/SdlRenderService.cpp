@@ -193,6 +193,11 @@ namespace astu {
         return vsync;
     }
 
+    SDL_Renderer *SdlRenderService::GetRenderer()
+    {
+        return renderer;
+    }
+
     /////////////////////////////////////////////////
     /////// SdlRenderLayer
     /////////////////////////////////////////////////
