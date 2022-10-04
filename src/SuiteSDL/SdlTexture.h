@@ -60,6 +60,10 @@ namespace astu {
 
         int GetHeight() const override;
 
+        void SetBlendMode(BlendMode mode) override;
+
+        BlendMode GetBlendMode() const override;
+
     private:
         /** The underlying SDL texture. */
         SDL_Texture *sdlTexture;
@@ -69,6 +73,11 @@ namespace astu {
 
         /** The height of this texture in pixels. */
         int height;
+
+        /** The blend mode of this texture. */
+        BlendMode mode;
+
+        void TransferMode();
     };
 
 } // end of namespace

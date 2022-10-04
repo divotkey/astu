@@ -24,6 +24,33 @@ namespace astu {
     class Texture {
     public:
 
+        enum class BlendMode {
+
+            /**
+             * Textures are copied over existing content.
+             * Copy operation: dstRGBA = srcRGBA)
+             */
+            None,
+
+            /**
+             * Textures are blended with existing content using the alpha channel.
+             * Copy operation: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA))
+             */
+            Blend,
+
+            /**
+             * Textures are added to existing content, useful for e.g., fire particles.
+             * Copy operations: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA
+             */
+            Add,
+
+            /**
+             * The texture modulates the color of the existing content.
+             * Copy operations: dstRGB = srcRGB * dstRGB, dstA = dstA
+             */
+            Mod
+        };
+
         /** Virtual destructor. */
         virtual ~Texture() {}
 
@@ -41,6 +68,19 @@ namespace astu {
          */
         virtual int GetHeight() const = 0;
 
+        /**
+         * Sets the blend mode for this texture.
+         *
+         * @param mode  the blend mode
+         */
+        virtual void SetBlendMode(BlendMode mode) = 0;
+
+        /**
+         * Returns the blend mode of this texture.
+         *
+         * @return the  blend mode
+         */
+        virtual BlendMode GetBlendMode() const = 0;
     };
 
 

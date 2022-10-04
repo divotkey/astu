@@ -75,8 +75,6 @@ namespace astu {
         // Inherited via TextureFactory
         virtual std::shared_ptr<Texture> CreateFromImage(const Image &image) const override;
         virtual std::shared_ptr<Texture> CreateFromBmp(const std::string& filepath) const override;
-
-    private:
     };
 
     /**

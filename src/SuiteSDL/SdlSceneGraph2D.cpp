@@ -27,23 +27,23 @@ namespace astu {
     /////////////////////////////////////////////////
 
     SdlVertexBufferBuilderService2D::SdlVertexBufferBuilderService2D()
-        : Service("SDL Vertex Buffer 2D Builder Service")
+            : Service("SDL Vertex Buffer 2D Builder Service")
     {
         Reset();
     }
 
-    VertexBufferBuilder2f& SdlVertexBufferBuilderService2D::AddVertex(float x, float y)
+    VertexBufferBuilder2f &SdlVertexBufferBuilderService2D::AddVertex(float x, float y)
     {
         vertices.push_back({x, y});
         return *this;
     }
 
-    const Vector2f& SdlVertexBufferBuilderService2D::GetVertex(size_t idx) const
+    const Vector2f &SdlVertexBufferBuilderService2D::GetVertex(size_t idx) const
     {
         return vertices.at(idx);
     }
 
-    VertexBufferBuilder2f& SdlVertexBufferBuilderService2D::SetVertex(size_t idx, float x, float y)
+    VertexBufferBuilder2f &SdlVertexBufferBuilderService2D::SetVertex(size_t idx, float x, float y)
     {
         vertices.at(idx).Set(x, y);
         return *this;
@@ -54,7 +54,7 @@ namespace astu {
         return vertices.size();
     }
 
-    VertexBufferBuilder2f& SdlVertexBufferBuilderService2D::Reset()
+    VertexBufferBuilder2f &SdlVertexBufferBuilderService2D::Reset()
     {
         vertices.clear();
         return *this;
@@ -80,30 +80,28 @@ namespace astu {
     std::shared_ptr<Texture> SdlTextureFactoryService::CreateFromImage(const Image &image) const
     {
         // Create surface with appropriate size and properties.
-        SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormat(
+        SDL_Surface *surface = SDL_CreateRGBSurfaceWithFormat(
                 0,
                 image.GetWidth(),
                 image.GetHeight(),
                 32,
                 SDL_PixelFormatEnum::SDL_PIXELFORMAT_ABGR32
-                );
+        );
 
+        if(SDL_SetSurfaceBlendMode(surface, SDL_BlendMode::SDL_BLENDMODE_BLEND)) {
+            throw std::runtime_error(std::string("Unable to set blend mode for SDL surface: ") + SDL_GetError());
+        }
 
         // Transfer pixel data.
-        char  *pixelBytes = reinterpret_cast<char*>(surface->pixels);
+        char *pixelBytes = reinterpret_cast<char *>(surface->pixels);
 
         for (int y = 0; y < image.GetHeight(); ++y) {
             for (int x = 0; x < image.GetWidth(); ++x) {
                 Color4d col = image.GetPixel(x, y);
-                *reinterpret_cast<int32_t*>(pixelBytes + y * surface->pitch + x * surface->format->BytesPerPixel) = col.ToRgba();
+                *reinterpret_cast<int32_t *>(pixelBytes + y * surface->pitch +
+                                             x * surface->format->BytesPerPixel) = col.ToRgba();
             }
         }
-        //for (size_t i = 0; i < image.NumberOfPixels(); ++i) {
-        //    Color4d col = image.GetPixel(i);
-        //
-        //    col.ToRgba()
-        //
-        //}
 
         // Create texture from surface.
         SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(ASTU_SERVICE(SdlRenderService).GetRenderer(), surface);
@@ -119,7 +117,7 @@ namespace astu {
 
     std::shared_ptr<Texture> SdlTextureFactoryService::CreateFromBmp(const std::string &filepath) const
     {
-        SDL_Surface* surface = SDL_LoadBMP(filepath.c_str());
+        SDL_Surface *surface = SDL_LoadBMP(filepath.c_str());
         if (!surface) {
             throw std::runtime_error("Unable to load .BMP file '" + filepath + "': " + SDL_GetError());
         }
@@ -127,7 +125,8 @@ namespace astu {
         SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(ASTU_SERVICE(SdlRenderService).GetRenderer(), surface);
         if (!sdlTexture) {
             SDL_FreeSurface(surface);
-            throw std::runtime_error("Unable to create SDL texture using .BMP file '" + filepath + "': " + SDL_GetError());
+            throw std::runtime_error(
+                    "Unable to create SDL texture using .BMP file '" + filepath + "': " + SDL_GetError());
         }
 
         SDL_FreeSurface(surface);
@@ -140,22 +139,20 @@ namespace astu {
     /////////////////////////////////////////////////
 
     SdlSceneGraph2D::SdlSceneGraph2D(int renderPriority, int updatePriority)
-        : Service("SDL Scene Graph 2D")
-        , Updatable(updatePriority)
-        , SdlRenderLayer(renderPriority)
+            : Service("SDL Scene Graph 2D"), Updatable(updatePriority), SdlRenderLayer(renderPriority)
     {
         // Intentionally left empty.
     }
-    
+
     SdlSceneGraph2D::~SdlSceneGraph2D()
     {
         // Intentionally left empty.
     }
 
-    void SdlSceneGraph2D::OnRender(SDL_Renderer* renderer)
+    void SdlSceneGraph2D::OnRender(SDL_Renderer *renderer)
     {
-        sceneRenderer->SetViewMatrix( GetCamera().GetMatrix() );
-        sceneRenderer->SetSdlRenderer( *renderer );
+        sceneRenderer->SetViewMatrix(GetCamera().GetMatrix());
+        sceneRenderer->SetSdlRenderer(*renderer);
         sceneRenderer->BeginFrame(GetAbsoluteTime());
         GetRoot()->Render(*sceneRenderer, 1.0f);
         sceneRenderer->EndFrame();
@@ -164,7 +161,7 @@ namespace astu {
 
     void SdlSceneGraph2D::OnUpdate()
     {
-        GetRoot()->Update( GetElapsedTime() );
+        GetRoot()->Update(GetElapsedTime());
     }
 
     void SdlSceneGraph2D::OnStartup()

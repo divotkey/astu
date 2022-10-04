@@ -293,8 +293,6 @@ namespace astu {
         double startY = dy / 2.0;
 
         Vector2<double> p(0, startY);
-        Color4d c1 = Color4d(0, 0, 0);
-        Color4d c2 = Color4d(1, 1, 1);
 
         cout << " 0 %";
         for (int j = 0; j < result.GetHeight(); ++j) {
@@ -319,10 +317,8 @@ namespace astu {
         double dy = (kKernelRadius * 2) / kKernelSize;
         double startY = p.y - kKernelRadius;
 
-        const Color4d c1 = Color4d(1, 1, 1);
-        const Color4d c2 = Color4d(0, 0, 0);
+        Color4d c(0, 0, 0, 0);
 
-        Color4d c;
         Vector2<double> aa(0, startY);
         const double *k = kernel;
         for (unsigned int j = 0; j < kKernelSize; ++j) {

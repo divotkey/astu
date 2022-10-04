@@ -111,7 +111,7 @@ namespace astu {
             auto && lastError = SDL_GetError();
             SDL_DestroyRenderer(renderer);
             throw std::runtime_error(lastError);
-        }            
+        }
     }
 
     void SdlRenderService::LogRendererInfo()

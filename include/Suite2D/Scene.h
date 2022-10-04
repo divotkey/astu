@@ -875,12 +875,107 @@ namespace astu::suite2d {
         /** The vertex buffer used to build the polyline. */
         std::shared_ptr<VertexBuffer2f> vertexBuffer;    
 
-        /** Whethe to polyline is closed. */
+        /** Whether to polyline is closed. */
         bool closed;
 
         /** The color of the polyline to build. */
         Color4f color;
 
     };
-    
+
+    /////////////////////////////////////////////////
+    /////// SpriteBuilder
+    /////////////////////////////////////////////////
+
+    /**
+     * This fluent builder is used to build new sprite scene graph elements.
+     *
+     * @ingroup suite2d_group
+     */
+    class SpriteBuilder final : public SpatialBuilder<SpriteBuilder> {
+    public:
+
+        /**
+         * Constructor.
+         */
+        SpriteBuilder() {
+            Reset();
+        }
+
+        /**
+         * Specifies the texture used to create the sprite.
+         *
+         * @param image   the image data used to create the texture for the sprite
+         * @return reference to this builder for method chaining
+         */
+        SpriteBuilder& Tex(Image &image) {
+            texture = ASTU_SERVICE(TextureFactory).CreateFromImage(image);
+            return *this;
+        }
+
+        /**
+         * Specifies the texture used to create the sprite.
+         *
+         * @param tex   the sprite texture
+         * @return reference to this builder for method chaining
+         */
+        SpriteBuilder& Tex(std::shared_ptr<Texture> tex) {
+            texture = tex;
+            return *this;
+        }
+
+        /**
+         * Specifies the size of the sprite in world space.
+         *
+         * @param w the width in world space
+         * @param h the height in world space
+         * @return reference to this builder for method chaining
+         */
+        SpriteBuilder& Size(float w, float h) {
+            width = w;
+            height = h;
+            return *this;
+        }
+
+        /**
+         * Resets this builder to its initial configuration.
+         *
+         * @return reference to this builder for method chaining
+         */
+        SpriteBuilder& Reset() {
+            SpatialBuilder::Reset();
+            texture = nullptr;
+            width = height = 0.0f;
+            return *this;
+        }
+
+        /**
+         * Creates a new sprite according to the current configuration.
+         *
+         * @return the newly created polyline
+         */
+        std::shared_ptr<Sprite> Build() {
+            if (!texture) {
+                throw std::logic_error(
+                        "Unable to build Sprite, texture specified");
+            }
+
+            float w = width > 0 ? width : texture->GetWidth();
+            float h = height > 0 ? height : texture->GetHeight();
+
+            return std::make_shared<Sprite>(texture, w, h);
+        }
+
+    private:
+        /** The width of the sprite in world space. */
+        float width;
+
+        /** The height of the sprite in world space. */
+        float height;
+
+        /** The texture used for the sprite. */
+        std::shared_ptr<Texture> texture;
+    };
+
+
 } // end of namespace
