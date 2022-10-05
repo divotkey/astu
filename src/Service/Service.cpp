@@ -78,12 +78,8 @@ namespace astu {
         // Emit log message (in case logging facility is present).
         auto logger = ASTU_GET_SERVICE_OR_NULL(LoggingService);
         if (logger) {
-            logger->LogDebug(LOGGING_TAG, "Staring " + GetName());
+            logger->LogVerbose(LOGGING_TAG, "Staring " + GetName());
         }
-
-        //if (GetName() == DEFAULT_NAME) {
-        //    logger->LogWarning(LOGGING_TAG, "Unnamed service");
-        //}
 
         // Call startup on primary derived class.
         OnStartup();
@@ -97,6 +93,12 @@ namespace astu {
         // Best practice is to  ignore shut down calls on stopped services.
         if (status == Stopped)
             return;
+
+        // Emit log message (in case logging facility is present).
+        auto logger = ASTU_GET_SERVICE_OR_NULL(LoggingService);
+        if (logger) {
+            logger->LogVerbose(LOGGING_TAG, "Shutting down " + GetName());
+        }
 
         // Call shutdown on primary derived class.
         OnShutdown();
