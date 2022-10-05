@@ -22,7 +22,7 @@ namespace astu {
      * @ingroup ecs_group
      */
     class AutoDestructSystem 
-        : public BaseService
+        : virtual public Service
         , private IteratingEntitySystem
         , private TimeClient
     {

@@ -18,7 +18,7 @@ using namespace std;
 namespace astu {
 
     StateService::StateService()
-        : BaseService("State Service")
+        : Service("State Service")
         , reenter(true)
     {
         // Intentionally left empty.

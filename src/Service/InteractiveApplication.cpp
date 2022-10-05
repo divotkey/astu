@@ -7,7 +7,7 @@
 
 // Local includes
 #include "Service/InteractiveApplication.h"
-#include "AstUtils.h"
+#include "Logging/ConsoleLoggingService.h"
 #include "Graphics/RalColors.h"
 #include "Service/UpdateService.h"
 #include "Service/TaskService.h"
@@ -18,6 +18,7 @@
 #include "Input/InputMappingService.h"
 #include "Input/Keyboard.h"
 #include "Util/MessageBox.h"
+#include "Util/VersionInfo.h"
 
 // C++ Standard Library includes
 #include <iostream>
@@ -171,6 +172,9 @@ namespace astu {
 
     void InteractiveApplication::AddCoreServices()
     {
+        // Add logging service. (Needs to be revised so that it can be refined).
+        ASTU_CREATE_AND_ADD_SERVICE( ConsoleLoggingService );
+
         // The update service functions as the central facility for things 
         // (services, systems, etc.) that need to be updated once within the
         // main application loop.
@@ -183,28 +187,28 @@ namespace astu {
         ASTU_CREATE_AND_ADD_SERVICE( TaskService );
 
         // Receives and distributes mouse button signals.
-        ASTU_CREATE_AND_ADD_SERVICE( MouseButtonSignalService );
+        ASTU_CREATE_AND_ADD_SERVICE( MouseButtonSignalService, "Signal service for mouse button signals" );
 
         // Receives and distributes mouse wheel signals.
-        ASTU_CREATE_AND_ADD_SERVICE( MouseWheelSignalService );
+        ASTU_CREATE_AND_ADD_SERVICE( MouseWheelSignalService, "Signal service for mouse wheel signals" );
 
         // Receives and distributes mouse move signals.
-        ASTU_CREATE_AND_ADD_SERVICE( MouseMoveSignalService );
+        ASTU_CREATE_AND_ADD_SERVICE( MouseMoveSignalService, "Signal service for mouse move signals" );
 
         // Receives and distributes keystroke signals.
-        ASTU_CREATE_AND_ADD_SERVICE( KeystrokeSignalService );
+        ASTU_CREATE_AND_ADD_SERVICE( KeystrokeSignalService, "Signal service for keystroke signals" );
 
         // Receives and distributes resize signals.
-        ASTU_CREATE_AND_ADD_SERVICE( ResizeSignalService );
+        ASTU_CREATE_AND_ADD_SERVICE( ResizeSignalService, "Signal service for resize signals" );
 
        // Receives and distributes window state signals.
-        ASTU_CREATE_AND_ADD_SERVICE( WindowStateSignalService );
+        ASTU_CREATE_AND_ADD_SERVICE( WindowStateSignalService, "Signal service for WindowState signals" );
 
         // Maps game actions and input axis.
         ASTU_CREATE_AND_ADD_SERVICE( InputMappingService );
 
         // Sends string signals, e.g, used to switch game states.
-        ASTU_CREATE_AND_ADD_SERVICE( SignalService<string> );
+        ASTU_CREATE_AND_ADD_SERVICE( SignalService<string>, "Signal Service for state switches" );
     }
 
     int InteractiveApplication::Run()
@@ -212,10 +216,11 @@ namespace astu {
         try {
             ConfigureApplication();
 
-            ASTU_STARTUP_SERVICES();
             if (printVersionInfo) {
                 PrintVersionInfo();
             }
+
+            ASTU_STARTUP_SERVICES();
 
             auto & updater = ASTU_SERVICE(UpdateService);
             running = true;
@@ -276,8 +281,8 @@ namespace astu {
     void InteractiveApplication::PrintVersionInfo()
     {
         cout << GetInfoString() << endl << endl;
-        SayVersion();
-        SayCopyright(true);
+        cout << GetVersionInfo() << endl;
+        cout << GetCopyrightInfo() << endl << endl;
     }
 
     bool InteractiveApplication::OnSignal(const WindowState& signal) 

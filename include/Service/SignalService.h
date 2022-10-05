@@ -113,7 +113,7 @@ namespace astu {
          * @param name      the name of this service
          * @param priority  the update priority of this service
          */
-        SignalService(const std::string & name = DEFAULT_NAME, int priority = Normal)
+        SignalService(const std::string & name = "Signal Service", int priority = Normal)
             : Service(name)
             , Updatable(priority)
             , addQueue(&signalQueues[0])
