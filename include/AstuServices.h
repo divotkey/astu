@@ -18,6 +18,7 @@
 #include "Service/UpdateService.h"
 #include "Service/UpdateService.h"
 #include "Service/SignalService.h"
+#include "Service/SignalServiceTs.h"
 #include "Service/TaskService.h"
 #include "Service/Tasks.h"
 #include "Service/StateService.h"
