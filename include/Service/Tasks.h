@@ -90,7 +90,7 @@ namespace astu {
         using Delegate = std::function<void (void)>;
 
         /**
-         * Returns a new delegate instnace.
+         * Returns a new delegate instance.
          * 
          * @param delegate  the delegate to call
          * @param delay     the time to wait in seconds
@@ -112,7 +112,7 @@ namespace astu {
         /** The duration to wait before to call the delegate. */
         double delay;
 
-        /** The elapsed time since the tasks has been reseted. */
+        /** The elapsed time since the tasks has been reset. */
         double elapsedTime;
 
 		/** The delegate function to be called. */

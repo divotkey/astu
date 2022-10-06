@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.1
-# Generated Wed Oct 05 13:08:27 CEST 2022 with SWORD Interpreter 1.9.0
+# Generated Thu Oct 06 11:00:00 CEST 2022 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -174,6 +174,7 @@ list(APPEND astu_SOURCES
 
 	# Module: Service
 	src/Service/ActionSignalService.cpp 
+	src/Service/BlackboardServiceTs.cpp 
 	src/Service/ConsoleApplication.cpp 
 	src/Service/ConsoleTimeService.cpp 
 	src/Service/InteractiveApplication.cpp 
@@ -182,8 +183,10 @@ list(APPEND astu_SOURCES
 	src/Service/StateService.cpp 
 	src/Service/Tasks.cpp 
 	src/Service/TaskService.cpp 
+	src/Service/ThreadService.cpp 
 	src/Service/UpdateService.cpp 
 	include/Service/ActionSignalService.h 
+	include/Service/BlackboardServiceTs.h 
 	include/Service/ConsoleApplication.h 
 	include/Service/ConsoleTimeService.h 
 	include/Service/InteractiveApplication.h 
@@ -199,6 +202,8 @@ list(APPEND astu_SOURCES
 	include/Service/StateService.h 
 	include/Service/Tasks.h 
 	include/Service/TaskService.h 
+	include/Service/ThreadService.h 
+	include/Service/ThreadStatus.h 
 	include/Service/TimeService.h 
 	include/Service/UpdateService.h 
 	include/Service/WindowService.h 

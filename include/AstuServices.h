@@ -18,7 +18,6 @@
 #include "Service/UpdateService.h"
 #include "Service/UpdateService.h"
 #include "Service/SignalService.h"
-#include "Service/SignalServiceTs.h"
 #include "Service/TaskService.h"
 #include "Service/Tasks.h"
 #include "Service/StateService.h"
@@ -29,6 +28,9 @@
 #include "Service/RenderService.h"
 #include "Service/InteractiveApplication.h"
 #include "Service/ConsoleApplication.h"
+#include "Service/SignalServiceTs.h"
+#include "Service/ThreadService.h"
+#include "Service/BlackboardServiceTs.h"
 
 namespace astu {
 

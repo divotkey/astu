@@ -14,6 +14,8 @@
 #include "Service/WindowService.h"
 #include "Service/RenderService.h"
 #include "Service/StateService.h"
+#include "Service/ThreadService.h"
+#include "Service/BlackboardServiceTs.h"
 #include "Input/InputSignals.h"
 #include "Input/InputMappingService.h"
 #include "Input/Keyboard.h"
@@ -209,6 +211,16 @@ namespace astu {
 
         // Sends string signals, e.g, used to switch game states.
         ASTU_CREATE_AND_ADD_SERVICE( SignalService<string>, "Signal Service for state switches" );
+
+        // Sends string signals, e.g, used to switch game states.
+        ASTU_CREATE_AND_ADD_SERVICE( SignalService<string>, "Signal Service for state switches" );
+
+        // Sends string signals, e.g, used to switch game states.
+        ASTU_CREATE_AND_ADD_SERVICE( SignalService<string>, "Signal Service for state switches" );
+
+        ASTU_CREATE_AND_ADD_SERVICE( ThreadService );
+        ASTU_CREATE_AND_ADD_SERVICE( SignalServiceTs<ThreadStatusSignal>, "Signal Service thread status updates" );
+        ASTU_CREATE_AND_ADD_SERVICE( BlackboardServiceTs );
     }
 
     int InteractiveApplication::Run()
