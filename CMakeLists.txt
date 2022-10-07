@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.1
-# Generated Thu Oct 06 11:00:00 CEST 2022 with SWORD Interpreter 1.9.0
+# Generated Fri Oct 07 08:57:58 CEST 2022 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -553,7 +553,7 @@ ELSEIF(APPLE)
 	# not implemented yet
 ELSE()
 	target_include_directories(astu PRIVATE "${PROJECT_SOURCE_DIR}/src/System/Linux")
-	target_link_libraries(astu)
+	target_link_libraries(astu pthread)    
 ENDIF()
 
 # Add dependencies for SDL
@@ -604,6 +604,7 @@ ELSEIF(APPLE)
 	# not implemented yet
 ELSE()
 	target_include_directories(astu PRIVATE "${PROJECT_SOURCE_DIR}/src/System/Linux")
+	target_link_libraries(astuShared pthread)    
 ENDIF()
 
 # Add dependencies for SDL
