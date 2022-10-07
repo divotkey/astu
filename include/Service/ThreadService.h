@@ -23,6 +23,46 @@
 
 namespace astu {
 
+
+    /**
+     * This signal represents progress reports from threads.
+     *
+     * @ingroup srv_group
+     */
+    class ThreadProgressSignal {
+    public:
+
+        /**
+         * Constructor.
+         *
+         * @param threadId  the numerical identifier of the thread
+         */
+        ThreadProgressSignal(int threadId, double progress) : threadId(threadId), progress(progress) {}
+
+        /** The numerical identifier of the thread. */
+        int threadId;
+
+        /** The progress in percent. */
+        double progress;
+    };
+
+
+    /**
+     * Type definition for signal services that transmit thread progress report signals.
+     *
+     * @ingroup input_group
+     */
+    using ThreadProgressSignalService = SignalServiceTs<ThreadProgressSignal>;
+
+
+    /**
+     * Type definition for signal listeners which receive thread progress report signals.
+     *
+     * @ingroup srv_group
+     */
+    using IThreadProgressListener = ISignalListener<ThreadProgressSignal>;
+
+
     /**
      * This signal represents status updates from threads.
      *
@@ -152,7 +192,6 @@ namespace astu {
         bool HasThreadTs(int id) const;
         ThreadStatus GetStatusTs(int id) const;
         const std::string& GetMessageTs(int id) const;
-
 
     private:
 

@@ -73,7 +73,7 @@ namespace astu {
         VerifyInfoId(infoId);
         infos.at(infoId).status = status;
 
-        QueueSignal(ThreadStatusSignal(infoId, status));
+        QueueSignalTs(ThreadStatusSignal(infoId, status));
     }
 
     void ThreadService::SetStatusTs(int infoId, ThreadStatus status, const string &message)
@@ -85,7 +85,7 @@ namespace astu {
         info.status = status;
         info.messages = message;
 
-        QueueSignal(ThreadStatusSignal(infoId, status));
+        QueueSignalTs(ThreadStatusSignal(infoId, status));
     }
 
     ThreadStatus ThreadService::GetStatusTs(int infoId) const

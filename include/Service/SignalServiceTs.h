@@ -73,7 +73,7 @@ namespace astu {
          *
          * @param signal    the signal to transmit to the registered listeners
          */
-        void QueueSignal(const T & signal) {
+        void QueueSignalTs(const T & signal) {
             std::lock_guard<std::mutex> lock(queueMutex);
             addQueue->push_back(signal);
         }
@@ -226,6 +226,9 @@ namespace astu {
     class SignalListenerTs : virtual public Service, private ISignalListener<T> {
     public:
 
+        /**
+         * Constructor.
+         */
         SignalListenerTs() {
             AddStartupHook([this]() { 
                 ASTU_SERVICE(SignalServiceTs<T>).AddListener(*this);
@@ -238,7 +241,7 @@ namespace astu {
 
     protected:
         // Inherited via ISignalListener
-        virtual bool OnSignal(const T & signal) override { return false; };        
+        virtual bool OnSignal(const T & signal) override { return false; };
     };
 
     /**
@@ -254,6 +257,9 @@ namespace astu {
     class SignalEmitterTs : virtual public Service {
     public:
 
+        /**
+         * Constructor.
+         */
         SignalEmitterTs() {
             AddStartupHook([this]() { 
                 signalService = ASTU_GET_SERVICE(SignalServiceTs<T>);
@@ -271,8 +277,8 @@ namespace astu {
          * 
          * @param signal    the signal to queue
          */
-        void QueueSignal(const T & signal) const {
-            signalService->QueueSignal(signal);
+        void QueueSignalTs(const T & signal) const {
+            signalService->QueueSignalTs(signal);
         }
 
     private:
