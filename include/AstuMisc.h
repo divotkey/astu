@@ -24,6 +24,7 @@
 #include "Util/Timer.h"
 #include "Util/Buffer.h"
 #include "Util/ListenerManager.h"
+#include "Util/MessageBox.h"
 
 namespace astu {
 
