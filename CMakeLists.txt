@@ -553,6 +553,7 @@ ELSEIF(APPLE)
 	# not implemented yet
 ELSE()
 	target_include_directories(astu PRIVATE "${PROJECT_SOURCE_DIR}/src/System/Linux")
+	target_link_libraries(astu pthread)
 ENDIF()
 
 # Add dependencies for SDL
