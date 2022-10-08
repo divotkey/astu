@@ -20,19 +20,19 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    bool BlackboardServiceTs::HasString(const string &key) const
+    bool BlackboardServiceTs::HasStringTs(const string &key) const
     {
         std::lock_guard<std::mutex> lock(stringMapMutex);
         return stringMap.find(key) != stringMap.end();
     }
 
-    void BlackboardServiceTs::SetString(const string &key, const string &value)
+    void BlackboardServiceTs::SetStringTs(const string &key, const string &value)
     {
         std::lock_guard<std::mutex> lock(stringMapMutex);
         stringMap[key] = value;
     }
 
-    const std::string BlackboardServiceTs::GetString(const string &key) const
+    const std::string BlackboardServiceTs::GetStringTs(const string &key) const
     {
         std::lock_guard<std::mutex> lock(stringMapMutex);
         auto it = stringMap.find(key);

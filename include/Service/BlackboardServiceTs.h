@@ -17,6 +17,12 @@
 
 namespace astu {
 
+    class BlackboardData {
+    private:
+        std::mutex dataMutex;
+        friend class BlackboardServiceTs;
+    };
+
     /**
      * A thread safe implementation of the blackboard communication concept.
      * 
@@ -27,9 +33,9 @@ namespace astu {
 
         BlackboardServiceTs();
 
-        bool HasString(const std::string &key) const;
-        void SetString(const std::string &key, const std::string &value);
-        const std::string GetString(const std::string &key) const;
+        bool HasStringTs(const std::string &key) const;
+        void SetStringTs(const std::string &key, const std::string &value);
+        const std::string GetStringTs(const std::string &key) const;
 
     private:
 
@@ -38,7 +44,6 @@ namespace astu {
 
     protected:
         void OnStartup() override;
-
         void OnShutdown() override;
     };
 

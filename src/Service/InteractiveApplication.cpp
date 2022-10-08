@@ -218,6 +218,7 @@ namespace astu {
         // Sends string signals, e.g, used to switch game states.
         ASTU_CREATE_AND_ADD_SERVICE( SignalService<string>, "Signal Service for state switches" );
 
+        // Add services related to multi-threading.
         ASTU_CREATE_AND_ADD_SERVICE( ThreadService );
         ASTU_CREATE_AND_ADD_SERVICE( SignalServiceTs<ThreadStatusSignal>, "Signal Service thread status updates" );
         ASTU_CREATE_AND_ADD_SERVICE( BlackboardServiceTs );

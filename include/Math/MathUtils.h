@@ -69,6 +69,10 @@ namespace astu {
         /** Default error margin used to compare floating-point values. */
         const static double Epsilon;
 
+        MathUtils( const MathUtils& ) = delete; // non construction-copyable
+        MathUtils& operator=( const MathUtils& ) = delete; // non copyable
+
+
         /**
          * Converts from degrees to radians.
          * 
@@ -227,6 +231,8 @@ namespace astu {
             return true;
         }
 
+        /** Private constructor. */
+        MathUtils() = default;
     };
 
 } // end of namespace

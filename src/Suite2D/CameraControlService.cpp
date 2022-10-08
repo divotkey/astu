@@ -25,6 +25,7 @@ namespace astu::suite2d {
         , Updatable(updatePriority)
         , mouseButton(Mouse::Button::RIGHT)
         , homeKey(Keyboard::KEY_HOME)
+        , homePos(Vector2f::Zero)
     {
         // Intentionally left empty.
     }
@@ -53,7 +54,7 @@ namespace astu::suite2d {
     bool CameraControlService::OnKeyPressed(int keycode)
     {
         if (keycode == homeKey) {
-            GetCamera().SetPosition(0, 0);
+            GetCamera().SetPosition(homePos);
             GetCamera().SetZoom(1.0f);
             zoomLevel = 0;
             dragging = false;
@@ -103,6 +104,11 @@ namespace astu::suite2d {
             .TransformVector(startScreenPos - curScreenPos);
 
         GetCamera().SetPosition(startWorldPos + deltaWorld);
+    }
+
+    void CameraControlService::SetHomePosition(const Vector2f pos)
+    {
+        homePos = pos;
     }
 
 } // end of namespace

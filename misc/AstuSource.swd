@@ -125,6 +125,7 @@ function EmitIncludesAndLinkLibraries(targetName)
 		# not implemented yet
 	ELSE()
 		target_include_directories(astu PRIVATE "${PROJECT_SOURCE_DIR}/src/§{osModules}/Linux")
+		target_link_libraries(§{targetName} pthread)    
 	ENDIF()
 
 	:§
