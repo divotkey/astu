@@ -65,6 +65,7 @@ namespace astu::suite2d {
         virtual void Render(Sprite &sprite, float alpha) = 0;
     };
 
+    
     /////////////////////////////////////////////////
     /////// Spatial
     /////////////////////////////////////////////////
@@ -192,6 +193,24 @@ namespace astu::suite2d {
         }
 
         /**
+         * Whether the visibility flag of this spatial is is set to true.
+         *
+         * @return `true` if this spatial is visible
+         */
+        bool IsVisible() const {
+            return visible;
+        }
+
+        /**
+         * Sets the visibility flag to the specified value.
+         *
+         * @param b the boolean state of the visibility flag
+         */
+        void SetVisible(bool b) {
+            visible = b;
+        }
+
+        /**
          * Creats a copy of this spatial.
          * 
          * @return the copy
@@ -207,6 +226,9 @@ namespace astu::suite2d {
 
         /** The transparency. */
         float alpha;
+
+        /** Whether this spacial is visible. */
+        bool visible;
 
         /**
          * Constructor. 
@@ -332,12 +354,12 @@ namespace astu::suite2d {
          */
         std::shared_ptr<Spatial> FindChild(const std::string & childName);
 
-        // Inherited via Spatial2
+        // Inherited via Spatial
         virtual void Render(SceneRenderer2D& renderer, float alpha) override;
         virtual std::shared_ptr<Spatial> Clone() const override;
 
     protected:
-        // Inherited via Spatial2
+        // Inherited via Spatial
         virtual void UpdateTransform(double dt) override;
 
     private:
@@ -416,7 +438,7 @@ namespace astu::suite2d {
             return *vertexBuffer;
         }
 
-        // Inherited via Node2/Spatial2
+        // Inherited via Node2/Spatial
         virtual void Render(SceneRenderer2D& renderer, float alpha) override;
         virtual std::shared_ptr<Spatial> Clone() const override;
 
@@ -502,7 +524,7 @@ namespace astu::suite2d {
          */
         const Texture &GetTexture() const;
 
-        // Inherited via Node2/Spatial2
+        // Inherited via Node2/Spatial
         virtual void Render(SceneRenderer2D& renderer, float alpha) override;
         virtual std::shared_ptr<Spatial> Clone() const override;
 
@@ -670,12 +692,40 @@ namespace astu::suite2d {
         }
 
         /**
+         * Specifies the state of the visibility flag of the scene graph element to build.
+         *
+         * @param b the visibility flag
+         * @return reference to this builder for method chaining
+         */
+        T& Visible(bool b) {
+            visible = b;
+            return reinterpret_cast<T&>(*this);
+        }
+
+        /**
+         * Sets the transparency of the scene graph element to build.
+         *
+         * @param a the transparency within the range [0, 1]
+         * @return reference to this builder for method chaining
+         */
+        T& Transparency(float a) {
+            if (a < 0 || a > 1) {
+                throw std::logic_error("Transparency must be within the range [0, 1], got " + std::to_string(a));
+            }
+            alpha = a;
+
+            return reinterpret_cast<T&>(*this);
+        }
+
+        /**
          * Resets this builder to its initial configuration.
          * 
          * @return reference to this builder for method chaining
          */
         T& Reset() {
+            visible = true;
             localTransform.SetIdentity();
+            alpha = 1.0;
             return reinterpret_cast<T&>(*this);
         }
 
@@ -689,6 +739,8 @@ namespace astu::suite2d {
         void Build(Spatial& spatial) {
             spatial.SetLocalTransform(localTransform);
             spatial.SetName(name);
+            spatial.SetVisible(visible);
+            spatial.SetTransparency(alpha);
         }
 
     private:
@@ -697,7 +749,14 @@ namespace astu::suite2d {
 
         /** The name of the spatial to build. */
         std::string name;
+
+        /** The visibility flag of the spatial to build. */
+        bool visible;
+
+        /** Defines the transparency of the spatial to build. */
+        float alpha;
     };
+
 
     /////////////////////////////////////////////////
     /////// NodeBuilder
@@ -963,7 +1022,11 @@ namespace astu::suite2d {
             float w = width > 0 ? width : texture->GetWidth();
             float h = height > 0 ? height : texture->GetHeight();
 
-            return std::make_shared<Sprite>(texture, w, h);
+
+            auto result = std::make_shared<Sprite>(texture, w, h);
+            SpatialBuilder::Build(*result);
+
+            return result;
         }
 
     private:

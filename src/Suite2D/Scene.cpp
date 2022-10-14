@@ -52,8 +52,8 @@ namespace astu::suite2d {
 
     void Spatial::SetTransparency(float inAlpha)
     {
-        assert(alpha >= 0.0f && alpha <= 1.0f);
-        alpha = alpha;
+        assert(inAlpha >= 0.0f && inAlpha <= 1.0f);
+        alpha = inAlpha;
     }
 
     void Spatial::Update(double dt)
@@ -87,7 +87,7 @@ namespace astu::suite2d {
         for(auto & child : children) {
             auto node = std::dynamic_pointer_cast<Node>(child);
             if (node) {
-                auto result = node->FindChild(childName);
+                auto result = node->FindChildOrNull(childName);
                 if (result) {
                     return result;
                 }
@@ -154,6 +154,9 @@ namespace astu::suite2d {
 
     void Node::Render(SceneRenderer2D& renderer, float alpha)
     {
+        if (!visible)
+            return;
+
         for (auto child : children) {
             child->Render(renderer, alpha * child->GetTransparency());
         }

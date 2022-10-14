@@ -39,6 +39,9 @@ namespace astu {
 
     void SdlSceneRenderer2D::Render(Polyline& polyline, float alpha)
     {
+        if (!polyline.IsVisible())
+            return;
+
         ASSERT_VBUF(polyline.GetVertexBuffer());
         assert(renderer);
 
@@ -87,6 +90,9 @@ namespace astu {
 
     void SdlSceneRenderer2D::Render(Sprite &sprite, float alpha)
     {
+        if (!sprite.IsVisible())
+            return;
+
         assert(renderer);
         ASSERT_TEXTURE(sprite.GetTexture());
 
