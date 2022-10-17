@@ -94,13 +94,13 @@ namespace astu {
         /**
          * Sets the x and y components of this vector.
          *
-         * @param newX  the x-coordinate of the vector
-         * @param newY  the y-coordinate of the vector
+         * @param inX  the x-coordinate of the vector
+         * @param inY  the y-coordinate of the vector
          * @return reference to this vector for method chaining
          */
-        Vector2 & Set(T newX, T newY) {
-			x = newX;
-            y = newY;
+        Vector2 & Set(T inX, T inY) {
+			x = inX;
+            y = inY;
             return *this;
         }
         

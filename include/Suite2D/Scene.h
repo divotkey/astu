@@ -964,11 +964,12 @@ namespace astu::suite2d {
         /**
          * Specifies the texture used to create the sprite.
          *
-         * @param image   the image data used to create the texture for the sprite
+         * @param image the image data used to create the texture for the sprite
+         * @param sq    the scale quality for the texture to create
          * @return reference to this builder for method chaining
          */
-        SpriteBuilder& Tex(Image &image) {
-            texture = ASTU_SERVICE(TextureFactory).CreateFromImage(image);
+        SpriteBuilder& Tex(Image &image, TextureFactory::ScaleQuality sq = TextureFactory::ScaleQuality::Nearest) {
+            texture = ASTU_SERVICE(TextureFactory).CreateFromImage(image, sq);
             return *this;
         }
 

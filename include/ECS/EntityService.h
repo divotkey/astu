@@ -48,12 +48,12 @@ namespace astu {
         /**
          * Virtual destructor.
          */
-        virtual ~EntityComponent() {}
+        virtual ~EntityComponent() = default;
 
         /**
          * Creates a copy of this entity component.
          * 
-         * @return a copy of this componend
+         * @return a copy of this component
          */
         virtual std::shared_ptr<EntityComponent> Clone() = 0;
 
@@ -109,7 +109,7 @@ namespace astu {
     /////////////////////////////////////////////////
 
     /**
-     * An entity is a container for compoments. 
+     * An entity is a container for components.
      * 
      * @ingroup ecs_group
      */

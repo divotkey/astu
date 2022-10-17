@@ -17,6 +17,11 @@
 
 namespace astu {
 
+    /**
+     * Implementation of a classical Q-Table used for machine learning.
+     *
+     * @ingroup ai_group
+     */
 	class QTable {
 	public:
 

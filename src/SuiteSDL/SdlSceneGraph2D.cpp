@@ -77,7 +77,7 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    std::shared_ptr<Texture> SdlTextureFactoryService::CreateFromImage(const Image &image) const
+    std::shared_ptr<Texture> SdlTextureFactoryService::CreateFromImage(const Image &image, ScaleQuality sq) const
     {
         // Create surface with appropriate size and properties.
         SDL_Surface *surface = SDL_CreateRGBSurfaceWithFormat(
@@ -88,7 +88,7 @@ namespace astu {
                 SDL_PixelFormatEnum::SDL_PIXELFORMAT_ABGR32
         );
 
-        if(SDL_SetSurfaceBlendMode(surface, SDL_BlendMode::SDL_BLENDMODE_BLEND)) {
+        if (SDL_SetSurfaceBlendMode(surface, SDL_BlendMode::SDL_BLENDMODE_BLEND)) {
             throw std::runtime_error(std::string("Unable to set blend mode for SDL surface: ") + SDL_GetError());
         }
 
@@ -103,6 +103,20 @@ namespace astu {
             }
         }
 
+        //SDL_HINT_RENDER_SCALE_QUALITY
+        switch (sq) {
+            case ScaleQuality::Nearest:
+                SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+                break;
+            case ScaleQuality::Linear:
+                SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+                break;
+
+            case ScaleQuality::Best:
+                SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+                break;
+        }
+        
         // Create texture from surface.
         SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(ASTU_SERVICE(SdlRenderService).GetRenderer(), surface);
         if (!sdlTexture) {
@@ -115,7 +129,7 @@ namespace astu {
         return std::make_shared<SdlTexture>(sdlTexture);
     }
 
-    std::shared_ptr<Texture> SdlTextureFactoryService::CreateFromBmp(const std::string &filepath) const
+    std::shared_ptr<Texture> SdlTextureFactoryService::CreateFromBmp(const std::string &filepath, ScaleQuality sq) const
     {
         SDL_Surface *surface = SDL_LoadBMP(filepath.c_str());
         if (!surface) {

@@ -73,8 +73,8 @@ namespace astu {
         SdlTextureFactoryService();
 
         // Inherited via TextureFactory
-        virtual std::shared_ptr<Texture> CreateFromImage(const Image &image) const override;
-        virtual std::shared_ptr<Texture> CreateFromBmp(const std::string& filepath) const override;
+        virtual std::shared_ptr<Texture> CreateFromImage(const Image &image, ScaleQuality sq) const override;
+        virtual std::shared_ptr<Texture> CreateFromBmp(const std::string& filepath, ScaleQuality sq) const override;
     };
 
     /**

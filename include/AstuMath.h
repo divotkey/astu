@@ -28,6 +28,7 @@
 #include "Math/Segment2.h"
 #include "Math/Random.h"
 #include "Math/Interpolator.h"
+#include "Math/Tuple2.h"
 
 namespace astu {
 

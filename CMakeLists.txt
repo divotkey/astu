@@ -1,11 +1,11 @@
 # CMake file for AST-Utilities Version 0.11.1
-# Generated Fri Oct 07 08:57:58 CEST 2022 with SWORD Interpreter 1.9.0
+# Generated Mon Oct 17 11:11:58 CEST 2022 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
 
 # Add version information
-project(ASTU VERSION 0.11.2)
+project(ASTU VERSION 0.11.1)
 
 # Define C++ Standard
 set(CMAKE_CXX_STANDARD 17)
@@ -34,6 +34,7 @@ list(APPEND astu_SOURCES
 	src/AstUtils1.cpp 
 	include/AstIO.h 
 	include/Astu.h 
+	include/AstuAi.h 
 	include/AstuApi.h 
 	include/AstuAudio.h 
 	include/AstuECS.h 
@@ -96,6 +97,7 @@ list(APPEND astu_SOURCES
 	include/Math/Segment2.h 
 	include/Math/SphericalCoordinates.h 
 	include/Math/Transform2.h 
+	include/Math/Tuple2.h 
 	include/Math/Vector2.h 
 	include/Math/Vector3.h 
 

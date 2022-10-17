@@ -81,6 +81,7 @@ namespace astu {
          * @return the  blend mode
          */
         virtual BlendMode GetBlendMode() const = 0;
+
     };
 
 
@@ -92,6 +93,18 @@ namespace astu {
     class TextureFactory {
     public:
 
+        enum ScaleQuality {
+            /** Nearest neighbour interpolation. */
+            Nearest,
+
+            /** Linear interpolation. */
+            Linear,
+
+            /* Anisotropic filtering. */
+            Best,
+        };
+
+
         /** Virtual destructor. */
         virtual ~TextureFactory() {}
 
@@ -99,17 +112,19 @@ namespace astu {
          * Creates a new texture object based on the content of the specified image.
          *
          * @param image the image which size and content is used to create the texture
+         * @param sq    the scaling quality used for the texture
          * @return the newly created texture
          */
-        virtual std::shared_ptr<Texture> CreateFromImage(const Image &image) const = 0;
+        virtual std::shared_ptr<Texture> CreateFromImage(const Image &image, ScaleQuality sq = ScaleQuality::Nearest) const = 0;
 
         /**
          * Creates a new texture object based on the content of the specified Windows .BMP file.
          *
          * @param filepath  the path to the BMP file to use as texture content
+         * @param sq        the scaling quality used for the texture
          * @return the newly created texture
          */
-        virtual std::shared_ptr<Texture> CreateFromBmp(const std::string& filepath) const = 0;
+        virtual std::shared_ptr<Texture> CreateFromBmp(const std::string& filepath, ScaleQuality sq = ScaleQuality::Nearest) const = 0;
     };
 
 } // end of namespace
