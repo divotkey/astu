@@ -111,4 +111,15 @@ namespace astu::suite2d {
         homePos = pos;
     }
 
+    void CameraControlService::SetZoomLevel(int level)
+    {
+        zoomLevel = level;
+        GetCamera().SetZoom( std::pow(ZOOM_STEP, zoomLevel) );
+    }
+
+    int CameraControlService::GetZoomLevel() const
+    {
+        return zoomLevel;
+    }
+
 } // end of namespace

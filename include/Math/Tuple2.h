@@ -71,6 +71,26 @@ namespace astu {
             return *this;
         }
 
+        /**
+         * Binary equality operator comparing two tuples.
+         *
+         * @param rhs   the right hand side tuple
+         * @return `true` if the specified tuple is equal to this tuple
+         */
+        bool operator==(const Tuple2<T> &rhs) const {
+            return x == rhs.x && y == rhs.y;
+        }
+
+        /**
+         * Binary non-equality operator comparing two tuples.
+         *
+         * @param rhs   the right hand side tuple
+         * @return `true` if the specified tuple is not equal to this tuple
+         */
+        bool operator!=(const Vector2<T> &rhs) const {
+            return !(*this == rhs);
+        }
+
     };
 
     template<typename T>

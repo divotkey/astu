@@ -48,6 +48,20 @@ namespace astu::suite2d {
         void SetHomePosition(const Vector2f pos);
 
         /**
+         * Sets the zoom level to a specific value.
+         *
+         * @param level the zoom level
+         */
+        void SetZoomLevel(int level);
+
+        /**
+         * Returns the current zoom level.
+         *
+         * @return the zoom level
+         */
+        int GetZoomLevel() const;
+
+        /**
          * Return the home position.
          *
          * @return the home position
