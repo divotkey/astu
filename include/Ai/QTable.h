@@ -96,7 +96,7 @@ namespace astu {
 		 * @param action	the action to update
 		 * @param reward	the reward for the specified state and action
 		 * @param nextState	the next state to following the specified state and action
-		 * @return the selected best future action of teh next state
+		 * @return the selected best future action of the next state
 		 */
 		size_t Update(size_t state, size_t action, double reward, size_t nextState);
 
@@ -288,6 +288,7 @@ namespace astu {
 		}
 
 	private:
+
 		/**
 		 * An entry within this table.
 		 * Each state stored in this table contains number of
