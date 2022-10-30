@@ -90,6 +90,8 @@ namespace astu {
 
     void SdlSceneRenderer2D::Render(Sprite &sprite, float alpha)
     {
+        assert(alpha >= 0 && alpha <= 1);
+
         if (!sprite.IsVisible())
             return;
 
@@ -111,9 +113,11 @@ namespace astu {
 
         SDL_Point pivot = {0, 0};
 
+        auto &texture = TEXTURE(sprite.GetTexture());
+        SDL_SetTextureAlphaMod(texture, alpha * 255);
         SDL_RenderCopyEx(
                 renderer,
-                TEXTURE(sprite.GetTexture()),
+                texture,
                 nullptr,
                 &dstRect,
                 (bottomRight - bottomLeft).AngleDeg(),
