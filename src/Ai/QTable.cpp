@@ -107,17 +107,17 @@ namespace astu {
 		return result;
 	}
 
-	void QTable::SetLearningRate(double alpha)
+	void QTable::SetLearningRate(double inAlpha)
 	{
-		if (alpha < 0 || alpha > 1) {
-			throw std::invalid_argument("invalid learning rate: " + std::to_string(alpha));
+		if (inAlpha < 0 || inAlpha > 1) {
+			throw std::invalid_argument("invalid learning rate: " + std::to_string(inAlpha));
 		}
-		alpha = alpha;
+		alpha = inAlpha;
 	}
 
-	void QTable::SetDiscountFactor(double gamma)
+	void QTable::SetDiscountFactor(double inGamma)
 	{
-		gamma = gamma;
+		gamma = inGamma;
 	}
 
 	Memento& QTable::StoreToMemento(Memento & m) const
