@@ -61,7 +61,7 @@ namespace astu {
 	void StateUtil::SetContinuousState(size_t dimension, double value)
 	{
 		assert(dimension < dimensions.size());
-		dimensions[dimension].SetContinousState(value);
+        dimensions[dimension].SetContinuousState(value);
 	}
 
 	unsigned int StateUtil::GetDiscreteState(size_t dimension) const
@@ -95,7 +95,7 @@ namespace astu {
 		return m;
 	}
 
-	void StateUtil::Dimension::SetContinousState(double value)
+	void StateUtil::Dimension::SetContinuousState(double value)
 	{
 		assert(quantizer);
 		SetDiscreteState(quantizer->Quantize(value));

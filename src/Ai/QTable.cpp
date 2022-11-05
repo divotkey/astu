@@ -78,6 +78,9 @@ namespace astu {
 		auto bestAction = GetMaxAction(nextState);
 		auto nextValue = GetValue(nextState, bestAction);
 		double newValue = (1 - alpha) * prevValue + alpha * (reward + gamma * nextValue);
+
+        // The equation re-written to match the 'Bellman Equation'.
+        //double newValue = prevValue + alpha * (reward + gamma * nextValue - prevValue);
 		UpdateValue(state, action, newValue);
 
 		return bestAction;

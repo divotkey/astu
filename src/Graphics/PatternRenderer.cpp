@@ -44,9 +44,9 @@ namespace astu {
             }
             p.y += dy;
 
-            std::cout << "\b" << "\b" << "\b" << "\b";
-            std::cout << std::setw(2) << static_cast<int>((static_cast<double>(j) / result.GetHeight()) * 100) << " %";
-            std::cout.flush();
+            //std::cout << "\b" << "\b" << "\b" << "\b";
+            //std::cout << std::setw(2) << static_cast<int>((static_cast<double>(j) / result.GetHeight()) * 100) << " %";
+            //std::cout.flush();
         }
         std::cout << endl;
     }
