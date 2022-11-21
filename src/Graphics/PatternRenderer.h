@@ -38,7 +38,7 @@ namespace astu {
         virtual void Render(const Pattern & pattern, Image & result) override;
     };
 
-    class AntiAlisaingPatternRenderer final : public IPatternRenderer {
+    class AntiAliasingPatternRenderer final : public IPatternRenderer {
     public:
 
         /** Used to map aa levels to kernels. */
@@ -55,7 +55,7 @@ namespace astu {
          * 
          * @param quality   defines the level of anti-aliasing
          */
-        AntiAlisaingPatternRenderer(AntialiasingLevel aaLevel = AntialiasingLevel::Good);
+        AntiAliasingPatternRenderer(AntialiasingLevel aaLevel = AntialiasingLevel::Good);
 
         // Inherited via IPatternRenderer
         virtual void Render(const Pattern & pattern, Image & result) override;        
@@ -92,7 +92,7 @@ namespace astu {
         Color4d CalcColor(const Vector2<double> & p, const Pattern & shape);
     };
 
-    class StochasticAntiAlisaingPatternRenderer : public IPatternRenderer {
+    class StochasticAntiAliasingPatternRenderer : public IPatternRenderer {
     public:
 
         // Inherited via IPatternRenderer

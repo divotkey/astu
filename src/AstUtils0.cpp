@@ -64,7 +64,7 @@ std::chrono::time_point<std::chrono::steady_clock> stopTime;
 std::unique_ptr<astu::Image> lvl0Image = std::make_unique<Image>(512, 512);
 std::shared_ptr<UnionPattern> rootPattern = std::make_shared<UnionPattern>();
 std::shared_ptr<Quadtree> quadTree = std::make_shared<Quadtree>(5, 5);
-std::unique_ptr<IPatternRenderer> patternRenderer = std::make_unique<AntiAlisaingPatternRenderer>(); 
+std::unique_ptr<IPatternRenderer> patternRenderer = std::make_unique<AntiAliasingPatternRenderer>();
 Color4d lvl0DrawColor(1, 1, 1);
 Color4d lvl0ClearColor(0, 0, 0);
 std::ifstream ifs;

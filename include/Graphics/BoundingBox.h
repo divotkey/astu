@@ -13,9 +13,8 @@
 
 namespace astu {
 
-
     /**
-     * An axis alinged bounding box.
+     * An axis aligned bounding box.
      */
     class BoundingBox final {
     public:

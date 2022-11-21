@@ -50,19 +50,19 @@ namespace astu {
             break;
 
         case RenderQuality::Simple:
-            renderer = std::make_unique<AntiAlisaingPatternRenderer>(AntialiasingLevel::Simple);
+            renderer = std::make_unique<AntiAliasingPatternRenderer>(AntialiasingLevel::Simple);
             break;
 
         case RenderQuality::Good:
-            renderer = std::make_unique<AntiAlisaingPatternRenderer>(AntialiasingLevel::Good);
+            renderer = std::make_unique<AntiAliasingPatternRenderer>(AntialiasingLevel::Good);
             break;
 
         case RenderQuality::Beautiful:
-            renderer = std::make_unique<AntiAlisaingPatternRenderer>(AntialiasingLevel::Beautiful);
+            renderer = std::make_unique<AntiAliasingPatternRenderer>(AntialiasingLevel::Beautiful);
             break;
 
         case RenderQuality::Insane:
-            renderer = std::make_unique<AntiAlisaingPatternRenderer>(AntialiasingLevel::Insane);
+            renderer = std::make_unique<AntiAliasingPatternRenderer>(AntialiasingLevel::Insane);
             break;
         }
     }

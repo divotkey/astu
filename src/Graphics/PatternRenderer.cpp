@@ -55,7 +55,7 @@ namespace astu {
     /////// AntiAlisaingPatternRenderer
     /////////////////////////////////////////////////
 
-    const double* AntiAlisaingPatternRenderer::GetKernel(AntialiasingLevel level)
+    const double* AntiAliasingPatternRenderer::GetKernel(AntialiasingLevel level)
     {
         // size 3x3, sigma = 0.8
         static const double kernel3x3[] = {
@@ -115,7 +115,7 @@ namespace astu {
         }
     }
 
-    double AntiAlisaingPatternRenderer::GetKernelRadius(AntialiasingLevel level)
+    double AntiAliasingPatternRenderer::GetKernelRadius(AntialiasingLevel level)
     {
         switch (level) {
             case AntialiasingLevel::Simple:
@@ -135,7 +135,7 @@ namespace astu {
         }
     }
 
-    unsigned int AntiAlisaingPatternRenderer::GetKernelSize(AntialiasingLevel level)
+    unsigned int AntiAliasingPatternRenderer::GetKernelSize(AntialiasingLevel level)
     {
         switch (level) {
             case AntialiasingLevel::Simple:
@@ -277,7 +277,7 @@ namespace astu {
     //         {AntialiasingLevel::Insane, 1.5}
     //     };
 
-    AntiAlisaingPatternRenderer::AntiAlisaingPatternRenderer(AntialiasingLevel aaLevel)
+    AntiAliasingPatternRenderer::AntiAliasingPatternRenderer(AntialiasingLevel aaLevel)
         : kKernelRadius(GetKernelRadius(aaLevel))
         , kKernelSize(GetKernelSize(aaLevel))
         , kernel(GetKernel(aaLevel))
@@ -285,7 +285,7 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    void AntiAlisaingPatternRenderer::Render(const Pattern & pattern, Image & result)
+    void AntiAliasingPatternRenderer::Render(const Pattern & pattern, Image & result)
     {
         double dx = 1.0;
         double startX = dx / 2.0;
@@ -310,7 +310,7 @@ namespace astu {
         std::cout << endl;
     }
 
-    Color4d AntiAlisaingPatternRenderer::CalcColor(const Vector2<double> & p, const Pattern & pattern)
+    Color4d AntiAliasingPatternRenderer::CalcColor(const Vector2<double> & p, const Pattern & pattern)
     {
         const double dx = (kKernelRadius * 2) / kKernelSize;
         double startX = p.x - kKernelRadius;

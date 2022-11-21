@@ -5,22 +5,27 @@
  * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
+// Local includes
+#include "Graphics/Pattern.h"
+
+// C++ Standard Library includes
 #include <stdexcept>
 #include <string>
-#include <cmath>
-#include "Graphics/Pattern.h"
 
 namespace astu {
 
-    Pattern::Pattern()
-        : dirty(true)
+    /////////////////////////////////////////////////
+    /////// Class Pattern
+    /////////////////////////////////////////////////
+
+    Pattern::Pattern() : dirty(true)
     {
         // Intentionally left empty.
     }
 
-    void Pattern::Translate(double x, double y)
+    void Pattern::Translate(double tx, double ty)
     {
-        transform.Translate(-x, -y);
+        transform.Translate(-tx, -ty);
         dirty = true;
     }
 
@@ -39,9 +44,9 @@ namespace astu {
         dirty = true;
     }
 
-    bool Pattern::GetColor(const Vector2<double> &p, Color4d & c) const
+    bool Pattern::GetColor(const Vector2<double> &p, Color4d & outColor) const
     {
-        return GetColorTransformed(transform.TransformPoint(p), c);
+        return GetColorTransformed(transform.TransformPoint(p), outColor);
     }
 
     BoundingBox Pattern::GetBoundingBox() const
@@ -56,36 +61,33 @@ namespace astu {
         return boundingBox;
     }
 
-    CirclePattern::CirclePattern(double r)
+    /////////////////////////////////////////////////
+    /////// Class UnicolorPattern
+    /////////////////////////////////////////////////
+
+    bool UnicolorPattern::GetColor(const Vector2<double> &p, Color4d &outColor) const
     {
-        SetRadius(r);
+        outColor = color;
+        return true;
     }
 
-    void CirclePattern::SetRadius(double r)
-    {
-        if (r <= 0) {
-            throw std::domain_error("Circle radius must be greater zero, got " + std::to_string(r));
-        }
-        radius = r;
-        radiusSquared = r * r;
+    bool UnicolorPattern::GetColorTransformed(const Vector2<double> &pt, Color4d & outColor) const {
+        // This method should actually never get called, because the only source which uses this
+        // method is `GetColor(const Vector2<double> &p, Color4d &outColor)` and this method is
+        // overwritten by this class.
+        outColor = color;
+        return true;
     }
 
-    bool CirclePattern::GetColorTransformed(const Vector2<double> &pt, Color4d & c) const
+    BoundingBox UnicolorPattern::GetLocalBoundingBox() const
     {
-        if (pt.LengthSquared() > radiusSquared) {
-            return false;
-        }
-
-        if (pattern) {
-            return pattern->GetColor(pt, c);
-        }
-        return false;
+        return BoundingBox::CreateInfinite();
     }
 
-    BoundingBox CirclePattern::GetLocalBoundingBox() const 
-    {
-        return BoundingBox(radius * 2, radius * 2);
-    }
+
+    /////////////////////////////////////////////////
+    /////// Class RectanglePattern
+    /////////////////////////////////////////////////
 
     RectanglePattern::RectanglePattern(double w, double h)
     {
@@ -113,7 +115,7 @@ namespace astu {
         vRadius = height / 2;
     }
 
-    bool RectanglePattern::GetColorTransformed(const Vector2<double> &pt, Color4d & c) const
+    bool RectanglePattern::GetColorTransformed(const Vector2<double> &pt, Color4d & outColor) const
     {
         if (pt.x > hRadius || pt.x < -hRadius) {
             return false;
@@ -124,7 +126,7 @@ namespace astu {
         }
 
         if (pattern) {
-            return pattern->GetColor(pt, c);
+            return pattern->GetColor(pt, outColor);
         }
         
         return false;
@@ -134,6 +136,43 @@ namespace astu {
     {
         return BoundingBox(width, height);
     }
+
+
+    /////////////////////////////////////////////////
+    /////// Class CirclePattern
+    /////////////////////////////////////////////////
+
+    CirclePattern::CirclePattern(double r)
+    {
+        SetRadius(r);
+    }
+
+    void CirclePattern::SetRadius(double r)
+    {
+        if (r <= 0) {
+            throw std::domain_error("Circle radius must be greater zero, got " + std::to_string(r));
+        }
+        radius = r;
+        radiusSquared = r * r;
+    }
+
+    bool CirclePattern::GetColorTransformed(const Vector2<double> &pt, Color4d &outColor) const
+    {
+        if (pt.LengthSquared() > radiusSquared) {
+            return false;
+        }
+
+        if (pattern) {
+            return pattern->GetColor(pt, outColor);
+        }
+        return false;
+    }
+
+    BoundingBox CirclePattern::GetLocalBoundingBox() const
+    {
+        return BoundingBox(radius * 2, radius * 2);
+    }
+
 
     /////////////////////////////////////////////////
     /////// Compound Pattern
