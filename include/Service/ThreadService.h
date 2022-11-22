@@ -23,7 +23,6 @@
 
 namespace astu {
 
-
     /**
      * This signal represents progress reports from threads.
      *

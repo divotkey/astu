@@ -94,8 +94,15 @@ namespace velox {
         static std::string TokenTypeToString(TokenType type);
 
     protected:
+
+        /**
+         * Resets this source to its initial state.
+         */
+        void Reset();
+
         /** Returns the stream from which to read this source code. */
         virtual std::shared_ptr<std::istream> GetStream() = 0;
+
 
     private:
         /** The scanner used to scan for tokens. */

@@ -13,8 +13,15 @@ using namespace std;
 
 namespace velox {
 
-    SourceFile::SourceFile(const string &inFilePath) : filePath(inFilePath) {
+    SourceFile::SourceFile(const string &inFilePath) : filePath(inFilePath)
+    {
         // Intentionally left empty.
+    }
+
+    void SourceFile::Reset(const string &inFilePath)
+    {
+        filePath = inFilePath;
+        Source::Reset();
     }
 
     shared_ptr<istream> SourceFile::GetStream() {
@@ -28,4 +35,8 @@ namespace velox {
         return result;
     }
 
+    const std::string &SourceFile::GetFilePath() const
+    {
+        return filePath;
+    }
 }

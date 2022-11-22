@@ -28,6 +28,8 @@ namespace astu {
         source = inSource;
         position = 0;
         newLines.clear();
+        // Clear backlog: std::queue is missing a clear command.
+        while(!backlog.empty()) backlog.pop();
     }
 
     size_t Scanner::NumStates() const {
