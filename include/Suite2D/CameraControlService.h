@@ -40,6 +40,34 @@ namespace astu::suite2d {
          */
         CameraControlService(int updatePriority = astu::Priority::Normal);
 
+        /**
+         * Specifies the home position
+         *
+         * @param pos the home position
+         */
+        void SetHomePosition(const Vector2f pos);
+
+        /**
+         * Sets the zoom level to a specific value.
+         *
+         * @param level the zoom level
+         */
+        void SetZoomLevel(int level);
+
+        /**
+         * Returns the current zoom level.
+         *
+         * @return the zoom level
+         */
+        int GetZoomLevel() const;
+
+        /**
+         * Return the home position.
+         *
+         * @return the home position
+         */
+        const Vector2f &GetHomePosition() const { return homePos; }
+
         // Inherited via BaseService
         virtual void OnStartup() override;
         virtual void OnShutdown() override;
@@ -63,6 +91,9 @@ namespace astu::suite2d {
         
         /** The key used to center the camera. */
         int homeKey;
+
+        /** The position where to place the camera when the home button is pressed. */
+        Vector2f homePos;
 
         /** Indicates whether the user is currently changing the camera position. */
         bool dragging;

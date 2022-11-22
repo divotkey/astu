@@ -9,77 +9,20 @@
 
 // Local includes
 #include "UpdateService.h"
+#include "SignalService.h"
 #include "Util/ListenerManager.h"
 
 // C++ Standard Library includes
 #include <array>
 #include <vector>
 #include <utility>
+#include <mutex>
 
 namespace astu {
 
     /**
-     * A template signal listeners of a certain type.
-     * 
-     * **Example**
-     * 
-     * This example shows a signal listener which is listening to `int` values.
-     * 
-     * 
-     * Header file: *MyListener.h*
-     * ```
-     * #pragma once
-     * 
-     * #include <SignalService.h>
-     * 
-     * class MyListener : public astu::ISignalListener<int> {
-     * public:
-     * 
-     *   // Inheritred via ISignalListener
-     *   virtual void OnSignal(const int & signal) override;    
-     * };
-     * ```
-     *
-     * Implementation file: *MyListener.cpp*
-     * 
-     * ```
-     * #include <iostream>
-     * #include "MyListener.h"
-     * 
-     * MyListener::void OnSignal(const int & signal)
-     * {
-     *   std::cout << "received signal " << signal << std::endl;
-     * }    
-     * ```
-     * 
-     * @tparam T    the type of signal this listeners is receiving
-     * @ingroup srv_group
-     */
-    template <typename T> 
-    class ISignalListener  {
-    public:
-
-        /**
-         * Virtual destructor.
-         */
-        virtual ~ISignalListener() {}
-
-        /**
-         * Called when a signal should be processed by this listener.
-         *
-         * The return value determines whether the signal has been consumed.
-         * A consumed signal will no longer be forwarded to other signal
-         * listeners.    
-         * 
-         * @param signal	the signal
-         * @return `true` if the signal has been consumed
-         */
-        virtual bool OnSignal(const T & signal) = 0;        
-    };
-
-    /**
      * A template-based service which is used to transmit objects 
-     * called "signals" to registered listeners.
+     * called "signals" in multi-threaded environments to registered listeners.
      * 
      * This template class is declared final and hence cannot be used
      * as base class for other services.
@@ -90,20 +33,20 @@ namespace astu {
      * transmits objects of type std::string.
      * 
      * ```
-     * ASTU_CREATE_AND_ADD_SERVICE(SignalService<std::string>);
+     * ASTU_CREATE_AND_ADD_SERVICE(SignalServiceTs<std::string>);
      * ```
      * 
      * To transmit signals of type string the following example code can be
      * used:
      * 
      * ```
-     * ASTU_SERVICE(SignalService<std::string>).QueueSignal("This is a signal");
+     * ASTU_SERVICE(SignalServiceTs<std::string>).QueueSignal("This is a signal");
      * ```
      * 
      * @ingroup srv_group
      */
     template <typename T>
-    class SignalService final : virtual public Service, private Updatable
+    class SignalServiceTs final : virtual public Service, private Updatable
     {
     public:
 
@@ -113,7 +56,7 @@ namespace astu {
          * @param name      the name of this service
          * @param priority  the update priority of this service
          */
-        SignalService(const std::string & name = "Signal Service", int priority = Normal)
+        SignalServiceTs(const std::string & name = "Signal Service", int priority = Normal)
             : Service(name)
             , Updatable(priority)
             , addQueue(&signalQueues[0])
@@ -130,25 +73,9 @@ namespace astu {
          *
          * @param signal    the signal to transmit to the registered listeners
          */
-        void QueueSignal(const T & signal) {
+        void QueueSignalTs(const T & signal) {
+            std::lock_guard<std::mutex> lock(queueMutex);
             addQueue->push_back(signal);
-        }
-
-        /**
-         * Fires a signal immediately.
-         * 
-         * The signal is transmitted to signal listener immediately.
-         *
-         * @param signal the signal to transmit to the registered receivers
-         */
-        void FireSignal(const T & signal) {
-            listenerManager.VisitListeners([signal](ISignalListener<T> & listener) {
-                return listener.OnSignal(signal);
-            });
-
-            rawListenerManager.VisitListeners([signal](ISignalListener<T> & listener) {
-                return listener.OnSignal(signal);
-            });
         }
 
         /**
@@ -223,9 +150,30 @@ namespace astu {
         /** Used to manage signal listeners, stored by raw pointers. */
         RawListenerManager<ISignalListener<T>> rawListenerManager;
 
+        /** Used to synchronize access to signal queue. */
+        std::mutex queueMutex;
+
+        /**
+         * Fires a signal immediately.
+         *
+         * The signal is transmitted to signal listener immediately.
+         *
+         * @param signal the signal to transmit to the registered receivers
+         */
+        void FireSignal(const T & signal) {
+            listenerManager.VisitListeners([signal](ISignalListener<T> & listener) {
+                return listener.OnSignal(signal);
+            });
+
+            rawListenerManager.VisitListeners([signal](ISignalListener<T> & listener) {
+                return listener.OnSignal(signal);
+            });
+        }
 
         // Inherited via Service
         virtual void OnShutdown() override {
+            std::lock_guard<std::mutex> lock(queueMutex);
+
             // ClearVariables pending signals and try to free memory used by queues.
             for (auto & queue : signalQueues) {
                 queue.clear();
@@ -237,6 +185,8 @@ namespace astu {
 
         // Inherited via Updatable
         virtual void OnUpdate() override {
+            std::lock_guard<std::mutex> lock(queueMutex);
+
             std::swap(addQueue, sendQueue);
 
             for (const auto & signal : *sendQueue) {
@@ -247,7 +197,7 @@ namespace astu {
     };
 
     /**
-     * A template-based signal listener.
+     * A template-based signal listener for multi-threaded environments.
      * 
      * Service can derive from this class to become a signal listener of
      * a certain type of signals.
@@ -273,22 +223,25 @@ namespace astu {
      * @ingroup srv_group
      */
     template <typename T>
-    class SignalListener : virtual public Service, private ISignalListener<T> {
+    class SignalListenerTs : virtual public Service, private ISignalListener<T> {
     public:
 
-        SignalListener() {
+        /**
+         * Constructor.
+         */
+        SignalListenerTs() {
             AddStartupHook([this]() { 
-                ASTU_SERVICE(SignalService<T>).AddListener(*this);
+                ASTU_SERVICE(SignalServiceTs<T>).AddListener(*this);
             });
 
             AddShutdownHook([this]() {
-                ASTU_SERVICE(SignalService<T>).RemoveListener(*this);
+                ASTU_SERVICE(SignalServiceTs<T>).RemoveListener(*this);
             });
         }
 
     protected:
         // Inherited via ISignalListener
-        virtual bool OnSignal(const T & signal) override { return false; };        
+        virtual bool OnSignal(const T & signal) override { return false; };
     };
 
     /**
@@ -301,12 +254,15 @@ namespace astu {
      * @ingroup srv_group
      */
     template <typename T>
-    class SignalEmitter : virtual public Service {
+    class SignalEmitterTs : virtual public Service {
     public:
 
-        SignalEmitter(bool fire = false) : fireSignals(fire) {
+        /**
+         * Constructor.
+         */
+        SignalEmitterTs() {
             AddStartupHook([this]() { 
-                signalService = ASTU_GET_SERVICE(SignalService<T>);
+                signalService = ASTU_GET_SERVICE(SignalServiceTs<T>);
             });
 
             AddShutdownHook([this]() {
@@ -317,44 +273,17 @@ namespace astu {
     protected:
 
         /**
-         * Emits the specified signal.
-         * 
-         * The fire flag defines whether the signal gets fired or queued.
-         * 
-         * @param signal    the signal to emit
-         */
-        void EmitSignal(const T & signal) const {
-            if (fireSignals) {
-                signalService->FireSignal(signal);
-            } else {
-            signalService->QueueSignal(signal);
-            }
-        }
-
-        /**
-         * Fires the specified signal.
-         * 
-         * @param signal    the signal to emit
-         */
-        void FireSignal(const T & signal) const {
-            signalService->FireSignal(signal);
-        }
-
-        /**
          * Queues the specified signal.
          * 
-         * @param signal    the signal to emit
+         * @param signal    the signal to queue
          */
-        void QueueSignal(const T & signal) const {
-            signalService->QueueSignal(signal);
+        void QueueSignalTs(const T & signal) const {
+            signalService->QueueSignalTs(signal);
         }
 
     private:
         /** The signal service used to emit signals. */
-        std::shared_ptr<SignalService<T>> signalService;
-        
-        /** Whether to fire signals by default. */
-        bool fireSignals;
+        std::shared_ptr<SignalServiceTs<T>> signalService;
     };
 
 

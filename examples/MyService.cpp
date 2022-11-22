@@ -4,7 +4,7 @@
 using namespace astu;
 
 MyService::MyService()
-    : BaseService("My Service")
+    : Service("My Service")
 {
     // Intentionally left empty.    
 }

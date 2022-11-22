@@ -106,7 +106,7 @@ namespace astu {
         ASTU_CREATE_AND_ADD_SERVICE( TaskService );
 
         // Sends string signals, e.g, used to switch game states.
-        ASTU_CREATE_AND_ADD_SERVICE( SignalService<string> );
+        ASTU_CREATE_AND_ADD_SERVICE( SignalService<string>, "Signal Service <std::string> for state switches" );
     }
 
     int ConsoleApplication::Run() {

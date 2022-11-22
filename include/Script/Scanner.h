@@ -197,7 +197,7 @@ namespace astu {
         /** Pending pendingCommands. */
         std::vector<Command> pendingCommands;
 
-        /** Holds a set cof commands to be actually executed, used to avoid repetitive memory allocation. */
+        /** Holds a set of commands to be actually executed, used to avoid repetitive memory allocation. */
         std::vector<Command> uniqueCommands;
 
         /** Used to run through the source code to scan. */

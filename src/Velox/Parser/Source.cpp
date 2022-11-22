@@ -25,8 +25,15 @@ using namespace std;
 
 namespace velox {
 
-    Source::Source() : scanner(BuildScanner()), scanningStarted(false), curState(&firstToken) {
+    Source::Source() : scanner(BuildScanner()), scanningStarted(false), curState(&firstToken)
+    {
         // Intentionally left empty.
+    }
+
+    void Source::Reset()
+    {
+        curState = &firstToken;
+        scanningStarted = false;
     }
 
     TokenType Source::GetNextTokenType() {

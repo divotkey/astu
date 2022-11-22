@@ -148,7 +148,7 @@ namespace astu {
          * @param outX  receives the x-coordinate of the window
          * @param outY  receives the y-coordinate of the window
          */
-        void DetermineWindowPositoin(int& outX, int& outY);
+        void DetermineWindowPosition(int& outX, int& outY);
 
         // Inherited via ISdlResizeListener
         virtual void OnResize(int width, int height) override;

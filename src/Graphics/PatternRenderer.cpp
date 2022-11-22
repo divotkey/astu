@@ -44,9 +44,9 @@ namespace astu {
             }
             p.y += dy;
 
-            std::cout << "\b" << "\b" << "\b" << "\b";
-            std::cout << std::setw(2) << static_cast<int>((static_cast<double>(j) / result.GetHeight()) * 100) << " %";
-            std::cout.flush();
+            //std::cout << "\b" << "\b" << "\b" << "\b";
+            //std::cout << std::setw(2) << static_cast<int>((static_cast<double>(j) / result.GetHeight()) * 100) << " %";
+            //std::cout.flush();
         }
         std::cout << endl;
     }
@@ -55,7 +55,7 @@ namespace astu {
     /////// AntiAlisaingPatternRenderer
     /////////////////////////////////////////////////
 
-    const double* AntiAlisaingPatternRenderer::GetKernel(AntialiasingLevel level)
+    const double* AntiAliasingPatternRenderer::GetKernel(AntialiasingLevel level)
     {
         // size 3x3, sigma = 0.8
         static const double kernel3x3[] = {
@@ -115,7 +115,7 @@ namespace astu {
         }
     }
 
-    double AntiAlisaingPatternRenderer::GetKernelRadius(AntialiasingLevel level)
+    double AntiAliasingPatternRenderer::GetKernelRadius(AntialiasingLevel level)
     {
         switch (level) {
             case AntialiasingLevel::Simple:
@@ -135,7 +135,7 @@ namespace astu {
         }
     }
 
-    unsigned int AntiAlisaingPatternRenderer::GetKernelSize(AntialiasingLevel level)
+    unsigned int AntiAliasingPatternRenderer::GetKernelSize(AntialiasingLevel level)
     {
         switch (level) {
             case AntialiasingLevel::Simple:
@@ -277,7 +277,7 @@ namespace astu {
     //         {AntialiasingLevel::Insane, 1.5}
     //     };
 
-    AntiAlisaingPatternRenderer::AntiAlisaingPatternRenderer(AntialiasingLevel aaLevel)
+    AntiAliasingPatternRenderer::AntiAliasingPatternRenderer(AntialiasingLevel aaLevel)
         : kKernelRadius(GetKernelRadius(aaLevel))
         , kKernelSize(GetKernelSize(aaLevel))
         , kernel(GetKernel(aaLevel))
@@ -285,7 +285,7 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    void AntiAlisaingPatternRenderer::Render(const Pattern & pattern, Image & result)
+    void AntiAliasingPatternRenderer::Render(const Pattern & pattern, Image & result)
     {
         double dx = 1.0;
         double startX = dx / 2.0;
@@ -293,8 +293,6 @@ namespace astu {
         double startY = dy / 2.0;
 
         Vector2<double> p(0, startY);
-        Color4d c1 = Color4d(0, 0, 0);
-        Color4d c2 = Color4d(1, 1, 1);
 
         cout << " 0 %";
         for (int j = 0; j < result.GetHeight(); ++j) {
@@ -312,17 +310,15 @@ namespace astu {
         std::cout << endl;
     }
 
-    Color4d AntiAlisaingPatternRenderer::CalcColor(const Vector2<double> & p, const Pattern & pattern)
+    Color4d AntiAliasingPatternRenderer::CalcColor(const Vector2<double> & p, const Pattern & pattern)
     {
         const double dx = (kKernelRadius * 2) / kKernelSize;
         double startX = p.x - kKernelRadius;
         double dy = (kKernelRadius * 2) / kKernelSize;
         double startY = p.y - kKernelRadius;
 
-        const Color4d c1 = Color4d(1, 1, 1);
-        const Color4d c2 = Color4d(0, 0, 0);
+        Color4d c(0, 0, 0, 0);
 
-        Color4d c;
         Vector2<double> aa(0, startY);
         const double *k = kernel;
         for (unsigned int j = 0; j < kKernelSize; ++j) {

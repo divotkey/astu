@@ -11,7 +11,7 @@
 namespace astu {
 
     TaskService::TaskService(int updatePriority)
-        : Service("Update Service")
+        : Service("Task Service")
         , Updatable(updatePriority)
     {
         // Intentionally left empty.

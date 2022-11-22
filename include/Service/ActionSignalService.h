@@ -25,7 +25,7 @@ namespace astu {
      * 
      * @ingroup srv_group     
      */
-    class ActionSignalService : public astu::BaseService
+    class ActionSignalService : virtual public Service
     {
     public:
 

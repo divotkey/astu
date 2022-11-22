@@ -164,7 +164,7 @@ namespace astu {
         }
     }
 
-    Color4d Image::GetAverageRegionColor(int x, int y, int w, int h) {
+    Color4d Image::GetAverageRegionColor(int x, int y, int w, int h) const {
         Color4d sum;
 
         for (int j = 0; j < h; ++j) {
@@ -177,7 +177,7 @@ namespace astu {
         return sum / w * h;
     }
 
-    double Image::GetAverageRegionBrightness(int x, int y, int w, int h) {
+    double Image::GetAverageRegionBrightness(int x, int y, int w, int h) const {
         double sum = 0.0;
 
         for (int j = 0; j < h; ++j) {

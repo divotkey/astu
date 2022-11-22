@@ -128,7 +128,6 @@
  */
 #define ASTU_REMOVE_ALL_SERVICES() ASTU_SERVICE_MANAGER().RemoveAllServices()
 
-
 /**
  * Starts up all services.
  * 
@@ -153,11 +152,31 @@
  * ```
  * 
  * @param srv   the service to add
- * @throws std::runtime_error in case the service has alerady been added
+ * @throws std::runtime_error in case the service has already been added
  * 
  * @ingroup srv_group
  */
 #define ASTU_ADD_SERVICE(srv) ASTU_SERVICE_MANAGER().AddService(srv)
+
+/**
+ * Adds creates a new service.
+ * 
+ * This macro will create a new dynamic instance of the specified service type.
+ * 
+ * **Example**
+ * 
+ * ```
+ * auto newService = ASTU_CREATE_SERVICE( MyService );
+ * ```
+ * 
+ * @param srvType   the type service to add
+ * @param ...   the optional constructor parameters for the service
+ * @throws std::runtime_error in case the service has already been added
+ * 
+ * @ingroup srv_group
+ */
+
+#define ASTU_CREATE_SERVICE(srvType, ...) std::make_shared<srvType>(__VA_ARGS__)
 
 /**
  * Adds a new service to the service manager.
@@ -174,7 +193,7 @@
  * 
  * @param srvType   the type service to add
  * @param ...   the optional constructor parameters for the service
- * @throws std::runtime_error in case the service has alerady been added
+ * @throws std::runtime_error in case the service has already been added
  * 
  * @ingroup srv_group
  */

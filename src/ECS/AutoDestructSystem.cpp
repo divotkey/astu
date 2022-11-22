@@ -10,7 +10,7 @@ using namespace std;
                     = EntityFamily::Create<CAutoDestruct>();
 
     AutoDestructSystem::AutoDestructSystem(int updatePriority)
-        : BaseService("Auto Destruct System")
+        : Service("Auto Destruct System")
         , IteratingEntitySystem(FAMILY, updatePriority)
     {
         // Intentionally left empty.

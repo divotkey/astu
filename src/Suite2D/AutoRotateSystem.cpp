@@ -15,7 +15,7 @@ namespace astu::suite2d {
     const EntityFamily AutoRotateSystem::FAMILY = EntityFamily::Create<CPose, CAutoRotate>();
 
     AutoRotateSystem::AutoRotateSystem(int updatePriority)
-        : BaseService("Auto-Rotate Entity System")
+        : Service("Auto-Rotate Entity System")
         , OneFamilyEntitySystem(FAMILY)
         , Updatable(updatePriority)
     {

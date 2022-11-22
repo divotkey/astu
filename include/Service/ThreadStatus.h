@@ -5,10 +5,15 @@
  * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
-#ifdef ASTU_EXPORT
-#define ASTU_API __declspec(dllexport)
-#elif defined(ASTU_IMPORT)
-#define ASTU_API __declspec(dllimport)
-#else
-#define ASTU_API
-#endif
+#pragma once
+
+namespace astu {
+
+    enum class ThreadStatus {
+        Running,
+        Success,
+        Error,
+        Undefined,
+    };
+
+} // end of namespace

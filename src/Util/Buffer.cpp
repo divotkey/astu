@@ -8,6 +8,7 @@
 #include "Util/Buffer.h"
 
 // C++ Standard Library includes
+#include <stdexcept>
 #include <cassert>
 #include <cstring>
 #include <algorithm>

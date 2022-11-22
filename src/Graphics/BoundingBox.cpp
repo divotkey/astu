@@ -5,11 +5,14 @@
  * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
+// Local includes
+#include "Graphics/BoundingBox.h"
+
+// C++ Standard Library includes
 #include <stdexcept>
 #include <string>
 #include <algorithm>
 #include <limits>
-#include "Graphics/BoundingBox.h"
 
 namespace astu {
 

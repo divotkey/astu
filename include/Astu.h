@@ -47,6 +47,7 @@
  * AST-Utilities currently consists of the following modules:
  *  
  * - @ref math_group
+ * - @ref misc_group
  * - @ref gfx_group
  * - @ref input_group
  * - @ref srv_group

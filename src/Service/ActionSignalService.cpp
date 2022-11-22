@@ -17,7 +17,7 @@ using namespace std;
 namespace astu {
 
     ActionSignalService::ActionSignalService()
-        : BaseService("Action Signal Service")
+        : Service("Action Signal Service")
     {
         // Intentionally left empty.
     }

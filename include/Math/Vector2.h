@@ -94,13 +94,13 @@ namespace astu {
         /**
          * Sets the x and y components of this vector.
          *
-         * @param newX  the x-coordinate of the vector
-         * @param newY  the y-coordinate of the vector
+         * @param inX  the x-coordinate of the vector
+         * @param inY  the y-coordinate of the vector
          * @return reference to this vector for method chaining
          */
-        Vector2 & Set(T newX, T newY) {
-			x = newX;
-            y = newY;
+        Vector2 & Set(T inX, T inY) {
+			x = inX;
+            y = inY;
             return *this;
         }
         
@@ -308,6 +308,32 @@ namespace astu {
         T Angle(const Vector2<T> &ref) const
         {
             return std::atan2(Cross(ref), Dot(ref));
+        }
+
+        /**
+         * The angle in radians of this vector (point) relative to the x-axis.
+         * Angles are towards the positive y-axis.
+         *
+         * @return the angle in degrees
+         */
+        T AngleDeg() const
+        {
+            T angle =  MathUtils::ToDegrees(std::atan2(y, x));
+            if (angle < 0)
+                angle += static_cast<T>(360);
+
+            return angle;
+        }
+
+        /**
+         * The angle in radians of this vector (point) relative to the x-axis.
+         * Angles are towards the positive y-axis.
+         *
+         * @return the angle in radians
+         */
+        T Angle() const
+        {
+            return std::atan2(y, x);
         }
 
         /**

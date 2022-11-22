@@ -91,7 +91,7 @@ namespace astu {
         }
 
         int posX, posY;
-        DetermineWindowPositoin(posX, posY);
+        DetermineWindowPosition(posX, posY);
 
         window = SDL_CreateWindow(
             winTitle.c_str(),
@@ -141,7 +141,7 @@ namespace astu {
         CleanUp();
     }
 
-    void SdlVideoService::DetermineWindowPositoin(int& outX, int& outY)
+    void SdlVideoService::DetermineWindowPosition(int& outX, int& outY)
     {
         if (displayIdx == 0 || displayIdx >= SDL_GetNumVideoDisplays()) {
             outX = SDL_WINDOWPOS_UNDEFINED;

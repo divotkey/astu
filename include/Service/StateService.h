@@ -16,6 +16,9 @@
 #include <string>
 #include <map>
 
+#define ASTU_ADD_TO_STATE(state, srv) ASTU_SERVICE(StateService).AddService(state, srv)
+#define ASTU_CREATE_AND_ADD_TO_STATE(state, srvType, ...) ASTU_ADD_TO_STATE(state, std::make_shared<srvType>(__VA_ARGS__) )
+
 namespace astu {
 
     /**
@@ -29,7 +32,7 @@ namespace astu {
      * @ingroup srv_group
      */
     class StateService final 
-        : public BaseService 
+        : virtual public Service
         , private SignalListener<std::string>
     {
     public:
@@ -49,7 +52,7 @@ namespace astu {
          * 
          * If reenter mode is enabled, state switches to the current state
          * will exit and re-enter the state. If reenter mode is disabled,
-         * state swichtes the to current state will be ignored.
+         * state switches the to current state will be ignored.
          * 
          * @param b whether to enable reenter mode
          * @return a reference to this service for method chaining

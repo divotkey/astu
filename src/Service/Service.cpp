@@ -7,9 +7,12 @@
 
 // Local includes
 #include "Service/Service.h"
+#include "Service/LoggingService.h"
 
 // C++ Standard Library includes
 #include <stdexcept>
+
+#define LOGGING_TAG "ASTU"
 
 namespace astu {
 
@@ -72,6 +75,12 @@ namespace astu {
             hook();
         }
 
+        // Emit log message (in case logging facility is present).
+        auto logger = ASTU_GET_SERVICE_OR_NULL(LoggingService);
+        if (logger) {
+            logger->LogVerbose(LOGGING_TAG, "Staring " + GetName());
+        }
+
         // Call startup on primary derived class.
         OnStartup();
 
@@ -84,6 +93,12 @@ namespace astu {
         // Best practice is to  ignore shut down calls on stopped services.
         if (status == Stopped)
             return;
+
+        // Emit log message (in case logging facility is present).
+        auto logger = ASTU_GET_SERVICE_OR_NULL(LoggingService);
+        if (logger) {
+            logger->LogVerbose(LOGGING_TAG, "Shutting down " + GetName());
+        }
 
         // Call shutdown on primary derived class.
         OnShutdown();
@@ -131,12 +146,12 @@ namespace astu {
                 + GetName() + " not running");
         }
 
-        // Call all resume hooks.
+        // Call all 'resume hooks'.
         for (auto & hook : resumeHooks) {
             hook();
         }
 
-        // Call resume on primary derived class.
+        // Call 'resume' on primary derived class.
         OnResumed();
 
         // Update status.

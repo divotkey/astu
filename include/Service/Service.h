@@ -199,6 +199,10 @@ namespace astu {
      * Service class more convenient. Using the service class directly would
      * make it necessary to make the virtual inheritance visible and derive the
      * class with the keyword "virtual".
+     *
+     * Unfortunately, the name of the service must be set via the actual base class
+     * of all services 'Service', so the implementation of the constructor looks as
+     * shown in the example.
      * 
      * **Example Header-File for basic Services**
      * @include MyService.h
@@ -213,18 +217,14 @@ namespace astu {
 
         /**
          * Constructor.
-         * 
-         * @param name  the name of this service
          */
-        BaseService(const std::string name = Service::DEFAULT_NAME)
-            : Service(name)
+        BaseService()
         {
-            // Intentionally left empty
+            // Intentionally left empty.
         }
 
         /** Virtual destructor. */
         virtual ~BaseService() {}
-
     };
 
 } // end of namespace

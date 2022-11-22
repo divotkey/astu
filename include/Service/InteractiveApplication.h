@@ -229,6 +229,7 @@ namespace astu {
         virtual int Run();
 
     protected:
+
         /**
          * Configures services according to application specific settings.
          */

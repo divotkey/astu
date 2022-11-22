@@ -139,7 +139,7 @@ namespace astu {
 				// Intentionally left empty
 			}
 
-			void SetContinousState(double value);
+			void SetContinuousState(double value);
 			void SetDiscreteState(unsigned int value);
 
 		};

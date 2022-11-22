@@ -28,6 +28,9 @@
 #include "Service/RenderService.h"
 #include "Service/InteractiveApplication.h"
 #include "Service/ConsoleApplication.h"
+#include "Service/SignalServiceTs.h"
+#include "Service/ThreadService.h"
+#include "Service/BlackboardServiceTs.h"
 
 namespace astu {
 

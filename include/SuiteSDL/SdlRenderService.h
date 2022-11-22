@@ -114,6 +114,17 @@ namespace astu {
          */
         bool HasLayer(ISdlRenderLayer &layer);
 
+        /**
+         * Returns the underlying SDL renderer, use this method with care.
+         *
+         * The first and most important need for this access option arises when creating SDL textures, since the
+         * renderer is required for this. An alternative would be that the SdlRenderService also realizes the
+         * texture factory.
+         *
+         * @return the SDL renderer
+         */
+        SDL_Renderer* GetRenderer();
+
         // Inherited via RenderService
         virtual void SetBackgroundColor(const Color4f& bg) override;
         virtual const Color4f& GetBackgroundColor() const override;

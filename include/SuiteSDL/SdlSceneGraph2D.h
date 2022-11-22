@@ -12,6 +12,7 @@
 #include "Math/Vector2.h"
 #include "Suite2D/Scene.h"
 #include "Graphics/VertexBuffer2.h"
+#include "Graphics/Texture.h"
 #include "Suite2D/CameraService.h"
 #include "Service/TimeService.h"
 #include "Service/UpdateService.h"
@@ -33,7 +34,6 @@ namespace astu {
      */
     class SdlVertexBufferBuilderService2D 
         : virtual public Service
-        , private TimeClient
         , public VertexBufferBuilder2<float>
     {
     public:
@@ -54,6 +54,27 @@ namespace astu {
     private:
         /** The vertices used for the buffer to build. */
         std::vector<astu::Vector2f> vertices;
+    };
+
+    /**
+     * Required for the SdlSceneGraph2D service.
+     *
+     * @ingroup sdl_group
+     */
+    class SdlTextureFactoryService
+            : virtual public Service
+            , public TextureFactory
+    {
+    public:
+
+        /**
+         * Constructor.
+         */
+        SdlTextureFactoryService();
+
+        // Inherited via TextureFactory
+        virtual std::shared_ptr<Texture> CreateFromImage(const Image &image, ScaleQuality sq) const override;
+        virtual std::shared_ptr<Texture> CreateFromBmp(const std::string& filepath, ScaleQuality sq) const override;
     };
 
     /**

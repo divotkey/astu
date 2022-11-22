@@ -10,6 +10,7 @@
 // Local includes
 #include "ECS/EntityService.h"
 #include "Math/Transform2.h"
+#include "Math/Vector2.h"
 
 namespace astu::suite2d {
 
@@ -40,6 +41,17 @@ namespace astu::suite2d {
          */
         CPose(float x, float y, float phi = 0) {
             transform.SetTranslation(x, y);
+            transform.SetRotation(phi);
+        }
+
+        /**
+         * Constructor.
+         *
+         * @param p     the position the initial translation
+         * @param phi   the angle of the initial rotation in radians
+         */
+        CPose(const Vector2f &p, float phi = 0) {
+            transform.SetTranslation(p);
             transform.SetRotation(phi);
         }
 

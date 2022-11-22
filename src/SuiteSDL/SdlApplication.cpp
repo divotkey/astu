@@ -6,6 +6,7 @@
  */
 
 // Local includes
+#include "AstuSuite2D.h"
 #include "SuiteSDL/SdlApplication.h"
 #include "SuiteSDL/SdlService.h"
 #include "SuiteSDL/SdlVideoService.h"
@@ -56,10 +57,13 @@ namespace astu {
     }
 
     void SdlApplication::AddSdl2DServices()
-    {    
-        ASTU_CREATE_AND_ADD_SERVICE( SdlSceneGraph2D );    
-        ASTU_CREATE_AND_ADD_SERVICE( SdlLineRenderer );    
+    {
+        //XXX move addition of camera service to base class, maybe by using properties, when available.
+        ASTU_CREATE_AND_ADD_SERVICE( suite2d::CameraService );
+        ASTU_CREATE_AND_ADD_SERVICE( SdlSceneGraph2D );
+        ASTU_CREATE_AND_ADD_SERVICE( SdlLineRenderer );
         ASTU_CREATE_AND_ADD_SERVICE( SdlVertexBufferBuilderService2D );
+        ASTU_CREATE_AND_ADD_SERVICE( SdlTextureFactoryService );
     }
 
     void SdlApplication::RemoveSdl2DServices()

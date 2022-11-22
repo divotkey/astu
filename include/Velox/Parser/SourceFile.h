@@ -20,9 +20,29 @@ namespace velox {
 
         /**
          * Constructor
+         */
+        SourceFile() = default;
+
+        /**
+         * Constructor
+         *
          * @param filePath  the path to the source file
          */
         SourceFile(const std::string& filePath);
+
+        /**
+         * Return the path to the source file.
+         *
+         * @return the path to the source file.
+         */
+        const std::string& GetFilePath() const;
+
+        /**
+         * Resets this source file to be reused.
+         *
+         * @param filePath  ht path to the source file
+         */
+        void Reset(const std::string &filePath);
 
     protected:
         // Inherited via Source

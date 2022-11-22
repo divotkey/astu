@@ -39,7 +39,7 @@ namespace astu {
 		double range = spread * 2;
 		for (size_t i = 0; i < n; ++i) {
 			Entry & e = *ptr++;
-			e.visited = false;
+			e.visited = 0;
 			e.delta = 0;
 			e.value = -spread + Random::GetInstance().NextDouble() * range;
 		}
@@ -78,6 +78,9 @@ namespace astu {
 		auto bestAction = GetMaxAction(nextState);
 		auto nextValue = GetValue(nextState, bestAction);
 		double newValue = (1 - alpha) * prevValue + alpha * (reward + gamma * nextValue);
+
+        // The equation re-written to match the 'Bellman Equation'.
+        //double newValue = prevValue + alpha * (reward + gamma * nextValue - prevValue);
 		UpdateValue(state, action, newValue);
 
 		return bestAction;
@@ -107,17 +110,17 @@ namespace astu {
 		return result;
 	}
 
-	void QTable::SetLearningRate(double alpha)
+	void QTable::SetLearningRate(double inAlpha)
 	{
-		if (alpha < 0 || alpha > 1) {
-			throw std::invalid_argument("invalid learning rate: " + std::to_string(alpha));
+		if (inAlpha < 0 || inAlpha > 1) {
+			throw std::invalid_argument("invalid learning rate: " + std::to_string(inAlpha));
 		}
-		alpha = alpha;
+		alpha = inAlpha;
 	}
 
-	void QTable::SetDiscountFactor(double gamma)
+	void QTable::SetDiscountFactor(double inGamma)
 	{
-		gamma = gamma;
+		gamma = inGamma;
 	}
 
 	Memento& QTable::StoreToMemento(Memento & m) const
