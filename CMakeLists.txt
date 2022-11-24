@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.1)
 
 # Add version information
-project(ASTU VERSION 0.11.1)
+project(ASTU VERSION 0.11.3)
 
 # Define C++ Standard
 set(CMAKE_CXX_STANDARD 17)
