@@ -35,6 +35,7 @@ namespace velox {
         if (rhs.GetType() != ItemType::Real)
             return false;
 
+        // TODO get line number from somewheres
         value = rhs.GetRealValue(0);
         return true;
     }

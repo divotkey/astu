@@ -37,8 +37,8 @@ namespace velox {
         throw InterpreterError("integer value expected", lineNumber);
     }
 
-    bool ItemState::GetBooleanValue() const {
-        throw InterpreterError("boolean value expected");
+    bool ItemState::GetBooleanValue(unsigned int lineNumber) const {
+        throw InterpreterError("boolean value expected", lineNumber);
     }
 
     std::string ItemState::GetStringValue(ScriptContext &sc) const {

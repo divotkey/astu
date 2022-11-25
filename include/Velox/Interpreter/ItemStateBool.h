@@ -20,7 +20,7 @@ namespace velox {
         std::unique_ptr<ItemState> Copy() const override;
         double GetRealValue(unsigned int lineNumber) const override;
         int GetIntegerValue(unsigned int lineNumber) const override;
-        bool GetBooleanValue() const override;
+        bool GetBooleanValue(unsigned int lineNumber) const override;
         std::string GetStringValue(ScriptContext &sc) const override;
         ItemType GetType() const override;
 

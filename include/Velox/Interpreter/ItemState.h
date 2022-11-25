@@ -105,10 +105,11 @@ namespace velox {
         /**
          * Tries to convert this state to a boolean value.
          *
+         * @param lineNumber    information about the location within the source code
          * @return the boolean value
          * @throws InterpreterException in case this state cannot interpreted as boolean value
          */
-        virtual bool GetBooleanValue() const;
+        virtual bool GetBooleanValue(unsigned int lineNumber = 0) const;
 
         /**
          * Tries to convert this state to a string value.

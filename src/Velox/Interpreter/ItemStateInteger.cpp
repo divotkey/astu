@@ -36,6 +36,7 @@ namespace velox {
         if (rhs.GetType() != ItemType::Integer)
             return false;
 
+        // TODO get line number from somewheres
         value = rhs.GetIntegerValue(0);
         return true;
     }

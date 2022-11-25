@@ -233,10 +233,11 @@ namespace velox {
         /**
          * Tries to convert this item to a boolean value.
          *
+         * @param lineNumber    information about the location within the source code
          * @return the boolean value
          * @throws InterpreterException in case this item cannot interpreted as boolean value
          */
-        bool GetBooleanValue() const;
+        bool GetBooleanValue(unsigned int lineNumber = 0) const;
 
         /**
          * Tries to convert this item to a string value.

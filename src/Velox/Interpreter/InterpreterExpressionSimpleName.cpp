@@ -17,7 +17,11 @@ namespace velox {
 
     shared_ptr<Item> InterpreterExpressionSimpleName::Evaluate(ScriptContext &sc) {
         if (IsLocation()) {
-            auto result = sc.FindLocalItem(name);
+            // The uncommented line represents the original implementation,
+            // However, this is probably an error.
+            //auto result = sc.FindLocalItem(name);
+
+            auto result = sc.FindItem(name);
             if (!result) {
                 result = Item::Create(make_unique<ItemStateUndefined>());
                 sc.AddItem(name, result);

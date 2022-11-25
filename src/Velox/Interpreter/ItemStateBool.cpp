@@ -25,7 +25,7 @@ namespace velox {
         return static_cast<int>(value);
     }
 
-    bool ItemStateBool::GetBooleanValue() const {
+    bool ItemStateBool::GetBooleanValue(unsigned int lineNumber) const {
         return value;
     }
 
@@ -41,7 +41,8 @@ namespace velox {
         if (rhs.GetType() != ItemType::Boolean)
             return false;
 
-        value = rhs.GetBooleanValue();
+        // TODO get line number from somewheres
+        value = rhs.GetBooleanValue(0);
         return true;
     }
 }

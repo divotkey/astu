@@ -68,8 +68,8 @@ namespace velox {
         return state->GetIntegerValue(lineNumber);
     }
 
-    bool Item::GetBooleanValue() const {
-        return state->GetBooleanValue();
+    bool Item::GetBooleanValue(unsigned int lineNumber) const {
+        return state->GetBooleanValue(lineNumber);
     }
 
     std::string Item::GetStringValue(ScriptContext &sc) const {

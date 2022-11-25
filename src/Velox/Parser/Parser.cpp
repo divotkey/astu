@@ -433,7 +433,8 @@ namespace velox {
 
         while (source.GetCurrentTokenType() == TokenType::LOG_AND) {
             auto logOp = make_shared<InterpreterLogicalOperation>(
-                    LOG_OP_TO_TOK.at(source.GetCurrentTokenType())
+                    LOG_OP_TO_TOK.at(source.GetCurrentTokenType()),
+                    source.GetLineNumber()
             );
 
             logOp->SetLeftHandSide(expr);
@@ -451,7 +452,8 @@ namespace velox {
 
         while (source.GetCurrentTokenType() == TokenType::LOG_OR) {
             auto logOp = make_shared<InterpreterLogicalOperation>(
-                    LOG_OP_TO_TOK.at(source.GetCurrentTokenType())
+                    LOG_OP_TO_TOK.at(source.GetCurrentTokenType()),
+                    source.GetLineNumber()
             );
 
             logOp->SetLeftHandSide(expr);

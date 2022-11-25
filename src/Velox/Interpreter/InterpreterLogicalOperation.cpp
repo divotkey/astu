@@ -12,8 +12,8 @@ using namespace std;
 
 namespace velox {
 
-    InterpreterLogicalOperation::InterpreterLogicalOperation(LogicalOperator op)
-        : InterpreterExpression(false), logOp(op)
+    InterpreterLogicalOperation::InterpreterLogicalOperation(LogicalOperator op, unsigned int lineNumber)
+        : InterpreterExpression(lineNumber, false), logOp(op)
     {
         // Intentionally left empty.
     }
@@ -30,14 +30,16 @@ namespace velox {
         auto lhs = leftHandSide->Evaluate(sc);
         if (logOp == LogicalOperator::OR) {
             if (!lhs->GetBooleanValue()) {
-                return Item::Create(make_unique<ItemStateBool>(rightHandSide->Evaluate(sc)->GetBooleanValue()));
+                return Item::Create(make_unique<ItemStateBool>(
+                        rightHandSide->Evaluate(sc)->GetBooleanValue(rightHandSide->GetLineNumber())));
             } else {
-                return Item::Create(make_unique<ItemStateBool>(false));
+                return Item::Create(make_unique<ItemStateBool>(true));
             }
         } else {
             // Logical and.
             if (lhs->GetBooleanValue()) {
-                return Item::Create(make_unique<ItemStateBool>(rightHandSide->Evaluate(sc)->GetBooleanValue()));
+                return Item::Create(make_unique<ItemStateBool>(
+                        rightHandSide->Evaluate(sc)->GetBooleanValue(rightHandSide->GetLineNumber())));
             } else {
                 return Item::Create(make_unique<ItemStateBool>(false));
             }
