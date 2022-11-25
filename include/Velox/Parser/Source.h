@@ -117,6 +117,9 @@ namespace velox {
         /** Internal state. */
         class State {
         public:
+
+            virtual ~State() {}
+
             virtual TokenType PeekNextToken(Source &source) = 0;
             virtual TokenType GetNextToken(Source &source) = 0;
             virtual TokenType GetCurrentToken(const Source &source) const = 0;

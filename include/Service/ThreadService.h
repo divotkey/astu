@@ -133,12 +133,11 @@ namespace astu {
         /**
          * Called by this base class when a thread status update has arrived.
          *
-         * @param button
-         * @param x
-         * @param y
-         * @return
+         * @param threadId  the ID of the thread
+         * @param inStatus  the thread status
+         * @return `true` if this signal has been consumed
          */
-        virtual bool OnThreadStatusUpdate(int threadId, ThreadStatus status) {
+        virtual bool OnThreadStatusUpdate(int threadId, ThreadStatus inStatus) {
             return false;
         }
 

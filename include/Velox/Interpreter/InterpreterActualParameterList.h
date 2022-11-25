@@ -11,6 +11,9 @@ namespace velox {
     class InterpreterActualParameterList {
     public:
 
+        /** Destructor. */
+        virtual ~InterpreterActualParameterList() {}
+
         virtual size_t NumParameters() = 0;
         virtual std::shared_ptr<Item> EvaluateParam(ScriptContext &sc, size_t idx) = 0;
     };
