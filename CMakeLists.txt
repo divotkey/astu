@@ -1,11 +1,11 @@
 # CMake file for AST-Utilities Version 0.11.1
-# Generated Wed Nov 23 07:27:21 CET 2022 with SWORD Interpreter 1.9.1
+# Generated Thu Nov 24 17:36:44 CET 2022 with SWORD Interpreter 1.9.1
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
 
 # Add version information
-project(ASTU VERSION 0.11.3)
+project(ASTU VERSION 0.11.1)
 
 # Define C++ Standard
 set(CMAKE_CXX_STANDARD 17)
@@ -277,6 +277,7 @@ list(APPEND astu_SOURCES
 	src/Velox/Interpreter/InterpreterFunctionOneParameter.cpp 
 	src/Velox/Interpreter/Item.cpp 
 	src/Velox/Interpreter/InterpreterExpression.cpp 
+	src/Velox/Interpreter/InterpreterScript.cpp 
 	src/Velox/Interpreter/InterpreterFunctionPrint.cpp 
 	src/Velox/Interpreter/InterpreterLiteralReal.cpp 
 	src/Velox/Interpreter/InterpreterLiteralList.cpp 
@@ -359,6 +360,7 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/ItemStateColor.h 
 	include/Velox/Interpreter/ItemStateRealMember.h 
 	include/Velox/Interpreter/InterpreterLiteralString.h 
+	include/Velox/Interpreter/InterpreterScript.h 
 	include/Velox/Interpreter/ItemStateUndefined.h 
 	include/Velox/Interpreter/Operators.h 
 	include/Velox/Interpreter/InterpreterExpressionSimpleName.h 

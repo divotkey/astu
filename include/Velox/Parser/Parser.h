@@ -10,6 +10,7 @@
 #include "Velox/Parser/TokenType.h"
 #include "Velox/Parser/Source.h"
 #include "Velox/Interpreter/InterpreterStatementBlock.h"
+#include "Velox/Interpreter/InterpreterScript.h"
 #include "Velox/Interpreter/InterpreterFunctionDefinition.h"
 #include "Velox/Interpreter/InterpreterConstructorCall.h"
 #include "Velox/Interpreter/InterpreterExpression.h"
@@ -25,7 +26,7 @@ namespace velox {
     class Parser {
     public:
 
-        std::shared_ptr<InterpreterStatementBlock> Parse(Source &source);
+        std::shared_ptr<InterpreterScript> Parse(Source &source);
 
     private:
         static const TokenType STATEMENT_START[];

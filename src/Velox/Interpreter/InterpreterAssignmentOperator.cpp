@@ -11,8 +11,8 @@ using namespace std;
 
 namespace velox {
 
-    InterpreterAssignmentOperator::InterpreterAssignmentOperator(ArithmeticOperator op)
-        : InterpreterExpression(false), arithOp(op)
+    InterpreterAssignmentOperator::InterpreterAssignmentOperator(ArithmeticOperator op, unsigned int lineNumber)
+        : InterpreterExpression(lineNumber, false), arithOp(op)
     {
         // Intentionally left empty.
     }

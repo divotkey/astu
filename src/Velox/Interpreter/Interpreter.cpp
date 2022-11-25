@@ -226,12 +226,14 @@ namespace velox {
 
     void Interpreter::CallWithNoParams(Item &item)
     {
+        context.ClearFlags();
         InterpreterNoParameterList noParams;
         Call(item, noParams);
     }
 
     void Interpreter::CallWithIntParam(Item &item, int value)
     {
+        context.ClearFlags();
         InterpreterItemParameterList params;
         params.AddParameter(Item::CreateInteger(value));
         Call(item, params);
@@ -239,6 +241,7 @@ namespace velox {
 
     void Interpreter::Call(Item &item, InterpreterActualParameterList &params)
     {
+        context.ClearFlags();
         context.PushScope(make_shared<Scope>(true));
         item.CallAsFunction(context, params, 0);
         context.PopScope();

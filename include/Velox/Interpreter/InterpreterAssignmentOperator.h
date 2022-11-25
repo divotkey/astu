@@ -15,7 +15,7 @@ namespace velox {
     class InterpreterAssignmentOperator : public InterpreterExpression {
     public:
 
-        InterpreterAssignmentOperator(ArithmeticOperator op);
+        InterpreterAssignmentOperator(ArithmeticOperator op, unsigned int lineNumber);
         void SetLeftHandSide(std::shared_ptr<InterpreterExpression> lValue);
         void SetRightHandSide(std::shared_ptr<InterpreterExpression> rValue);
 

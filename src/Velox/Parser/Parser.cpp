@@ -8,6 +8,7 @@
 #include "Velox/Parser/Parser.h"
 #include "Velox/Parser/ParserError.h"
 #include "Script/ScannerError.h"
+#include "Velox/Interpreter/InterpreterScript.h"
 #include "Velox/Interpreter/InterpreterArithmeticOperation.h"
 #include "Velox/Interpreter/InterpreterAssignmentOperator.h"
 #include "Velox/Interpreter/InterpreterRelationalOperation.h"
@@ -138,18 +139,16 @@ namespace velox {
         source.GetNextTokenType();
     }
 
-    std::shared_ptr<InterpreterStatementBlock> Parser::Parse(Source &source) {
+    std::shared_ptr<InterpreterScript> Parser::Parse(Source &source) {
 
-        std::shared_ptr<InterpreterStatementBlock> result;
-        try {
-            source.GetNextTokenType();
-            result = ParseStatementBlock(source, false);
-        } catch (const astu::ScannerError &e) {
-            throw ParserError(e.what(), e.GetLineNumber());
-        }
+        std::shared_ptr<InterpreterScript> result = make_shared<InterpreterScript>();
+        source.GetNextTokenType();
+        while (CONTAINS(STATEMENT_START, source.GetCurrentTokenType())) {
+            if (source.GetCurrentTokenType() == TokenType::SEMICOLON)
+                continue;
 
-        if (source.GetCurrentTokenType() != TokenType::EOS) {
-            throw ParserError("end of source code expected", source.GetLineNumber());
+            auto statement = ParseStatement(source);
+            result->AddStatement(statement);
         }
 
         return result;
@@ -358,7 +357,7 @@ namespace velox {
         source.GetNextTokenType();
 
         // Assemble assignment.
-        auto result = make_shared<InterpreterAssignmentOperator>(op);
+        auto result = make_shared<InterpreterAssignmentOperator>(op, source.GetLineNumber());
         result->SetLeftHandSide(lValue);
         result->SetRightHandSide(ParseExpression(source));
 
