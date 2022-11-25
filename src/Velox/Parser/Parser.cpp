@@ -861,6 +861,9 @@ namespace velox {
         ParseBlockStart(source);
 
         while (source.GetCurrentTokenType() != TokenType::BLOCK_END) {
+            if (source.GetCurrentTokenType() != TokenType::FUNCTION) {
+                throw ParserError("Function definition expected", source.GetLineNumber());
+            }
             auto functionStart = source.GetLineNumber();
             auto function = ParseFunctionDefinition(source);
             if (result->HasFunction(function->GetFunctionName())) {
