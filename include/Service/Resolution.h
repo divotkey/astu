@@ -15,6 +15,10 @@ namespace astu {
      * @ingroup srv_group
      */
     enum class Resolution {
+
+        /** Wide VGA, pixels 800 x 480. */
+        WVGA,
+
         /** Aspect ratio 4:3, pixels 800 x 600. */
         SVGA,
 

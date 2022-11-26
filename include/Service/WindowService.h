@@ -44,6 +44,10 @@ namespace astu {
          */
         void SetSize(Resolution res) {
             switch (res) {
+            case Resolution::WVGA:
+                SetSize(800, 480);
+                break;
+
             case Resolution::SVGA:
                 SetSize(800, 600);
                 break;
