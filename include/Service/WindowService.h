@@ -48,6 +48,10 @@ namespace astu {
                 SetSize(800, 480);
                 break;
 
+            case Resolution::WVGA_PORTRAIT:
+                SetSize(480, 800);
+                break;
+
             case Resolution::SVGA:
                 SetSize(800, 600);
                 break;

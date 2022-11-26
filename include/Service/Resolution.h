@@ -19,6 +19,9 @@ namespace astu {
         /** Wide VGA, pixels 800 x 480. */
         WVGA,
 
+        /** Wide VGA (Portrait), pixels 480 x 800. */
+        WVGA_PORTRAIT,
+
         /** Aspect ratio 4:3, pixels 800 x 600. */
         SVGA,
 
