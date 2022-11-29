@@ -126,7 +126,7 @@ namespace astu {
     {
         if (GetRemaining() < sizeof(int16_t)) {
             throw std::logic_error(
-                    "Buffer underrun, unable to read 16bit integer value, only " + to_string(GetRemaining()) + " bytes left");
+                    "Buffer underrun, unable to read 16-bit integer value, only " + to_string(GetRemaining()) + " bytes left");
         }
 
         return Read<int16_t>();
@@ -136,7 +136,7 @@ namespace astu {
     {
         if (GetRemaining() < sizeof(int32_t)) {
             throw std::logic_error(
-                    "Buffer underrun, unable to read 16bit integer value, only " + to_string(GetRemaining()) + " bytes left");
+                    "Buffer underrun, unable to read 16-bit integer value, only " + to_string(GetRemaining()) + " bytes left");
         }
 
         return Read<int32_t>();
@@ -146,7 +146,7 @@ namespace astu {
     {
         if (GetRemaining() < sizeof(uint32_t)) {
             throw std::logic_error(
-                    "Buffer underrun, unable to read 16bit integer value, only " + to_string(GetRemaining()) + " bytes left");
+                    "Buffer underrun, unable to read 16-bit integer value, only " + to_string(GetRemaining()) + " bytes left");
         }
 
         return Read<uint32_t>();

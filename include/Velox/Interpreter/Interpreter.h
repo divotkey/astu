@@ -73,8 +73,16 @@ namespace velox {
         void CallWithOneParam(Item& item, std::shared_ptr<Item> param);
         void Call(Item& item, InterpreterActualParameterList &params);
 
+        /**
+         * Clears all variables and re-adds super global scope.
+         * Call this method after adding custom functions.
+         */
         void ClearVariables();
 
+        /**
+         * Clears all variables and re-adds super global scope.
+         * Call this method to clear whatever the last script has done.
+         */
         void ClearAll();
 
     private:

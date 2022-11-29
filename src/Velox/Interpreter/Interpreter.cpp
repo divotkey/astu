@@ -66,6 +66,7 @@ namespace velox {
 
     void Interpreter::ClearAll() {
         superGlobals->Clear();
+        AddStandardFunctions();
         ClearVariables();
     }
 
