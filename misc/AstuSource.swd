@@ -149,7 +149,7 @@ function EmitIncludesAndLinkLibraries(targetName)
 			target_link_libraries(§{targetName} /Library/Frameworks/SDL2.framework/Versions/A/SDL2)
 		ELSE()
 			target_link_libraries(§{targetName} SDL2)
-			target_link_libraries(§{targetName} SDL2TTF)
+			target_link_libraries(§{targetName} SDL2_ttf)
 		ENDIF()
 	endif(§{GetOptionName("Sdl")})
 
