@@ -207,7 +207,7 @@ namespace astu::suite2d {
     /////////////////////////////////////////////////
 
     Sprite::Sprite(std::shared_ptr<Texture> texture)
-        : texture(texture), width(1.0), height(1.0)
+        : texture(texture), width(1), height(1)
     {
         if (!texture) {
             throw std::logic_error("Unable to create sprite, specified texture must not be null");
@@ -216,12 +216,16 @@ namespace astu::suite2d {
         height = static_cast<float>(texture->GetHeight());
     }
 
+    Sprite::Sprite() : width(1), height(1)
+    {
+        // Intentionally left empty.
+    }
+
     Sprite::Sprite(std::shared_ptr<Texture> texture, float width, float height)
         : texture(texture), width(width), height(height)
     {
         assert(texture);
     }
-
 
     Texture &Sprite::GetTexture()
     {
@@ -254,5 +258,56 @@ namespace astu::suite2d {
         assert(h >= 0);
         height = h;
     }
+
+    /////////////////////////////////////////////////
+    /////// TextSprite
+    /////////////////////////////////////////////////
+
+    TextSprite::TextSprite(std::shared_ptr<Font> font, const string &text)
+        : font(font), text(text), dirty(true)
+    {
+        // Intentionally left empty.
+    }
+
+    void TextSprite::SetText(const string &inText)
+    {
+        if (text != inText) {
+            text = inText;
+            dirty = true;
+        }
+    }
+
+    const std::string &TextSprite::GetText() const
+    {
+        return text;
+    }
+
+    std::shared_ptr<Font> TextSprite::GetFont() const
+    {
+        return font;
+    }
+
+    void TextSprite::SetColor(const Color4f &inColor)
+    {
+        color = inColor;
+    }
+
+    std::shared_ptr<Spatial> TextSprite::Clone() const
+    {
+        return std::make_shared<TextSprite>(*this);
+    }
+
+    void TextSprite::Render(SceneRenderer2D &renderer, float alpha)
+    {
+        if (dirty) {
+            texture = font->GenerateTexture(text, color);
+            SetWidth(static_cast<float>(texture->GetWidth()));
+            SetHeight(static_cast<float>(texture->GetHeight()));
+            dirty = false;
+        }
+
+        Sprite::Render(renderer, alpha);
+    }
+
 
 } // end of namespace

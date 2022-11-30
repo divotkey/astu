@@ -11,6 +11,7 @@
 #include "Service/Service.h"
 #include "Graphics/VertexBuffer2.h"
 #include "Graphics/Texture.h"
+#include "Graphics/Font.h"
 #include "Util/Controllable.h"
 #include "Graphics/WebColors.h"
 #include "Math/Vector2.h"
@@ -29,6 +30,7 @@ namespace astu::suite2d {
     // Forward declaration
     class Polyline;
     class Sprite;
+    class TextSprite;
     class Node;
 
     /////////////////////////////////////////////////
@@ -59,10 +61,18 @@ namespace astu::suite2d {
         /**
          * Renders a sprite node.
          *
-         * @param polyline  the sprite node to render
+         * @param sprite    the sprite node to render
          * @param alpha     the transparency
          */
         virtual void Render(Sprite &sprite, float alpha) = 0;
+
+        ///**
+        // * Renders a sprite node.
+        // *
+        // * @param textSprite    the text sprite node to render
+        // * @param alpha         the transparency
+        // */
+        //virtual void Render(TextSprite &textSprite, float alpha) = 0;
     };
 
     
@@ -459,7 +469,7 @@ namespace astu::suite2d {
      *
      * @ingroup suite2d_group
      */
-    class Sprite final : public Spatial {
+    class Sprite : public Spatial {
     public:
 
         /**
@@ -528,15 +538,76 @@ namespace astu::suite2d {
         virtual void Render(SceneRenderer2D& renderer, float alpha) override;
         virtual std::shared_ptr<Spatial> Clone() const override;
 
-    private:
+    protected:
+
+        /**
+         * Constructor.
+         */
+        Sprite();
+
         /** The texture representing the visual representation of this sprite. */
         std::shared_ptr<Texture> texture;
 
+    private:
         /** The width of this sprite in world space. */
         float width;
 
         /** The height of this sprite in world space. */
         float height;
+    };
+
+    /**
+     * The text sprite class represents a leaf element within the scene graph.
+     * It consists of a font used to generate textures when the text ist changed.
+     *
+     * @ingroup suite2d_group
+     */
+    class TextSprite final : public Sprite {
+    public:
+
+        /**
+         * Constructor.
+         *
+         * @param font  the font used by this sprite
+         */
+        TextSprite(std::shared_ptr<Font> font, const std::string &text);
+
+        void SetText(const std::string &text);
+        const std::string& GetText() const;
+        std::shared_ptr<Font> GetFont() const;
+
+        /**
+         * Sets the color of this text sprite.
+         *
+         * @param color the color
+         */
+        void SetColor(const Color4f& color);
+
+        /**
+         * Returns the color of text sprite.
+         *
+         * @return this text sprite's color
+         */
+        const Color4f& GetColor() const {
+            return color;
+        }
+
+        // Inherited via Node2/Spatial
+        virtual void Render(SceneRenderer2D& renderer, float alpha) override;
+        virtual std::shared_ptr<Spatial> Clone() const override;
+
+    private:
+        /** The texture representing the visual representation of this sprite. */
+        std::shared_ptr<Font> font;
+
+        /** The text represented by this sprite. */
+        std::string text;
+
+        /** The color of this text sprite. */
+        Color4f color;
+
+        /** Indicates that the texture needs to be recreated. */
+        bool dirty;
     };
 
     /////////////////////////////////////////////////
@@ -1041,5 +1112,98 @@ namespace astu::suite2d {
         std::shared_ptr<Texture> texture;
     };
 
+
+    /////////////////////////////////////////////////
+    /////// TextSpriteBuilder
+    /////////////////////////////////////////////////
+
+    /**
+     * This fluent builder is used to build new text sprite scene graph elements.
+     *
+     * @ingroup suite2d_group
+     */
+    class TextSpriteBuilder final : public SpatialBuilder<TextSpriteBuilder> {
+    public:
+
+        /**
+         * Constructor.
+         */
+        TextSpriteBuilder() {
+            Reset();
+        }
+
+        /**
+         * Specifies the texture used to create the sprite.
+         *
+         * @param font the image data used to create the texture for the sprite
+         * @return reference to this builder for method chaining
+         */
+        TextSpriteBuilder& FontRef(std::shared_ptr<Font> font) {
+            this->font = font;
+            return *this;
+        }
+
+        /**
+         * Specifies the texture used to create the sprite.
+         *
+         * @param text  the text the sprite should display
+         * @return reference to this builder for method chaining
+         */
+        TextSpriteBuilder& Text(const std::string &text) {
+            this->text = text;
+            return *this;
+        }
+
+        /**
+         * Specifies the size of the sprite in world space.
+         *
+         * @param color the color of the text
+         * @return reference to this builder for method chaining
+         */
+        TextSpriteBuilder& Color(const Color4f &color) {
+            this->color = color;
+            return *this;
+        }
+
+        /**
+         * Resets this builder to its initial configuration.
+         *
+         * @return reference to this builder for method chaining
+         */
+        TextSpriteBuilder& Reset() {
+            SpatialBuilder::Reset();
+            font = nullptr;
+            text = "TextSprite";
+            color = WebColors::Cyan;
+            return *this;
+        }
+
+        /**
+         * Creates a new sprite according to the current configuration.
+         *
+         * @return the newly created polyline
+         */
+        std::shared_ptr<Sprite> Build() {
+            if (!font) {
+                throw std::logic_error(
+                        "Unable to build Sprite, texture specified");
+            }
+
+
+            auto result = std::make_shared<TextSprite>(font, text);
+            result->SetColor(color);
+            SpatialBuilder::Build(*result);
+
+            return result;
+        }
+
+    private:
+        /** The texture used for the sprite. */
+        std::shared_ptr<Font> font;
+
+        std::string text;
+
+        Color4f color;
+    };
 
 } // end of namespace

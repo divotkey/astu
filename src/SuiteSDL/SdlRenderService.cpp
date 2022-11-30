@@ -14,7 +14,7 @@
 // Simple Direct Layer (SDL) includes
 #include <SDL2/SDL.h>
 
-// C++ Standard LIbrary includes
+// C++ Standard Library includes
 #include <cassert>
 #include <algorithm>
 #include <stdexcept>

@@ -114,7 +114,7 @@ namespace astu {
         SDL_Point pivot = {0, 0};
 
         auto &texture = TEXTURE(sprite.GetTexture());
-        SDL_SetTextureAlphaMod(texture, alpha * 255);
+        SDL_SetTextureAlphaMod(texture, static_cast<Uint8>(alpha * 255));
         SDL_RenderCopyEx(
                 renderer,
                 texture,
@@ -125,5 +125,10 @@ namespace astu {
                 SDL_RendererFlip::SDL_FLIP_NONE
                 );
     }
+
+    //void SdlSceneRenderer2D::Render(TextSprite &textSprite, float alpha)
+    //{
+    //
+    //}
 
 } // end of namespace

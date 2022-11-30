@@ -11,10 +11,6 @@
 // Simple Direct Layer (SDL) includes
 #include <SDL2/SDL.h>
 
-// C++ Standard Library includes
-#include <stdexcept>
-
-
 namespace astu {
 
     SdlTimeService::SdlTimeService(int priority)

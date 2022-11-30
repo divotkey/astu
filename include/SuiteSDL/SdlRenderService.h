@@ -24,7 +24,7 @@ namespace astu {
     /**
      * Interface for SDL-based renderer layers.
      * 
-     * This inteface for render layers is using the hardware accelerated 2D
+     * This interface for render layers is using the hardware accelerated 2D
      * render-mechanism of SDL. 
      * 
      * @ingroup sdl_group
@@ -68,7 +68,7 @@ namespace astu {
     /**
      * Initializes and maintains an SDL renderer.
      * 
-     * This service has a depencendy to SdlVideoService because
+     * This service has a dependency to SdlVideoService because
      * creating an SDL renderer requires access to the SDL window.
      * 
      * @ingroup sdl_group

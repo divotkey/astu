@@ -24,6 +24,8 @@
 #include "Graphics/Palette.h"
 #include "Graphics/Image.h"
 #include "Graphics/ImageRenderer.h"
+#include "Graphics/Texture.h"
+#include "Graphics/Font.h"
 
 namespace astu {
 

@@ -39,6 +39,11 @@ namespace astu {
          */
         virtual ~SdlTexture();
 
+        /**
+         * Returns the underlying SDL texture.
+         *
+         * @return the SDL texture
+         */
         SDL_Texture *GetSdlTexture();
 
         /**

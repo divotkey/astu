@@ -7,12 +7,12 @@
 
 #pragma once
 
-// C++ Standard Library includes
-#include <cstdint>
-
 // Local includes
 #include "Service/UpdateService.h"
 #include "Service/TimeService.h"
+
+// C++ Standard Library includes
+#include <cstdint>
 
 namespace astu {
 

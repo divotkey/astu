@@ -16,6 +16,7 @@
 #include "SuiteSDL/SdlTimeService.h"
 #include "SuiteSDL/SdlSceneGraph2D.h"
 #include "SuiteSDL/SdlLineRenderer.h"
+#include "SuiteSDL/SdlFontFactory.h"
 
 namespace astu {
 
@@ -54,6 +55,9 @@ namespace astu {
 
         // Provides an SDL-based implementation of the ITimeService interface.
         ASTU_CREATE_AND_ADD_SERVICE( SdlTimeService );
+
+        // Provides an SDL-based implementation of the FontFactory service.
+        ASTU_CREATE_AND_ADD_SERVICE( SdlFontFactory );
     }
 
     void SdlApplication::AddSdl2DServices()
