@@ -2,7 +2,7 @@
 // Copyright 2021, 2022 Roman Divotkey. All rights reserved.
 
 // Configuration
-astuVersion = "0.11.1";
+astuVersion = "0.11.3";
 privateDir = "src";
 publicDir = "include";
 srcVar = "astu_SOURCES";
@@ -11,7 +11,7 @@ coreModules = [
 	"Audio", "ECS", "Input", "Network", "Logging",
 	"Service", "Suite2D", "Ai",
 	"FSM",
-  "Script", 
+  "Script",
 	"Velox"
 	];
 sdlModules = ["SuiteSDL"];
@@ -94,7 +94,7 @@ function EmitSharedLibraryTarget(targetName)
 	# Define shared library target.
 	add_library(§{targetName} SHARED ${§{srcVar}})
 	IF (WIN32)
-		target_compile_definitions(§{targetName} PRIVATE ASTU_EXPORT)       
+		target_compile_definitions(§{targetName} PRIVATE ASTU_EXPORT)
 	ENDIF()
 
 	:§
@@ -125,7 +125,7 @@ function EmitIncludesAndLinkLibraries(targetName)
 		# not implemented yet
 	ELSE()
 		target_include_directories(astu PRIVATE "${PROJECT_SOURCE_DIR}/src/§{osModules}/Linux")
-		target_link_libraries(§{targetName} pthread)    
+		target_link_libraries(§{targetName} pthread)
 	ENDIF()
 
 	:§
@@ -139,13 +139,19 @@ function EmitIncludesAndLinkLibraries(targetName)
 			target_link_libraries(§{targetName} $ENV{SDL2_HOME}/lib/x64/SDL2.lib)
 			list(APPEND §{listName} §{targetName} PRIVATE $ENV{SDL2_HOME})
 			target_include_directories(§{targetName} PRIVATE $ENV{SDL2_HOME})
+
+			## //XXX Integration of SDL2 TTF ist mess right now
+			target_link_libraries(§{targetName} $ENV{SDL2TTF_HOME}/lib/x64/SDL2_ttf.lib)
+			list(APPEND §{listName} §{targetName} PRIVATE $ENV{SDL2TTF_HOME})
+			#target_include_directories(§{targetName} PRIVATE $ENV{SDL2TTF_HOME})
 		ELSEIF(APPLE)
 			#list(APPEND §{listName} §{targetName} PRIVATE /Library/Frameworks/SDL2.framework/Headers)
 			target_link_libraries(§{targetName} /Library/Frameworks/SDL2.framework/Versions/A/SDL2)
 		ELSE()
 			target_link_libraries(§{targetName} SDL2)
+			target_link_libraries(§{targetName} SDL2TTF)
 		ENDIF()
-	endif(§{GetOptionName("Sdl")})                 
+	endif(§{GetOptionName("Sdl")})
 
 	:§
 
@@ -157,16 +163,16 @@ function EmitIncludesAndLinkLibraries(targetName)
 			target_include_directories(§{targetName} PRIVATE $ENV{JACK2_HOME}/include)
 			target_link_libraries(§{targetName} $ENV{JACK2_HOME}/lib/libjack64.lib)
 		ELSE()
-			target_link_libraries(§{targetName} jack)    
+			target_link_libraries(§{targetName} jack)
 		ENDIF()
-	endif(§{GetOptionName("Jack")})    
-             
+	endif(§{GetOptionName("Jack")})
+
 	:§
 }
 
 /**
  * Emits operating system dependent files.
- */ 
+ */
 function EmitOsFiles()
 {
 	EmitHeader("Operating System Specific");
@@ -186,7 +192,7 @@ function EmitOsFiles()
 	ELSEIF(APPLE)
 		# Apple Specific
 	:§
-	
+
 	§:
 	ELSE()
 		# Linux Specific
@@ -255,7 +261,7 @@ function EmitOptionalFiles(option, modules, text)
 	§:
 	OPTION(§{cmakeOption} "§{text}" OFF)
 	if(§{cmakeOption})
-  	  list(APPEND §{srcVar} 
+  	  list(APPEND §{srcVar}
 
 	:§
 
@@ -264,11 +270,10 @@ function EmitOptionalFiles(option, modules, text)
 	indent(-1);
 	§:
       )
-	endif(§{cmakeOption})    
-             
+	endif(§{cmakeOption})
+
 	:§
 }
-
 
 function EmitModules(modules)
 {
@@ -285,7 +290,7 @@ function EmitModules(modules)
 
 /**
  * Emits all matching files within the specified directory.
- * 
+ *
  * This function will emit cpp implementation (*.cpp) and header files (*.h)
  * within the specified directory, but remove the root directory witch
  * is stored in the global variable "rootDir".
@@ -309,7 +314,7 @@ function EmitFiles(dir, recursively)
 			continue;
 		}
 
-		// Process files with mathing extenions only.
+		// Process files with matching extensions only.
 		if (!EndsWith(files[i], ".cpp") && !EndsWith(files[i], ".h")) {
 			continue;
 		}
