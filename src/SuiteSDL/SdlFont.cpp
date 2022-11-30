@@ -43,7 +43,8 @@ namespace astu {
                               static_cast<Uint8>(c.b * 255),
                               static_cast<Uint8>(c.a * 255)};
 
-        SDL_Surface *surface = TTF_RenderText_Solid(sdlFont, text.c_str(), sdlColor);
+        SDL_Surface *surface = TTF_RenderText_Blended(sdlFont, text.c_str(), sdlColor);
+        //SDL_Surface *surface = TTF_RenderText_Solid(sdlFont, text.c_str(), sdlColor);
         if (!surface) {
             throw std::runtime_error(string("Unable to generate surface, while rendering font: ") + SDL_GetError());
         }
