@@ -29,8 +29,8 @@ namespace astu {
         /** Virtual destructor. */
         virtual ~Font() {}
 
-
         virtual std::shared_ptr<Texture> GenerateTexture(const std::string& text, const Color4f &color) = 0;
+        virtual std::shared_ptr<Texture> GenerateTexture(const std::wstring& text, const Color4f &color) = 0;
 
     };
 

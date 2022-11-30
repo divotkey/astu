@@ -43,7 +43,35 @@ namespace astu {
                               static_cast<Uint8>(c.b * 255),
                               static_cast<Uint8>(c.a * 255)};
 
-        SDL_Surface *surface = TTF_RenderText_Blended(sdlFont, text.c_str(), sdlColor);
+        SDL_Surface *surface = TTF_RenderUTF8_Blended(sdlFont, text.c_str(), sdlColor);
+        if (!surface) {
+            throw std::runtime_error(string("Unable to generate surface, while rendering font: ") + SDL_GetError());
+        }
+
+        SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(renderer, surface);
+        if (!sdlTexture) {
+            SDL_FreeSurface(surface);
+            throw std::runtime_error(
+                    string("Unable to create SDL texture from surface while rendering font: ") + SDL_GetError());
+        }
+        SDL_FreeSurface(surface);
+
+        return make_shared<SdlTexture>(sdlTexture);
+    }
+
+    std::shared_ptr<Texture> SdlFont::GenerateTexture(const wstring &text, const Color4f &c)
+    {
+        assert(sdlFont);
+        assert(renderer);
+
+        SDL_Color sdlColor = {static_cast<Uint8>(c.r * 255),
+                              static_cast<Uint8>(c.g * 255),
+                              static_cast<Uint8>(c.b * 255),
+                              static_cast<Uint8>(c.a * 255)};
+
+        const wchar_t *wText = text.data();
+
+        SDL_Surface *surface = TTF_RenderUNICODE_Blended(sdlFont, reinterpret_cast<const uint16_t*>(wText), sdlColor);
         //SDL_Surface *surface = TTF_RenderText_Solid(sdlFont, text.c_str(), sdlColor);
         if (!surface) {
             throw std::runtime_error(string("Unable to generate surface, while rendering font: ") + SDL_GetError());

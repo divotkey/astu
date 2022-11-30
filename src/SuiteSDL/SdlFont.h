@@ -55,6 +55,7 @@ namespace astu {
 
         // Inherited via Font
         std::shared_ptr<Texture> GenerateTexture(const std::string& text, const Color4f &color) override;
+        virtual std::shared_ptr<Texture> GenerateTexture(const std::wstring& text, const Color4f &color) override;
 
     private:
         /** The underlying SDL texture. */

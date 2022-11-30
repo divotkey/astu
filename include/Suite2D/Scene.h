@@ -572,6 +572,14 @@ namespace astu::suite2d {
          */
         TextSprite(std::shared_ptr<Font> font, const std::string &text);
 
+        /**
+         * Constructor.
+         */
+        TextSprite(std::shared_ptr<Font> font);
+
+        void SetWText(const std::wstring &text);
+        const std::wstring& GetWText() const;
+
         void SetText(const std::string &text);
         const std::string& GetText() const;
         std::shared_ptr<Font> GetFont() const;
@@ -602,6 +610,9 @@ namespace astu::suite2d {
 
         /** The text represented by this sprite. */
         std::string text;
+
+        /** The unicode text represented by this sprite. */
+        std::wstring wText;
 
         /** The color of this text sprite. */
         Color4f color;
@@ -1151,6 +1162,19 @@ namespace astu::suite2d {
          */
         TextSpriteBuilder& Text(const std::string &text) {
             this->text = text;
+            this->wText.clear();
+            return *this;
+        }
+
+        /**
+         * Specifies the texture used to create the sprite.
+         *
+         * @param text  the text the sprite should display
+         * @return reference to this builder for method chaining
+         */
+        TextSpriteBuilder& Text(const std::wstring &text) {
+            this->text.clear();
+            this->wText = text;
             return *this;
         }
 
@@ -1174,6 +1198,7 @@ namespace astu::suite2d {
             SpatialBuilder::Reset();
             font = nullptr;
             text = "TextSprite";
+            wText.clear();
             color = WebColors::Cyan;
             return *this;
         }
@@ -1189,8 +1214,13 @@ namespace astu::suite2d {
                         "Unable to build Sprite, texture specified");
             }
 
+            auto result = std::make_shared<TextSprite>(font);
+            if (wText.empty()) {
+                result->SetText(text);
+            } else {
+                result->SetWText(wText);
+            }
 
-            auto result = std::make_shared<TextSprite>(font, text);
             result->SetColor(color);
             SpatialBuilder::Build(*result);
 
@@ -1202,6 +1232,7 @@ namespace astu::suite2d {
         std::shared_ptr<Font> font;
 
         std::string text;
+        std::wstring wText;
 
         Color4f color;
     };

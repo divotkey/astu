@@ -269,12 +269,19 @@ namespace astu::suite2d {
         // Intentionally left empty.
     }
 
+    TextSprite::TextSprite(std::shared_ptr<Font> font)
+        : font(font), dirty(true)
+    {
+        // Intentionally left empty.
+    }
+
     void TextSprite::SetText(const string &inText)
     {
         if (text != inText) {
             text = inText;
             dirty = true;
         }
+        wText.clear();
     }
 
     const std::string &TextSprite::GetText() const
@@ -300,7 +307,12 @@ namespace astu::suite2d {
     void TextSprite::Render(SceneRenderer2D &renderer, float alpha)
     {
         if (dirty) {
-            texture = font->GenerateTexture(text, color);
+            if (wText.empty()) {
+                texture = font->GenerateTexture(text, color);
+            } else {
+                texture = font->GenerateTexture(wText, color);
+            }
+
             SetWidth(static_cast<float>(texture->GetWidth()));
             SetHeight(static_cast<float>(texture->GetHeight()));
             dirty = false;
@@ -309,5 +321,18 @@ namespace astu::suite2d {
         Sprite::Render(renderer, alpha);
     }
 
+    void TextSprite::SetWText(const wstring &inText)
+    {
+        if (wText != inText) {
+            wText = inText;
+            dirty = true;
+        }
+        text.clear();
+    }
+
+    const std::wstring &TextSprite::GetWText() const
+    {
+        return wText;
+    }
 
 } // end of namespace
