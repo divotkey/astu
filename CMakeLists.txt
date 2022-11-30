@@ -1,11 +1,11 @@
-# CMake file for AST-Utilities Version 0.11.1
-# Generated Wed Nov 30 07:59:46 CET 2022 with SWORD Interpreter 1.9.0
+# CMake file for AST-Utilities Version 0.11.3
+# Generated Wed Nov 30 10:09:42 CET 2022 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
 
 # Add version information
-project(ASTU VERSION 0.11.1)
+project(ASTU VERSION 0.11.3)
 
 # Define C++ Standard
 set(CMAKE_CXX_STANDARD 17)
@@ -439,7 +439,7 @@ list(APPEND astu_SOURCES
 
 OPTION(ASTU_USE_SDL "Build the ASTU library with support for SDL2" OFF)
 if(ASTU_USE_SDL)
-  	  list(APPEND astu_SOURCES 
+  	  list(APPEND astu_SOURCES
 
 		# Module: SuiteSDL
 		src/SuiteSDL/ApplicationImpl.cpp 
@@ -486,15 +486,15 @@ if(ASTU_USE_SDL)
 		include/SuiteSDL/SdlVideoService.h 
 	
       )
-endif(ASTU_USE_SDL)    
-             
+endif(ASTU_USE_SDL)
+
 #################################################
 ####### Optional Support for Jack
 #################################################
 
 OPTION(ASTU_USE_JACK "Build the ASTU library with support for JACK Audio Connection Kit" OFF)
 if(ASTU_USE_JACK)
-  	  list(APPEND astu_SOURCES 
+  	  list(APPEND astu_SOURCES
 
 		# Module: SuiteJack
 		src/SuiteJack/JackClient.cpp 
@@ -503,8 +503,8 @@ if(ASTU_USE_JACK)
 		include/SuiteJack/JackClient.h 
 	
       )
-endif(ASTU_USE_JACK)    
-             
+endif(ASTU_USE_JACK)
+
 #################################################
 ####### Operating System Specific
 #################################################
@@ -564,7 +564,7 @@ ELSEIF(APPLE)
 	# not implemented yet
 ELSE()
 	target_include_directories(astu PRIVATE "${PROJECT_SOURCE_DIR}/src/System/Linux")
-	target_link_libraries(astu pthread)    
+	target_link_libraries(astu pthread)
 ENDIF()
 
 # Add dependencies for SDL
@@ -585,7 +585,7 @@ if(ASTU_USE_SDL)
 		target_link_libraries(astu SDL2)
 		target_link_libraries(astu SDL2TTF)
 	ENDIF()
-endif(ASTU_USE_SDL)                 
+endif(ASTU_USE_SDL)
 
 # Add dependencies for Jack
 if(ASTU_USE_JACK)
@@ -593,10 +593,10 @@ if(ASTU_USE_JACK)
 		target_include_directories(astu PRIVATE $ENV{JACK2_HOME}/include)
 		target_link_libraries(astu $ENV{JACK2_HOME}/lib/libjack64.lib)
 	ELSE()
-		target_link_libraries(astu jack)    
+		target_link_libraries(astu jack)
 	ENDIF()
-endif(ASTU_USE_JACK)    
-             
+endif(ASTU_USE_JACK)
+
 #################################################
 ####### Shared Library Target (astuShared)
 #################################################
@@ -604,7 +604,7 @@ endif(ASTU_USE_JACK)
 # Define shared library target.
 add_library(astuShared SHARED ${astu_SOURCES})
 IF (WIN32)
-	target_compile_definitions(astuShared PRIVATE ASTU_EXPORT)       
+	target_compile_definitions(astuShared PRIVATE ASTU_EXPORT)
 ENDIF()
 
 # Set include directories for target astuShared
@@ -621,7 +621,7 @@ ELSEIF(APPLE)
 	# not implemented yet
 ELSE()
 	target_include_directories(astu PRIVATE "${PROJECT_SOURCE_DIR}/src/System/Linux")
-	target_link_libraries(astuShared pthread)    
+	target_link_libraries(astuShared pthread)
 ENDIF()
 
 # Add dependencies for SDL
@@ -642,7 +642,7 @@ if(ASTU_USE_SDL)
 		target_link_libraries(astuShared SDL2)
 		target_link_libraries(astuShared SDL2TTF)
 	ENDIF()
-endif(ASTU_USE_SDL)                 
+endif(ASTU_USE_SDL)
 
 # Add dependencies for Jack
 if(ASTU_USE_JACK)
@@ -650,7 +650,6 @@ if(ASTU_USE_JACK)
 		target_include_directories(astuShared PRIVATE $ENV{JACK2_HOME}/include)
 		target_link_libraries(astuShared $ENV{JACK2_HOME}/lib/libjack64.lib)
 	ELSE()
-		target_link_libraries(astuShared jack)    
+		target_link_libraries(astuShared jack)
 	ENDIF()
-endif(ASTU_USE_JACK)    
-             
+endif(ASTU_USE_JACK)
