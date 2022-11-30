@@ -1094,7 +1094,7 @@ namespace astu::suite2d {
         /**
          * Creates a new sprite according to the current configuration.
          *
-         * @return the newly created polyline
+         * @return the newly created sprite
          */
         std::shared_ptr<Sprite> Build() {
             if (!texture) {
@@ -1206,9 +1206,9 @@ namespace astu::suite2d {
         /**
          * Creates a new sprite according to the current configuration.
          *
-         * @return the newly created polyline
+         * @return the newly created text sprite
          */
-        std::shared_ptr<Sprite> Build() {
+        std::shared_ptr<TextSprite> Build() {
             if (!font) {
                 throw std::logic_error(
                         "Unable to build Sprite, texture specified");
