@@ -98,7 +98,6 @@ namespace astu {
         template <typename T> friend class TaskBuilder;
     };
 
-
     /**
      * Base class for task builders.
      * 
