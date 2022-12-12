@@ -17,6 +17,10 @@
 #include "Velox/Parser/ParserError.h"
 #include "Velox/Interpreter/Interpreter.h"
 #include "Velox/Interpreter/InterpreterFunctionPrint.h"
+#include "Velox/Service/VeloxExtensionService.h"
+#include "Velox/Extensions/LoggingExtension.h"
+#include "Velox/Extensions/ImageExtension.h"
+#include "Velox/Extensions/GraphicsExtensions.h"
 
 namespace astu {
 

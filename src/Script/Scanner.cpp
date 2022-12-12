@@ -170,10 +170,15 @@ namespace astu {
         pendingCommands.clear();
 
         // Process the combined commands.
-        for (auto &cmd : uniqueCommands) {
-            cmd.Execute(*this);
+        try {
+            for (auto &cmd : uniqueCommands) {
+                cmd.Execute(*this);
+            }
+            uniqueCommands.clear();
+        } catch(...) {
+            uniqueCommands.clear();
+            throw;
         }
-        uniqueCommands.clear();
     }
 
     void Scanner::DiscardCommands() {

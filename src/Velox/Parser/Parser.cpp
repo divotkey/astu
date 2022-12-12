@@ -141,17 +141,21 @@ namespace velox {
 
     std::shared_ptr<InterpreterScript> Parser::Parse(Source &source) {
 
-        std::shared_ptr<InterpreterScript> result = make_shared<InterpreterScript>();
-        source.GetNextTokenType();
-        while (CONTAINS(STATEMENT_START, source.GetCurrentTokenType())) {
-            if (source.GetCurrentTokenType() == TokenType::SEMICOLON)
-                continue;
+        try {
+            std::shared_ptr<InterpreterScript> result = make_shared<InterpreterScript>();
+            source.GetNextTokenType();
+            while (CONTAINS(STATEMENT_START, source.GetCurrentTokenType())) {
+                if (source.GetCurrentTokenType() == TokenType::SEMICOLON)
+                    continue;
 
-            auto statement = ParseStatement(source);
-            result->AddStatement(statement);
+                auto statement = ParseStatement(source);
+                result->AddStatement(statement);
+            }
+
+            return result;
+        } catch (const astu::ScannerError &e) {
+            throw ParserError(string("Scanner error: ") + e.what(), e.GetLineNumber());
         }
-
-        return result;
     }
 
     std::shared_ptr<InterpreterStatementBlock> Parser::ParseStatementBlock(Source &source, bool loopBody) {

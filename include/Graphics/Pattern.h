@@ -12,6 +12,7 @@
 #include "Math/Matrix3.h"
 #include "Graphics/Color.h"
 #include "Graphics/WebColors.h"
+#include "Velox/Interpreter/ItemData.h"
 #include "BoundingBox.h"
 
 // C++ Standard Library includes
@@ -26,8 +27,11 @@ namespace astu {
 
     /**
      * Base class for all Patterns.
+     *
+     * Note: deriving this base class from ItemData makes integration into Velox scripting language
+     * way more easier. It is not required for rendering.
      */
-    class Pattern {
+    class Pattern : public velox::ItemData {
     public:
 
         /**

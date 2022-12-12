@@ -13,6 +13,7 @@
 
 // C++ Standard Library includes
 #include <string>
+#include <vector>
 
 namespace astu {
 
@@ -92,7 +93,10 @@ namespace astu {
          * Constructor.
          */
         LoggingClient() {
-            AddStartupHook([this]() { loggingSrv = ASTU_GET_SERVICE(LoggingService); });
+            AddStartupHook([this]() {
+                loggingSrv = ASTU_GET_SERVICE(LoggingService);
+                FlushPreStartMessages();
+            });
             AddShutdownHook([this]() { loggingSrv = nullptr; });
         }
 
@@ -102,40 +106,51 @@ namespace astu {
     public:
 
         void LogFatal(const std::string& tag, const std::string message) const {
-            loggingSrv->Log(LogLevel::Fatal, tag, message);
+            Log(LogLevel::Fatal, tag, message);
         }
 
         void LogError(const std::string& tag, const std::string message) const {
-            loggingSrv->Log(LogLevel::Err, tag, message);
+            Log(LogLevel::Err, tag, message);
         }
 
         void LogInfo(const std::string& tag, const std::string message) const {
-            loggingSrv->Log(LogLevel::Info, tag, message);
+            Log(LogLevel::Info, tag, message);
         }
 
         void LogWarning(const std::string& tag, const std::string message) const {
-            loggingSrv->Log(LogLevel::Warn, tag, message);
+            Log(LogLevel::Warn, tag, message);
         }
 
         void LogConfig(const std::string& tag, const std::string message) const {
-            loggingSrv->Log(LogLevel::Config, tag, message);
+            Log(LogLevel::Config, tag, message);
         }
 
         void LogDebug(const std::string& tag, const std::string message) const {
-            loggingSrv->Log(LogLevel::Debug, tag, message);
+            Log(LogLevel::Debug, tag, message);
         }
 
         void LogVerbose(const std::string& tag, const std::string message) const {
-            loggingSrv->Log(LogLevel::Verbose, tag, message);
+            Log(LogLevel::Verbose, tag, message);
         }
 
-        void Log(LogLevel level, const std::string& tag, const std::string message) const {
-            loggingSrv->Log(level, tag, message);
-        }
+        void Log(LogLevel level, const std::string& tag, const std::string message) const;
 
     private:
         /** The logging service used by this class. */
         std::shared_ptr<LoggingService> loggingSrv;
+
+        struct LogEntry {
+            LogLevel level;
+            std::string tag;
+            std::string message;
+
+            LogEntry() = default;
+            LogEntry(LogLevel level, const std::string &tag, const std::string &message)
+                : level(level), tag(tag), message(message) {}
+        };
+
+        mutable std::vector<LogEntry> preStartMessages;
+        void FlushPreStartMessages();
     };
 
 

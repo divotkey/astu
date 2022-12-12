@@ -24,24 +24,13 @@
 #include "Velox/Interpreter/ItemStateVector2.h"
 #include "Velox/Interpreter/ItemStateFunction.h"
 #include "Velox/Interpreter/ItemStateReference.h"
+#include "Velox/INterpreter/ItemData.h"
 
 // C++ Standard Library includes
 #include <memory>
 #include <map>
 
 namespace velox {
-
-    class ItemData {
-    public:
-        virtual ~ItemData() {}
-    };
-
-    template<typename T>
-    class DataWrapper : public ItemData {
-    public:
-        DataWrapper(T data) : data(data) {}
-        T data;
-    };
 
     /**
      * Items represents objects of any type within the Velox interpreter. Interpreter items
