@@ -18,13 +18,6 @@
 
 namespace astu {
 
-    class SimplePatternRenderer final : public IPatternRenderer {
-    public:
-
-        // Inherited via IPatternRenderer
-        virtual void Render(const Pattern & pattern, Image & result) override;
-    };
-
     class AntiAliasingPatternRenderer final : public IPatternRenderer {
     public:
 
@@ -79,14 +72,14 @@ namespace astu {
         Color4d CalcColor(const Vector2<double> & p, const Pattern & shape);
     };
 
-    class StochasticAntiAliasingPatternRenderer : public IPatternRenderer {
-    public:
-
-        // Inherited via IPatternRenderer
-        virtual void Render(const Pattern & pattern, Image & result) override;        
-
-    private:
-        Color4d CalcColor(const Vector2<double> & p, const Pattern & shape);
-    };
+    //class StochasticAntiAliasingPatternRenderer : public IPatternRenderer {
+    //public:
+    //
+    //    // Inherited via IPatternRenderer
+    //    virtual void Render(const Pattern & pattern, Image & result) override;
+    //
+    //private:
+    //    Color4d CalcColor(const Vector2<double> & p, const Pattern & shape);
+    //};
 
 }

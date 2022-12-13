@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.3
-# Generated Tue Dec 13 08:06:13 CET 2022 with SWORD Interpreter 1.9.0
+# Generated Tue Dec 13 13:49:40 CET 2022 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -103,10 +103,13 @@ list(APPEND astu_SOURCES
 	include/Math/Vector3.h 
 
 	# Module: Graphics
+	src/Graphics/AntiAliasingPatternRenderer.h 
 	src/Graphics/AstuGraphics.cpp 
 	src/Graphics/BmpCodec.cpp 
 	src/Graphics/BmpCodec.h 
 	src/Graphics/BoundingBox.cpp 
+	src/Graphics/CirclePattern.cpp 
+	src/Graphics/CompoundPattern.cpp 
 	src/Graphics/HdrCodec.cpp 
 	src/Graphics/HdrCodec.h 
 	src/Graphics/Image.cpp 
@@ -114,23 +117,30 @@ list(APPEND astu_SOURCES
 	src/Graphics/Palette.cpp 
 	src/Graphics/Pattern.cpp 
 	src/Graphics/PatternRenderer.cpp 
-	src/Graphics/PatternRenderer.h 
 	src/Graphics/Quadtree.cpp 
+	src/Graphics/RectanglePattern.cpp 
 	src/Graphics/SimplePatternRenderer.cpp 
+	src/Graphics/UnicolorPattern.cpp 
+	src/Graphics/UnionPattern.cpp 
 	include/Graphics/BoundingBox.h 
+	include/Graphics/CirclePattern.h 
 	include/Graphics/Color.h 
 	include/Graphics/ColorHsv.h 
+	include/Graphics/CompoundPattern.h 
 	include/Graphics/Font.h 
 	include/Graphics/Image.h 
 	include/Graphics/ImageRenderer.h 
 	include/Graphics/IPatternRenderer.h 
 	include/Graphics/Palette.h 
 	include/Graphics/Pattern.h 
-	include/Graphics/Quadtree.h 
+	include/Graphics/QuadtreePattern.h 
 	include/Graphics/RalColors.h 
+	include/Graphics/RectanglePattern.h 
 	include/Graphics/RenderQuality.h 
 	include/Graphics/SimplePatternRenderer.h 
 	include/Graphics/Texture.h 
+	include/Graphics/UnicolorPattern.h 
+	include/Graphics/UnionPattern.h 
 	include/Graphics/VertexBuffer2.h 
 	include/Graphics/WebColors.h 
 
@@ -273,6 +283,7 @@ list(APPEND astu_SOURCES
 	src/Velox/Extensions/GraphicsExtension.cpp 
 	src/Velox/Extensions/ImageExtension.cpp 
 	src/Velox/Extensions/LoggingExtension.cpp 
+	src/Velox/Extensions/ObjectTypeBuilder.cpp 
 	src/Velox/Interpreter/Interpreter.cpp 
 	src/Velox/Interpreter/InterpreterActualParameterList.cpp 
 	src/Velox/Interpreter/InterpreterArithmeticOperation.cpp 
@@ -356,11 +367,14 @@ list(APPEND astu_SOURCES
 	src/Velox/Service/VeloxExtensionService.cpp 
 	include/Velox/Extensions/ExtensionConstructorNoParameter.h 
 	include/Velox/Extensions/ExtensionConstructorOneParameter.h 
+	include/Velox/Extensions/ExtensionConstructorTwoParameter.h 
 	include/Velox/Extensions/ExtensionFunctionNoParameter.h 
 	include/Velox/Extensions/ExtensionFunctionOneParameter.h 
+	include/Velox/Extensions/ExtensionFunctionTwoParameter.h 
 	include/Velox/Extensions/GraphicsExtensions.h 
 	include/Velox/Extensions/ImageExtension.h 
 	include/Velox/Extensions/LoggingExtension.h 
+	include/Velox/Extensions/ObjectTypeBuilder.h 
 	include/Velox/Interpreter/IMemoryManager.h 
 	include/Velox/Interpreter/Interpreter.h 
 	include/Velox/Interpreter/InterpreterActualParameterList.h 

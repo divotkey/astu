@@ -10,20 +10,20 @@
 #include <memory>
 #include <array>
 
-#include "Pattern.h"
+#include "Graphics/CompoundPattern.h"
 
 namespace astu {
 
-    class Quadtree : public CompoundPattern {
+    class QuadtreePattern : public CompoundPattern {
     public:
 
         /**
          * Constructor.
          * 
-         * @param maxElems  the maximum number of elements in one onde
-         * @param maxDepth  theh maximum depth of this tree
+         * @param maxElems  the maximum number of elements in one node
+         * @param maxDepth  the maximum depth of this tree
          */
-        Quadtree(int maxElems = 5, int maxDepth = 5);
+        QuadtreePattern(int maxElems = 5, int maxDepth = 5);
 
         /**
          * Builds the quad tree.
@@ -40,18 +40,18 @@ namespace astu {
 
     private:
         /** The upper left child node of this node. */
-        std::unique_ptr<Quadtree> upperLeft;
+        std::unique_ptr<QuadtreePattern> upperLeft;
 
         /** The upper right child node of this node. */
-        std::unique_ptr<Quadtree> upperRight;
+        std::unique_ptr<QuadtreePattern> upperRight;
 
         /** The lower left child node of this node. */
-        std::unique_ptr<Quadtree> lowerLeft;
+        std::unique_ptr<QuadtreePattern> lowerLeft;
 
         /** The lower right child node of this node. */
-        std::unique_ptr<Quadtree> lowerRight;
+        std::unique_ptr<QuadtreePattern> lowerRight;
 
-        /** The maximum number fo elements alowed for one single node. */
+        /** The maximum number fo elements allowed for one single node. */
         int maxElems;
 
         /** The maximum depth of this tree. */
@@ -66,7 +66,7 @@ namespace astu {
         /** The bounding box of this octree in local space. */
         BoundingBox localBox;
 
-        std::unique_ptr<Quadtree> CreateNode(double dx, double dy);
+        std::unique_ptr<QuadtreePattern> CreateNode(double dx, double dy);
         bool GetLocalColorTransformed(const Vector2<double> &pt, Color4d & c) const;
 
     };

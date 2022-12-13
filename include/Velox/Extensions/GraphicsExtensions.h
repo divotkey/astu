@@ -8,6 +8,7 @@
 #pragma once
 
 // Local includes
+#include "Velox/Extensions/ObjectTypeBuilder.h"
 #include "Velox/Interpreter/VeloxExtension.h"
 
 namespace astu {
@@ -19,6 +20,10 @@ namespace astu {
 
         // Inherited via VeloxExtension
         void InjectExtension(velox::Interpreter &interpreter) const override;
+
+    private:
+        void AddCommonPatternFunctions(ObjectTypeBuilder &builder) const;
     };
+
 
 } // end of namespace

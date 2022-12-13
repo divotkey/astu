@@ -7,13 +7,13 @@
 
 #include <cassert>
 #include <iostream>
-#include "Graphics/Quadtree.h"
+#include "Graphics/QuadtreePattern.h"
 
 using namespace std;
 
 namespace astu {
 
-    Quadtree::Quadtree(int _maxElems, int _maxDepth)
+    QuadtreePattern::QuadtreePattern(int _maxElems, int _maxDepth)
         : maxElems(_maxElems)
         , maxDepth(_maxDepth)
         , depth(0)
@@ -28,7 +28,7 @@ namespace astu {
         << ">, " << box.GetWidth() << ", " << box.GetHeight() << ", " << col << ");" << endl;
     }
 
-    void Quadtree::BuildTree()
+    void QuadtreePattern::BuildTree()
     {
         if (static_cast<int>(children.size()) < maxElems || depth >= maxDepth) {
             leaf = true;
@@ -86,7 +86,7 @@ namespace astu {
         // children.clear();
     }
 
-    void Quadtree::OnPatternAdded(Pattern & pattern)
+    void QuadtreePattern::OnPatternAdded(Pattern & pattern)
     {
         if (leaf) {
             return;
@@ -100,7 +100,7 @@ namespace astu {
         }
     }
 
-    void Quadtree::OnClear()
+    void QuadtreePattern::OnClear()
     {
         localBox.Reset();
         upperLeft.reset();
@@ -109,12 +109,12 @@ namespace astu {
         lowerRight.reset();
     }
 
-    BoundingBox Quadtree::GetLocalBoundingBox() const
+    BoundingBox QuadtreePattern::GetLocalBoundingBox() const
     {
         return localBox;
     }
 
-    bool Quadtree::GetColorTransformed(const Vector2<double> &pt, Color4d & c) const
+    bool QuadtreePattern::GetColorTransformed(const Vector2<double> &pt, Color4d & c) const
     {
         if (!localBox.IsInside(pt)) {
             return false;
@@ -142,7 +142,7 @@ namespace astu {
         return GetLocalColorTransformed(pt, c);
     }
 
-    bool Quadtree::GetLocalColorTransformed(const Vector2<double> &pt, Color4d & c) const
+    bool QuadtreePattern::GetLocalColorTransformed(const Vector2<double> &pt, Color4d & c) const
     {
         bool hasColor = false;
         for (auto pattern : children) {
@@ -160,9 +160,9 @@ namespace astu {
         return hasColor;
     }
 
-    std::unique_ptr<Quadtree> Quadtree::CreateNode(double dx, double dy)
+    std::unique_ptr<QuadtreePattern> QuadtreePattern::CreateNode(double dx, double dy)
     {
-        auto result = std::make_unique<Quadtree>(maxElems, maxDepth);
+        auto result = std::make_unique<QuadtreePattern>(maxElems, maxDepth);
         result->leaf = true;
         result->depth = depth + 1;
         result->localBox.SetWidth(localBox.GetHRadius());

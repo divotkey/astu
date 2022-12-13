@@ -93,6 +93,16 @@ namespace astu {
         void SetPixel(int x, int y, const Color4d & c);
 
         /**
+         * Adds the specified color to an pixel of this image..
+         *
+         * @param x the x-coordinate of the pixel
+         * @param y the y-coordinate of the pixel
+         * @param c the color to add
+         * @throws std::out_of_range in case the coordinates are invalid
+         */
+        void AddPixel(int x, int y, const Color4d & c);
+
+        /**
          * Returns the color of a pixel.
          * 
          * @param idx   the linear index of the pixel

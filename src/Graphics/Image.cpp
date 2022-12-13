@@ -54,6 +54,12 @@ namespace astu {
         data[y * width + x] = c;
     }
 
+    void Image::AddPixel(int x, int y, const Color4d &c)
+    {
+        ValidateCoordinates(x, y);
+        data[y * width + x].Blend(c);
+    }
+
     const Color4d & Image::GetPixel(size_t idx) const
     {
         ValidateIndex(idx);
@@ -200,5 +206,6 @@ namespace astu {
             c.b = value;
         }
     }
+
 
 }

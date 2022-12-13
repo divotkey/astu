@@ -6,7 +6,7 @@
  */
 
 // Local includes
-#include "Graphics/PatternRenderer.h"
+#include "Graphics/AntiAliasingPatternRenderer.h"
 #include "Graphics/Color.h"
 #include "Graphics/Image.h"
 #include "Graphics/Pattern.h"
@@ -267,7 +267,7 @@ namespace astu {
         for (int j = 0; j < result.GetHeight(); ++j) {
             p.x = startX;
             for (int i = 0; i < result.GetWidth(); ++i) {
-                result.SetPixel(i, j, CalcColor(p, pattern));
+                result.AddPixel(i, j, CalcColor(p, pattern));
                 p.x += dx;
             }
             p.y += dy;

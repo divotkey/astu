@@ -8,9 +8,14 @@
 
 // Local includes
 #include "Graphics/ImageRenderer.h"
-#include "Graphics/PatternRenderer.h"
-#include "Graphics/Quadtree.h"
+#include "Graphics/SimplePatternRenderer.h"
+#include "Graphics/AntiAliasingPatternRenderer.h"
+#include "Graphics/QuadtreePattern.h"
 #include "Graphics/Pattern.h"
+#include "Graphics/UnionPattern.h"
+#include "Graphics/UnicolorPattern.h"
+#include "Graphics/RectanglePattern.h"
+#include "Graphics/CirclePattern.h"
 #include "Graphics/WebColors.h"
 #include "Math/Vector2.h"
 #include "Math/MathUtils.h"
@@ -94,7 +99,7 @@ namespace astu {
     {
         root->Clear();
         root->Add(background = std::make_shared<UnicolorPattern>(backgroundColor));
-        root->Add(quadtree = std::make_shared<Quadtree>(5, static_cast<int>(quadtreeDepth)));
+        root->Add(quadtree = std::make_shared<QuadtreePattern>(5, static_cast<int>(quadtreeDepth)));
     }
 
     void ImageRenderer::DrawCircle(double x, double y, double r)

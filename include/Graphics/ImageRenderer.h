@@ -21,7 +21,7 @@ namespace astu {
     // Forward declaration
     class UnionPattern;
     class UnicolorPattern;
-    class Quadtree;
+    class QuadtreePattern;
     class IPatternRenderer;
 
     /**
@@ -265,7 +265,7 @@ namespace astu {
         std::shared_ptr<UnicolorPattern> background;
 
         /** Contains all drawing elements. */
-        std::shared_ptr<Quadtree> quadtree;
+        std::shared_ptr<QuadtreePattern> quadtree;
 
         /** Used to render the image. */
         std::unique_ptr<IPatternRenderer> renderer;

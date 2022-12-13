@@ -13,8 +13,12 @@
 #include "Util/VersionInfo.h"
 #include "Graphics/Image.h"
 #include "Graphics/BmpCodec.h"
-#include "Graphics/Quadtree.h"
-#include "Graphics/PatternRenderer.h"
+#include "Graphics/QuadtreePattern.h"
+#include "Graphics/AntiAliasingPatternRenderer.h"
+#include "Graphics/UnionPattern.h"
+#include "Graphics/UnicolorPattern.h"
+#include "Graphics/RectanglePattern.h"
+#include "Graphics/CirclePattern.h"
 #include "Audio/WaveCodec.h"
 #include "Audio/AudioBuffer.h"
 
@@ -63,7 +67,7 @@ std::chrono::time_point<std::chrono::steady_clock> stopTime;
 
 std::unique_ptr<astu::Image> lvl0Image = std::make_unique<Image>(512, 512);
 std::shared_ptr<UnionPattern> rootPattern = std::make_shared<UnionPattern>();
-std::shared_ptr<Quadtree> quadTree = std::make_shared<Quadtree>(5, 5);
+std::shared_ptr<QuadtreePattern> quadTree = std::make_shared<QuadtreePattern>(5, 5);
 std::unique_ptr<IPatternRenderer> patternRenderer = std::make_unique<AntiAliasingPatternRenderer>();
 Color4d lvl0DrawColor(1, 1, 1);
 Color4d lvl0ClearColor(0, 0, 0);
