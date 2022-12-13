@@ -9,6 +9,7 @@
 
 // Local includes
 #include "Math/Vector2.h"
+#include "Graphics/IPatternRenderer.h"
 #include "Graphics/Color.h"
 #include "Graphics/RenderQuality.h"
 
@@ -16,20 +17,6 @@
 #include <map>
 
 namespace astu {
-
-    class Pattern;
-    class Image;
-
-    class IPatternRenderer {
-    public:
-
-        /**
-         * Virtual destructor.
-         */        
-        virtual ~IPatternRenderer() {}
-
-        virtual void Render(const Pattern & pattern, Image & result) = 0;
-    };
 
     class SimplePatternRenderer final : public IPatternRenderer {
     public:

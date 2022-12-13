@@ -17,12 +17,10 @@
 namespace velox {
 
     template<typename T>
-    class ExtensionFunctionNoParameter : public velox::InterpreterFunction {
+    class ExtensionConstructorNoParameter : public velox::InterpreterFunction {
     public:
 
-        using Func = std::function<std::shared_ptr<Item> (ScriptContext &sc,
-                                                          T& exItem,
-                                                          unsigned int lineNumber)>;
+        using Func = std::function<std::shared_ptr<T> (ScriptContext &sc, unsigned int lineNumber)>;
 
         /**
          * Convenient method creating an a function item with an instance of this class.
@@ -31,23 +29,27 @@ namespace velox {
          * @return the newly created item
          */
         static std::shared_ptr<Item> CreateItem(Func func) {
-            return Item::CreateFunction(make_shared<ExtensionFunctionNoParameter>(func));
+            return Item::CreateFunction(std::make_shared<ExtensionConstructorNoParameter>(func));
         }
 
         /**
          * Constructor
-         *
-         * @param func  the actual function which requires one parameter
          */
-        ExtensionFunctionNoParameter(Func func) : func(func) {}
+        ExtensionConstructorNoParameter(Func func) : func(func) {
+            // Intentionally left empty.
+        }
 
     protected:
 
         // Inherited via InterpreterFunction
         std::shared_ptr<Item> DoEvaluate(ScriptContext &sc, unsigned int lineNumber) final override {
-            auto exItem = std::dynamic_pointer_cast<T>(sc.FindItem("this")->GetData());
-            assert(exItem);
-            return func(sc, *exItem, lineNumber);
+            // Get the newly constructed item and add the required data.
+            auto newItem = sc.FindItem("this");
+            assert(newItem);
+
+            newItem->SetData(func(sc, lineNumber));
+
+            return newItem;
         }
 
     private:

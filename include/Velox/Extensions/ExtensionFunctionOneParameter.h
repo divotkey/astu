@@ -26,7 +26,7 @@ namespace velox {
                                                           unsigned int lineNumber)>;
 
         /**
-         * Convenient method creating a item of type function.
+         * Convenient method creating an a function item with an instance of this class.
          *
          * @param func  the one-parameter function
          * @return the newly created item
@@ -37,13 +37,16 @@ namespace velox {
 
         /**
          * Constructor
-         * @param func  the actual function which requires one parameter
+         *
+         * @param func  the actual function which processes one parameter
          */
         ExtensionFunctionOneParameter(Func func) : func(func) {
             AddFormalParameter("a");
         }
 
     protected:
+
+        // Inherited via InterpreterFunction
         std::shared_ptr<Item> DoEvaluate(ScriptContext &sc, unsigned int lineNumber) final override {
             auto exItem = std::dynamic_pointer_cast<T>(sc.FindItem("this")->GetData());
             assert(exItem);

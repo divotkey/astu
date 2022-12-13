@@ -14,7 +14,10 @@
 #include "Velox/Interpreter/InterpreterFunction.h"
 #include "Velox/Extensions/ExtensionFunctionNoParameter.h"
 #include "Velox/Extensions/ExtensionFunctionOneParameter.h"
+#include "Velox/Extensions/ExtensionConstructorNoParameter.h"
+#include "Velox/Extensions/ExtensionConstructorOneParameter.h"
 #include "Graphics/Pattern.h"
+#include "Graphics/SimplePatternRenderer.h"
 
 // C++ Standard Library includes
 #include <cassert>
@@ -24,7 +27,8 @@
 using namespace velox;
 using namespace std;
 
-#define UNICOLOR_TYPE "UnicolorPattern"
+#define UNICOLOR_TYPE                   "UnicolorPattern"
+#define SIMPLE_PATTERN_RENDERER_TYPE    "SimplePatternRenderer"
 
 namespace astu {
 
@@ -310,8 +314,19 @@ namespace astu {
 
     void GraphicsExtension::InjectExtension(Interpreter &interpreter) const
     {
+        // UnicolorPattern
         auto unicolorType = make_shared<ObjectType>();
-        unicolorType->AddItem(UNICOLOR_TYPE, Item::CreateFunction(make_shared<UnicolorConstructor>()));
+        //unicolorType->AddItem(UNICOLOR_TYPE, Item::CreateFunction(make_shared<UnicolorConstructor>()));
+
+        unicolorType->AddItem(UNICOLOR_TYPE, ExtensionConstructorOneParameter<UnicolorPattern>::CreateItem(
+                [](ScriptContext &sc, Item &param, unsigned int lineNumber) {
+                    if (param.IsUndefined()) {
+                        return make_shared<UnicolorPattern>();
+                    } else {
+                        return make_shared<UnicolorPattern>(param.GetColorValue());
+                    }
+                }
+        ));
 
         unicolorType->AddItem("GetColor", ExtensionFunctionNoParameter<UnicolorPattern>::CreateItem(
                 [](ScriptContext &sc, UnicolorPattern &pattern, unsigned int lineNumber) {
@@ -326,6 +341,15 @@ namespace astu {
                 }
         ));
         interpreter.AddObjectType(UNICOLOR_TYPE, unicolorType);
+
+        // SimplePatternRenderer
+        auto simplePatternRndType = make_shared<ObjectType>();
+        simplePatternRndType->AddItem(SIMPLE_PATTERN_RENDERER_TYPE, ExtensionConstructorNoParameter<SimplePatternRenderer>::CreateItem(
+                [](ScriptContext &sc, unsigned int lineNumber) {
+                    return make_shared<SimplePatternRenderer>();
+                }
+        ));
+        interpreter.AddObjectType(SIMPLE_PATTERN_RENDERER_TYPE, simplePatternRndType);
 
         //
         //imageType->AddItem("ConvertToGrayscale", Item::Create(make_unique<ItemStateFunction>(

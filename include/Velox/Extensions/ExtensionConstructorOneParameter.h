@@ -17,37 +17,44 @@
 namespace velox {
 
     template<typename T>
-    class ExtensionFunctionNoParameter : public velox::InterpreterFunction {
+    class ExtensionConstructorOneParameter : public velox::InterpreterFunction {
     public:
 
-        using Func = std::function<std::shared_ptr<Item> (ScriptContext &sc,
-                                                          T& exItem,
+        using Func = std::function<std::shared_ptr<T> (ScriptContext &sc,
+                                                          Item &param,
                                                           unsigned int lineNumber)>;
 
         /**
          * Convenient method creating an a function item with an instance of this class.
          *
-         * @param func  the no-parameter function
+         * @param func  the one-parameter function
          * @return the newly created item
          */
         static std::shared_ptr<Item> CreateItem(Func func) {
-            return Item::CreateFunction(make_shared<ExtensionFunctionNoParameter>(func));
+            return Item::CreateFunction(make_shared<ExtensionConstructorOneParameter>(func));
         }
 
         /**
          * Constructor
          *
-         * @param func  the actual function which requires one parameter
+         * @param func  the actual function which processes one parameter
          */
-        ExtensionFunctionNoParameter(Func func) : func(func) {}
+        ExtensionConstructorOneParameter(Func func) : func(func) {
+            AddFormalParameter("a");
+        }
 
     protected:
 
         // Inherited via InterpreterFunction
         std::shared_ptr<Item> DoEvaluate(ScriptContext &sc, unsigned int lineNumber) final override {
-            auto exItem = std::dynamic_pointer_cast<T>(sc.FindItem("this")->GetData());
-            assert(exItem);
-            return func(sc, *exItem, lineNumber);
+            // Get the newly constructed item and add the required data.
+            auto newItem = sc.FindItem("this");
+            assert(newItem);
+
+            auto newData = std::make_shared<T>();
+            newItem->SetData(func(sc, sc.GetItem("a"), lineNumber));
+
+            return newItem;
         }
 
     private:

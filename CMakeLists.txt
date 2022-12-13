@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.3
-# Generated Mon Dec 12 10:06:53 CET 2022 with SWORD Interpreter 1.9.0
+# Generated Tue Dec 13 08:06:13 CET 2022 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -116,17 +116,20 @@ list(APPEND astu_SOURCES
 	src/Graphics/PatternRenderer.cpp 
 	src/Graphics/PatternRenderer.h 
 	src/Graphics/Quadtree.cpp 
+	src/Graphics/SimplePatternRenderer.cpp 
 	include/Graphics/BoundingBox.h 
 	include/Graphics/Color.h 
 	include/Graphics/ColorHsv.h 
 	include/Graphics/Font.h 
 	include/Graphics/Image.h 
 	include/Graphics/ImageRenderer.h 
+	include/Graphics/IPatternRenderer.h 
 	include/Graphics/Palette.h 
 	include/Graphics/Pattern.h 
 	include/Graphics/Quadtree.h 
 	include/Graphics/RalColors.h 
 	include/Graphics/RenderQuality.h 
+	include/Graphics/SimplePatternRenderer.h 
 	include/Graphics/Texture.h 
 	include/Graphics/VertexBuffer2.h 
 	include/Graphics/WebColors.h 
@@ -351,6 +354,8 @@ list(APPEND astu_SOURCES
 	src/Velox/Parser/Token.cpp 
 	src/Velox/Service/VeloxConstants.cpp 
 	src/Velox/Service/VeloxExtensionService.cpp 
+	include/Velox/Extensions/ExtensionConstructorNoParameter.h 
+	include/Velox/Extensions/ExtensionConstructorOneParameter.h 
 	include/Velox/Extensions/ExtensionFunctionNoParameter.h 
 	include/Velox/Extensions/ExtensionFunctionOneParameter.h 
 	include/Velox/Extensions/GraphicsExtensions.h 

@@ -29,7 +29,7 @@ namespace astu {
      * Base class for all Patterns.
      *
      * Note: deriving this base class from ItemData makes integration into Velox scripting language
-     * way more easier. It is not required for rendering.
+     * way more easier.
      */
     class Pattern : public velox::ItemData {
     public:
