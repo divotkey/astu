@@ -13,7 +13,7 @@
 
 namespace astu {
 
-    void CompoundPattern::Add(std::shared_ptr<Pattern> child)
+    void CompoundPattern::AddPattern(std::shared_ptr<Pattern> child)
     {
         children.push_back(child);
         OnPatternAdded(*child);        

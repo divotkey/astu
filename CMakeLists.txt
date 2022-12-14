@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.3
-# Generated Tue Dec 13 13:49:40 CET 2022 with SWORD Interpreter 1.9.0
+# Generated Wed Dec 14 06:28:27 CET 2022 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -103,7 +103,7 @@ list(APPEND astu_SOURCES
 	include/Math/Vector3.h 
 
 	# Module: Graphics
-	src/Graphics/AntiAliasingPatternRenderer.h 
+	src/Graphics/AntiAliasingPatternRenderer.cpp 
 	src/Graphics/AstuGraphics.cpp 
 	src/Graphics/BmpCodec.cpp 
 	src/Graphics/BmpCodec.h 
@@ -122,6 +122,7 @@ list(APPEND astu_SOURCES
 	src/Graphics/SimplePatternRenderer.cpp 
 	src/Graphics/UnicolorPattern.cpp 
 	src/Graphics/UnionPattern.cpp 
+	include/Graphics/AntiAliasingPatternRenderer.h 
 	include/Graphics/BoundingBox.h 
 	include/Graphics/CirclePattern.h 
 	include/Graphics/Color.h 
@@ -130,9 +131,9 @@ list(APPEND astu_SOURCES
 	include/Graphics/Font.h 
 	include/Graphics/Image.h 
 	include/Graphics/ImageRenderer.h 
-	include/Graphics/IPatternRenderer.h 
 	include/Graphics/Palette.h 
 	include/Graphics/Pattern.h 
+	include/Graphics/PatternRenderer.h 
 	include/Graphics/QuadtreePattern.h 
 	include/Graphics/RalColors.h 
 	include/Graphics/RectanglePattern.h 

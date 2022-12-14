@@ -51,28 +51,28 @@ namespace astu {
             const auto & box = child->GetBoundingBox();
 
             if (upperLeft->localBox.IsInside(box)) {
-                upperLeft->Add(child);
+                upperLeft->AddPattern(child);
                 // cout << "upper left" << endl;
                 // printBox(upperLeft->localBox, "BLUE");
                 // printBox(box, "RED");
             }
 
             if (upperRight->localBox.IsInside(box)) {
-                upperRight->Add(child);
+                upperRight->AddPattern(child);
                 // cout << "upper right" << endl;
                 // printBox(upperRight->localBox, "GREEN");
                 // printBox(box, "RED");
             }
 
             if (lowerLeft->localBox.IsInside(box)) {
-                lowerLeft->Add(child);
+                lowerLeft->AddPattern(child);
                 // cout << "lower left" << endl;
                 // printBox(lowerLeft->localBox, "YELLOW");
                 // printBox(box, "RED");
             }
 
             if (lowerRight->localBox.IsInside(box)) {
-                lowerRight->Add(child);
+                lowerRight->AddPattern(child);
                 // cout << "lower right" << endl;
                 // printBox(lowerRight->localBox, "ORANGE");
                 // printBox(box, "RED");

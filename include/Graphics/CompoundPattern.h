@@ -30,7 +30,7 @@ namespace astu {
         /**
          * Adds the specified pattern to this compound.
          */
-        void Add(std::shared_ptr<Pattern> child);
+        void AddPattern(std::shared_ptr<Pattern> child);
 
         /**
          * Removes all child patterns from this compound.

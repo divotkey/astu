@@ -51,23 +51,23 @@ namespace astu {
         switch (quality) {
 
         case RenderQuality::Fast:
-            renderer = std::make_unique<SimplePatternRenderer>();
+            renderer = std::make_unique<SimplePatternRenderer>(PatternRenderer::TransformMode::RAW);
             break;
 
         case RenderQuality::Simple:
-            renderer = std::make_unique<AntiAliasingPatternRenderer>(AntialiasingLevel::Simple);
+            renderer = std::make_unique<AntiAliasingPatternRenderer>(PatternRenderer::TransformMode::RAW, AntialiasingLevel::Simple);
             break;
 
         case RenderQuality::Good:
-            renderer = std::make_unique<AntiAliasingPatternRenderer>(AntialiasingLevel::Good);
+            renderer = std::make_unique<AntiAliasingPatternRenderer>(PatternRenderer::TransformMode::RAW, AntialiasingLevel::Good);
             break;
 
         case RenderQuality::Beautiful:
-            renderer = std::make_unique<AntiAliasingPatternRenderer>(AntialiasingLevel::Beautiful);
+            renderer = std::make_unique<AntiAliasingPatternRenderer>(PatternRenderer::TransformMode::RAW, AntialiasingLevel::Beautiful);
             break;
 
         case RenderQuality::Insane:
-            renderer = std::make_unique<AntiAliasingPatternRenderer>(AntialiasingLevel::Insane);
+            renderer = std::make_unique<AntiAliasingPatternRenderer>(PatternRenderer::TransformMode::RAW, AntialiasingLevel::Insane);
             break;
         }
     }
@@ -98,8 +98,8 @@ namespace astu {
     void ImageRenderer::Clear()
     {
         root->Clear();
-        root->Add(background = std::make_shared<UnicolorPattern>(backgroundColor));
-        root->Add(quadtree = std::make_shared<QuadtreePattern>(5, static_cast<int>(quadtreeDepth)));
+        root->AddPattern(background = std::make_shared<UnicolorPattern>(backgroundColor));
+        root->AddPattern(quadtree = std::make_shared<QuadtreePattern>(5, static_cast<int>(quadtreeDepth)));
     }
 
     void ImageRenderer::DrawCircle(double x, double y, double r)
@@ -107,7 +107,7 @@ namespace astu {
         auto circle = std::make_shared<CirclePattern>(r);
         circle->Translate(x, y);
         circle->SetPattern(std::make_shared<UnicolorPattern>(drawColor));
-        quadtree->Add(circle);
+        quadtree->AddPattern(circle);
     }
 
     void ImageRenderer::DrawLine(double x0, double y0, double x1, double y1, double w)
@@ -125,7 +125,7 @@ namespace astu {
         rect->Translate((x1 + x0) / 2, (y1 + y0) / 2);
         rect->Rotate(-a);
         rect->SetPattern(std::make_shared<UnicolorPattern>(drawColor));
-        quadtree->Add(rect);
+        quadtree->AddPattern(rect);
     }
 
     void ImageRenderer::DrawRectangle(double cx, double cy, double w, double h, double phi)
@@ -134,7 +134,7 @@ namespace astu {
         rect->Translate(cx, cy);
         rect->Rotate(ToRadians(phi));
         rect->SetPattern(std::make_shared<UnicolorPattern>(drawColor));
-        quadtree->Add(rect);
+        quadtree->AddPattern(rect);
     }
 
     void ImageRenderer::SetQuadtreeDepth(unsigned int depth)

@@ -150,7 +150,7 @@ namespace astu {
          * @return `true` if the point lies within the polygon
          */
         bool IsInside(const Vector2<T>& p) const {
-            // Crearte a ray pointing arbitrary ray direction.
+            // Create a ray pointing arbitrary ray direction.
             Ray2<T> ray(p.x, p.y, static_cast<T>(1.2), static_cast<T>(3.4));
 
             int cnt = 0;

@@ -68,7 +68,7 @@ std::chrono::time_point<std::chrono::steady_clock> stopTime;
 std::unique_ptr<astu::Image> lvl0Image = std::make_unique<Image>(512, 512);
 std::shared_ptr<UnionPattern> rootPattern = std::make_shared<UnionPattern>();
 std::shared_ptr<QuadtreePattern> quadTree = std::make_shared<QuadtreePattern>(5, 5);
-std::unique_ptr<IPatternRenderer> patternRenderer = std::make_unique<AntiAliasingPatternRenderer>();
+std::unique_ptr<AntiAliasingPatternRenderer> patternRenderer = std::make_unique<AntiAliasingPatternRenderer>();
 Color4d lvl0DrawColor(1, 1, 1);
 Color4d lvl0ClearColor(0, 0, 0);
 std::ifstream ifs;
@@ -878,8 +878,8 @@ int CreateImage(int w, int h)
 void ClearImage()
 {
     rootPattern->Clear();
-    rootPattern->Add(std::make_shared<UnicolorPattern>(lvl0ClearColor));
-    rootPattern->Add(quadTree);
+    rootPattern->AddPattern(std::make_shared<UnicolorPattern>(lvl0ClearColor));
+    rootPattern->AddPattern(quadTree);
 }
 
 void SetDrawColor(int r, int g, int b, int a)
@@ -913,7 +913,7 @@ void DrawLine(double x0, double y0, double x1, double y1, double w)
     rect->Translate((x1 + x0) / 2, (y1 + y0) / 2);
     rect->Rotate(-a);
     rect->SetPattern(std::make_shared<UnicolorPattern>(lvl0DrawColor));
-    quadTree->Add(rect);
+    quadTree->AddPattern(rect);
 }
 
 void DrawCircle(double x, double y, double r) 
@@ -924,7 +924,7 @@ void DrawCircle(double x, double y, double r)
     auto circle = std::make_shared<CirclePattern>(r);
     circle->Translate(x, y);
     circle->SetPattern(std::make_shared<UnicolorPattern>(lvl0DrawColor));
-    quadTree->Add(circle);
+    quadTree->AddPattern(circle);
 }
 
 int WriteImage(const char* filename)

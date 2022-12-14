@@ -435,6 +435,15 @@ namespace velox {
         }
 
         /**
+           * Convenient function which returns whether this item is of type string.
+           *
+           * @return `true` if this item is of type Integer
+           */
+        bool IsString() const {
+            return GetType() == ItemType::String;
+        }
+
+        /**
          * Convenient function which returns whether this item is of type other.
          *
          * @return `true` if this item is of type other

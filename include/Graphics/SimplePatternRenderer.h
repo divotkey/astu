@@ -8,18 +8,26 @@
 #pragma once
 
 // Local includes
-#include "Graphics/IPatternRenderer.h"
+#include "Graphics/PatternRenderer.h"
 
 namespace astu {
 
     /**
      * A straight forward implementation of an pattern renderer, without anti-aliasing.
      */
-    class SimplePatternRenderer : public IPatternRenderer {
+    class SimplePatternRenderer : public PatternRenderer {
     public:
 
+        /**
+         * Constructor.
+         *
+         * @param mode  the transform mode
+         */
+        SimplePatternRenderer(TransformMode mode = TransformMode::RAW) : PatternRenderer(mode) {}
+
+    protected:
         // Inherited via SimplePatternRenderer
-        virtual void Render(const Pattern &pattern, Image &result) override;
+        virtual void DoRender(const Pattern &pattern, Image &result) override;
     };
 
 } // end of namespace

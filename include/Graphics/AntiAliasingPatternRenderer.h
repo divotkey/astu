@@ -1,15 +1,12 @@
-/*
- * ASTU - AST Utilities
- * A collection of Utilities for Applied Software Techniques (AST).
- *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
- */
+// DencitiesLab
+// Copyright (c) 2020-2022. Roman Divotkey. All rights reserved.
+// See LICENSE.TXT file for more information.
 
 #pragma once
 
 // Local includes
 #include "Math/Vector2.h"
-#include "Graphics/IPatternRenderer.h"
+#include "Graphics/PatternRenderer.h"
 #include "Graphics/Color.h"
 #include "Graphics/RenderQuality.h"
 
@@ -18,7 +15,7 @@
 
 namespace astu {
 
-    class AntiAliasingPatternRenderer final : public IPatternRenderer {
+    class AntiAliasingPatternRenderer final : public PatternRenderer {
     public:
 
         /** Used to map aa levels to kernels. */
@@ -33,12 +30,14 @@ namespace astu {
         /**
          * Constructor.
          * 
+         * @param mode  the transform mode
          * @param quality   defines the level of anti-aliasing
          */
-        AntiAliasingPatternRenderer(AntialiasingLevel aaLevel = AntialiasingLevel::Good);
+        AntiAliasingPatternRenderer(TransformMode mode = TransformMode::RAW, AntialiasingLevel aaLevel = AntialiasingLevel::Good);
 
+    protected:
         // Inherited via IPatternRenderer
-        virtual void Render(const Pattern & pattern, Image & result) override;        
+        virtual void DoRender(const Pattern & pattern, Image & result) override;
 
     private:
 

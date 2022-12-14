@@ -22,7 +22,7 @@ namespace astu {
     class UnionPattern;
     class UnicolorPattern;
     class QuadtreePattern;
-    class IPatternRenderer;
+    class PatternRenderer;
 
     /**
      * This class can be used to render geometric primitives in an resolution independent way.
@@ -268,7 +268,7 @@ namespace astu {
         std::shared_ptr<QuadtreePattern> quadtree;
 
         /** Used to render the image. */
-        std::unique_ptr<IPatternRenderer> renderer;
+        std::unique_ptr<PatternRenderer> renderer;
 
         /** The maximum recursion depth for the scene quadtree. */
         unsigned int  quadtreeDepth;

@@ -26,6 +26,7 @@
 #include "Graphics/SimplePatternRenderer.h"
 #include "Graphics/AntiAliasingPatternRenderer.h"
 #include "Graphics/Image.h"
+#include "Util/StringUtils.h"
 
 // C++ Standard Library includes
 #include <cassert>
@@ -46,6 +47,100 @@ namespace astu {
 
     // Special cases requires dedicated classes instead of using the generic constructor and function templates.
     // These classes will be placed here.
+
+    /////////////////////////////////////////////////
+    /////// Utility functions
+    /////////////////////////////////////////////////
+
+    PatternRenderer::TransformMode ParamToMode(ScriptContext &sc, const Item &param, unsigned int lineNumber) {
+        if (param.IsInteger()) {
+            switch (param.GetIntegerValue()) {
+                case 0:
+                    return PatternRenderer::TransformMode::RAW;
+
+                case 1:
+                    return PatternRenderer::TransformMode::CENTERED;
+
+                case 2:
+                    return PatternRenderer::TransformMode::H_NORMALIZED;
+
+                case 3:
+                    return PatternRenderer::TransformMode::V_NORMALIZED;
+
+                case 4:
+                    return PatternRenderer::TransformMode::NORMALIZED;
+
+                default:
+                    throw InterpreterError("Invalid transform mode: " + param.GetIntegerValue(), lineNumber);
+            }
+        } else if (param.IsString()) {
+            auto s = param.GetStringValue(sc);
+            StringUtils::toUpperCase(s);
+
+            if (s == "RAW") {
+                return PatternRenderer::TransformMode::RAW;
+            }
+            else if (s == "CENTERED") {
+                return PatternRenderer::TransformMode::CENTERED;
+            }
+            else if (s == "H_NORMALIZED") {
+                return PatternRenderer::TransformMode::H_NORMALIZED;
+            }
+            else if (s == "V_NORMALIZED") {
+                return PatternRenderer::TransformMode::V_NORMALIZED;
+            }
+            else if (s == "NORMALIZED") {
+                return PatternRenderer::TransformMode::NORMALIZED;
+            } else {
+                throw InterpreterError("Invalid transform mode: '" + param.GetStringValue(sc) + "'", lineNumber);
+            }
+        }
+
+        throw InterpreterError("Invalid parameter type specified for transform mode", lineNumber);
+    }
+
+    AntialiasingLevel ParamToAaLevel(ScriptContext &sc, const Item &param, unsigned int lineNumber) {
+        if (param.IsUndefined()) {
+            return AntialiasingLevel::Good;
+        } else if (param.IsInteger()) {
+            switch (param.GetIntegerValue()) {
+                case 0:
+                    return AntialiasingLevel::Simple;
+
+                case 1:
+                    return AntialiasingLevel::Good;
+
+                case 2:
+                    return AntialiasingLevel::Beautiful;
+
+                case 3:
+                    return AntialiasingLevel::Insane;
+
+                default:
+                    throw InterpreterError("Invalid anti-aliasing level: " + param.GetIntegerValue(), lineNumber);
+            }
+        } else if (param.IsString()) {
+            auto s = param.GetStringValue(sc);
+            StringUtils::toUpperCase(s);
+
+            if (s == "SIMPLE") {
+                return AntialiasingLevel::Simple;
+            }
+            else if (s == "GOOD") {
+                return AntialiasingLevel::Good;
+            }
+            else if (s == "BEAUTIFUL") {
+                return AntialiasingLevel::Beautiful;
+            }
+            else if (s == "INSANE") {
+                return AntialiasingLevel::Insane;
+            } else {
+                throw InterpreterError("Invalid anti-aliasing level: '" + param.GetStringValue(sc) + "'", lineNumber);
+            }
+        }
+
+        throw InterpreterError("Invalid parameter type specified for Invalid anti-aliasing level", lineNumber);
+    }
 
 
     /////////////////////////////////////////////////
@@ -74,7 +169,7 @@ namespace astu {
                             if (!childPattern) {
                                 throw InterpreterError("AddPatter requires pattern as parameter", lineNumber);
                             }
-                            pattern.Add(childPattern);
+                            pattern.AddPattern(childPattern);
 
                             return Item::CreateUndefined();
                         }
@@ -210,9 +305,9 @@ namespace astu {
 
 
         builder.TypeName("SimplePatternRenderer")
-                .Constructor(ExtensionConstructorNoParameter<SimplePatternRenderer>::CreateItem(
-                        [](ScriptContext &sc, unsigned int lineNumber) {
-                            return make_shared<SimplePatternRenderer>();
+                .Constructor(ExtensionConstructorOneParameter<SimplePatternRenderer>::CreateItem(
+                        [](ScriptContext &sc, Item &param, unsigned int lineNumber) {
+                            return make_shared<SimplePatternRenderer>(ParamToMode(sc, param, lineNumber));
                         }
                     ))
                 .AddFunction("Render", ExtensionFunctionTwoParameter<SimplePatternRenderer>::CreateItem(
@@ -235,13 +330,14 @@ namespace astu {
                 .Build(interpreter);
 
         builder.TypeName("PatternRenderer")
-                .Constructor(ExtensionConstructorNoParameter<AntiAliasingPatternRenderer>::CreateItem(
-                        [](ScriptContext &sc, unsigned int lineNumber) {
-                            return make_shared<AntiAliasingPatternRenderer>();
+                .Constructor(ExtensionConstructorTwoParameter<AntiAliasingPatternRenderer>::CreateItem(
+                        [](ScriptContext &sc, Item &param1, Item &param2, unsigned int lineNumber) {
+                            return make_shared<AntiAliasingPatternRenderer>(
+                                    ParamToMode(sc, param1, lineNumber), ParamToAaLevel(sc, param2, lineNumber));
                         }
                 ))
-                .AddFunction("Render", ExtensionFunctionTwoParameter<IPatternRenderer>::CreateItem(
-                        [](ScriptContext &sc, IPatternRenderer &renderer, Item &param1, Item &param2, unsigned int lineNumber) {
+                .AddFunction("Render", ExtensionFunctionTwoParameter<AntiAliasingPatternRenderer>::CreateItem(
+                        [](ScriptContext &sc, AntiAliasingPatternRenderer &renderer, Item &param1, Item &param2, unsigned int lineNumber) {
                             auto pattern = dynamic_pointer_cast<Pattern>(param1.GetData());
                             if (!pattern) {
                                 throw InterpreterError("a pattern is required as first parameter", lineNumber);
