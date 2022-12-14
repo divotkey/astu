@@ -32,7 +32,7 @@ namespace velox  {
         }
     }
 
-    size_t InterpreterExpressionParameterList::NumParameters() {
+    size_t InterpreterExpressionParameterList::NumParameters() const {
         return parameters.size();
     }
 
@@ -49,7 +49,7 @@ namespace velox  {
         return parameters[idx];
     }
 
-    size_t InterpreterItemParameterList::NumParameters() {
+    size_t InterpreterItemParameterList::NumParameters() const {
         return parameters.size();
     }
 

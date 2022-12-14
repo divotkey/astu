@@ -23,7 +23,12 @@ namespace velox {
 
         auto result = type->CreateObject(sc);
         assert(constructorCall);
-        constructorCall->Execute(sc, result->GetItem(typeName));
+
+        if (result->HasItem(typeName)) {
+            constructorCall->Execute(sc, result->GetItem(typeName));
+        } else if (constructorCall->NumParameters() > 0) {
+            throw InterpreterError("No matching constructor signature found for '" + typeName + "'", GetLineNumber());
+        }
 
         return result;
     }

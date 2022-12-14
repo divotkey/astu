@@ -14,7 +14,7 @@ namespace velox {
         /** Destructor. */
         virtual ~InterpreterActualParameterList() {}
 
-        virtual size_t NumParameters() = 0;
+        virtual size_t NumParameters() const = 0;
         virtual std::shared_ptr<Item> EvaluateParam(ScriptContext &sc, size_t idx) = 0;
     };
 
@@ -24,7 +24,7 @@ namespace velox {
         void AddParameter(std::shared_ptr<InterpreterExpression> param);
 
         // Inherited via InterpreterActualParameterList
-        size_t NumParameters() override;
+        size_t NumParameters() const override;
         std::shared_ptr<Item> EvaluateParam(ScriptContext &sc, size_t idx) override;
 
     private:
@@ -37,7 +37,7 @@ namespace velox {
         void AddParameter(std::shared_ptr<Item> param);
 
         // Inherited via InterpreterActualParameterList
-        size_t NumParameters() override;
+        size_t NumParameters() const override;
         std::shared_ptr<Item> EvaluateParam(ScriptContext &sc, size_t idx) override;
 
     private:
@@ -48,7 +48,7 @@ namespace velox {
     public:
 
         // Inherited via InterpreterActualParameterList
-        size_t NumParameters() override { return 0; }
+        size_t NumParameters() const override { return 0; }
         std::shared_ptr<Item> EvaluateParam(ScriptContext &sc, size_t idx) override;
     };
 

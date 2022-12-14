@@ -10,7 +10,6 @@ namespace velox {
 
     // Forward declaration.
     class Item;
-    class InterpreterClass;
 
     class Scope {
     public:

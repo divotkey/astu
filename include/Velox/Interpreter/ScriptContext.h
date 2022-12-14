@@ -65,9 +65,11 @@ namespace velox {
 
         Item& GetItem(const std::string &name);
         const Item& GetItem(const std::string &name) const;
+
         std::shared_ptr<const Item> FindItem(const std::string &name) const;
         std::shared_ptr<Item> FindLocalItem(const std::string& name);
         std::shared_ptr<Item> FindGlobalItem(const std::string& name);
+
         void AddGlobalItem(const std::string& name, std::shared_ptr<Item> item);
         void Clear();
 

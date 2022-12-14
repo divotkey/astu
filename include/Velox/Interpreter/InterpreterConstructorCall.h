@@ -23,6 +23,10 @@ namespace velox {
         void AddParameter(std::shared_ptr<InterpreterExpression> param);
         void Execute(ScriptContext &sc, Item& function);
 
+        size_t NumParameters() const {
+            return parameters.NumParameters();
+        }
+
     private:
         /** The actual parameters of this function call. */
         InterpreterExpressionParameterList parameters;
