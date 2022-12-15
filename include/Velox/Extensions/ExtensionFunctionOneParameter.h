@@ -32,7 +32,7 @@ namespace velox {
          * @return the newly created item
          */
         static std::shared_ptr<Item> CreateItem(Func func) {
-            return Item::CreateFunction(make_shared<ExtensionFunctionOneParameter>(func));
+            return Item::CreateFunction(std::make_shared<ExtensionFunctionOneParameter>(func));
         }
 
         /**
@@ -50,7 +50,7 @@ namespace velox {
         std::shared_ptr<Item> DoEvaluate(ScriptContext &sc, unsigned int lineNumber) final override {
             auto exItem = std::dynamic_pointer_cast<T>(sc.FindItem("this")->GetData());
             assert(exItem);
-            return func(sc, *exItem, sc.GetItem("a"), lineNumber);
+            return func(sc, *exItem, sc.GetItem("a", lineNumber), lineNumber);
         }
 
     private:

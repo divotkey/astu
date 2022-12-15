@@ -5,7 +5,6 @@
 // of contributors.
 
 #include "Velox/Interpreter/InterpreterFunctionCall.h"
-#include "Velox/Interpreter/InterpreterError.h"
 #include "Velox/Interpreter/Item.h"
 
 using namespace std;
@@ -23,10 +22,11 @@ namespace velox {
     }
 
     std::shared_ptr<Item> InterpreterFunctionCall::Evaluate(ScriptContext &sc) {
+        // Create block scope to have a home for temporary items.
+        sc.PushCodeBlockScope();
         auto funcItem= function->Evaluate(sc);
-        sc.PushScope(make_shared<Scope>(true));
         auto result = funcItem->CallAsFunction(sc, parameters, GetLineNumber());
-        sc.PopScope();
+        sc.PopLocalScope();
         return result;
     }
 

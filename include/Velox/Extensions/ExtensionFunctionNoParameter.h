@@ -31,7 +31,7 @@ namespace velox {
          * @return the newly created item
          */
         static std::shared_ptr<Item> CreateItem(Func func) {
-            return Item::CreateFunction(make_shared<ExtensionFunctionNoParameter>(func));
+            return Item::CreateFunction(std::make_shared<ExtensionFunctionNoParameter>(func));
         }
 
         /**

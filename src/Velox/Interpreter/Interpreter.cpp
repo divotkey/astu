@@ -19,6 +19,7 @@
 #include "Graphics/Color.h"
 
 // C++ Standard Library includes
+#include <cassert>
 #include <cmath>
 #include <limits>
 
@@ -27,28 +28,30 @@ using namespace astu;
 
 namespace velox {
 
-    Interpreter::Interpreter() : superGlobals(make_shared<Scope>()) {
-        AddStandardFunctions();
+    Interpreter::Interpreter()
+    {
+        // Intentionally left empty.
     }
 
     void velox::Interpreter::Execute(std::shared_ptr<velox::InterpreterStatement> program) {
         context.ClearFlags();
+        context.ClearReturnValues();
         program->Execute(context);
     }
 
     void Interpreter::AddFunction(const std::string &name, std::shared_ptr<InterpreterFunction> function) {
-        if (superGlobals->HasItem(name)) {
+        if (context.HasGlobalItem(name)) {
             throw std::logic_error("Ambiguous function name '" + name + "'");
         }
-        superGlobals->AddItem(name, Item::CreateFunction(function));
+        context.AddGlobalItem(name, Item::CreateFunction(function));
     }
 
     void Interpreter::AddRealConstant(const string &name, double value) {
-        superGlobals->AddItem(name, Item::CreateReal(value));
+        context.AddGlobalItem(name, Item::CreateReal(value));
     }
 
     void Interpreter::AddIntConstant(const string &name, int value) {
-        superGlobals->AddItem(name, Item::CreateInteger(value));
+        context.AddGlobalItem(name, Item::CreateInteger(value));
     }
 
     void Interpreter::AddObjectType(const std::string &name, std::shared_ptr<ObjectType> objType) {
@@ -59,18 +62,8 @@ namespace velox {
         return context.HasObjectType(name);
     }
 
-    void Interpreter::ClearVariables() {
-        context.Clear();
-        context.PushScope(superGlobals);
-    }
-
-    void Interpreter::ClearAll() {
-        superGlobals->Clear();
-        AddStandardFunctions();
-        ClearVariables();
-    }
-
-    void Interpreter::AddStandardFunctions() {
+    void Interpreter::AddStandardGlobals() {
+        assert(context.NumberOfGlobalScopes() > 0);
 
         AddRealConstant("PI", MathUtils::PId);
         AddRealConstant("PI2", MathUtils::PI2d);
@@ -227,14 +220,12 @@ namespace velox {
 
     void Interpreter::CallWithNoParams(Item &item)
     {
-        context.ClearFlags();
         InterpreterNoParameterList noParams;
         Call(item, noParams);
     }
 
     void Interpreter::CallWithIntParam(Item &item, int value)
     {
-        context.ClearFlags();
         InterpreterItemParameterList params;
         params.AddParameter(Item::CreateInteger(value));
         Call(item, params);
@@ -243,9 +234,21 @@ namespace velox {
     void Interpreter::Call(Item &item, InterpreterActualParameterList &params)
     {
         context.ClearFlags();
-        context.PushScope(make_shared<Scope>(true));
+        context.ClearReturnValues();
+
+        context.PushCodeBlockScope();
         item.CallAsFunction(context, params, 0);
-        context.PopScope();
+        context.PopLocalScope();
     }
 
-}
+    void Interpreter::PushGlobalScope()
+    {
+        context.PushGlobalScope();
+    }
+
+    void Interpreter::PopGlobalScope()
+    {
+        context.PopGlobalScope();
+    }
+
+} // end of namespace

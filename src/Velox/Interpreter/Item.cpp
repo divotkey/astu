@@ -53,11 +53,16 @@ namespace velox {
     std::shared_ptr<Item>
     Item::CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, unsigned int lineNumber) {
         auto parent = GetParent();
+
+        // This local scope will contain class members etc.
+        shared_ptr<Scope> memberScope;
         if (parent) {
-            sc.AddItem("this", Item::Create(make_unique<ItemStateReference>(parent)));
-            parent->AddItemsToScope(sc);
+            memberScope = make_shared<Scope>();
+            memberScope->AddItem("this", Item::Create(make_unique<ItemStateReference>(parent)));
+            parent->AddItemsToScope(*memberScope);
         }
-        return state->CallAsFunction(sc, parameters, lineNumber);
+
+        return state->CallAsFunction(sc, parameters, memberScope, lineNumber);
     }
 
     double Item::GetRealValue(unsigned int lineNumber) const {
@@ -107,8 +112,8 @@ namespace velox {
         return state->GetParent(*this);
     }
 
-    void Item::AddItemsToScope(ScriptContext &sc) const {
-        state->AddItemsToScope(sc);
+    void Item::AddItemsToScope(Scope &scope) const {
+        state->AddItemsToScope(scope);
     }
 
     std::shared_ptr<Item> Item::GetReferencedItem() {

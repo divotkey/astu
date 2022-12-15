@@ -26,7 +26,7 @@ namespace velox {
 
         // Inherited via ItemState
         std::shared_ptr<Item>
-        CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, unsigned int lineNumber) override;
+        CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, std::shared_ptr<Scope> memberScope, unsigned int lineNumber) override;
         std::unique_ptr<ItemState> Copy() const override;
         double GetRealValue(unsigned int lineNumber) const override;
         int GetIntegerValue(unsigned int lineNumber) const override;

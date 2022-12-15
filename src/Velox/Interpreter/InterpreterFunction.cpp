@@ -19,7 +19,9 @@ using namespace std;
 namespace velox {
 
     std::shared_ptr<Item>
-    InterpreterFunction::Evaluate(ScriptContext &sc, InterpreterActualParameterList &actualParameters,
+    InterpreterFunction::Evaluate(ScriptContext &sc,
+                                  InterpreterActualParameterList &actualParameters,
+                                  std::shared_ptr<Scope> memberScope,
                                   unsigned int lineNumber)
     {
         // Actual parameters must be less or equal to formal parameters.
@@ -38,13 +40,17 @@ namespace velox {
         }
 
         // Script context must contain parameters before actual function is evaluated.
-        sc.PushScope(parameterScope);
+        sc.PushFunctionScope(parameterScope);
+        if (memberScope)
+            sc.PushCodeBlockScope(memberScope);
 
         // DoEvaluate/evaluate the actual function.
         auto result = DoEvaluate(sc, lineNumber);
 
         // Clean up the scope stack.
-        sc.PopScope();
+        if (memberScope)
+            sc.PopLocalScope();
+        sc.PopLocalScope();
 
         if (!result) {
             result = Item::CreateUndefined();

@@ -12,18 +12,37 @@
 
 namespace velox {
 
+    // Forward declaration
     class InterpreterFunction;
-
     class ObjectType;
 
+    /**
+     * Interprets velox programs.
+     */
     class Interpreter {
-
     public:
 
         /**
          * Constructor.
+         *
+         * Initializes a new interpreter, without any global functions, variables or constants
          */
         Interpreter();
+
+        /**
+         * Adds standard functions, variables and constants.
+         */
+        void AddStandardGlobals();
+
+        /**
+         * Adds another scope to the global scope stack.
+         */
+        void PushGlobalScope();
+
+        /**
+         * Removes the last pushed scope from the global scope stack.
+         */
+        void PopGlobalScope();
 
         /**
          * Adds a global function that is available to all executed scripts.
@@ -65,31 +84,44 @@ namespace velox {
          */
         bool HasObjectType(const std::string &name) const;
 
-
-
+        /**
+         * Executes the specified program
+         * @param program
+         */
         void Execute(std::shared_ptr<InterpreterStatement> program);
+
+        /**
+         * Calls a function that takes zero parameters.
+         *
+         * @param item  the function item.
+         */
         void CallWithNoParams(Item& item);
+
+        /**
+         * Calls a function with one single integer value as parameters.
+         *
+         * @param item  the function item.
+         */
         void CallWithIntParam(Item& item, int value);
+
+        /**
+         * Calls a function with one single item as parameters.
+         *
+         * @param item  the function item.
+         */
         void CallWithOneParam(Item& item, std::shared_ptr<Item> param);
+
+        /**
+         * Calls a function with a list of parameters.
+         *
+         * @param item      the function item.
+         * @param params    the list of parameters
+         */
         void Call(Item& item, InterpreterActualParameterList &params);
 
-        /**
-         * Clears all variables and re-adds super global scope.
-         * Call this method after adding custom functions.
-         */
-        void ClearVariables();
-
-        /**
-         * Clears all variables and re-adds super global scope.
-         * Call this method to clear whatever the last script has done.
-         */
-        void ClearAll();
-
     private:
-        std::shared_ptr<Scope> superGlobals;
+        /** The script context of this interpreter, representing the script's execution state. */
         ScriptContext context;
-
-        void AddStandardFunctions();
     };
 
 }

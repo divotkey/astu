@@ -31,22 +31,29 @@ namespace velox {
         auto result = type->CreateObject(sc);
         auto constructor = result->FindItem(typeName);
         if (constructor) {
-            sc.PushScope();
+            sc.PushFunctionScope();
             constructor->CallAsFunction(sc, noParams, GetLineNumber());
-            sc.PopScope();
+            sc.PopLocalScope();
         }
 
         // Run statements.
-        sc.PushScope();
-        result->AddItemsToScope(sc);
+        auto memberScope = std::make_shared<Scope>();
+        result->AddItemsToScope(*memberScope);
+
+        sc.PushFunctionScope(memberScope);
+        sc.PushInstant(result);
         for (auto statement : statements) {
             statement->Execute(sc);
         }
-        sc.PopScope();
+        sc.PopInstant();
+        sc.PopLocalScope();
 
         // Realize instant.
         auto realize = result->FindItem("realize");
         if (realize) {
+            if (sc.HasInstant()) {
+                result->AddItem("parent", sc.PeekInstant());
+            }
             realize->CallAsFunction(sc, noParams, GetLineNumber());
         }
 

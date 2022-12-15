@@ -27,7 +27,7 @@ namespace velox {
         ItemType GetType() const override;
 
         std::shared_ptr<Item>
-        CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, unsigned int lineNumber) override;
+        CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, std::shared_ptr<Scope> memberScope, unsigned int lineNumber) override;
 
     private:
         /** The interpreter function to be executed. */

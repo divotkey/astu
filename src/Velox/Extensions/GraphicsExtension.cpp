@@ -5,8 +5,6 @@
  * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
-#pragma once
-
 // Local includes
 #include "Velox/Extensions/GraphicsExtensions.h"
 #include "Velox/Interpreter/ObjectType.h"

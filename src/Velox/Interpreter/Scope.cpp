@@ -20,9 +20,6 @@ namespace velox {
 
     void Scope::AddItem(const string &name, std::shared_ptr<Item> item) {
         assert(!HasItem(name));
-        if (HasItem(name)) {
-            int x = 12;
-        }
         items[name] = item;
     }
 
@@ -36,6 +33,11 @@ namespace velox {
             return it->second;
         }
 
+        auto pParent = parent.lock();
+        if (pParent) {
+            return pParent->FindItem(name);
+        }
+
         return nullptr;
     }
 
@@ -43,6 +45,11 @@ namespace velox {
         auto it = items.find(name);
         if (it != items.end()) {
             return it->second;
+        }
+
+        auto pParent = parent.lock();
+        if (pParent) {
+            return pParent->FindItem(name);
         }
 
         return nullptr;
@@ -53,6 +60,4 @@ namespace velox {
         anonymousItems.clear();
     }
 
-
-
-}
+} // end of namespace

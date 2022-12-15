@@ -27,7 +27,7 @@ namespace velox {
              return;
         }
 
-        sc.AddItem(name, item);
+        sc.AddGlobalItem(name, item);
     }
 
     void InterpreterStatementGlobal::SetName(const std::string &inName) {

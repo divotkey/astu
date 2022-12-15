@@ -15,8 +15,7 @@ namespace velox {
     }
 
     void InterpreterConstructorCall::Execute(ScriptContext &sc, Item &function) {
-        sc.PushScope();
+        // No function scope here, will be added during the parameter evaluation.
         function.CallAsFunction(sc, parameters, lineNumber);
-        sc.PopScope();
     }
 }

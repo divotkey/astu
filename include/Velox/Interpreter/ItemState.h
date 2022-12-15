@@ -25,6 +25,7 @@ namespace velox {
     class ScriptContext;
     class InterpreterActualParameterList;
     class ItemData;
+    class Scope;
 
     class ItemState {
     public:
@@ -74,7 +75,7 @@ namespace velox {
          * @return the return value of the function call
          */
         virtual std::shared_ptr<Item>
-        CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, unsigned int lineNumber);
+        CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, std::shared_ptr<Scope> memberScope, unsigned int lineNumber);
 
         /**
          * Creates a copy of this state.
@@ -179,7 +180,7 @@ namespace velox {
          */
         virtual void CopyItems(Item& target) {}
 
-        virtual void AddItemsToScope(ScriptContext &sc) {}
+        virtual void AddItemsToScope(Scope &scope) {}
         virtual std::shared_ptr<Item> GetParent(Item &context);
 
         /**

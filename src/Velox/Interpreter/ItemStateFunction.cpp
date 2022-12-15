@@ -18,9 +18,14 @@ namespace velox {
     std::shared_ptr<Item>
     ItemStateFunction::CallAsFunction(ScriptContext &sc,
                                       InterpreterActualParameterList &parameters,
+                                      std::shared_ptr<Scope> memberScope,
                                       unsigned int lineNumber)
     {
-        return function->Evaluate(sc, parameters, lineNumber);
+        // Create block scope to have a home for temporary items.
+        sc.PushCodeBlockScope();
+        auto result = function->Evaluate(sc, parameters, memberScope, lineNumber);
+        sc.PopLocalScope();
+        return result;
     }
 
     ItemType ItemStateFunction::GetType() const {

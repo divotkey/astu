@@ -380,9 +380,9 @@ namespace velox {
         /**
          * Adds all sub-items of this item to the specified scope
          *
-         * @param sc    the script context used to access the scope
+         * @param scope the scope where to add sub-items
          */
-        void AddItemsToScope(ScriptContext &sc) const;
+        void AddItemsToScope(Scope &scope) const;
 
         /**
          * Returns the parent item of this item

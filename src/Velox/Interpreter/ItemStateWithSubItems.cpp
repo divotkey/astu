@@ -36,14 +36,14 @@ namespace velox {
         }
     }
 
-    void ItemStateWithSubItems::AddItemsToScope(ScriptContext &sc) {
+    void ItemStateWithSubItems::AddItemsToScope(Scope &scope) {
         for (auto it: subItems) {
             // TODO check, if the modified version is correct
-            //sc.AddItem(it.first, Item::Create(make_unique<ItemStateReference>(it.second)));
-            sc.AddItem(it.first, it.second);
+            //scope.AddItem(it.first, Item::Create(make_unique<ItemStateReference>(it.second)));
+            scope.AddItem(it.first, it.second);
         }
 
-        ItemState::AddItemsToScope(sc);
+        ItemState::AddItemsToScope(scope);
     }
 
 }

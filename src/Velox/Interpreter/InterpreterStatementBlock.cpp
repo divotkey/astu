@@ -13,7 +13,7 @@ using namespace std;
 namespace velox {
 
     void InterpreterStatementBlock::Execute(velox::ScriptContext &sc) {
-        sc.PushScope(make_shared<Scope>());
+        sc.PushCodeBlockScope(make_shared<Scope>());
 
         for (const auto &statement: statements) {
             statement->Prepare(sc);
@@ -29,7 +29,7 @@ namespace velox {
                 break;
         }
 
-        sc.PopScope();
+        sc.PopLocalScope();
     }
 
     void InterpreterStatementBlock::AddStatement(std::shared_ptr<InterpreterStatement> statement) {

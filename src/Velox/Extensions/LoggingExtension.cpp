@@ -5,8 +5,6 @@
  * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
  */
 
-#pragma once
-
 // Local includes
 #include "Velox/Extensions/LoggingExtension.h"
 #include "Velox/Interpreter/InterpreterFunction.h"
@@ -33,7 +31,7 @@ namespace astu {
 
         // Inherited via LogicFunction
         std::shared_ptr<Item> DoEvaluate(ScriptContext &sc, unsigned int lineNumber) override {
-            auto &item = sc.GetItem("msg");
+            auto &item = sc.GetItem("msg", lineNumber);
             ASTU_SERVICE(LoggingService).Log(level, VeloxConstants::LOGGING_TAG, item.GetStringValue(sc));
             return Item::Create(make_unique<ItemStateUndefined>());
         }

@@ -11,7 +11,7 @@
 namespace velox {
 
     void InterpreterStatementFor::Execute(ScriptContext &sc) {
-        sc.PushScope();
+        sc.PushCodeBlockScope();
         initStatement->Execute(sc);
 
         sc.ClearFlag(ScriptContext::BREAK_EXECUTED_FLAG);
@@ -23,7 +23,7 @@ namespace velox {
             loopStatement->Execute(sc);
         }
         sc.ClearFlag(ScriptContext::BREAK_EXECUTED_FLAG | ScriptContext::CONTINUE_EXECUTED_FLAG);
-        sc.PopScope();
+        sc.PopLocalScope();
     }
 
     void InterpreterStatementFor::SetCondition(std::shared_ptr<InterpreterExpression> inCondition) {

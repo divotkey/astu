@@ -17,14 +17,15 @@ namespace velox {
 
     shared_ptr<Item> InterpreterExpressionSimpleName::Evaluate(ScriptContext &sc) {
         if (IsLocation()) {
-            // The uncommented line represents the original implementation,
-            // However, this is probably an error.
-            //auto result = sc.FindLocalItem(name);
 
             auto result = sc.FindItem(name);
             if (!result) {
                 result = Item::Create(make_unique<ItemStateUndefined>());
-                sc.AddItem(name, result);
+                if (sc.HasLocalScope()) {
+                    sc.AddLocalItem(name, result);
+                } else {
+                    sc.AddGlobalItem(name, result);
+                }
             }
             return result;
         } else {
@@ -34,19 +35,6 @@ namespace velox {
             }
             return result;
         }
-
-        //auto result = sc.FindItem(name);
-        //if (!result) {
-        //    if (!IsLocation()) {
-        //        throw InterpreterError("Unknown identifier '" + name + "'", GetLineNumber());
-        //    }
-        //
-        //    result = Item::Create(make_unique<ItemStateUndefined>());
-        //    sc.AddItem(name, result);
-        //}
-        //
-        //
-        //return result;
     }
 
-}
+} // end of namespace

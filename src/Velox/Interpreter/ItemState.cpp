@@ -25,7 +25,7 @@ namespace velox {
     }
 
     std::shared_ptr<Item>
-    ItemState::CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, unsigned int lineNumber) {
+    ItemState::CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters, std::shared_ptr<Scope> memberScope, unsigned int lineNumber) {
         throw InterpreterError("Not a function");
     }
 

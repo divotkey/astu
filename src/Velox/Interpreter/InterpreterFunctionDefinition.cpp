@@ -18,11 +18,24 @@ namespace velox {
     }
 
     void InterpreterFunctionDefinition::Prepare(ScriptContext &sc) {
-        if (sc.GetCurrentScope().HasItem(functionName)) {
+
+        if (sc.HasLocalItem(functionName) || sc.HasGlobalItem(functionName)){
             throw InterpreterError("Ambiguous function name '" + functionName + "'");
         }
 
-        sc.GetCurrentScope().AddItem(functionName, CreateFunctionItem());
+        if (sc.HasLocalScope()) {
+            sc.AddLocalItem(functionName, CreateFunctionItem());
+        } else {
+            sc.AddGlobalItem(functionName, CreateFunctionItem());
+        }
+
+        // TODO remove commented out legacy code, when refactoring is done.
+        // Code used before refactoring.
+        //if (sc.GetCurrentScope().HasItem(functionName)) {
+        //    throw InterpreterError("Ambiguous function name '" + functionName + "'");
+        //}
+        //
+        //sc.GetCurrentScope().AddItem(functionName, CreateFunctionItem());
     }
 
     void InterpreterFunctionDefinition::SetFunction(std::shared_ptr<InterpreterFunctionScript> inFunction) {

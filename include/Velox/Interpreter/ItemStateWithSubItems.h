@@ -21,7 +21,7 @@ namespace velox {
         std::shared_ptr<Item> FindItem(const std::string &name) const override;
         bool AddItem(const std::string &name, std::shared_ptr<Item> item) override;
         void CopyItems(Item& target) override;
-        void AddItemsToScope(ScriptContext &sc) override;
+        void AddItemsToScope(Scope &scope) override;
 
     private:
         /** List of sub-items associated with unique names. */

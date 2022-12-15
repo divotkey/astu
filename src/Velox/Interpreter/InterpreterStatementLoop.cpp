@@ -15,7 +15,7 @@ namespace velox {
     }
 
     void InterpreterStatementLoop::Execute(ScriptContext &sc) {
-        sc.PushScope();
+        sc.PushCodeBlockScope();
 
         sc.ClearFlag(ScriptContext::BREAK_EXECUTED_FLAG);
         while (!sc.IsSet(ScriptContext::BREAK_EXECUTED_FLAG) && !sc.IsSet(ScriptContext::RETURN_EXECUTED_FLAG))
@@ -24,7 +24,7 @@ namespace velox {
             loopBody->Execute(sc);
         }
         sc.ClearFlag(ScriptContext::BREAK_EXECUTED_FLAG | ScriptContext::CONTINUE_EXECUTED_FLAG);
-        sc.PopScope();
+        sc.PopLocalScope();
     }
 
     void InterpreterStatementLoop::SetStatement(std::shared_ptr<InterpreterStatement> statement) {

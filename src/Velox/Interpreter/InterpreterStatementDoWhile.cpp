@@ -11,7 +11,7 @@
 namespace velox {
 
     void InterpreterStatementDoWhile::Execute(ScriptContext &sc) {
-        sc.PushScope();
+        sc.PushCodeBlockScope();
 
         sc.ClearFlag(ScriptContext::BREAK_EXECUTED_FLAG);
         do {
@@ -21,7 +21,7 @@ namespace velox {
                  condition->Evaluate(sc)->GetBooleanValue());
 
         sc.ClearFlag(ScriptContext::BREAK_EXECUTED_FLAG | ScriptContext::CONTINUE_EXECUTED_FLAG);
-        sc.PopScope();
+        sc.PopLocalScope();
     }
 
     void InterpreterStatementDoWhile::SetCondition(std::shared_ptr<InterpreterExpression> inCondition) {

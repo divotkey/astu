@@ -7,6 +7,7 @@ namespace velox {
 
     // Forward declaration
     class Item;
+    class Scope;
 
     class InterpreterFunction {
     public:
@@ -15,7 +16,7 @@ namespace velox {
         virtual ~InterpreterFunction() {}
 
         std::shared_ptr<Item>
-        Evaluate(ScriptContext &sc, InterpreterActualParameterList &actualParameters, unsigned int lineNumber);
+        Evaluate(ScriptContext &sc, InterpreterActualParameterList &actualParameters, std::shared_ptr<Scope> memberScope, unsigned int lineNumber);
         void AddFormalParameter(const std::string& simpleName);
         bool HasFormalParameter(const std::string& simpleName) const;
 
@@ -26,6 +27,6 @@ namespace velox {
         std::vector<std::string> formalParameters;
     };
 
-}
+} // end of namespace
 
 

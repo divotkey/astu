@@ -20,9 +20,10 @@ namespace velox {
 
     std::shared_ptr<Item>
     ItemStateReference::CallAsFunction(ScriptContext &sc, InterpreterActualParameterList &parameters,
+                                       std::shared_ptr<Scope> memberScope,
                                        unsigned int lineNumber)
     {
-        return value->state->CallAsFunction(sc, parameters, 0);
+        return value->state->CallAsFunction(sc, parameters, memberScope, lineNumber);
     }
 
     unique_ptr<ItemState> ItemStateReference::Copy() const {
