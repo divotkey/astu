@@ -9,7 +9,7 @@
 #include "Velox/Extensions/LoggingExtension.h"
 #include "Velox/Interpreter/InterpreterFunction.h"
 #include "Velox/Service/VeloxConstants.h"
-#include "Velox/interpreter/Item.h"
+#include "Velox/Interpreter/Item.h"
 #include "Service/LoggingService.h"
 
 using namespace velox;
