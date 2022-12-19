@@ -5,7 +5,23 @@ Colors = [];
 Categories = [];
 
 DefineColors();
-EmitHeader();
+//EmitHeader();
+EmitVeloxType();
+
+function EmitVeloxType() {
+	§:
+    auto item = Item::CreateObject();
+
+	:§
+
+	for (i = 0; i < Colors.length; ++i) {
+		color = Colors[i];
+		§:
+			item->AddItem("§{color[0]}", Item::CreateColor(§{color[1]}));
+		:§
+	}
+
+}
 
 function EmitHeader()
 {
@@ -23,7 +39,7 @@ function EmitHeader()
 		
     /**
      * This enumeration defines values for color names according to 
-     * the RAL colou standard.
+     * the RAL color standard.
      * 
      * @ingroup gfx_group
      */

@@ -1,4 +1,13 @@
+// Copyright (c) 2022 Roman Divotkey. All rights reserved.
+//
+// This file is subject to the terms and conditions defined in file 'LICENSE',
+// which is part of this source code package. See 'AUTHORS' file for a list
+// of contributors.
+
 #pragma once
+
+// C++ Standard Library includes
+#include <string>
 
 namespace velox {
 
@@ -179,4 +188,21 @@ namespace velox {
         EOS,
     };
 
-}
+    class TokenTypeUtils {
+    public:
+
+        // Don't make instances of this class.
+        TokenTypeUtils() = delete;
+        TokenTypeUtils( const TokenTypeUtils& ) = delete;
+        TokenTypeUtils& operator=( const TokenTypeUtils& ) = delete;
+
+        /**
+         * Returns a token as string representation.
+         *
+         * @param token the token to convert to its string representation
+         * @return the string representation
+         */
+        static std::string TokenTypeToString(TokenType type);
+    };
+
+} // end of namespace

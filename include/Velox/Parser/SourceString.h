@@ -1,8 +1,6 @@
-// Copyright (c) 2022 Roman Divotkey. All rights reserved.
-//
-// This file is subject to the terms and conditions defined in file 'LICENSE',
-// which is part of this source code package. See 'AUTHORS' file for a list
-// of contributors.
+// DencitiesLab
+// Copyright (c) 2022. Roman Divotkey. All rights reserved.
+// See LICENSE.TXT file for more information.
 
 #pragma once
 
@@ -18,16 +16,23 @@ namespace velox {
     class SourceString : public Source {
     public:
 
+        /**
+         * Constructor.
+         *
+         * @param inSource  the string representing the source
+         */
         SourceString(const std::string& inSource);
 
     protected:
+        // Inherited via Source
         std::shared_ptr<std::istream> GetStream() override;
 
     private:
+        /** The actual source code. */
         std::string source;
     };
 
-}
+} // end of namespace
 
 
 

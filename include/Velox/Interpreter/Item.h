@@ -24,6 +24,7 @@
 #include "Velox/Interpreter/ItemStateVector2.h"
 #include "Velox/Interpreter/ItemStateFunction.h"
 #include "Velox/Interpreter/ItemStateReference.h"
+#include "Velox/Interpreter/ItemStateObject.h"
 #include "Velox/INterpreter/ItemData.h"
 
 // C++ Standard Library includes
@@ -156,6 +157,15 @@ namespace velox {
          */
         static std::shared_ptr<Item> CreateVector2(const astu::Vector2d &value) {
             return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateVector2>(value)));
+        }
+
+        /**
+         * Creates a new instance of an item of type "object".
+         *
+         * @return the newly created item
+         */
+        static std::shared_ptr<Item> CreateObject() {
+            return std::shared_ptr<Item>(new Item(std::make_unique<ItemStateObject>()));
         }
 
         /**

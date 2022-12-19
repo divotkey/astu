@@ -536,7 +536,7 @@ namespace astu {
      * 
      * @ingroup input_group
      */
-    using DropListener = ISignalListener<DropSignal>;
+    using IDropListener = ISignalListener<DropSignal>;
 
     /** 
      * Type definition for signal services used to transmit drop signals.
@@ -545,6 +545,68 @@ namespace astu {
      */
     using DropSignalService = SignalService<DropSignal>;
 
+    /**
+     * Services can derive from this class to process mouse button signals.
+     *
+     * @ingroup input_group
+     */
+    class DropListener
+            : virtual public Service
+            , private IDropListener
+    {
+    public:
+
+        /**
+         * Constructor.
+         */
+        DropListener() {
+            AddStartupHook([this](){
+                ASTU_SERVICE(DropSignalService).AddListener(*this);
+            });
+
+            AddShutdownHook([this](){
+                ASTU_SERVICE(DropSignalService).RemoveListener(*this);
+            });
+        }
+
+    protected:
+
+        /**
+         * Called by this base class when a file has been dropped on the application window
+         *
+         * @param filename  the path of the file that has been dropped
+         */
+        virtual bool OnFileDropped(const std::string &filename) {
+            return false;
+        }
+
+        /**
+         * Called by this base class when a text has been dropped on the application window
+         *
+         * @param text  the text that has been dropped
+         */
+        virtual bool OnTextDropped(const std::string &text) {
+            return false;
+        }
+
+    private:
+
+        // Inherited via MouseButtonListener
+        virtual bool OnSignal(const DropSignal &signal) {
+            switch (signal.type) {
+                case DropSignal::Type::File:
+                    return OnFileDropped(signal.content);
+
+                case DropSignal::Type::Text:
+                    return OnTextDropped(signal.content);
+
+                default:
+                    // should never happen.
+                    return false;
+            }
+        }
+
+    };
 
 
 } // end of namespace

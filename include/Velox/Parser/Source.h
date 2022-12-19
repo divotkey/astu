@@ -85,14 +85,6 @@ namespace velox {
          */
         std::string GetTokenTypeAsString() const;
 
-        /**
-         * Returns a token as string representation.
-         *
-         * @param token the token to convert to its string representation
-         * @return the string representation
-         */
-        static std::string TokenTypeToString(TokenType type);
-
     protected:
 
         /**

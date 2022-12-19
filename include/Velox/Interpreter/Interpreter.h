@@ -14,6 +14,7 @@ namespace velox {
 
     // Forward declaration
     class InterpreterFunction;
+    class InterpreterInstantDefinition;
     class ObjectType;
 
     /**
@@ -45,7 +46,7 @@ namespace velox {
         void PopGlobalScope();
 
         /**
-         * Adds a global function that is available to all executed scripts.
+         * Adds a global function that is available to all executed scripts and functions.
          *
          * @param name      the name of the function
          * @param function  the function
@@ -53,7 +54,14 @@ namespace velox {
         void AddFunction(const std::string &name, std::shared_ptr<InterpreterFunction> function);
 
         /**
-         * Adds an global object type (class) that is available to all executed script.
+         * Add a global object instant type that is available to all executed scripts and functions.
+         *
+         * @param instantDef    the instant definition statement
+         */
+        void AddInstant(InterpreterInstantDefinition &instantDef);
+
+        /**
+         * Adds a global object type (class/instant) that is available to all executed scripts.
          *
          * @param name      the name of the object type
          * @param objType   the object type
@@ -61,7 +69,7 @@ namespace velox {
         void AddObjectType(const std::string &name, std::shared_ptr<ObjectType> objType);
 
         /**
-         * Adds an global floating-point constant that is available to all executed script.
+         * Adds a global floating-point constant that is available to all executed scripts.
          *
          * @param name  the name of the constant
          * @param value the value of the constant
@@ -69,12 +77,20 @@ namespace velox {
         void AddRealConstant(const std::string & name, double value);
 
         /**
-         * Adds an global integer constant that is available to all executed script.
+         * Adds a global integer constant that is available to all executed scripts.
          *
          * @param name  the name of the constant
          * @param value the value of the constant
          */
         void AddIntConstant(const std::string & name, int value);
+
+        /**
+         * Adds a global item that is available to all executed scripts.
+         *
+         * @param name  the name of the item
+         * @param item  the item to add
+         */
+        void AddGlobal(const std::string &name, std::shared_ptr<Item> item);
 
         /**
          * Queries whether an object type has already been added.

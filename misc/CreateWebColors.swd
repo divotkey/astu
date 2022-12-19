@@ -5,7 +5,31 @@ Colors = [];
 Categories = [];
 
 DefineColors();
-EmitHeader();
+//EmitHeader();
+EmitVeloxType();
+
+function EmitVeloxType() {
+	§:
+    auto item = Item::CreateObject();
+	:§
+
+	for (i = 0; i < Categories.length; ++i) {
+		category = Categories[i];
+		§:
+		 
+			// Category: §{category[0]}
+		:§
+
+		for (j = 0; j < category[1].length; ++j) {
+			color = FindColor(category[1][j]);
+			§:
+				item->AddItem("§{color[0]}", Item::CreateColor(0x§{color[1]}));
+			:§
+
+		}
+	}
+
+}
 
 function EmitHeader()
 {

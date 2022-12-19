@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.3
-# Generated Wed Dec 14 08:07:04 CET 2022 with SWORD Interpreter 1.9.0
+# Generated Mon Dec 19 07:17:15 CET 2022 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -105,6 +105,7 @@ list(APPEND astu_SOURCES
 	# Module: Graphics
 	src/Graphics/AntiAliasingPatternRenderer.cpp 
 	src/Graphics/AstuGraphics.cpp 
+	src/Graphics/BlurPattern.cpp 
 	src/Graphics/BmpCodec.cpp 
 	src/Graphics/BmpCodec.h 
 	src/Graphics/BoundingBox.cpp 
@@ -123,6 +124,7 @@ list(APPEND astu_SOURCES
 	src/Graphics/UnicolorPattern.cpp 
 	src/Graphics/UnionPattern.cpp 
 	include/Graphics/AntiAliasingPatternRenderer.h 
+	include/Graphics/BlurPattern.h 
 	include/Graphics/BoundingBox.h 
 	include/Graphics/CirclePattern.h 
 	include/Graphics/Color.h 
@@ -283,6 +285,7 @@ list(APPEND astu_SOURCES
 	# Module: Velox
 	src/Velox/Extensions/GraphicsExtension.cpp 
 	src/Velox/Extensions/ImageExtension.cpp 
+	src/Velox/Extensions/InstantBuilder.cpp 
 	src/Velox/Extensions/LoggingExtension.cpp 
 	src/Velox/Extensions/ObjectTypeBuilder.cpp 
 	src/Velox/Interpreter/Interpreter.cpp 
@@ -357,12 +360,13 @@ list(APPEND astu_SOURCES
 	src/Velox/Interpreter/ScriptContext.cpp 
 	src/Velox/Interpreter/SimpleMemoryManager.cpp 
 	src/Velox/Interpreter/VeloxImage.cpp 
+	src/Velox/Parser/FastSource.cpp 
 	src/Velox/Parser/Parser.cpp 
 	src/Velox/Parser/Source.cpp 
 	src/Velox/Parser/SourceFile.cpp 
 	src/Velox/Parser/SourceString.cpp 
-	src/Velox/Parser/SourceString.h 
 	src/Velox/Parser/Token.cpp 
+	src/Velox/Parser/TokenType.cpp 
 	src/Velox/Service/VeloxConstants.cpp 
 	src/Velox/Service/VeloxExtensionService.cpp 
 	include/Velox/Extensions/ExtensionConstructorNoParameter.h 
@@ -373,6 +377,7 @@ list(APPEND astu_SOURCES
 	include/Velox/Extensions/ExtensionFunctionTwoParameter.h 
 	include/Velox/Extensions/GraphicsExtensions.h 
 	include/Velox/Extensions/ImageExtension.h 
+	include/Velox/Extensions/InstantBuilder.h 
 	include/Velox/Extensions/LoggingExtension.h 
 	include/Velox/Extensions/ObjectTypeBuilder.h 
 	include/Velox/Interpreter/IMemoryManager.h 
@@ -453,10 +458,12 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/SimpleMemoryManager.h 
 	include/Velox/Interpreter/VeloxExtension.h 
 	include/Velox/Interpreter/VeloxImage.h 
+	include/Velox/Parser/FastSource.h 
 	include/Velox/Parser/Parser.h 
 	include/Velox/Parser/ParserError.h 
 	include/Velox/Parser/Source.h 
 	include/Velox/Parser/SourceFile.h 
+	include/Velox/Parser/SourceString.h 
 	include/Velox/Parser/Token.h 
 	include/Velox/Parser/TokenType.h 
 	include/Velox/Service/VeloxConstants.h 

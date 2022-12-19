@@ -22,7 +22,11 @@ namespace astu {
         void InjectExtension(velox::Interpreter &interpreter) const override;
 
     private:
+        void AddPalette(velox::Interpreter &interpreter) const;
         void AddCommonPatternFunctions(ObjectTypeBuilder &builder) const;
+        void AddPatternInstants(velox::Interpreter &interpreter) const;
+        void AddWebColors(velox::Interpreter &interpreter) const;
+        void AddRalColors(velox::Interpreter &interpreter) const;
     };
 
 

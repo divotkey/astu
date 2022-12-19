@@ -10,21 +10,21 @@
 // Local includes
 #include "Graphics/CompoundPattern.h"
 
-// C++ Standard Library includes
-#include <memory>
-#include <vector>
-
 namespace astu {
 
     class UnionPattern : public CompoundPattern {
     public:
 
+        /** Constructor. */
+        UnionPattern() = default;
+
     protected:
+        // Inherited via CompoundPattern
         virtual bool GetColorTransformed(const Vector2<double> &pt, Color4d & c) const override;
         virtual BoundingBox GetLocalBoundingBox() const override;
 
     private:
-        void Blend(Color4d & a, const Color4d & b) const;
+        //void Blend(Color4d & a, const Color4d & b) const;
     };
 
-}
+} // end of namespace

@@ -143,7 +143,8 @@ namespace velox {
 
         try {
             std::shared_ptr<InterpreterScript> result = make_shared<InterpreterScript>();
-            source.GetNextTokenType();
+            // Per definition the source should already have an active token.
+            //source.GetNextTokenType();
             while (CONTAINS(STATEMENT_START, source.GetCurrentTokenType())) {
                 if (source.GetCurrentTokenType() == TokenType::SEMICOLON)
                     continue;
@@ -881,7 +882,7 @@ namespace velox {
         return result;
     }
 
-    std::shared_ptr<InterpreterStatement> Parser::ParseInstantDefinition(Source &source) {
+    std::shared_ptr<InterpreterInstantDefinition> Parser::ParseInstantDefinition(Source &source) {
         assert(source.GetCurrentTokenType() == TokenType::INSTANT);
         source.GetNextTokenType();
 

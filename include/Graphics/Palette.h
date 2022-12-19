@@ -10,27 +10,28 @@
 // Local includes
 #include "Graphics/Color.h"
 #include "Graphics/WebColors.h"
+#include "Velox/Interpreter/ItemData.h"
 
 // C++ Standard Library includes
 #include <vector>
 
 namespace astu {
-    
+
     /**
      * A Palette represents a set of colors used to create color transitions.
      * 
      * @ingroup gfx_group
      */
-    class Palette {
+    class Palette : public velox::ItemData {
     public:
 
         /**
          * Constructor.
          * 
          * @param start the start color of this palette
-         * @param end   the end color of thsi palette
+         * @param end   the end color of this palette
          */
-        Palette(const Color4d & start = WebColors::Black, const Color4d & end = WebColors::White);
+        Palette(const Color4d &start = WebColors::Black, const Color4d &end = WebColors::White);
 
         /**
          * Sets the start color of this palette.
@@ -38,7 +39,7 @@ namespace astu {
          * @param c the start color
          * @returns a reference to this palette for method chaining
          */
-        Palette& SetStartColor(const Color4d & c);
+        Palette &SetStartColor(const Color4d &c);
 
         /**
          * Returns the start color of this palette.
@@ -53,7 +54,7 @@ namespace astu {
          * @param c the start color
          * @returns a reference to this palette for method chaining
          */
-        Palette& SetEndColor(const Color4d & c);
+        Palette &SetEndColor(const Color4d &c);
 
         /**
          * Returns the end color of this palette.
@@ -69,7 +70,7 @@ namespace astu {
          * @param p the position within the palette [0, 1]
          * @throws std::out_of_range in case the position is out of range
          */
-        Palette& AddColor(const Color4d & c, double p);
+        Palette &AddColor(const Color4d &c, double p);
 
         /**
          * Extracts a color from this palette.
@@ -86,7 +87,8 @@ namespace astu {
          * 
          * @return number of color including start end end color
          */
-        size_t NumColors() const {
+        size_t NumColors() const
+        {
             return size();
         }
 
@@ -104,15 +106,15 @@ namespace astu {
          * @return the requested color
          * @throws std::out_of_range in case the index is invalid
          */
-        const Color4d & at(size_t idx) const;
+        const Color4d &at(size_t idx) const;
 
-		/**
-		 * Subscript operator for this palette.
+        /**
+         * Subscript operator for this palette.
          * 		 *
-		 * @param idx	index of the color to be retrieved
-		 * @return the requested color
-		 */
-		const Color4d & operator[](size_t idx) const;
+         * @param idx	index of the color to be retrieved
+         * @return the requested color
+         */
+        const Color4d &operator[](size_t idx) const;
 
     private:
 
@@ -137,7 +139,7 @@ namespace astu {
              * @param c the color of this entry
              * @param p the position within the palette [0, 1]
              */
-            Entry(const Color4d & c, double p);
+            Entry(const Color4d &c, double p);
 
             /**
              * Comparison opeator used to sort entries.
@@ -145,7 +147,7 @@ namespace astu {
              * @param rhs   the right-hand-side to compare with
              * @return `true` if this entiry has a lower position
              */
-            bool operator<(const Entry & rhs) const;
+            bool operator<(const Entry &rhs) const;
         };
 
         /** The default color used when the palette has not enough entries. */

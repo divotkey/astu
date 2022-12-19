@@ -23,10 +23,22 @@
 
 namespace velox {
 
+    // Forward declaration
+    class InterpreterInstantDefinition;
+
     class Parser {
     public:
 
         std::shared_ptr<InterpreterScript> Parse(Source &source);
+
+        /**
+         * Parses a single instant definition.
+         *
+         * @param source    the source that contains the instant definition
+         * @return the newly created instant definition
+         * @throws ParserError in case of an error
+         */
+        std::shared_ptr<InterpreterInstantDefinition> ParseInstantDefinition(Source &source);
 
     private:
         static const TokenType STATEMENT_START[];
@@ -56,7 +68,6 @@ namespace velox {
         std::shared_ptr<InterpreterStatement> ParseLoopStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseForStatement(Source &source);
         std::shared_ptr<InterpreterStatement> ParseClassDefinition(Source &source);
-        std::shared_ptr<InterpreterStatement> ParseInstantDefinition(Source &source);
         std::shared_ptr<InterpreterExpression> ParseInstantRealization(Source &source);
         std::shared_ptr<InterpreterExpression> ParseNewStatement(Source &source);
         std::shared_ptr<InterpreterExpression> ParseOptionalSelector(Source &source, std::shared_ptr<InterpreterExpression> lValue);

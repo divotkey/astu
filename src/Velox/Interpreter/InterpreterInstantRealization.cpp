@@ -40,7 +40,7 @@ namespace velox {
         auto memberScope = std::make_shared<Scope>();
         result->AddItemsToScope(*memberScope);
 
-        sc.PushFunctionScope(memberScope);
+        sc.PushCodeBlockScope(memberScope);
         sc.PushInstant(result);
         for (auto statement : statements) {
             statement->Execute(sc);
@@ -53,6 +53,8 @@ namespace velox {
         if (realize) {
             if (sc.HasInstant()) {
                 result->AddItem("parent", sc.PeekInstant());
+            } else {
+                result->AddItem("parent", Item::CreateUndefined());
             }
             realize->CallAsFunction(sc, noParams, GetLineNumber());
         }

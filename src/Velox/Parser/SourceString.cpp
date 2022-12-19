@@ -5,18 +5,18 @@
 // of contributors.
 
 // Local includes
-#include "SourceString.h"
+#include "Velox/Parser/SourceString.h"
 
 using namespace std;
 
 namespace velox {
 
     SourceString::SourceString(const std::string &inSource) : source(inSource) {
-        // Intentionally left empty.
+        Reset();
     }
 
     std::shared_ptr<std::istream> SourceString::GetStream() {
         return make_shared<stringstream>(source);
     }
 
-}
+} // end of namespace

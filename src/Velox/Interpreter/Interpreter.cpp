@@ -7,6 +7,7 @@
 // Local includes
 #include "Velox/Interpreter/Interpreter.h"
 #include "Velox/Interpreter/InterpreterError.h"
+#include "Velox/Interpreter/InterpreterInstantDefinition.h"
 #include "Velox/Interpreter/Item.h"
 #include "Velox/Interpreter/ItemStateFunction.h"
 #include "Velox/Interpreter/InterpreterFunctionNoParameter.h"
@@ -46,12 +47,22 @@ namespace velox {
         context.AddGlobalItem(name, Item::CreateFunction(function));
     }
 
+    void Interpreter::AddInstant(InterpreterInstantDefinition &instantDef)
+    {
+        AddObjectType(instantDef.GetTypeName(), instantDef.CreateObjectType());
+    }
+
     void Interpreter::AddRealConstant(const string &name, double value) {
         context.AddGlobalItem(name, Item::CreateReal(value));
     }
 
     void Interpreter::AddIntConstant(const string &name, int value) {
         context.AddGlobalItem(name, Item::CreateInteger(value));
+    }
+
+    void Interpreter::AddGlobal(const string &name, std::shared_ptr<Item> item)
+    {
+        context.AddGlobalItem(name, item);
     }
 
     void Interpreter::AddObjectType(const std::string &name, std::shared_ptr<ObjectType> objType) {

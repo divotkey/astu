@@ -40,6 +40,9 @@ namespace astu {
             throw std::runtime_error(SDL_GetError());
         }
 
+        SDL_EventState(SDL_DROPTEXT, SDL_ENABLE);
+
+
         inputMapperSrv = ASTU_GET_SERVICE_OR_NULL(InputMappingService);
         mouseButtonSrv = ASTU_GET_SERVICE_OR_NULL(MouseButtonSignalService);
         mouseWheelSrv = ASTU_GET_SERVICE_OR_NULL(MouseWheelSignalService);

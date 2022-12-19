@@ -11,7 +11,7 @@ namespace astu {
 
     /**
      * This enumeration defines values for color names according to 
-     * the RAL colou standard.
+     * the RAL color standard.
      * 
      * @ingroup gfx_group
      */
