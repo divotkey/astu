@@ -30,6 +30,16 @@ namespace astu {
 		return Write(data.data(), data.size());
 	}
 
+    Memento &Memento::operator<<(const char &value)
+    {
+        return Write(reinterpret_cast<const unsigned char*>(&value), sizeof(value));
+    }
+
+    const Memento &Memento::operator>>(char &value) const
+    {
+        return Read(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+    }
+
 	Memento & Memento::operator<<(const int64_t & value)
 	{
 		return Write(reinterpret_cast<const unsigned char*>(&value), sizeof(value));

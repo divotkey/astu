@@ -244,6 +244,11 @@ namespace velox {
         FastFileSource(const std::string &filepath);
 
         /**
+         * Constructor.
+         */
+        FastFileSource();
+
+        /**
          * Resets this source to a new file path.
          *
          * @param filepath the new file path to the source script.
@@ -255,6 +260,10 @@ namespace velox {
          * Resets this source to the start of the current script source.
          */
         void Reset();
+
+        const std::string &GetFilepath() const {
+            return filepath;
+        }
 
         // Inherited via FastSource;
         void Store(astu::Memento &memento) override;

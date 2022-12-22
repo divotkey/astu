@@ -29,6 +29,7 @@ namespace velox {
             {"do", TokenType::DO},
             {"loop", TokenType::LOOP},
             {"exit", TokenType::EXIT},
+            {"return", TokenType::RETURN},
             {"continue", TokenType::CONTINUE},
             {"break", TokenType::BREAK},
             {"for", TokenType::FOR},
@@ -221,7 +222,7 @@ namespace velox {
                     return curToken = TokenType::LOG_OR;
                 }
                 endPos = curPos;
-                return TokenType::BIN_OR;
+                return curToken = TokenType::BIN_OR;
             case '"':
                 ReadString();
                 endPos = curPos;
@@ -450,13 +451,14 @@ namespace velox {
 
     void FastSource::Store(astu::Memento &memento)
     {
-        memento << static_cast<int>(curToken) << curString << curInteger << curReal << curPos << startPos << endPos;
+        memento << static_cast<int>(curToken) << curChar << curString << curInteger << curReal << curPos << startPos << endPos;
     }
 
     void FastSource::Restore(const astu::Memento &memento)
     {
-        int token = static_cast<int>(curToken);
-        memento >> token >> curString >> curInteger >> curReal >> curPos >> startPos >> endPos;
+        int token;
+        curString.clear();
+        memento >> token >> curChar >> curString >> curInteger >> curReal >> curPos >> startPos >> endPos;
         curToken = static_cast<TokenType>(token);
     }
 
@@ -479,6 +481,12 @@ namespace velox {
     /////// class FastFileSource
     /////////////////////////////////////////////////
 
+
+    FastFileSource::FastFileSource()
+    {
+        // Intentionally left empty.
+    }
+
     FastFileSource::FastFileSource(const std::string &inFilepath)
     {
         Reset(inFilepath);
@@ -497,6 +505,9 @@ namespace velox {
 
     void FastFileSource::Reset()
     {
+        if (!filepath.empty()) {
+            Reset(filepath);
+        }
         FastSource::Reset();
     }
 

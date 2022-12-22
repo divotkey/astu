@@ -81,9 +81,25 @@ namespace astu {
         const Memento &operator>>(uint64_t &value) const;
 
         /**
-         * Insertion operator for signed integer integer values.
+           * Insertion operator for signed integer integer values.
+           *
+           * @param value the signed integer value to insert
+           * @return reference tho this memento for method chaining
+           */
+        Memento &operator<<(const char &value);
+
+        /**
+         * Extraction operator for signed characters.
          *
-         * @param value the signed integer value to insert
+         * @param value the signed character to extract
+         * @return reference tho this memento for method chaining
+         */
+        const Memento &operator>>(char &value) const;
+
+        /**
+         * Insertion operator for signed signed characters.
+         *
+         * @param value the signed character to insert
          * @return reference tho this memento for method chaining
          */
         Memento &operator<<(const int &value);
