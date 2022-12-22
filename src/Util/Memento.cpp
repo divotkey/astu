@@ -113,30 +113,6 @@ namespace astu {
 		return *this;
 	}
 
-	Memento & Memento::operator<<(const Vector2f & v)
-	{
-		*this << v.x << v.y;
-		return *this;
-	}
-
-	const Memento & Memento::operator>>(Vector2f & v) const
-	{
-		*this >> v.x >> v.y;
-		return *this;
-	}
-
-	Memento & Memento::operator<<(const Color4f & c)
-	{
-		*this << c.r << c.g << c.b << c.a;
-		return *this;
-	}
-
-	const Memento & Memento::operator>>(Color4f & c) const
-	{
-		*this >> c.r >> c.g >> c.b >> c.a;
-		return *this;
-	}
-
 	Memento & Memento::Write(const unsigned char * bytes, size_t count)
 	{
 		data.insert(data.end(), bytes, bytes + count);
