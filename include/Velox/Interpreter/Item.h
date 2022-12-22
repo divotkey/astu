@@ -25,7 +25,7 @@
 #include "Velox/Interpreter/ItemStateFunction.h"
 #include "Velox/Interpreter/ItemStateReference.h"
 #include "Velox/Interpreter/ItemStateObject.h"
-#include "Velox/INterpreter/ItemData.h"
+#include "Velox/Interpreter/ItemData.h"
 
 // C++ Standard Library includes
 #include <memory>
