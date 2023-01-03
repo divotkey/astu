@@ -1,14 +1,16 @@
-// Copyright (c) 2022 Roman Divotkey. All rights reserved.
-//
-// This file is subject to the terms and conditions defined in file 'LICENSE',
-// which is part of this source code package. See 'AUTHORS' file for a list
-// of contributors.
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2022-2023. Roman Divotkey. All rights reserved.
+ */
 
 #pragma once
 
 // Local includes
+#include "Velox/Parser/ParserError.h"
 #include "Velox/Parser/TokenType.h"
-#include "Velox/Parser/Source.h"
+#include "Velox/Parser/ISource.h"
 #include "Velox/Interpreter/InterpreterStatementBlock.h"
 #include "Velox/Interpreter/InterpreterScript.h"
 #include "Velox/Interpreter/InterpreterFunctionDefinition.h"
@@ -29,7 +31,7 @@ namespace velox {
     class Parser {
     public:
 
-        std::shared_ptr<InterpreterScript> Parse(Source &source);
+        std::shared_ptr<InterpreterScript> Parse(ISource &source);
 
         /**
          * Parses a single instant definition.
@@ -38,7 +40,7 @@ namespace velox {
          * @return the newly created instant definition
          * @throws ParserError in case of an error
          */
-        std::shared_ptr<InterpreterInstantDefinition> ParseInstantDefinition(Source &source);
+        std::shared_ptr<InterpreterInstantDefinition> ParseInstantDefinition(ISource &source);
 
     private:
         static const TokenType STATEMENT_START[];
@@ -48,55 +50,56 @@ namespace velox {
         static const std::map<TokenType, RelationalOperator> REL_OP_TO_TOK;
         static const std::map<TokenType, LogicalOperator> LOG_OP_TO_TOK;
 
-        std::shared_ptr<InterpreterStatementBlock> ParseStatementBlock(Source &source, bool loopBody);
-        std::shared_ptr<InterpreterStatement> ParseStatementOrBlock(Source &source, bool loopBody);
+        std::shared_ptr<InterpreterStatementBlock> ParseStatementBlock(ISource &source, bool loopBody);
+        std::shared_ptr<InterpreterStatement> ParseStatementOrBlock(ISource &source, bool loopBody);
 
-        std::shared_ptr<InterpreterStatement> ParseStatement(Source &source);
-        std::shared_ptr<InterpreterStatement> ParseForHeaderStatement(Source &source);
+        std::shared_ptr<InterpreterStatement> ParseStatement(ISource &source);
+        std::shared_ptr<InterpreterStatement> ParseIncludeStatement(ISource &source);
+        std::shared_ptr<InterpreterStatement> ParseForHeaderStatement(ISource &source);
 
-        std::shared_ptr<InterpreterStatement> ParseAssignment(Source &source, std::shared_ptr<InterpreterExpression> lValue);
-        std::shared_ptr<InterpreterStatement> ParseOptionalAssignment(Source &source, std::shared_ptr<InterpreterExpression> lValue);
+        std::shared_ptr<InterpreterStatement> ParseAssignment(ISource &source, std::shared_ptr<InterpreterExpression> lValue);
+        std::shared_ptr<InterpreterStatement> ParseOptionalAssignment(ISource &source, std::shared_ptr<InterpreterExpression> lValue);
 
         std::shared_ptr<InterpreterStatement>
-        ParseAssignmentOperator(Source &source, std::shared_ptr<InterpreterExpression> lValue, ArithmeticOperator op);
-        std::shared_ptr<InterpreterFunctionDefinition> ParseFunctionDefinition(Source &source);
-        std::shared_ptr<InterpreterStatement> ParseReturnStatement(Source &source);
-        std::shared_ptr<InterpreterStatement> ParseGlobalStatement(Source &source);
-        std::shared_ptr<InterpreterStatement> ParseIfStatement(Source &source);
-        std::shared_ptr<InterpreterStatement> ParseWhileStatement(Source &source);
-        std::shared_ptr<InterpreterStatement> ParseDoWhileStatement(Source &source);
-        std::shared_ptr<InterpreterStatement> ParseLoopStatement(Source &source);
-        std::shared_ptr<InterpreterStatement> ParseForStatement(Source &source);
-        std::shared_ptr<InterpreterStatement> ParseClassDefinition(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseInstantRealization(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseNewStatement(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseOptionalSelector(Source &source, std::shared_ptr<InterpreterExpression> lValue);
-        std::shared_ptr<InterpreterExpression> ParseExpression(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseMemberAccess(Source &source, std::shared_ptr<InterpreterExpression> lValue);
-        std::shared_ptr<InterpreterExpression> ParseListAccess(Source &source, std::shared_ptr<InterpreterExpression> lValue);
-        std::shared_ptr<InterpreterExpressionSimpleName> ParseSimpleName(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseOrExpression(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseRelExpression(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseSimpleExpression(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseTerm(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseFactor(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseFactorIdent(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseColor(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseVector(Source &source);
-        std::shared_ptr<InterpreterExpression> ParseList(Source &source);
+        ParseAssignmentOperator(ISource &source, std::shared_ptr<InterpreterExpression> lValue, ArithmeticOperator op);
+        std::shared_ptr<InterpreterFunctionDefinition> ParseFunctionDefinition(ISource &source);
+        std::shared_ptr<InterpreterStatement> ParseReturnStatement(ISource &source);
+        std::shared_ptr<InterpreterStatement> ParseGlobalStatement(ISource &source);
+        std::shared_ptr<InterpreterStatement> ParseIfStatement(ISource &source);
+        std::shared_ptr<InterpreterStatement> ParseWhileStatement(ISource &source);
+        std::shared_ptr<InterpreterStatement> ParseDoWhileStatement(ISource &source);
+        std::shared_ptr<InterpreterStatement> ParseLoopStatement(ISource &source);
+        std::shared_ptr<InterpreterStatement> ParseForStatement(ISource &source);
+        std::shared_ptr<InterpreterStatement> ParseClassDefinition(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseInstantRealization(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseNewStatement(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseOptionalSelector(ISource &source, std::shared_ptr<InterpreterExpression> lValue);
+        std::shared_ptr<InterpreterExpression> ParseExpression(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseMemberAccess(ISource &source, std::shared_ptr<InterpreterExpression> lValue);
+        std::shared_ptr<InterpreterExpression> ParseListAccess(ISource &source, std::shared_ptr<InterpreterExpression> lValue);
+        std::shared_ptr<InterpreterExpressionSimpleName> ParseSimpleName(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseOrExpression(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseRelExpression(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseSimpleExpression(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseTerm(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseFactor(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseFactorIdent(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseColor(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseVector(ISource &source);
+        std::shared_ptr<InterpreterExpression> ParseList(ISource &source);
 
         std::shared_ptr<InterpreterFunctionCall>
-        ParseFunctionCall(Source &source, std::shared_ptr<InterpreterExpression> function);
-        std::shared_ptr<InterpreterConstructorCall> ParseConstructorCall(Source &source);
+        ParseFunctionCall(ISource &source, std::shared_ptr<InterpreterExpression> function);
+        std::shared_ptr<InterpreterConstructorCall> ParseConstructorCall(ISource &source);
 
-        void ParseSemicolon(Source &source);
-        void ParseOptionalSemicolon(Source &source);
-        void ParseComma(Source &source);
-        void ParseRightParenthesis(Source &source);
-        void ParseLeftParenthesis(Source &source);
-        void ParseBlockStart(Source &source);
-        void ParseBlockEnd(Source &source);
-        double ParseReal(Source &source);
+        void ParseSemicolon(ISource &source);
+        void ParseOptionalSemicolon(ISource &source);
+        void ParseComma(ISource &source);
+        void ParseRightParenthesis(ISource &source);
+        void ParseLeftParenthesis(ISource &source);
+        void ParseBlockStart(ISource &source);
+        void ParseBlockEnd(ISource &source);
+        double ParseReal(ISource &source);
 
     };
 
