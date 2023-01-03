@@ -1,8 +1,9 @@
-// Copyright (c) 2022 Roman Divotkey. All rights reserved.
-//
-// This file is subject to the terms and conditions defined in file 'LICENSE',
-// which is part of this source code package. See 'AUTHORS' file for a list
-// of contributors.
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2022-2023. Roman Divotkey. All rights reserved.
+ */
 
 // Local includes
 #include "Velox/Interpreter/InterpreterScript.h"
@@ -19,7 +20,7 @@ namespace velox {
 
         for (const auto &statement: statements) {
             statement->Execute(sc);
-            if (sc.IsSet(ScriptContext::RETURN_EXECUTED_FLAG))
+            if (sc.IsFlagSet(ScriptContext::RETURN_EXECUTED_FLAG))
                 break;
         }
     }

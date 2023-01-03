@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 // Local includes
@@ -26,7 +26,7 @@ namespace astu {
 
     void ThreadService::OnStartup()
     {
-        cntThreads = 0;
+        cntThreads = INVALID_THREAD_ID;
         cntCycles = 0;
     }
 
@@ -85,7 +85,7 @@ namespace astu {
         info.status = status;
         info.messages = message;
 
-        QueueSignalTs(ThreadStatusSignal(infoId, status));
+        QueueSignalTs(ThreadStatusSignal(infoId, status, message));
     }
 
     ThreadStatus ThreadService::GetStatusTs(int infoId) const

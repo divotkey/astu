@@ -1,8 +1,9 @@
-// Copyright (c) 2022 Roman Divotkey. All rights reserved.
-//
-// This file is subject to the terms and conditions defined in file 'LICENSE',
-// which is part of this source code package. See 'AUTHORS' file for a list
-// of contributors.
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2022-2023. Roman Divotkey. All rights reserved.
+ */
 
 // Local includes
 #include "Script/Scanner.h"
@@ -254,7 +255,7 @@ namespace astu {
             case Type::ADD_INT_VALUE:
             case Type::ADD_REAL_VALUE:
                 data2 = cmd.data2;
-                // fall through
+                [[fallthrough]];
 
             case Type::SET_TOKEN:
             case Type::ADD_STRING_VALUE_CHAR:

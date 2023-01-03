@@ -1,3 +1,10 @@
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2023. Roman Divotkey. All rights reserved.
+ */
+
 #include "Velox/Interpreter/Item.h"
 #include "Velox/Interpreter/ItemState.h"
 #include "Velox/Interpreter/ItemStateReference.h"

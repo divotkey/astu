@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -73,7 +73,7 @@ namespace astu {
     protected:
 
         /**
-         * Call `ProcessEntity` for all entities of the processed entity family.
+         * CallFunction `ProcessEntity` for all entities of the processed entity family.
          */
         void ProcessEntities() {
             for (const auto & entity : *entityView) {

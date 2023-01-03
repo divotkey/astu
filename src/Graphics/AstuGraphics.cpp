@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 // Local includes    
@@ -30,7 +30,7 @@ namespace astu {
     std::unique_ptr<Image> LoadImage(const std::string & filename)
     {
         auto extension = StringUtils::ExtractFileExtension(filename, false);
-        StringUtils::toUpperCase(extension);
+        StringUtils::ToUpperCase(extension);
 
         if (extension == "BMP") {
             return bmpDecoder.Decode(filename.c_str());

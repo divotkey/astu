@@ -1,8 +1,9 @@
-// Copyright (c) 2022 Roman Divotkey. All rights reserved.
-//
-// This file is subject to the terms and conditions defined in file 'LICENSE',
-// which is part of this source code package. See 'AUTHORS' file for a list
-// of contributors.
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2022-2023. Roman Divotkey. All rights reserved.
+ */
 
 #include "Velox/Interpreter/InterpreterFunctionDefinition.h"
 #include "Velox/Interpreter/InterpreterError.h"
@@ -13,6 +14,12 @@ using namespace std;
 
 namespace velox {
 
+    InterpreterFunctionDefinition::InterpreterFunctionDefinition(unsigned int lineNumber)
+        : InterpreterStatement(lineNumber)
+    {
+        // Intentionally left empty
+    }
+
     void InterpreterFunctionDefinition::Execute(ScriptContext &sc) {
         // Intentionally left empty.
     }
@@ -20,7 +27,7 @@ namespace velox {
     void InterpreterFunctionDefinition::Prepare(ScriptContext &sc) {
 
         if (sc.HasLocalItem(functionName) || sc.HasGlobalItem(functionName)){
-            throw InterpreterError("Ambiguous function name '" + functionName + "'");
+            throw InterpreterError("Ambiguous function name '" + functionName + "'", GetLineNumber());
         }
 
         if (sc.HasLocalScope()) {

@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 // Local includes
@@ -39,13 +39,13 @@ namespace astu {
 
     void LoggingExtension::InjectExtension(Interpreter &interpreter) const
     {
-        interpreter.AddFunction("LogVerbose", make_shared<LogFunction>(LogLevel::Verbose));
-        interpreter.AddFunction("LogDebug", make_shared<LogFunction>(LogLevel::Debug));
-        interpreter.AddFunction("LogInfo", make_shared<LogFunction>(LogLevel::Info));
-        interpreter.AddFunction("LogConfig", make_shared<LogFunction>(LogLevel::Config));
-        interpreter.AddFunction("LogWarning", make_shared<LogFunction>(LogLevel::Warn));
-        interpreter.AddFunction("LogError", make_shared<LogFunction>(LogLevel::Err));
-        interpreter.AddFunction("LogFatal", make_shared<LogFunction>(LogLevel::Fatal));
+        interpreter.AddGlobalFunction("LogVerbose", make_shared<LogFunction>(LogLevel::Verbose));
+        interpreter.AddGlobalFunction("LogDebug", make_shared<LogFunction>(LogLevel::Debug));
+        interpreter.AddGlobalFunction("LogInfo", make_shared<LogFunction>(LogLevel::Info));
+        interpreter.AddGlobalFunction("LogConfig", make_shared<LogFunction>(LogLevel::Config));
+        interpreter.AddGlobalFunction("LogWarning", make_shared<LogFunction>(LogLevel::Warn));
+        interpreter.AddGlobalFunction("LogError", make_shared<LogFunction>(LogLevel::Err));
+        interpreter.AddGlobalFunction("LogFatal", make_shared<LogFunction>(LogLevel::Fatal));
     }
 
     LoggingExtension::LoggingExtension()

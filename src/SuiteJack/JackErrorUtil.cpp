@@ -1,3 +1,10 @@
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2023. Roman Divotkey. All rights reserved.
+ */
+
 #include "AstUtils0.h"
 #include "JackErrorUtil.h"
 

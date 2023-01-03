@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 // Local includes
@@ -52,7 +52,7 @@ namespace astu {
 	// 	return conversion.to_bytes(wc);
 	// }
 
-	string & StringUtils::rtrim(string & s)
+	string & StringUtils::RightTrim(string & s)
 	{
 		s.erase(find_if(s.rbegin(), s.rend(), [](int ch) {
 			return !(isspace(ch) || iscntrl(ch));
@@ -61,7 +61,7 @@ namespace astu {
 		return s;
 	}
 
-	string & StringUtils::ltrim(string & s)
+	string & StringUtils::LeftTrim(string & s)
 	{
 		s.erase(s.begin(), find_if(s.begin(), s.end(), [](int ch) {
 			return !isspace(ch);
@@ -69,13 +69,13 @@ namespace astu {
 		return s;
 	}
 
-	string & StringUtils::trim(string & s) {
-		rtrim(s);
-		ltrim(s);
+	string & StringUtils::Trim(string & s) {
+        RightTrim(s);
+        LeftTrim(s);
 		return s;
 	}
 
-	string StringUtils::bytesToString(size_t mem, int precision)
+	string StringUtils::BytesToString(size_t mem, int precision)
 	{
 		if (mem < 1024) {
 			return to_string(mem) + " bytes";
@@ -116,19 +116,19 @@ namespace astu {
 		return string();
 	}
 
-	string & StringUtils::toUpperCase(string & s)
+	string & StringUtils::ToUpperCase(string & s)
 	{
 		transform(s.begin(), s.end(), s.begin(), ::toupper);
 		return s;
 	}
 
-	string & StringUtils::toLowerCase(string & s)
+	string & StringUtils::ToLowerCase(string & s)
 	{
 		transform(s.begin(), s.end(), s.begin(), ::tolower);
 		return s;
 	}
 
-	vector<string> StringUtils::split(const string & s, char ch)
+	vector<string> StringUtils::Split(const string & s, char ch)
 	{
 		vector<string> result;
 
@@ -147,40 +147,45 @@ namespace astu {
 		return result;
 	}
 
-	string StringUtils::toHexString(unsigned long value)
+	string StringUtils::ToHexString(unsigned long value, int width)
 	{
 		stringstream stream;
-		stream << "0x" << hex << value;
+
+        stream << "0x";
+        if (width > 0) {
+            stream << std::setfill('0') << std::setw(width);
+        }
+		stream << hex << value;
 		return stream.str();
 	}
 
-	string StringUtils::toString(void * pointer)
+	string StringUtils::ToString(void * pointer)
 	{
 		stringstream stream;
 		stream << "0x" << hex << pointer;
 		return stream.str();
 	}
 
-	string StringUtils::toString(float value, int precision)
+	string StringUtils::ToString(float value, int precision)
 	{
 		stringstream stream;
 		stream << fixed << setprecision(precision) << value;
 		return stream.str();
 	}
 
-	string StringUtils::toString(double value, int precision)
+	string StringUtils::ToString(double value, int precision)
 	{
 		stringstream stream;
 		stream << fixed << setprecision(precision) << value;
 		return stream.str();
 	}
 
-	bool StringUtils::startsWith(const string & s, const string & seq)
+	bool StringUtils::StartsWith(const string & s, const string & seq)
 	{
 		return s.rfind(seq, 0) == 0;
 	}
 
-	bool StringUtils::endsWith(const string & s, const string & seq)
+	bool StringUtils::EndsWith(const string & s, const string & seq)
 	{
 		if (seq.size() > s.size())
 			return false;
@@ -188,16 +193,27 @@ namespace astu {
 		return equal(seq.rbegin(), seq.rend(), s.rbegin());
 	}
 
-	bool StringUtils::startsWith(const string & s, char ch)
+	bool StringUtils::StartsWith(const string & s, char ch)
 	{
 		return s.size() >= 1 && s[0] == ch;
 	}
 
-	// string StringUtils::extractPath(const string & s)
-	// {
-	// 	filesystem::path path(s);
-	// 	return path.parent_path().string();
-	// }
+	 string StringUtils::ExtractPath(const string &s)
+	 {
+        auto pos = s.find_last_of('/');
+        if (pos == std::string::npos) {
+            pos = s.find_last_of('\\');
+            if (pos == std::string::npos) {
+                return s;
+            }
+        }
+
+        return s.substr(0, pos + 1);
+
+        //Using this if file system extension is present.
+	 	//filesystem::path path(s);
+	 	//return path.parent_path().string();
+	 }
 
     // string StringUtils::extractFilename(const string & s)
 	// {
@@ -266,13 +282,13 @@ namespace astu {
                 if (isprint(ch)) {
                     result += "'"; result += ch; result += "'";
                 } else {
-                    result = "(" + toHexString(ch) + ")";
+                    result = "(" + ToHexString(ch) + ")";
                     return result;
                 }
         }
 
         if (includeHex) {
-            result += " (" + toHexString(ch) + ")";
+            result += " (" + ToHexString(ch) + ")";
         }
 
         return result;

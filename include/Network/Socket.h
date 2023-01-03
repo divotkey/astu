@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -29,13 +29,13 @@ namespace astu {
 
         /**
          * Checks the status of this socket.
-         * Call this method at least once each main loop cycle.
+         * CallFunction this method at least once each main loop cycle.
          */
         virtual void Poll() = 0;
 
         /**
          * Checks whether messages have arrived on this socket.
-         * Call `Poll` on each main loop cycle before using this method.
+         * CallFunction `Poll` on each main loop cycle before using this method.
          *
          * @return `true` if this socket has messages to read
          */
@@ -43,7 +43,7 @@ namespace astu {
 
         /**
          * Checks whether messages can be sent via this socket.
-         * Call `Poll` on each main loop cycle before using this method.
+         * CallFunction `Poll` on each main loop cycle before using this method.
          *
          * @return `true` if this socket can write messages
          */

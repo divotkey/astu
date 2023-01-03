@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 // Local includes
@@ -328,8 +328,8 @@ namespace astu {
         ));
 
         interpreter.AddObjectType(TYPE_NAME, imageType);
-        interpreter.AddFunction("StoreImage", make_shared<ImageExporter>());
-        interpreter.AddFunction("LoadImage", make_shared<InterpreterFunctionOneParameter>(
+        interpreter.AddGlobalFunction("StoreImage", make_shared<ImageExporter>());
+        interpreter.AddGlobalFunction("LoadImage", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, std::shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     try {
                         auto image = LoadImage(param->GetStringValue(sc));

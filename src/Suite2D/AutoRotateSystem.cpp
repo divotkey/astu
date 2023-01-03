@@ -1,6 +1,8 @@
 /*
- * Breakout Clone
- * Copyright (c) 2021 Roman Divotkey. All rights reserved.
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2021-2023. Roman Divotkey. All rights reserved.
  */
 
 // Local includes

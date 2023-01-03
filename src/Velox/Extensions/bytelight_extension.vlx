@@ -1,0 +1,236 @@
+// Velox Bytelight Extension Version 1.0.0
+// Copyright 2022, 2023 Roman Divotkey. All rights reserved.
+//
+// AST-Utilities
+// COpyright, 2020, 2023 Roman Divotkey. All rights reserved.
+
+instant Rendering {
+
+	function Rendering() {
+		this._width = 512;
+		this._height = 512;
+		this._patterns = [];
+		this._filepath = "./";
+		this._filename = undefined;
+		this._quality = "GOOD";
+		this._mode = "V_NORMALIZED";
+	}
+	
+	function filepath(path) {
+		_filepath = path;
+	}
+	
+	function filename(name) {
+		_filename = name;
+	}
+	
+	function width(w) {
+		_width = w;
+	}
+	
+	function weight(h) {
+		_height = h;
+	}
+	
+	function size(w, h) {
+		_width = w;
+		_height = h;
+	}
+	
+	function quality(q) {
+		LogDebug("Setting quality to " + q);
+		_quality = q;
+	}
+	
+	function mode(m) {
+		_mode = m;
+	}
+
+	function GetPixelRadius() {
+		return 1.0 / _width;
+	}
+	
+	function GetAspectRatio() {
+		return real(_width) / _height;
+	}
+	
+	function AddPattern(pattern) {
+		_patterns.append(pattern);
+	}
+	
+	function realize() {
+		if (_patterns.size() == 0) return;
+		
+		img = new Image(_width, _height);
+		img.Clear(|0, 0, 0, 0|);
+		renderer = undefined;
+		if (_quality == "FAST") {
+			renderer = new SimplePatternRenderer(_mode);
+		} else {
+			renderer = new PatternRenderer(_mode, _quality);
+		}
+
+		LogInfo("Rendering image (" + img.GetWidth() + " x " + img.GetHeight() + ")");
+		if (_patterns.size() == 1) {
+			renderer.Render(_patterns[0], img);
+		} else {
+			union = new UnionPattern();
+			for (i = 0; i < _patterns.size(); ++i) {
+				union.AddPattern(_patterns[i].GetPattern());
+			}
+			LogInfo("Storing image to " + _filepath + _filename);
+			renderer.Render(union, img);
+		}
+		
+		ShowImage(img);
+		if (_filename != undefined) {
+			LogInfo("Storing image to " + _filepath + _filename);
+			StoreImage(img, _filepath + _filename);
+		}
+	}
+}
+
+instant Union {
+
+	function Union() {
+		this._pattern = new UnionPattern();
+	}
+
+	function AddPattern(pattern) {
+		_pattern.AddPattern(pattern.GetPattern());
+	}
+	
+	function GetPattern() {
+		return _pattern;
+	}
+	
+	function realize() {
+		if (parent == undefined) return;
+		parent.AddPattern(this);
+	}
+}
+
+instant Blur {
+
+	function Blur() {
+		this._pattern = new BlurPattern();
+		this._radius = this._pattern.GetRadius();
+		this._numSamples = this._pattern.GetNumSamples();
+	}
+
+	function radius(r) {
+		_radius = r;
+	}
+	
+	function numSamples(n) {
+		_numSamples = n;
+	}
+
+	function AddPattern(pattern) {
+		_pattern.AddPattern(pattern.GetPattern());
+	}
+	
+	function GetPattern() {
+		return _pattern;
+	}
+	
+	function realize() {
+		if (parent == undefined) return;
+		_pattern.SetNumSamples(_numSamples);
+		_pattern.SetRadius(_radius);
+		parent.AddPattern(this);
+	}
+}
+
+instant Quadtree {
+
+	function Quadtree() {
+		this._pattern = new QuadtreePattern();
+	}
+
+	function AddPattern(pattern) {
+		_pattern.AddPattern(pattern.GetPattern());
+	}
+	
+	function GetPattern() {
+		return _pattern;
+	}
+	
+	function realize() {
+		if (parent == undefined) return;
+		_pattern.BuildTree();
+		parent.AddPattern(this);
+	}
+}
+
+instant Unicolor {
+
+	function Unicolor() {
+		this._pattern = new UnicolorPattern();
+	}
+	
+	function color(c) {
+		_pattern.SetColor(c);
+	}
+
+	function GetPattern() {
+		return _pattern;
+	}	
+	
+	function realize() {		
+		if (parent == undefined) return;
+		parent.AddPattern(this);
+	}
+}
+
+instant Circle {
+
+	function Circle() {
+		this._pattern = new CirclePattern();
+	}
+	
+	function radius(r) {
+		_pattern.SetRadius(r);
+	}
+	
+	function color(c) {
+		_pattern.SetPattern(new UnicolorPattern(c));
+	}
+	
+	function translate(v, b) {
+		if (b == undefined) {
+			_pattern.Translate(v);		
+		} else {
+			_pattern.Translate(<v, b>);
+		}	
+	}
+	
+	function scale(v, b) {
+		if (b == undefined) {
+			_pattern.Scale(v);		
+		} else {
+			_pattern.Scale(<v, b>);
+		}	
+	}
+	
+	function rotate(phi) {
+		_pattern.Rotate(phi);		
+	}	
+	
+	function rotateDeg(phi) {
+		_pattern.RotateDeg(phi);		
+	}	
+	
+	function AddPattern(pattern) {
+		_pattern.SetPattern(pattern.GetPattern());
+	}
+	
+	function GetPattern() {
+		return _pattern;
+	}	
+	
+	function realize() {		
+		if (parent == undefined) return;
+		parent.AddPattern(this);
+	}
+}

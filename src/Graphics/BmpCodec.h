@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -60,7 +60,7 @@ namespace astu {
          * This flags defines whether the image will be flipped
          * along the x-axis.
          * 
-         * The default value of thie flag is set to `true`, which
+         * The default value of this flag is set to `true`, which
          * is the common configuration for BMP files.
          * 
          * @param flip  set to `true` if images should be flipped

@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -78,14 +78,29 @@ namespace astu {
          * Constructor.
          *
          * @param threadId  the numerical identifier of the thread
+         * @param status    the thread status
          */
-        ThreadStatusSignal(int threadId, ThreadStatus status) : threadId(threadId), status(status) {}
+        ThreadStatusSignal(int threadId, ThreadStatus status)
+            : threadId(threadId), status(status) {}
+
+        /**
+         * Constructor.
+         *
+         * @param threadId  the numerical identifier of the thread
+         * @param status    the thread status
+         * @param message   the thread status message
+         */
+        ThreadStatusSignal(int threadId, ThreadStatus status, const std::string &message)
+                : threadId(threadId), status(status), message(message) {}
 
         /** The numerical identifier of the thread. */
         int threadId;
 
         /** The status of the thread. */
         ThreadStatus status;
+
+        /** An optional message (used in case of an error, etc. ). */
+        std::string message;
     };
 
     /**
@@ -131,23 +146,54 @@ namespace astu {
     protected:
 
         /**
-         * Called by this base class when a thread status update has arrived.
+         * Called by this base class when a thread status has changed to success.
          *
          * @param threadId  the ID of the thread
-         * @param inStatus  the thread status
          * @return `true` if this signal has been consumed
          */
-        virtual bool OnThreadStatusUpdate(int threadId, ThreadStatus inStatus) {
-            return false;
-        }
+        virtual bool OnThreadSuccess(int threadId) { return false; }
+
+        /**
+         * Called by this base class when a thread status has changed to error.
+         *
+         * @param threadId  the ID of the thread
+         * @param message   the error message
+         * @return `true` if this signal has been consumed
+         */
+        virtual bool OnThreadError(int threadId, const std::string &message) { return false; }
+
+        /**
+         * Called by this base class when a thread status has changed to running.
+         *
+         * @param threadId  the ID of the thread
+         * @return `true` if this signal has been consumed
+         */
+        virtual bool OnThreadRunning(int threadId) { return false; }
+
 
     private:
 
-        // Inherited via MouseButtonListener
+        // Inherited via IThreadStatusListener
         virtual bool OnSignal(const ThreadStatusSignal & signal) {
-            return OnThreadStatusUpdate(signal.threadId, signal.status);
+            switch (signal.status) {
+
+                case ThreadStatus::Success:
+                    return OnThreadSuccess(signal.threadId);
+
+                case ThreadStatus::Error:
+                    return OnThreadError(signal.threadId, signal.message);
+
+                case ThreadStatus::Running:
+                    return OnThreadRunning(signal.threadId);
+
+                default:
+                    return false;
+
+            }
         }
+
     };
+
 
     /**
      * Manages execution of concurrent threads.
@@ -161,6 +207,9 @@ namespace astu {
         , public SignalEmitterTs<ThreadStatusSignal>
     {
     public:
+
+        /** Constant describing an invalid thread identifier. */
+        static const int INVALID_THREAD_ID = 0;
 
         /**
          * Constructor.
@@ -239,5 +288,46 @@ namespace astu {
         // Inherited via Updatable
         void OnUpdate() override;
     };
+
+    /**
+ * Convenient class used for easy and fast access to ThreadService
+ * This class also functions as status listener for threads.
+ *
+ * @ingroup srv_group
+ */
+    class ThreadClient : virtual public ThreadStatusListener
+    {
+    public:
+
+        /**
+         * Constructor.
+         */
+        ThreadClient() {
+            AddStartupHook([this](){
+                threadService = ASTU_GET_SERVICE(ThreadService);
+            });
+
+            AddShutdownHook([this](){
+                threadService = nullptr;
+            });
+        }
+
+    protected:
+
+        /**
+         * Starts a new thread executing the specified delegate.
+         *
+         * @param delegate the delegate to execute
+         * @return the numerical identifier of the newly started thread
+         */
+        int StartThread(ThreadService::Delegate delegate) {
+            return threadService->StartThread(delegate);
+        }
+
+    private:
+        /** Used for fast access to thread service. */
+        std::shared_ptr<ThreadService> threadService;
+    };
+
 
 } // end of namespace

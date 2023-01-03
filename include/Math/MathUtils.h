@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -69,9 +69,13 @@ namespace astu {
         /** Default error margin used to compare floating-point values. */
         const static double Epsilon;
 
-        MathUtils( const MathUtils& ) = delete; // non construction-copyable
-        MathUtils& operator=( const MathUtils& ) = delete; // non copyable
+        // Deleted constructor -> no instances of this class allowed.
+        MathUtils() = delete;
+        MathUtils(const MathUtils&) = delete;
+        MathUtils(MathUtils&&) = delete;
 
+        // Delete assign operator -> non copyable
+        MathUtils& operator=( const MathUtils& ) = delete;
 
         /**
          * Converts from degrees to radians.
@@ -231,8 +235,6 @@ namespace astu {
             return true;
         }
 
-        /** Private constructor. */
-        MathUtils() = default;
     };
 
 } // end of namespace

@@ -1,8 +1,9 @@
-// Copyright (c) 2022 Roman Divotkey. All rights reserved.
-//
-// This file is subject to the terms and conditions defined in file 'LICENSE',
-// which is part of this source code package. See 'AUTHORS' file for a list
-// of contributors.
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2022-2023. Roman Divotkey. All rights reserved.
+ */
 
 // Local includes
 #include "Velox/Parser/FastSource.h"
@@ -25,6 +26,8 @@ namespace velox {
             {"function", TokenType::FUNCTION},
             {"if", TokenType::IF},
             {"else", TokenType::ELSE},
+            {"else", TokenType::SWITCH},
+            {"else", TokenType::CASE},
             {"white", TokenType::WHILE},
             {"do", TokenType::DO},
             {"loop", TokenType::LOOP},
@@ -38,11 +41,18 @@ namespace velox {
             {"instant", TokenType::INSTANT},
             {"global", TokenType::GLOBAL},
             {"import", TokenType::IMPORT},
+            {"include", TokenType::INCLUDE},
     };
+
+    FastSource::FastSource()
+        : curToken(TokenType::INVALID), curChar(-1), curPos(0, 0), curInteger(0), curReal(0)
+    {
+        // Intentionally left empty.
+    }
 
     TokenType FastSource::PeekNextTokenType()
     {
-        memento.Reset();
+        memento.Clear();
         Store(memento);
 
         GetNextTokenType();
@@ -52,6 +62,11 @@ namespace velox {
         Restore(memento);
 
         return result;
+    }
+
+    bool FastSource::IsBlockStartFollowing() const
+    {
+        return curChar == '{';
     }
 
     TokenType FastSource::GetNextTokenType()
@@ -424,11 +439,11 @@ namespace velox {
             ++curPos.x;
         }
 
-        curChar = NextChar();
+        curChar = static_cast<char>(NextChar());
 
         // Skip carriage return, which would mess up position tracking.
         if (curChar == '\r') {
-            curChar = NextChar();
+            curChar = static_cast<char>(NextChar());
         }
 
     }
@@ -447,29 +462,22 @@ namespace velox {
 
         // Set the current character to the first character in the source script.
         ReadChar();
+
+        // Detect first token.
+        GetNextTokenType();
     }
 
-    void FastSource::Store(astu::Memento &memento)
+    void FastSource::Store(astu::Memento &inMemento)
     {
-        memento << static_cast<int>(curToken) << curChar << curString << curInteger << curReal << curPos << startPos << endPos;
+        inMemento << static_cast<int>(curToken) << curChar << curString << curInteger << curReal << curPos << startPos << endPos;
     }
 
-    void FastSource::Restore(const astu::Memento &memento)
+    void FastSource::Restore(const astu::Memento &inMemento)
     {
         int token;
         curString.clear();
-        memento >> token >> curChar >> curString >> curInteger >> curReal >> curPos >> startPos >> endPos;
+        inMemento >> token >> curChar >> curString >> curInteger >> curReal >> curPos >> startPos >> endPos;
         curToken = static_cast<TokenType>(token);
-    }
-
-    int FastSource::GetLine() const
-    {
-        return endPos.y;
-    }
-
-    int FastSource::GetColumn() const
-    {
-        return endPos.x;
     }
 
     astu::Tuple2i FastSource::GetPos() const
@@ -477,15 +485,29 @@ namespace velox {
         return endPos;
     }
 
+    TokenType FastSource::GetCurrentTokenType() const
+    {
+        return curToken;
+    }
+
+    const std::string &FastSource::GetStringValue() const
+    {
+        return curString;
+    }
+
+    int FastSource::GetIntegerValue() const
+    {
+        return curInteger;
+    }
+
+    double FastSource::GetRealValue() const
+    {
+        return curReal;
+    }
+
     /////////////////////////////////////////////////
     /////// class FastFileSource
     /////////////////////////////////////////////////
-
-
-    FastFileSource::FastFileSource()
-    {
-        // Intentionally left empty.
-    }
 
     FastFileSource::FastFileSource(const std::string &inFilepath)
     {
@@ -499,7 +521,7 @@ namespace velox {
             throw std::runtime_error("Unable to open source file '" + inFilepath + "' for reading.");
         }
         filepath = inFilepath;
-        source = move(newSource);
+        source = std::move(newSource);
         FastSource::Reset();
     }
 
@@ -521,17 +543,74 @@ namespace velox {
 
     void FastFileSource::Store(astu::Memento &memento)
     {
-        int pos = source->tellg();
+        int64_t pos = source->tellg();
         memento << pos;
         FastSource::Store(memento);
     }
 
     void FastFileSource::Restore(const astu::Memento &memento)
     {
-        int pos;
+        int64_t pos;
         memento >> pos;
         source->seekg(pos);
         FastSource::Restore(memento);
     }
+
+    std::string FastFileSource::GetFilepath() const
+    {
+        return filepath;
+    }
+
+
+    /////////////////////////////////////////////////
+    /////// class FastStringSource
+    /////////////////////////////////////////////////
+
+    FastStringSource::FastStringSource(const string &sourceCode)
+    {
+        Reset(sourceCode);
+    }
+
+    void FastStringSource::Reset(const string &inSourceCode)
+    {
+        sourceCode = inSourceCode;
+        pos = 0;
+        FastSource::Reset();
+    }
+
+    void FastStringSource::Reset()
+    {
+        pos = 0;
+        FastSource::Reset();
+    }
+
+    void FastStringSource::Store(astu::Memento &memento)
+    {
+        int64_t convertedPos = static_cast<int64_t>(pos);
+        memento << convertedPos;
+        FastSource::Store(memento);
+    }
+
+    void FastStringSource::Restore(const astu::Memento &memento)
+    {
+        int64_t storedPos;
+        memento >> storedPos;
+        pos = static_cast<size_t>(storedPos);
+        FastSource::Restore(memento);
+    }
+
+    int FastStringSource::NextChar()
+    {
+        if (pos >= sourceCode.size()) {
+            return -1;
+        }
+        return sourceCode[pos++];
+    }
+
+    std::string FastStringSource::GetFilepath() const
+    {
+        return "";
+    }
+
 
 } // end of namespace

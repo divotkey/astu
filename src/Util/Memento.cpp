@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 // Local includes
@@ -14,16 +14,23 @@
 namespace astu {
 
 	Memento::Memento()
-		: pos(0)
+		: pos(0), mark(0)
 	{
 		// Intentionally left empty
 	}
 
 	Memento::Memento(const std::vector<unsigned char>& data)
-		: data(data)
+		: data(data), pos(0), mark(0)
 	{
 		// Intentionally left empty
 	}
+
+    Memento::Memento(const unsigned char *rawData, size_t len)
+        : pos(0), mark(0)
+    {
+        data.insert(data.end(), rawData, rawData + len);
+    }
+
 
 	Memento & Memento::operator<<(const std::vector<unsigned char> & data)
 	{
@@ -150,11 +157,23 @@ namespace astu {
 		return *this;
 	}
 
-	Memento & Memento::Reset()
+	Memento & Memento::Clear()
 	{
 		data.clear();
-		pos = 0;
+		pos = mark = 0;
 		return *this;
 	}
+
+    const Memento &Memento::Mark() const
+    {
+        mark = pos;
+        return *this;
+    }
+
+    const Memento &Memento::Reset() const
+    {
+        pos = mark;
+        return *this;
+    }
 
 } // end of namespace

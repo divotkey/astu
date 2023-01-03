@@ -1,8 +1,9 @@
-// Copyright (c) 2022 Roman Divotkey. All rights reserved.
-//
-// This file is subject to the terms and conditions defined in file 'LICENSE',
-// which is part of this source code package. See 'AUTHORS' file for a list
-// of contributors.
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2022-2023. Roman Divotkey. All rights reserved.
+ */
 
 // Local includes
 #include "Velox/Interpreter/ScriptContext.h"
@@ -67,7 +68,7 @@ namespace velox {
         return *item;
     }
 
-    size_t ScriptContext::NumberOfGlobalScopes() const
+    size_t ScriptContext::NumGlobalScopes() const
     {
         return globalScopes.size();
     }
@@ -145,6 +146,7 @@ namespace velox {
     }
 
     void ScriptContext::SetCurrentReturnValue(std::shared_ptr<Item> value) {
+        assert(!returnValueStack.empty());
         returnValueStack.back() = value;
     }
 
@@ -156,7 +158,7 @@ namespace velox {
         return flags;
     }
 
-    bool ScriptContext::IsSet(unsigned int bitmask) {
+    bool ScriptContext::IsFlagSet(unsigned int bitmask) {
         return flags & bitmask;
     }
 
@@ -189,7 +191,10 @@ namespace velox {
     }
 
     void ScriptContext::AddGlobalItem(const std::string &name, std::shared_ptr<Item> item) {
-        assert(!globalScopes.empty());
+        if (globalScopes.empty()) {
+            throw std::logic_error("Unable to add global item, no global scope available");
+        }
+
         if (HasGlobalItem(name)) {
             throw std::logic_error("Unable to add global item, ambiguous item  name '" + name + "'");
         }

@@ -2,12 +2,15 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 // Local includes
 #include "Velox/Extensions/GraphicsExtensions.h"
 #include "Velox/Extensions/InstantBuilder.h"
+#include "Velox/Extensions/FibTokens.h"
+#include "Velox/Parser/MementoSource.h"
+#include "Velox/Parser/Parser.h"
 #include "Velox/Interpreter/ObjectType.h"
 #include "Velox/Interpreter/Item.h"
 #include "Velox/Interpreter/InterpreterFunction.h"
@@ -72,7 +75,7 @@ namespace astu {
             }
         } else if (param.IsString()) {
             auto s = param.GetStringValue(sc);
-            StringUtils::toUpperCase(s);
+            StringUtils::ToUpperCase(s);
 
             if (s == "RAW") {
                 return PatternRenderer::TransformMode::RAW;
@@ -118,7 +121,7 @@ namespace astu {
             }
         } else if (param.IsString()) {
             auto s = param.GetStringValue(sc);
-            StringUtils::toUpperCase(s);
+            StringUtils::ToUpperCase(s);
 
             if (s == "SIMPLE") {
                 return AntialiasingLevel::Simple;
@@ -455,7 +458,7 @@ namespace astu {
         AddPalette(interpreter);
         AddWebColors(interpreter);
         AddRalColors(interpreter);
-        //AddPatternInstants(interpreter);
+        AddPatternInstants(interpreter);
     }
 
     void GraphicsExtension::AddCommonPatternFunctions(ObjectTypeBuilder &builder) const
@@ -538,64 +541,10 @@ namespace astu {
 
     void GraphicsExtension::AddPatternInstants(Interpreter &interpreter) const
     {
-        InstantBuilder builder;
-
-        builder.Reset().AddInstant(
-            "instant Circle {\
-        \
-            function Circle() {\
-                this._pattern = new CirclePattern();\
-            }\
-            \
-            function radius(r) {\
-                _pattern.SetRadius(r);\
-            }\
-            \
-            function color(c) {\
-                _pattern.SetPattern(new UnicolorPattern(c));\
-            }\
-            \
-            function translate(v, b) {\
-                if (b == undefined) {\
-                    _pattern.Translate(v);		\
-                } else {\
-                    _pattern.Translate(<v, b>);\
-                }	\
-            }\
-            \
-            function scale(v, b) {\
-                if (b == undefined) {\
-                    _pattern.Scale(v);		\
-                } else {\
-                    _pattern.Scale(<v, b>);\
-                }	\
-            }\
-            \
-            function rotate(phi) {\
-                _pattern.Rotate(phi);		\
-            }	\
-            \
-            function rotateDeg(phi) {\
-                _pattern.RotateDeg(phi);		\
-            }	\
-            \
-            function AddPattern(pattern) {\
-                _pattern.SetPattern(pattern.GetPattern());\
-            }\
-            \
-            function GetPattern() {\
-                return _pattern;\
-            }	\
-            \
-            function realize() {		\
-                if (parent == undefined) return;\
-                parent.AddPattern(this);\
-            }\
-            }"
-                                    );
-
-
-        builder.Build(interpreter);
+        auto source = MementoSource(FibTokens::GetMemento());
+        Parser parser;
+        auto script = parser.Parse(source);
+        interpreter.Execute(*script);
     }
 
     void GraphicsExtension::AddWebColors(Interpreter &interpreter) const

@@ -1,3 +1,10 @@
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2022-2023. Roman Divotkey. All rights reserved.
+ */
+
 #pragma once
 
 // C++ Standard Library includes.
@@ -11,11 +18,14 @@ namespace velox {
 
     // Forward declaration.
     class Item;
+
     class Scope;
+
     class ObjectType;
 
     /**
-     * Represents the current execution state of a script.
+     * Represents the execution state of a script.
+     * A script context contains local and global scopes as well as type definitions.
      */
     class ScriptContext {
 
@@ -36,7 +46,7 @@ namespace velox {
          * @param name  the name of the object type
          * @return the requested object type or 'nullptr' if no object type with the specified name could be found
          */
-        std::shared_ptr<ObjectType> FindObjectType(const std::string& name);
+        std::shared_ptr<ObjectType> FindObjectType(const std::string &name);
 
         /**
          * Adds a new object type to this script context.
@@ -45,7 +55,7 @@ namespace velox {
          * @param type  the object type
          * @throws std::logic_error in case the name if ambiguous
          */
-        void AddObjectType(const std::string& name, std::shared_ptr<ObjectType> type);
+        void AddObjectType(const std::string &name, std::shared_ptr<ObjectType> type);
 
         /**
          * Tests whether an object type with a specific name exists.
@@ -53,26 +63,76 @@ namespace velox {
          * @param name  the name of the object type
          * @return `true` if the object types exits
          */
-        bool HasObjectType(const std::string& name) const;
+        [[nodiscard]]
+        bool HasObjectType(const std::string &name) const;
 
         /**
-         * Removes all previously object types.
+         * Removes all previously added object types.
          */
         void ClearObjectTypes();
 
+        /**
+         * Sets flags according to the specified bitmask.
+         *
+         * @param bitmask   the bitmask for the flags to set
+         */
         void SetFlag(unsigned int bitmask);
+
+        /**
+         * Clears the flags according to the specified bitmask.
+         *
+         * @param bitmask   the bitmask for the flags to clear
+         */
         void ClearFlag(unsigned int bitmask);
+
+        /**
+         * Return the flag bitmask.
+         *
+         * @return the flags
+         */
         unsigned int GetFlags() const;
-        bool IsSet(unsigned int bitmask);
+
+        /**
+         * Tests whether flags according to the specified bitmasks are set.
+         *
+         * @param bitmask   the bitmask to test
+         * @return `true` if all of the flags according to the bitmask are set
+         */
+        bool IsFlagSet(unsigned int bitmask);
+
+        /**
+         * Clears all previously set flags.
+         */
         void ClearFlags();
 
         void PushInstant(std::shared_ptr<Item> instant);
+
         bool HasInstant() const;
+
         void PopInstant();
+
         std::shared_ptr<Item> PeekInstant();
 
+        /**
+         * Adds a new return value on the return stack.
+         *
+         * @param value the return value to push or `nullptr` if an undefined item type should be pushed
+         */
         void PushReturnValue(std::shared_ptr<Item> value = nullptr);
+
+        /**
+         * Removes and returns that latest added return value from the return stack.
+         * In case the return value stack is empty, the behaviour is undefined.
+         *
+         * @return  the latest added return value
+         */
         std::shared_ptr<Item> PopReturnValue();
+
+        /**
+         * Sets the value for the latest added return value.
+         *
+         * @param value the new return value
+         */
         void SetCurrentReturnValue(std::shared_ptr<Item> value);
 
         /**
@@ -111,7 +171,7 @@ namespace velox {
          * @param lineNumber    the line number within the source script.
          * @throws InterpreterError in case the item is unknown
          */
-        Item& GetItem(const std::string &name, unsigned int lineNumber);
+        Item &GetItem(const std::string &name, unsigned int lineNumber);
 
         /**
          * Searches for an item in the current local item as well as in all global scopes.
@@ -119,7 +179,7 @@ namespace velox {
          * @param name          the name of the requested item
          * @throws std::logic_error in case the item is unknown
          */
-        Item& GetItem(const std::string &name);
+        Item &GetItem(const std::string &name);
 
         /**
          * Searches for an item in the current local item as well as in all global scopes.
@@ -127,7 +187,7 @@ namespace velox {
          * @param name          the name of the requested item
          * @throws std::logic_error in case the item is unknown
          */
-        const Item& GetItem(const std::string &name) const;
+        const Item &GetItem(const std::string &name) const;
 
         /**
          * Searches for an item in the current local item as well as in all global scopes.
@@ -137,7 +197,7 @@ namespace velox {
          * @return the requested item
          * @throws InterpreterError in case the item is unknown
          */
-        const Item& GetItem(const std::string &name, unsigned int lineNumber) const;
+        const Item &GetItem(const std::string &name, unsigned int lineNumber) const;
 
         /**
          * Adds a local item to the current local scope.
@@ -146,7 +206,7 @@ namespace velox {
          * @param name  the name of the item
          * @param item  the item to add
          */
-        void AddLocalItem(const std::string& name, std::shared_ptr<Item> item);
+        void AddLocalItem(const std::string &name, std::shared_ptr<Item> item);
 
 
         ///**
@@ -173,16 +233,17 @@ namespace velox {
          * @param name  the name of the item
          * @return `true` if the item exits
          */
-        bool HasLocalItem(const std::string& name) const;
+        bool HasLocalItem(const std::string &name) const;
 
         /**
          * Adds an item to the hierarchy of global scopes.
          *
          * @param name  the name of the item
          * @param item  the item to add
-         * @throws std::logic_error in case the name is not unique within the global scopes
+         * @throws std::logic_error in case the name is not unique within the global scopes, or no global scope
+         *                          are available
          */
-        void AddGlobalItem(const std::string& name, std::shared_ptr<Item> item);
+        void AddGlobalItem(const std::string &name, std::shared_ptr<Item> item);
 
         /**
          * Tests whether an item within the hierarchy of global scopes exits.
@@ -190,7 +251,7 @@ namespace velox {
          * @param name  the name of the item
          * @return `true` if the item exits
          */
-        bool HasGlobalItem(const std::string& name) const;
+        bool HasGlobalItem(const std::string &name) const;
 
         /**
          * Searches for an local item within the current local scope.
@@ -270,7 +331,8 @@ namespace velox {
          *
          * @return `true` if a local scope exits
          */
-        bool HasLocalScope() const {
+        bool HasLocalScope() const
+        {
             return !localScopes.empty();
         }
 
@@ -279,7 +341,7 @@ namespace velox {
          *
          * @return the number of global scopes
          */
-        size_t NumberOfGlobalScopes() const;
+        size_t NumGlobalScopes() const;
 
         /**
          * Returns the number of local scopes.

@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -39,6 +39,14 @@ namespace astu {
          * @param data	the data of this memento
          */
         Memento(const std::vector<unsigned char> &data);
+
+        /**
+         * Constructor.
+         *
+         * @param data	the data of this memento
+         * @param len   the length of the data array
+         */
+        Memento(const unsigned char data[], size_t len);
 
         /**
          * Insertion operator used to store vectors of unsigned characters.
@@ -339,11 +347,25 @@ namespace astu {
         const Memento &Rewind() const;
 
         /**
+         * Sets this buffer's mark at its position.
+         *
+         * @return reference to this memento for method chaining
+         */
+        const Memento& Mark() const;
+
+        /**
+         * Resets this buffer's position to the previously-marked position.
+         *
+         * @return reference to this memento for method chaining
+         */
+        const Memento& Reset() const;
+
+        /**
          * Releases all data of this memento.
          *
          * @return reference to this memento for method chaining
          */
-        Memento &Reset();
+        Memento &Clear();
 
         /**
          * Returns the raw data stored in this memento.
@@ -361,6 +383,9 @@ namespace astu {
 
         /** The current reading position. */
         mutable size_t pos;
+
+        /** The marked position. */
+        mutable size_t mark;
     };
 
 } // end of namespace

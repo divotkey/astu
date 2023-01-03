@@ -1,12 +1,14 @@
-// Copyright (c) 2022 Roman Divotkey. All rights reserved.
-//
-// This file is subject to the terms and conditions defined in file 'LICENSE',
-// which is part of this source code package. See 'AUTHORS' file for a list
-// of contributors.
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2022-2023. Roman Divotkey. All rights reserved.
+ */
 
 #pragma once
 
 // Local includes
+#include "ISource.h"
 #include "TokenType.h"
 #include "Math/Tuple2.h"
 #include "Util/Memento.h"
@@ -24,23 +26,31 @@ namespace velox {
     /**
      * Represents a piece of source code offers methods to scan and tokenize it.
      */
-    class FastSource {
+    class FastSource : public ISource {
     public:
 
         /**
          * Constructor.
          */
-        FastSource() = default;
+        FastSource();
 
         /**
          * Virtual destructor.
          */
-        virtual ~FastSource() {}
+        virtual ~FastSource() = default;
 
-        /**
-         * Resets this source to its initial state.
-         */
-        void Reset();
+        // Inherited via ISource
+        void Reset() override;
+        TokenType GetCurrentTokenType() const override;
+        TokenType GetNextTokenType() override;
+        const std::string &GetStringValue() const override;
+        int GetIntegerValue() const override;
+        double GetRealValue() const override;
+        astu::Tuple2i GetPos() const override;
+        bool IsBlockStartFollowing() const override;
+        TokenType PeekNextTokenType() override;
+
+    protected:
 
         /**
          * Stores the current state to the specified memento.
@@ -55,82 +65,6 @@ namespace velox {
          * @param memento   the memento that contains the state
          */
         virtual void Restore(const astu::Memento &memento);
-
-        /**
-         * Returns the current token as retrieved from `GetNextTokenType`.
-         *
-         * @return the current token
-         */
-        TokenType GetCurrentTokenType() const {
-            return curToken;
-        }
-
-        /**
-         * Scans for the next token.
-         *
-         * @return the detected token
-         */
-        TokenType GetNextTokenType();
-
-        /**
-         * Returns the token which would been detected by the next call to 'GetNextTokenType'.
-         *
-         * @return the token which will be returned by 'GetNextTokenType'
-         */
-        TokenType PeekNextTokenType();
-
-        /**
-         * Returns the string value of an string-token.
-         * This method only returns valid results if the current token is of type string.
-         *
-         * @return the string value of an string-token
-         */
-        const std::string &GetStringValue() const {
-            return curString;
-        }
-
-        /**
-         * Returns the integer value of an integer-token.
-         * This method only returns valid results if the current token is of type integer.
-         *
-         * @return the integer value of an integer token
-         */
-        int GetIntegerValue() const {
-            return curInteger;
-        }
-
-        /**
-         * Returns the floating-point value of an real-token.
-         * This method only returns valid results if the current token is of type real.
-         *
-         * @return the floating-point value of an real-token
-         */
-        double GetRealValue() const {
-            return curReal;
-        }
-
-        /**
-         * Returns the line number of the current token within this source code.
-         *
-         * @return  the line number of the current token
-         */
-        int GetLine() const;
-
-        /**
-         * Returns the column number of the current token within this source code.
-         *
-         * @return  the column number of the current token
-         */
-        int GetColumn() const;
-
-        /**
-         * Return the row and column number of the current token within the source code.
-         *
-         * @return the row and column number of the current token
-         */
-        astu::Tuple2i GetPos() const;
-
-    protected:
 
         /**
          * Returns the next character within the source.
@@ -246,7 +180,7 @@ namespace velox {
         /**
          * Constructor.
          */
-        FastFileSource();
+        FastFileSource() = default;
 
         /**
          * Resets this source to a new file path.
@@ -256,18 +190,11 @@ namespace velox {
          */
         void Reset(const std::string &filepath);
 
-        /**
-         * Resets this source to the start of the current script source.
-         */
-        void Reset();
-
-        const std::string &GetFilepath() const {
-            return filepath;
-        }
-
         // Inherited via FastSource;
+        void Reset() override;
         void Store(astu::Memento &memento) override;
         void Restore(const astu::Memento &memento) override;
+        std::string GetFilepath() const override;
 
     protected:
 
@@ -280,6 +207,54 @@ namespace velox {
 
         /** The file stream to the source file. */
         std::unique_ptr<std::ifstream> source;
+    };
+
+    /**
+     * This class delivers characters from a string.
+     */
+    class FastStringSource : public FastSource {
+    public:
+
+        /**
+         * Constructor.
+         *
+         * @param sourceCode    the string representing the source code
+         */
+        FastStringSource(const std::string &sourceCode);
+
+        /**
+         * Constructor.
+         */
+        FastStringSource() = default;
+
+        /**
+         * Resets this source to a new file path.
+         *
+         * @param sourceCode    the string representing the source code
+         */
+        void Reset(const std::string &sourceCode);
+
+        /**
+         * Resets this source to the start of the current script source.
+         */
+        void Reset() override;
+
+        // Inherited via FastSource;
+        void Store(astu::Memento &memento) override;
+        void Restore(const astu::Memento &memento) override;
+        std::string GetFilepath() const override;
+
+    protected:
+
+        // Inherited via FastSource
+        int NextChar() override;
+
+    private:
+        /** The path to the input file. */
+        std::string sourceCode;
+
+        /** The current position within the source code string. */
+        size_t pos;
     };
 
 } // end of namespace

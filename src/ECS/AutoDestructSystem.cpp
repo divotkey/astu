@@ -1,3 +1,10 @@
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2023. Roman Divotkey. All rights reserved.
+ */
+
 // Local includes
 #include "ECS/AutoDestructSystem.h"
 #include "ECS/CAutoDestruct.h"

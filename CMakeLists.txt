@@ -1,11 +1,11 @@
-# CMake file for AST-Utilities Version 0.11.3
-# Generated Mon Dec 19 07:17:15 CET 2022 with SWORD Interpreter 1.9.0
+# CMake file for AST-Utilities Version 0.11.5
+# Generated Tue Jan 03 11:56:42 CET 2023 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
 
 # Add version information
-project(ASTU VERSION 0.11.3)
+project(ASTU VERSION 0.11.5)
 
 # Define C++ Standard
 set(CMAKE_CXX_STANDARD 17)
@@ -222,6 +222,7 @@ list(APPEND astu_SOURCES
 	include/Service/SignalService.h 
 	include/Service/SignalServiceTs.h 
 	include/Service/StateService.h 
+	include/Service/SubstateService.h 
 	include/Service/Tasks.h 
 	include/Service/TaskService.h 
 	include/Service/ThreadService.h 
@@ -283,6 +284,8 @@ list(APPEND astu_SOURCES
 	include/Script/ScannerError.h 
 
 	# Module: Velox
+	src/Velox/Extensions/FibTokens.cpp 
+	src/Velox/Extensions/FibTokens.h 
 	src/Velox/Extensions/GraphicsExtension.cpp 
 	src/Velox/Extensions/ImageExtension.cpp 
 	src/Velox/Extensions/InstantBuilder.cpp 
@@ -361,13 +364,16 @@ list(APPEND astu_SOURCES
 	src/Velox/Interpreter/SimpleMemoryManager.cpp 
 	src/Velox/Interpreter/VeloxImage.cpp 
 	src/Velox/Parser/FastSource.cpp 
+	src/Velox/Parser/MementoSource.cpp 
 	src/Velox/Parser/Parser.cpp 
 	src/Velox/Parser/Source.cpp 
 	src/Velox/Parser/SourceFile.cpp 
 	src/Velox/Parser/SourceString.cpp 
+	src/Velox/Parser/SourceUtils.cpp 
 	src/Velox/Parser/Token.cpp 
 	src/Velox/Parser/TokenType.cpp 
 	src/Velox/Service/VeloxConstants.cpp 
+	src/Velox/Service/VeloxExecutionService.cpp 
 	src/Velox/Service/VeloxExtensionService.cpp 
 	include/Velox/Extensions/ExtensionConstructorNoParameter.h 
 	include/Velox/Extensions/ExtensionConstructorOneParameter.h 
@@ -459,14 +465,18 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/VeloxExtension.h 
 	include/Velox/Interpreter/VeloxImage.h 
 	include/Velox/Parser/FastSource.h 
+	include/Velox/Parser/ISource.h 
+	include/Velox/Parser/MementoSource.h 
 	include/Velox/Parser/Parser.h 
 	include/Velox/Parser/ParserError.h 
 	include/Velox/Parser/Source.h 
 	include/Velox/Parser/SourceFile.h 
 	include/Velox/Parser/SourceString.h 
+	include/Velox/Parser/SourceUtils.h 
 	include/Velox/Parser/Token.h 
 	include/Velox/Parser/TokenType.h 
 	include/Velox/Service/VeloxConstants.h 
+	include/Velox/Service/VeloxExecutionService.h 
 	include/Velox/Service/VeloxExtensionService.h 
 
 	)

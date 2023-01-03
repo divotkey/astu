@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 // Local includes
@@ -20,7 +20,7 @@ namespace astu {
     LogLevel LogLevelUtils::StringToLevel(const string &level)
     {
         string lvl = level;
-        StringUtils::toLowerCase(lvl);
+        StringUtils::ToLowerCase(lvl);
 
         if (lvl == "fatal")
             return LogLevel::Fatal;

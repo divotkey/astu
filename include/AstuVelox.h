@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -17,6 +17,7 @@
 #include "Velox/Parser/ParserError.h"
 #include "Velox/Interpreter/Interpreter.h"
 #include "Velox/Interpreter/InterpreterFunctionPrint.h"
+#include "Velox/Service/VeloxExecutionService.h"
 #include "Velox/Service/VeloxExtensionService.h"
 #include "Velox/Extensions/LoggingExtension.h"
 #include "Velox/Extensions/ImageExtension.h"

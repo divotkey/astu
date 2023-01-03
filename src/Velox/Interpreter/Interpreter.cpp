@@ -1,8 +1,9 @@
-// Copyright (c) 2022 Roman Divotkey. All rights reserved.
-//
-// This file is subject to the terms and conditions defined in file 'LICENSE',
-// which is part of this source code package. See 'AUTHORS' file for a list
-// of contributors.
+/*
+ * ASTU - AST Utilities
+ * A collection of Utilities for Applied Software Techniques (AST).
+ *
+ * Copyright (c) 2022-2023. Roman Divotkey. All rights reserved.
+ */
 
 // Local includes
 #include "Velox/Interpreter/Interpreter.h"
@@ -34,29 +35,24 @@ namespace velox {
         // Intentionally left empty.
     }
 
-    void velox::Interpreter::Execute(std::shared_ptr<velox::InterpreterStatement> program) {
+    void velox::Interpreter::Execute(InterpreterStatement &statement) {
         context.ClearFlags();
         context.ClearReturnValues();
-        program->Execute(context);
+        statement.Execute(context);
     }
 
-    void Interpreter::AddFunction(const std::string &name, std::shared_ptr<InterpreterFunction> function) {
+    void Interpreter::AddGlobalFunction(const std::string &name, std::shared_ptr<InterpreterFunction> function) {
         if (context.HasGlobalItem(name)) {
             throw std::logic_error("Ambiguous function name '" + name + "'");
         }
         context.AddGlobalItem(name, Item::CreateFunction(function));
     }
 
-    void Interpreter::AddInstant(InterpreterInstantDefinition &instantDef)
-    {
-        AddObjectType(instantDef.GetTypeName(), instantDef.CreateObjectType());
-    }
-
-    void Interpreter::AddRealConstant(const string &name, double value) {
+    void Interpreter::AddGlobalReal(const string &name, double value) {
         context.AddGlobalItem(name, Item::CreateReal(value));
     }
 
-    void Interpreter::AddIntConstant(const string &name, int value) {
+    void Interpreter::AddGlobalInteger(const string &name, int value) {
         context.AddGlobalItem(name, Item::CreateInteger(value));
     }
 
@@ -65,25 +61,30 @@ namespace velox {
         context.AddGlobalItem(name, item);
     }
 
+    void Interpreter::AddInstant(InterpreterInstantDefinition &instantDef)
+    {
+        AddObjectType(instantDef.GetTypeName(), instantDef.CreateObjectType());
+    }
+
     void Interpreter::AddObjectType(const std::string &name, std::shared_ptr<ObjectType> objType) {
         context.AddObjectType(name, objType);
     }
 
-    bool Interpreter::HasObjectType(const string &name) const {
+    [[maybe_unused]] bool Interpreter::HasObjectType(const string &name) const {
         return context.HasObjectType(name);
     }
 
     void Interpreter::AddStandardGlobals() {
-        assert(context.NumberOfGlobalScopes() > 0);
+        assert(context.NumGlobalScopes() > 0);
 
-        AddRealConstant("PI", MathUtils::PId);
-        AddRealConstant("PI2", MathUtils::PI2d);
-        AddRealConstant("MAX_REAL", std::numeric_limits<double>::max());
-        AddRealConstant("MIN_REAL", std::numeric_limits<double>::lowest());
-        AddIntConstant("MAX_INT", std::numeric_limits<int>::max());
-        AddIntConstant("MIN_INT", std::numeric_limits<int>::lowest());
+        AddGlobalReal("PI", MathUtils::PId);
+        AddGlobalReal("PI2", MathUtils::PI2d);
+        AddGlobalReal("MAX_REAL", std::numeric_limits<double>::max());
+        AddGlobalReal("MIN_REAL", std::numeric_limits<double>::lowest());
+        AddGlobalInteger("MAX_INT", std::numeric_limits<int>::max());
+        AddGlobalInteger("MIN_INT", std::numeric_limits<int>::lowest());
 
-        AddFunction("real", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("real", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     if (param->GetType() == ItemType::Real)
                         return param;
@@ -91,7 +92,7 @@ namespace velox {
                         return Item::CreateReal(param->GetRealValue(lineNumber));
                 }));
 
-        AddFunction("int", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("int", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     if (param->GetType() == ItemType::Integer)
                         return param;
@@ -99,60 +100,62 @@ namespace velox {
                         return Item::CreateInteger(param->GetIntegerValue());
                 }));
 
-        AddFunction("rnd", make_shared<InterpreterFunctionNoParameter>(
+        AddGlobalFunction("rnd", make_shared<InterpreterFunctionNoParameter>(
                 [](unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(Random::GetInstance().NextDouble());
                 }));
 
-        AddFunction("sqrt", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("sqrt", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::sqrt(param->GetRealValue(lineNumber)));
                 }));
 
-        AddFunction("log", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("log", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::log(param->GetRealValue(lineNumber)));
                 }));
 
-        AddFunction("sin", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("sin", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::sin(param->GetRealValue(lineNumber)));
                 }));
 
-        AddFunction("cos", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("cos", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::cos(param->GetRealValue(lineNumber)));
                 }));
 
-        AddFunction("tan", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("tan", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::tan(param->GetRealValue(lineNumber)));
                 }));
 
-        AddFunction("asin", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("asin", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::asin(param->GetRealValue(lineNumber)));
                 }));
 
-        AddFunction("acos", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("acos", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::acos(param->GetRealValue(lineNumber)));
                 }));
 
-        AddFunction("atan", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("atan", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::atan(param->GetRealValue(lineNumber)));
                 }));
 
-        AddFunction("atan2", make_shared<InterpreterFunctionTwoParameter>(
-                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
+        AddGlobalFunction("atan2", make_shared<InterpreterFunctionTwoParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2,
+                   unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(
                             std::atan2(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber)));
                 }));
 
-        AddFunction("min", make_shared<InterpreterFunctionTwoParameter>(
-                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
-                    if (param1->IsReal() || param2->IsReal()){
+        AddGlobalFunction("min", make_shared<InterpreterFunctionTwoParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2,
+                   unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    if (param1->IsReal() || param2->IsReal()) {
                         return Item::CreateReal(
                                 std::min(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber)));
                     } else if (param1->IsInteger() && param2->IsInteger()) {
@@ -162,9 +165,10 @@ namespace velox {
                     throw InterpreterError("min function not defined for these types", lineNumber);
                 }));
 
-        AddFunction("max", make_shared<InterpreterFunctionTwoParameter>(
-                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
-                    if (param1->IsReal() || param2->IsReal()){
+        AddGlobalFunction("max", make_shared<InterpreterFunctionTwoParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2,
+                   unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    if (param1->IsReal() || param2->IsReal()) {
                         return Item::CreateReal(
                                 std::max(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber)));
                     } else if (param1->IsInteger() && param2->IsInteger()) {
@@ -174,48 +178,51 @@ namespace velox {
                     throw InterpreterError("max function not defined for these types", lineNumber);
                 }));
 
-        AddFunction("rad2deg", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("rad2deg", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(MathUtils::ToDegrees(param->GetRealValue(lineNumber)));
                 }));
 
-        AddFunction("deg2rad", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("deg2rad", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(MathUtils::ToRadians(param->GetRealValue(lineNumber)));
                 }));
 
-        AddFunction("extractHue", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("extractHue", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     ColorHsv hsv(param->GetColorValue());
                     return Item::CreateReal(hsv.h);
                 }));
 
-        AddFunction("extractSaturation", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("extractSaturation", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     ColorHsv hsv(param->GetColorValue());
                     return Item::CreateReal(hsv.s);
                 }));
 
-        AddFunction("extractBrightness", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("extractBrightness", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     ColorHsv hsv(param->GetColorValue());
                     return Item::CreateReal(hsv.v);
                 }));
 
-        AddFunction("colorFromHue", make_shared<InterpreterFunctionOneParameter>(
+        AddGlobalFunction("colorFromHue", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     ColorHsv hsv(param->GetRealValue(lineNumber), 1.0, 1.0);
                     return Item::CreateColor(hsv.ToRgb());
                 }));
 
-        AddFunction("colorFromHSV", make_shared<InterpreterFunctionThreeParameter>(
-                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, shared_ptr<Item> param3, unsigned int lineNumber) -> std::shared_ptr<Item> {
-                    ColorHsv hsv(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber), param3->GetRealValue(lineNumber));
+        AddGlobalFunction("colorFromHSV", make_shared<InterpreterFunctionThreeParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, shared_ptr<Item> param3,
+                   unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    ColorHsv hsv(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber),
+                                 param3->GetRealValue(lineNumber));
                     return Item::CreateColor(hsv.ToRgb());
                 }));
 
-        AddFunction("clamp", make_shared<InterpreterFunctionThreeParameter>(
-                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, shared_ptr<Item> param3, unsigned int lineNumber) -> std::shared_ptr<Item> {
+        AddGlobalFunction("clamp", make_shared<InterpreterFunctionThreeParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, shared_ptr<Item> param3,
+                   unsigned int lineNumber) -> std::shared_ptr<Item> {
                     if (param1->IsReal() || param2->IsReal() || param3->IsReal()) {
 
                         return Item::CreateReal(MathUtils::Clamp(param1->GetRealValue(lineNumber),
@@ -224,25 +231,32 @@ namespace velox {
                     }
 
                     return Item::CreateInteger(MathUtils::Clamp(param1->GetIntegerValue(),
-                                                             param2->GetIntegerValue(),
-                                                             param3->GetIntegerValue()));
+                                                                param2->GetIntegerValue(),
+                                                                param3->GetIntegerValue()));
                 }));
     }
 
-    void Interpreter::CallWithNoParams(Item &item)
+    void Interpreter::CallFunctionNoParam(Item &item)
     {
         InterpreterNoParameterList noParams;
-        Call(item, noParams);
+        CallFunction(item, noParams);
     }
 
-    void Interpreter::CallWithIntParam(Item &item, int value)
+    void Interpreter::CallFunctionIntParam(Item &item, int value)
     {
         InterpreterItemParameterList params;
         params.AddParameter(Item::CreateInteger(value));
-        Call(item, params);
+        CallFunction(item, params);
     }
 
-    void Interpreter::Call(Item &item, InterpreterActualParameterList &params)
+    void Interpreter::CallFunctionRealParam(Item &item, double value)
+    {
+        InterpreterItemParameterList params;
+        params.AddParameter(Item::CreateReal(value));
+        CallFunction(item, params);
+    }
+
+    void Interpreter::CallFunction(Item &item, InterpreterActualParameterList &params)
     {
         context.ClearFlags();
         context.ClearReturnValues();
@@ -260,6 +274,11 @@ namespace velox {
     void Interpreter::PopGlobalScope()
     {
         context.PopGlobalScope();
+    }
+
+    size_t Interpreter::NumGlobalScopes() const
+    {
+        context.NumGlobalScopes();
     }
 
 } // end of namespace
