@@ -278,7 +278,7 @@ namespace velox {
 
     size_t Interpreter::NumGlobalScopes() const
     {
-        context.NumGlobalScopes();
+        return context.NumGlobalScopes();
     }
 
 } // end of namespace

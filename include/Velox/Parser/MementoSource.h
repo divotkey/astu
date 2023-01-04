@@ -41,7 +41,7 @@ namespace astu {
         double GetRealValue() const override;
         Tuple2i GetPos() const override;
         velox::TokenType PeekNextTokenType() override;
-        bool IsBlockStartFollowing() const override;
+        bool IsBlockStartFollowing() override;
 
     private:
         /** The original filename of the source. */

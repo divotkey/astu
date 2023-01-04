@@ -1,4 +1,4 @@
-// Velox Bytelight Extension Version 1.0.0
+// Velox ByteLight Extension Version 1.0.1
 // Copyright 2022-2023 Roman Divotkey. All rights reserved.
 //
 // AST-Utilities
@@ -72,7 +72,8 @@ instant Rendering {
 
 		LogInfo("Rendering image (" + img.GetWidth() + " x " + img.GetHeight() + ")");
 		if (_patterns.size() == 1) {
-			renderer.Render(_patterns[0], img);
+			LogDebug("_patterns.size() == 1");
+			renderer.Render(_patterns[0].GetPattern(), img);
 		} else {
 			union = new UnionPattern();
 			for (i = 0; i < _patterns.size(); ++i) {

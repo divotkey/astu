@@ -9,8 +9,6 @@
 #include "Velox/Extensions/GraphicsExtensions.h"
 #include "Velox/Extensions/InstantBuilder.h"
 #include "Velox/Extensions/GraphicsInstants.h"
-#include "Velox/Parser/MementoSource.h"
-#include "Velox/Parser/Parser.h"
 #include "Velox/Interpreter/ObjectType.h"
 #include "Velox/Interpreter/Item.h"
 #include "Velox/Interpreter/InterpreterFunction.h"
@@ -536,12 +534,11 @@ namespace astu {
                 ))
                 .Build(interpreter)
                 ;
-
     }
 
     void GraphicsExtension::AddPatternInstants(Interpreter &interpreter) const
     {
-        graphicsInstants.Execute(interpreter);
+        //graphicsInstants.Execute(interpreter);
     }
 
     void GraphicsExtension::AddWebColors(Interpreter &interpreter) const

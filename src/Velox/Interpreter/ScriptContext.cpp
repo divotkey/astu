@@ -171,23 +171,28 @@ namespace velox {
     }
 
     std::shared_ptr<ObjectType> ScriptContext::FindObjectType(const std::string &name) {
-        auto it = objectTypes.find(name);
-        if (it == objectTypes.end()) {
+        if (globalScopes.empty()) {
             return nullptr;
         }
-        return it->second;
+
+        return globalScopes.back()->FindObjectType(name);
     }
 
     void ScriptContext::AddObjectType(const std::string &name, std::shared_ptr<ObjectType> type) {
+        assert(!globalScopes.empty());
+
         if (HasObjectType(name)) {
             throw std::logic_error("Unable to add new object type, type name is ambiguous '" + name + "'");
         }
 
-        objectTypes[name] = type;
+        globalScopes.back()->AddObjectType(name, type);
     }
 
     bool ScriptContext::HasObjectType(const std::string &name) const {
-        return objectTypes.find(name) != objectTypes.end();
+        if (globalScopes.empty())
+            return false;
+
+        return globalScopes.back()->HasObjectType(name, true);
     }
 
     void ScriptContext::AddGlobalItem(const std::string &name, std::shared_ptr<Item> item) {
@@ -205,6 +210,10 @@ namespace velox {
     {
         if (!scope) {
             scope = make_shared<Scope>();
+        }
+
+        if(!globalScopes.empty()) {
+            scope->parent = globalScopes.back();
         }
 
         globalScopes.push_back(scope);

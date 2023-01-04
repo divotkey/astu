@@ -94,7 +94,7 @@ namespace velox {
          *
          * @return `true` if the next token will be a block-start token.
          */
-        virtual bool IsBlockStartFollowing() const = 0;
+        virtual bool IsBlockStartFollowing() = 0;
 
         /**
          * Returns the line number of the current token within this source code.

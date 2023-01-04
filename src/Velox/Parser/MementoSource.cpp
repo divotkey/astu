@@ -146,7 +146,7 @@ namespace astu {
         return static_cast<TokenType>(type);
     }
 
-    bool MementoSource::IsBlockStartFollowing() const
+    bool MementoSource::IsBlockStartFollowing()
     {
         memento.Mark();
         int type;

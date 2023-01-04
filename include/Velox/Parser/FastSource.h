@@ -47,7 +47,7 @@ namespace velox {
         int GetIntegerValue() const override;
         double GetRealValue() const override;
         astu::Tuple2i GetPos() const override;
-        bool IsBlockStartFollowing() const override;
+        bool IsBlockStartFollowing() override;
         TokenType PeekNextTokenType() override;
 
     protected:
@@ -92,6 +92,9 @@ namespace velox {
         /** The last recognized token type. */
         TokenType curToken;
 
+        /** The previously recognized token type. */
+        TokenType prevToken;
+
         /** Stores last recognized string value or identifier names. */
         std::string curString;
 
@@ -103,7 +106,6 @@ namespace velox {
 
         /** Used to restore state after peeking the next token. */
         astu::Memento memento;
-
 
         /**
          * Skips all whitespace characters.
@@ -125,8 +127,10 @@ namespace velox {
 
         /**
          * Reads a string which is enclosed within double quote characters.
+         *
+         * @param withEscape    whether to consider escape sequences
          */
-        void ReadString();
+        void ReadString(bool withEscape);
 
         /**
          * Reads an identifier.

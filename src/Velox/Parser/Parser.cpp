@@ -67,7 +67,7 @@ namespace velox {
                                                  TokenType::IF, TokenType::WHILE, TokenType::DO, TokenType::FOR,
                                                  TokenType::LOOP, TokenType::BREAK, TokenType::CONTINUE,
                                                  TokenType::CLASS, TokenType::NEW, TokenType::INSTANT,
-                                                 TokenType::INCLUDE
+                                                 TokenType::INCLUDE, TokenType::SEMICOLON
     };
 
     const TokenType Parser::LVALUE_CHAIN[] = {TokenType::MEMBER_ACCESS, TokenType::LEFT_BRACKET,
@@ -152,11 +152,17 @@ namespace velox {
         // Per definition the source should already have an active token.
         //source.GetNextTokenType();
         while (CONTAINS(STATEMENT_START, source.GetCurrentTokenType())) {
-            if (source.GetCurrentTokenType() == TokenType::SEMICOLON)
+            if (source.GetCurrentTokenType() == TokenType::SEMICOLON) {
+                source.GetNextTokenType();
                 continue;
+            }
 
             auto statement = ParseStatement(source);
             result->AddStatement(statement);
+        }
+
+        if (source.GetCurrentTokenType() != TokenType::EOS) {
+            throw ParserError("End of script expected", source.GetLine());
         }
 
         return result;
@@ -323,7 +329,7 @@ namespace velox {
         //std::fstream inFile(source.GetStringValue(), ios::in | ios::binary);
 
         FastFileSource includeSource(source.GetStringValue());
-        includeSource.GetNextTokenType();
+        source.GetNextTokenType();
         return ParseStatementBlock(includeSource, false);
     }
 

@@ -356,9 +356,6 @@ namespace velox {
         /** Stack of instant items values. */
         std::vector<std::shared_ptr<Item>> instantStack;
 
-        /** Type definitions for custom objects. */
-        std::map<std::string, std::shared_ptr<ObjectType>> objectTypes;
-
         /** Flags to be set and queried during execution of scripts. */
         unsigned int flags;
     };

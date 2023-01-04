@@ -64,8 +64,9 @@ namespace velox {
         return result;
     }
 
-    bool FastSource::IsBlockStartFollowing() const
+    bool FastSource::IsBlockStartFollowing()
     {
+        EatWhitespace();
         return curChar == '{';
     }
 
@@ -73,6 +74,7 @@ namespace velox {
     {
         EatWhitespace();
 
+        prevToken = curToken;
         startPos = curPos;
         switch (curChar) {
             case -1:
@@ -239,7 +241,7 @@ namespace velox {
                 endPos = curPos;
                 return curToken = TokenType::BIN_OR;
             case '"':
-                ReadString();
+                ReadString(prevToken != TokenType::INCLUDE);
                 endPos = curPos;
                 return curToken = TokenType::STRING;
         }
@@ -299,13 +301,13 @@ namespace velox {
         throw ParserError("block comment not closed", startPos.y);
     }
 
-    void FastSource::ReadString()
+    void FastSource::ReadString(bool withEscape)
     {
         assert(curChar == '"');
         ReadChar();
         curString.clear();
         while (curChar != -1 && curChar != '"') {
-            if (curChar == '\\') {
+            if (withEscape && curChar == '\\') {
                 ReadChar();
                 switch (curChar) {
                     case 'n':
@@ -456,7 +458,7 @@ namespace velox {
         startPos = endPos = curPos.Set(0, 1);
 
         // Let's set recognized values (tokens, strings, identifiers, numbers) to default values.
-        curToken = TokenType::INVALID;
+        curToken = prevToken = TokenType::INVALID;
         curString.clear();
         curReal = curInteger = 0;
 
@@ -469,15 +471,17 @@ namespace velox {
 
     void FastSource::Store(astu::Memento &inMemento)
     {
-        inMemento << static_cast<int>(curToken) << curChar << curString << curInteger << curReal << curPos << startPos << endPos;
+        inMemento << static_cast<int>(curToken) << static_cast<int>(prevToken) << curChar << curString << curInteger << curReal << curPos << startPos << endPos;
     }
 
     void FastSource::Restore(const astu::Memento &inMemento)
     {
         int token;
         curString.clear();
-        inMemento >> token >> curChar >> curString >> curInteger >> curReal >> curPos >> startPos >> endPos;
+        inMemento >> token;
         curToken = static_cast<TokenType>(token);
+        inMemento >> token >> curChar >> curString >> curInteger >> curReal >> curPos >> startPos >> endPos;
+        prevToken = static_cast<TokenType>(token);
     }
 
     astu::Tuple2i FastSource::GetPos() const

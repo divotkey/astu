@@ -59,6 +59,48 @@ namespace velox {
     void Scope::Clear() {
         items.clear();
         anonymousItems.clear();
+        objectTypes.clear();
+    }
+
+    std::shared_ptr<ObjectType> Scope::FindObjectType(const string &name)
+    {
+        auto it = objectTypes.find(name);
+        if (it != objectTypes.end()) {
+            return it->second;
+        }
+
+        auto pParent = parent.lock();
+        if (pParent) {
+            return pParent->FindObjectType(name);
+        }
+
+        return nullptr;
+    }
+
+    bool Scope::HasObjectType(const string &name, bool searchHierarchy) const
+    {
+        auto it = objectTypes.find(name);
+        if (it != objectTypes.end()) {
+            return true;
+        }
+
+        if (searchHierarchy) {
+            auto pParent = parent.lock();
+            if (pParent) {
+                return pParent->HasObjectType(name, true);
+            }
+        }
+
+        return false;
+    }
+
+    void Scope::AddObjectType(const string &name, std::shared_ptr<ObjectType> type)
+    {
+        if (HasObjectType(name, false)) {
+            throw std::logic_error("Unable to add new object type, type name is ambiguous '" + name + "'");
+        }
+
+        objectTypes[name] = type;
     }
 
 } // end of namespace
