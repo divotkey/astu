@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2022-2023. Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023 Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -18,9 +18,7 @@ namespace velox {
 
     // Forward declaration.
     class Item;
-
     class Scope;
-
     class ObjectType;
 
     /**
@@ -65,11 +63,6 @@ namespace velox {
          */
         [[nodiscard]]
         bool HasObjectType(const std::string &name) const;
-
-        /**
-         * Removes all previously added object types.
-         */
-        void ClearObjectTypes();
 
         /**
          * Sets flags according to the specified bitmask.

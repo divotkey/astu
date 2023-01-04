@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023 Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -89,11 +89,11 @@ namespace astu {
         const Memento &operator>>(uint64_t &value) const;
 
         /**
-           * Insertion operator for signed integer integer values.
-           *
-           * @param value the signed integer value to insert
-           * @return reference tho this memento for method chaining
-           */
+         * Insertion operator for signed integer integer values.
+         *
+         * @param value the signed integer value to insert
+         * @return reference tho this memento for method chaining
+         */
         Memento &operator<<(const char &value);
 
         /**
@@ -103,6 +103,22 @@ namespace astu {
          * @return reference tho this memento for method chaining
          */
         const Memento &operator>>(char &value) const;
+
+        /**
+         * Insertion operator for signed integer integer values.
+         *
+         * @param value the signed integer value to insert
+         * @return reference tho this memento for method chaining
+         */
+        Memento &operator<<(const unsigned char &value);
+
+        /**
+         * Extraction operator for signed characters.
+         *
+         * @param value the signed character to extract
+         * @return reference tho this memento for method chaining
+         */
+        const Memento &operator>>(unsigned char &value) const;
 
         /**
          * Insertion operator for signed signed characters.

@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023 Roman Divotkey. All rights reserved.
  */
 
 // Local includes
@@ -37,7 +37,8 @@ namespace astu {
 
     void MementoSource::StoreToken(const ISource &source, Memento &memento)
     {
-        memento << static_cast<int>(source.GetCurrentTokenType());
+        //memento << static_cast<int>(source.GetCurrentTokenType());
+        memento << static_cast<unsigned char>(source.GetCurrentTokenType());
         memento << source.GetPos();
 
         switch (source.GetCurrentTokenType()) {
@@ -85,7 +86,7 @@ namespace astu {
 
     velox::TokenType MementoSource::GetNextTokenType()
     {
-        int type;
+        unsigned char type;
         memento >> type;
         curToken = static_cast<TokenType>(type);
         memento >> pos;

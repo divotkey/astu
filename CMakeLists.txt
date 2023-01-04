@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.5
-# Generated Tue Jan 03 11:56:42 CET 2023 with SWORD Interpreter 1.9.0
+# Generated Tue Jan 03 20:14:33 CET 2023 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -284,9 +284,9 @@ list(APPEND astu_SOURCES
 	include/Script/ScannerError.h 
 
 	# Module: Velox
-	src/Velox/Extensions/FibTokens.cpp 
-	src/Velox/Extensions/FibTokens.h 
+	src/Velox/Extensions/CompiledSource.cpp 
 	src/Velox/Extensions/GraphicsExtension.cpp 
+	src/Velox/Extensions/GraphicsInstants.cpp 
 	src/Velox/Extensions/ImageExtension.cpp 
 	src/Velox/Extensions/InstantBuilder.cpp 
 	src/Velox/Extensions/LoggingExtension.cpp 
@@ -375,6 +375,7 @@ list(APPEND astu_SOURCES
 	src/Velox/Service/VeloxConstants.cpp 
 	src/Velox/Service/VeloxExecutionService.cpp 
 	src/Velox/Service/VeloxExtensionService.cpp 
+	include/Velox/Extensions/CompiledSource.h 
 	include/Velox/Extensions/ExtensionConstructorNoParameter.h 
 	include/Velox/Extensions/ExtensionConstructorOneParameter.h 
 	include/Velox/Extensions/ExtensionConstructorTwoParameter.h 
@@ -382,6 +383,7 @@ list(APPEND astu_SOURCES
 	include/Velox/Extensions/ExtensionFunctionOneParameter.h 
 	include/Velox/Extensions/ExtensionFunctionTwoParameter.h 
 	include/Velox/Extensions/GraphicsExtensions.h 
+	include/Velox/Extensions/GraphicsInstants.h 
 	include/Velox/Extensions/ImageExtension.h 
 	include/Velox/Extensions/InstantBuilder.h 
 	include/Velox/Extensions/LoggingExtension.h 

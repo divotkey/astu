@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2022-2023. Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023 Roman Divotkey. All rights reserved.
  */
 
 // Local includes
@@ -146,9 +146,9 @@ namespace velox {
         source.GetNextTokenType();
     }
 
-    std::shared_ptr<InterpreterScript> Parser::Parse(ISource &source) {
+    std::unique_ptr<InterpreterScript> Parser::Parse(ISource &source) {
 
-        std::shared_ptr<InterpreterScript> result = make_shared<InterpreterScript>();
+        std::unique_ptr<InterpreterScript> result = make_unique<InterpreterScript>();
         // Per definition the source should already have an active token.
         //source.GetNextTokenType();
         while (CONTAINS(STATEMENT_START, source.GetCurrentTokenType())) {

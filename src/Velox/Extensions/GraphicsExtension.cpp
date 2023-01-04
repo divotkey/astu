@@ -2,13 +2,13 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023 Roman Divotkey. All rights reserved.
  */
 
 // Local includes
 #include "Velox/Extensions/GraphicsExtensions.h"
 #include "Velox/Extensions/InstantBuilder.h"
-#include "Velox/Extensions/FibTokens.h"
+#include "Velox/Extensions/GraphicsInstants.h"
 #include "Velox/Parser/MementoSource.h"
 #include "Velox/Parser/Parser.h"
 #include "Velox/Interpreter/ObjectType.h"
@@ -541,10 +541,7 @@ namespace astu {
 
     void GraphicsExtension::AddPatternInstants(Interpreter &interpreter) const
     {
-        auto source = MementoSource(FibTokens::GetMemento());
-        Parser parser;
-        auto script = parser.Parse(source);
-        interpreter.Execute(*script);
+        graphicsInstants.Execute(interpreter);
     }
 
     void GraphicsExtension::AddWebColors(Interpreter &interpreter) const

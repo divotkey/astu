@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2020-2023. Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023 Roman Divotkey. All rights reserved.
  */
 
 // Local includes
@@ -43,6 +43,16 @@ namespace astu {
     }
 
     const Memento &Memento::operator>>(char &value) const
+    {
+        return Read(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+    }
+
+    Memento &Memento::operator<<(const unsigned char &value)
+    {
+        return Write(reinterpret_cast<const unsigned char*>(&value), sizeof(value));
+    }
+
+    const Memento &Memento::operator>>(unsigned char &value) const
     {
         return Read(reinterpret_cast<unsigned char*>(&value), sizeof(value));
     }

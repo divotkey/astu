@@ -2,7 +2,7 @@
  * ASTU - AST Utilities
  * A collection of Utilities for Applied Software Techniques (AST).
  *
- * Copyright (c) 2022-2023. Roman Divotkey. All rights reserved.
+ * Copyright (c) 2020-2023 Roman Divotkey. All rights reserved.
  */
 
 #pragma once
@@ -31,7 +31,7 @@ namespace velox {
     class Parser {
     public:
 
-        std::shared_ptr<InterpreterScript> Parse(ISource &source);
+        std::unique_ptr<InterpreterScript> Parse(ISource &source);
 
         /**
          * Parses a single instant definition.
