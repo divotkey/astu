@@ -2,7 +2,7 @@
 // Copyright 2021, 2022 Roman Divotkey. All rights reserved.
 
 // Configuration
-astuVersion = "0.11.3";
+astuVersion = "0.11.5";
 privateDir = "src";
 publicDir = "include";
 srcVar = "astu_SOURCES";

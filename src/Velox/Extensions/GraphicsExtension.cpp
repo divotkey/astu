@@ -538,7 +538,7 @@ namespace astu {
 
     void GraphicsExtension::AddPatternInstants(Interpreter &interpreter) const
     {
-        //graphicsInstants.Execute(interpreter);
+        graphicsInstants.Execute(interpreter);
     }
 
     void GraphicsExtension::AddWebColors(Interpreter &interpreter) const

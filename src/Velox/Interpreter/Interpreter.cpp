@@ -105,6 +105,29 @@ namespace velox {
                     return Item::CreateReal(Random::GetInstance().NextDouble());
                 }));
 
+        AddGlobalFunction("RandomInt", make_shared<InterpreterFunctionTwoParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    if (param2->IsUndefined()) {
+                        if (param1->IsUndefined()) {
+                            return Item::CreateInteger(Random::GetInstance().NextInt());
+                        } else {
+                            int value = param1->GetIntegerValue(lineNumber);
+                            if (value <= 0) {
+                                return Item::CreateInteger(Random::GetInstance().NextInt(std::numeric_limits<int>::min(), 0));
+                            } else {
+                                return Item::CreateInteger(Random::GetInstance().NextInt(0, std::numeric_limits<int>::max()));
+                            }
+                        }
+                    } else {
+                        int low = param1->GetIntegerValue(lineNumber);
+                        int high = param2->GetIntegerValue(lineNumber);
+                        if (high < low) {
+                            std::swap(low, high);
+                        }
+                        return Item::CreateInteger(Random::GetInstance().NextInt(low, high));
+                    }
+                }));
+
         AddGlobalFunction("sqrt", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::sqrt(param->GetRealValue(lineNumber)));
