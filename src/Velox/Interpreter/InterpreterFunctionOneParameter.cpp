@@ -26,4 +26,4 @@ namespace velox {
         return func(sc, sc.FindItem("a"), lineNumber);
     }
 
-}
+} // end of namespace

@@ -18,6 +18,13 @@ namespace velox {
     // Forward declaration
     class Item;
 
+    /**
+     * Utility class to use delegates for interpreter functions.
+     *
+     * Note: the parameter items are deliberately passed as shared pointer instead of a reference. This
+     * is required for interpreter-internal usage of this class. This way the parameter can be stored
+     * in item-internal structures.
+     */
     class InterpreterFunctionTwoParameter : public velox::InterpreterFunction {
     public:
 
@@ -49,7 +56,7 @@ namespace velox {
         Func func;
     };
 
-}
+} // end of namespace
 
 
 

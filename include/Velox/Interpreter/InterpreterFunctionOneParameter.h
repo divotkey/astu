@@ -18,9 +18,18 @@ namespace velox {
     // Forward declaration
     class Item;
 
+    /**
+     * Utility class to use delegates for interpreter functions.
+     *
+     * Note: the parameter item is deliberately passed as shared pointer instead of a reference. This
+     * is required for interpreter-internal usage of this class, e.g. in ItemStateList.
+     */
     class InterpreterFunctionOneParameter : public velox::InterpreterFunction {
     public:
 
+        /**
+         * Alias for the delegate to be called
+         */
         using Func = std::function<std::shared_ptr<Item> (ScriptContext &sc,
                                                           std::shared_ptr<Item> param,
                                                           unsigned int lineNumber)>;
@@ -47,7 +56,7 @@ namespace velox {
         Func func;
     };
 
-}
+} // end of namespace
 
 
 

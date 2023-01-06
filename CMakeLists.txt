@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.5
-# Generated Tue Jan 03 20:14:33 CET 2023 with SWORD Interpreter 1.9.0
+# Generated Fri Jan 06 08:30:30 CET 2023 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -598,7 +598,7 @@ configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 #################################################
 
 # Define static library target.
-add_library(astu ${astu_SOURCES} ../Commons/Osmx/OsmExtension.cpp ../Commons/Osmx/OsmExtension.h)
+add_library(astu ${astu_SOURCES})
 
 # Set include directories for target astu
 target_include_directories(
