@@ -257,6 +257,12 @@ namespace velox {
                                                                 param2->GetIntegerValue(),
                                                                 param3->GetIntegerValue()));
                 }));
+
+        AddGlobalFunction("error", make_shared<InterpreterFunctionOneParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    throw InterpreterError(param->GetStringValue(sc), lineNumber);
+                }));
+
     }
 
     void Interpreter::CallFunctionNoParam(Item &item)
@@ -302,6 +308,16 @@ namespace velox {
     size_t Interpreter::NumGlobalScopes() const
     {
         return context.NumGlobalScopes();
+    }
+
+    size_t Interpreter::NumLocalScopes() const
+    {
+        return context.NumLocalScopes();
+    }
+
+    void Interpreter::ClearLocalScopes()
+    {
+        context.ClearLocalScopes();
     }
 
 } // end of namespace

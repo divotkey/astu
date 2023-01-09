@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.5
-# Generated Fri Jan 06 08:30:30 CET 2023 with SWORD Interpreter 1.9.0
+# Generated Mon Jan 09 09:49:25 CET 2023 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -303,6 +303,7 @@ list(APPEND astu_SOURCES
 	src/Velox/Interpreter/InterpreterExpressionListAccess.cpp 
 	src/Velox/Interpreter/InterpreterExpressionMemberAccess.cpp 
 	src/Velox/Interpreter/InterpreterExpressionNew.cpp 
+	src/Velox/Interpreter/InterpreterExpressionNot.cpp 
 	src/Velox/Interpreter/InterpreterExpressionSimpleName.cpp 
 	src/Velox/Interpreter/InterpreterExpressionUnaryMinus.cpp 
 	src/Velox/Interpreter/InterpreterExpressionUndefined.cpp 
@@ -402,6 +403,7 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterExpressionListAccess.h 
 	include/Velox/Interpreter/InterpreterExpressionMemberAccess.h 
 	include/Velox/Interpreter/InterpreterExpressionNew.h 
+	include/Velox/Interpreter/InterpreterExpressionNot.h 
 	include/Velox/Interpreter/InterpreterExpressionSimpleName.h 
 	include/Velox/Interpreter/InterpreterExpressionUnaryMinus.h 
 	include/Velox/Interpreter/InterpreterExpressionUndefined.h 

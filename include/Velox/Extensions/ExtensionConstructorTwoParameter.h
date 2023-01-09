@@ -22,9 +22,9 @@ namespace velox {
     public:
 
         using Func = std::function<std::shared_ptr<T> (ScriptContext &sc,
-                                                          Item &param1,
-                                                          Item &param2,
-                                                          unsigned int lineNumber)>;
+                                                       Item &param1,
+                                                       Item &param2,
+                                                       unsigned int lineNumber)>;
 
         /**
          * Convenient method creating an a function item with an instance of this class.
@@ -54,7 +54,6 @@ namespace velox {
             auto newItem = sc.FindItem("this");
             assert(newItem);
 
-            auto newData = std::make_shared<T>();
             newItem->SetData(func(sc, sc.GetItem("a"), sc.GetItem("b"), lineNumber));
 
             return newItem;
@@ -65,7 +64,7 @@ namespace velox {
         Func func;
     };
 
-}
+} // end of namespace
 
 
 

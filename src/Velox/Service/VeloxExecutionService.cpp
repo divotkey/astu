@@ -212,6 +212,8 @@ namespace astu {
         interpreter->PushGlobalScope();
 
         timer.Start();
+        assert(interpreter->NumLocalScopes() == 0);
+
         curThreadId = context.StartThread([this](int threadId) {
             try {
                 interpreter->Execute(*context.script);
@@ -239,11 +241,15 @@ namespace astu {
         timer.Stop();
 
         if (error) {
+            // After an interpreter error the stack of the global area may be messed up.
+            interpreter->ClearLocalScopes();
+
             context.LogError(
                     VeloxConstants::LOGGING_TAG,
                     "Error interpreting Velox script '"
                     + context.executionQueue.front() + +"': " + errorText + " at line " + to_string(lineNumber));
         } else {
+            assert(interpreter->NumLocalScopes() == 0);
             context.LogInfo(
                     VeloxConstants::LOGGING_TAG,
                     "Successfully executed Velox script '"

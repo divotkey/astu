@@ -156,19 +156,19 @@ namespace astu {
         /**
          * Called by this base class when a thread status has changed to error.
          *
-         * @param threadId  the ID of the thread
-         * @param message   the error message
+         * @param inThreadId    the ID of the thread
+         * @param message       the error message
          * @return `true` if this signal has been consumed
          */
-        virtual bool OnThreadError(int threadId, const std::string &message) { return false; }
+        virtual bool OnThreadError(int inThreadId, const std::string &message) { return false; }
 
         /**
          * Called by this base class when a thread status has changed to running.
          *
-         * @param threadId  the ID of the thread
+         * @param inThreadId    the ID of the thread
          * @return `true` if this signal has been consumed
          */
-        virtual bool OnThreadRunning(int threadId) { return false; }
+        virtual bool OnThreadRunning(int inThreadId) { return false; }
 
 
     private:

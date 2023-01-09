@@ -161,6 +161,17 @@ namespace velox {
         }
 
         /**
+         * Creates a new instance of an item of type "vector2".
+         *
+         * @param vx    the x-coordinate of the vector
+         * @param vy    the y-coordinate of the vector
+         * @return the newly created item
+         */
+        static std::shared_ptr<Item> CreateVector2(double vx, double vy) {
+            return CreateVector2(astu::Vector2d(vx, vy));
+        }
+
+        /**
          * Creates a new instance of an item of type "object".
          *
          * @return the newly created item

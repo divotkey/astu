@@ -25,7 +25,7 @@ namespace velox {
      * Represents the execution state of a script.
      * A script context contains local and global scopes as well as type definitions.
      */
-    class ScriptContext {
+    class ScriptContext final {
 
     public:
         /** Constant for the flag which denotes that a return statement has been executed. */
@@ -341,7 +341,7 @@ namespace velox {
          *
          * @return the number of local scopes
          */
-        size_t NumberOfLocalScopes() const;
+        size_t NumLocalScopes() const;
 
     private:
         /** The hierarchy of global scopes. */

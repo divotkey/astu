@@ -15,8 +15,9 @@ namespace astu {
     class GraphicsInstants : public CompiledSource {
     public:
     protected:
-        const unsigned char *GetData() const override;
 
+        // Inherited via CompiledSource
+        const unsigned char *GetData() const override;
         size_t GetDataSize() const override;
 
     private:

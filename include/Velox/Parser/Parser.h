@@ -75,6 +75,7 @@ namespace velox {
         std::shared_ptr<InterpreterExpression> ParseNewStatement(ISource &source);
         std::shared_ptr<InterpreterExpression> ParseOptionalSelector(ISource &source, std::shared_ptr<InterpreterExpression> lValue);
         std::shared_ptr<InterpreterExpression> ParseExpression(ISource &source);
+        //std::shared_ptr<InterpreterExpression> ParseNotExpression(ISource &source);
         std::shared_ptr<InterpreterExpression> ParseMemberAccess(ISource &source, std::shared_ptr<InterpreterExpression> lValue);
         std::shared_ptr<InterpreterExpression> ParseListAccess(ISource &source, std::shared_ptr<InterpreterExpression> lValue);
         std::shared_ptr<InterpreterExpressionSimpleName> ParseSimpleName(ISource &source);

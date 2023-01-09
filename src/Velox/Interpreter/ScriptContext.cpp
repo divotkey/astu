@@ -73,7 +73,7 @@ namespace velox {
         return globalScopes.size();
     }
 
-    size_t ScriptContext::NumberOfLocalScopes() const
+    size_t ScriptContext::NumLocalScopes() const
     {
         return localScopes.size();
     }

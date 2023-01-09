@@ -23,6 +23,8 @@ namespace velox {
 
     const std::map<std::string, TokenType> FastSource::keywords = {
             {"undefined", TokenType::UNDEFINED},
+            {"true", TokenType::TRUE},
+            {"false", TokenType::FALSE},
             {"function", TokenType::FUNCTION},
             {"if", TokenType::IF},
             {"else", TokenType::ELSE},

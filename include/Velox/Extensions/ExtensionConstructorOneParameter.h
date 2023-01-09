@@ -52,7 +52,6 @@ namespace velox {
             auto newItem = sc.FindItem("this");
             assert(newItem);
 
-            auto newData = std::make_shared<T>();
             newItem->SetData(func(sc, sc.GetItem("a"), lineNumber));
 
             return newItem;

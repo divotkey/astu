@@ -21,9 +21,7 @@ namespace velox {
 
     // Forward declaration
     class InterpreterFunction;
-
     class InterpreterInstantDefinition;
-
     class ObjectType;
 
     /**
@@ -166,6 +164,18 @@ namespace velox {
          * @param item  the item to add
          */
         void AddGlobal(const std::string &name, std::shared_ptr<Item> item);
+
+        /**
+         * Returns the current number of local scopes.
+         *
+         * @return the number of local scopes
+         */
+        size_t NumLocalScopes() const;
+
+        /**
+         * Removes all local scopes.
+         */
+        void ClearLocalScopes();
 
     private:
         /** The script context of this interpreter, representing the script's execution state. */

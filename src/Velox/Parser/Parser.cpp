@@ -20,6 +20,7 @@
 #include "Velox/Interpreter/InterpreterExpressionMemberAccess.h"
 #include "Velox/Interpreter/InterpreterExpressionListAccess.h"
 #include "Velox/Interpreter/InterpreterExpressionAssignment.h"
+#include "Velox/Interpreter/InterpreterExpressionNot.h"
 #include "Velox/Interpreter/InterpreterLiteralInteger.h"
 #include "Velox/Interpreter/InterpreterLiteralReal.h"
 #include "Velox/Interpreter/InterpreterLiteralBoolean.h"
@@ -72,6 +73,7 @@ namespace velox {
 
     const TokenType Parser::LVALUE_CHAIN[] = {TokenType::MEMBER_ACCESS, TokenType::LEFT_BRACKET,
                                               TokenType::LEFT_PARENTHESIS};
+
     const TokenType Parser::REL_OP[] = {TokenType::EQUAL, TokenType::NOT_EQUAL, TokenType::LESS_EQUAL,
                                         TokenType::LESS_THAN, TokenType::GREATER_EQUAL, TokenType::GREATER_THAN};
 
@@ -641,6 +643,12 @@ namespace velox {
                 ParseRightParenthesis(source);
                 break;
 
+            case TokenType::NOT:
+                lineNumber = source.GetLine();
+                source.GetNextTokenType();
+                result = make_shared<InterpreterExpressionNot>(ParseFactor(source), lineNumber);
+                break;
+
             default:
                 throw ParserError("syntax error", source.GetLine());
         }
@@ -691,7 +699,9 @@ namespace velox {
     }
 
     std::shared_ptr<InterpreterFunctionDefinition> Parser::ParseFunctionDefinition(ISource &source) {
-        assert(source.GetCurrentTokenType() == TokenType::FUNCTION);
+        if (source.GetCurrentTokenType() != TokenType::FUNCTION) {
+            throw ParserError("Function definition expected", source.GetLine());
+        }
         source.GetNextTokenType();
 
         if (source.GetCurrentTokenType() != TokenType::IDENT) {
@@ -1092,5 +1102,14 @@ namespace velox {
         source.GetNextTokenType();
         return result;
     }
+
+    //std::shared_ptr<InterpreterExpression> Parser::ParseNotExpression(ISource &source)
+    //{
+    //    assert(source.GetCurrentTokenType() == TokenType::NOT);
+    //    auto result = make_shared<InterpreterExpressionNot>(source.GetLine());
+    //    source.GetNextTokenType();
+    //    result->SetExpression(ParseExpression(source));
+    //    return result;
+    //}
 
 } // end of namespace

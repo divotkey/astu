@@ -16,7 +16,7 @@ namespace velox {
     public:
 
         /** Virtual destructor. */
-        virtual ~ItemData() {}
+        virtual ~ItemData() = default;
     };
 
 } // end of namespace
