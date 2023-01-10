@@ -121,7 +121,6 @@ namespace velox {
                     return Item::CreateReal(value.Angle(param->GetVector2Value()));
                 }));
 
-
         //AddItem("Length", InterpreterFunctionTwoParameter::CreateItem(
         //        [this](ScriptContext &sc, std::shared_ptr<Item> param1, std::shared_ptr<Item> param2,
         //                  unsigned int lineNumber) -> std::shared_ptr<Item>

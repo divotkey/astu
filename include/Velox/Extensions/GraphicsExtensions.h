@@ -30,7 +30,9 @@ namespace astu {
         void AddPatternInstants(velox::Interpreter &interpreter) const;
         void AddWebColors(velox::Interpreter &interpreter) const;
         void AddRalColors(velox::Interpreter &interpreter) const;
+        void AddCorePatterns(velox::Interpreter &interpreter) const;
+        void AddCompositePatterns(velox::Interpreter &interpreter) const;
+        void AddRenderers(velox::Interpreter &interpreter) const;
     };
-
 
 } // end of namespace

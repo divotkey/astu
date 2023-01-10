@@ -811,7 +811,16 @@ namespace velox {
             return opFunc->CallAsFunction(sc, params, lineNumber);
         }
 
-        throw InterpreterError("relational operation between this two types is undefined", lineNumber);
+        switch (op) {
+            case RelationalOperator::EQUAL:
+                return Item::CreateBoolean(false);
+
+            case RelationalOperator::NOT_EQUAL:
+                return Item::CreateBoolean(true);
+
+            default:
+                throw InterpreterError("relational operation between this two types is undefined", lineNumber);
+        }
 
     } // end of method
 

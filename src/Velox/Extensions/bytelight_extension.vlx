@@ -1,8 +1,13 @@
-// Velox ByteLight Extension Version 1.0.1
+// Velox ByteLight Extension Version 1.1.0
 // Copyright 2022-2023 Roman Divotkey. All rights reserved.
 //
 // AST-Utilities
 // Copyright 2020-2023 Roman Divotkey. All rights reserved.
+
+
+/////////////////////////////////////////////////
+/////// Rendering
+/////////////////////////////////////////////////
 
 instant Rendering {
 
@@ -64,7 +69,7 @@ instant Rendering {
 		img = new Image(_width, _height);
 		img.Clear(|0, 0, 0, 0|);
 		renderer = undefined;
-		if (_quality == "FAST") {
+		if (_quality == "FAST" || _quality == 0) {
 			renderer = new SimplePatternRenderer(_mode);
 		} else {
 			renderer = new PatternRenderer(_mode, _quality);
@@ -79,11 +84,11 @@ instant Rendering {
 			for (i = 0; i < _patterns.size(); ++i) {
 				union.AddPattern(_patterns[i].GetPattern());
 			}
-			LogInfo("Storing image to " + _filepath + _filename);
 			renderer.Render(union, img);
 		}
 		
 		ShowImage(img);
+
 		if (_filename != undefined) {
 			LogInfo("Storing image to " + _filepath + _filename);
 			StoreImage(img, _filepath + _filename);
@@ -91,16 +96,41 @@ instant Rendering {
 	}
 }
 
+
+/////////////////////////////////////////////////
+/////// Union
+/////////////////////////////////////////////////
+
 instant Union {
 
 	function Union() {
 		this._pattern = new UnionPattern();
 	}
 
+	function translate(v, b) {
+		if (b == undefined) {
+			_pattern.Translate(v);
+		} else {
+			_pattern.Translate(<v, b>);
+		}
+	}
+
+	function scale(v, b) {
+		if (b == undefined) {
+			_pattern.Scale(v);
+		} else {
+			_pattern.Scale(<v, b>);
+		}
+	}
+
+	function rotate(phi) {
+		_pattern.Rotate(phi);
+	}
+
 	function AddPattern(pattern) {
 		_pattern.AddPattern(pattern.GetPattern());
 	}
-	
+
 	function GetPattern() {
 		return _pattern;
 	}
@@ -110,6 +140,11 @@ instant Union {
 		parent.AddPattern(this);
 	}
 }
+
+
+/////////////////////////////////////////////////
+/////// Blur
+/////////////////////////////////////////////////
 
 instant Blur {
 
@@ -164,6 +199,10 @@ instant Quadtree {
 	}
 }
 
+/////////////////////////////////////////////////
+/////// Unicolor
+/////////////////////////////////////////////////
+
 instant Unicolor {
 
 	function Unicolor() {
@@ -184,6 +223,11 @@ instant Unicolor {
 	}
 }
 
+
+/////////////////////////////////////////////////
+/////// Circle
+/////////////////////////////////////////////////
+
 instant Circle {
 
 	function Circle() {
@@ -191,6 +235,9 @@ instant Circle {
 	}
 	
 	function radius(r) {
+        if (r == undefined)
+            return _pattern.GetRadius();
+
 		_pattern.SetRadius(r);
 	}
 	
@@ -234,4 +281,175 @@ instant Circle {
 		if (parent == undefined) return;
 		parent.AddPattern(this);
 	}
+}
+
+
+/////////////////////////////////////////////////
+/////// Rectangle
+/////////////////////////////////////////////////
+
+instant Rectangle {
+
+	function Rectangle() {
+		this._pattern = new RectanglePattern();
+	}
+
+	function width(w) {
+	    if (w == undefined)
+    	    return this._pattern.GetWidth();
+
+        this._pattern.SetWidth(w);
+	}
+
+	function height(h) {
+	    if (h == undefined)
+    	    return _pattern.GetHeight();
+
+    	this._pattern.SetHeight(h);
+	}
+
+	function color(c) {
+		this._pattern.SetPattern(new UnicolorPattern(c));
+	}
+
+	function translate(v, b) {
+		if (b == undefined) {
+			this._pattern.Translate(v);
+		} else {
+			this._pattern.Translate(<v, b>);
+		}
+	}
+
+	function scale(v, b) {
+		if (b == undefined) {
+			this._pattern.Scale(v);
+		} else {
+			this._pattern.Scale(<v, b>);
+		}
+	}
+
+	function rotate(phi) {
+		this._pattern.Rotate(phi);
+	}
+
+	function rotateDeg(phi) {
+		this._pattern.RotateDeg(phi);
+	}
+
+	function AddPattern(pattern) {
+		this._pattern.SetPattern(pattern.GetPattern());
+	}
+
+	function GetPattern() {
+		return this._pattern;
+	}
+
+	function realize() {
+		if (parent == undefined) return;
+		parent.AddPattern(this);
+	}
+
+}
+
+/////////////////////////////////////////////////
+/////// Line
+/////////////////////////////////////////////////
+
+instant Line {
+
+	function Line() {
+	    this._p1 = <0.0, 0.0>;
+	    this._p2 = <1.0, 0.0>;
+	    this._width = 0.01;
+	    this._pattern = new RectanglePattern();
+	    this._subPattern = undefined;
+	    this._caps = false;
+	}
+
+	function point1(x, y) {
+	    if (x == undefined)
+	        return this._p1;
+
+        if (y == undefined) {
+            this._p1 = x;
+        } else {
+            this._p1.x = x;
+            this._p1.y = y;
+        }
+	}
+
+	function point2(x, y) {
+	    if (x == undefined)
+	        return this._p2;
+
+        if (y == undefined) {
+            this._p2 = x;
+        } else {
+            this._p2.x = x;
+            this._p2.y = y;
+        }
+	}
+
+	function caps(b) {
+	    if (b == undefined)
+	        return this._caps;
+
+	    this._caps = b;
+	}
+
+	function width(w) {
+	    if (w == undefined)
+	        return this._width;
+
+        this._width = w;
+	}
+
+	function color(c) {
+        this._subPattern = new UnicolorPattern(c);
+	}
+
+	function AddPattern(pattern) {
+        this._subPattern = pattern.GetPattern();
+	}
+
+	function GetPattern() {
+		return this._pattern;
+	}
+
+	function realize() {
+		if (parent == undefined) return;
+
+		v = this._p1 - this._p2;
+		lng = v.Length();
+		if (lng == 0) {
+		    LogWarning("Degenerated line: " + this._p1 + " - " + this._p2);
+		    return;
+		}
+
+		this._pattern.SetWidth(lng);
+		this._pattern.SetHeight(this._width);
+		this._pattern.SetPattern(this._subPattern);
+
+		if (this._caps) {
+            union = new UnionPattern();
+
+            c = new CirclePattern(this._width / 2.0);
+            c.Translate(<-lng / 2, 0>);
+            c.SetPattern(this._subPattern);
+            union.AddPattern(c);
+
+            c = new CirclePattern(this._width / 2.0);
+            c.Translate(<lng / 2, 0>);
+            c.SetPattern(this._subPattern);
+            union.AddPattern(c);
+
+            union.AddPattern(this._pattern);
+            this._pattern = union;
+		}
+        this._pattern.Translate((this._p1 + this._p2) / 2.0);
+        this._pattern.Rotate(-v.Angle(<1.0, 0.0>));
+
+        parent.AddPattern(this);
+	}
+
 }

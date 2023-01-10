@@ -69,7 +69,7 @@ namespace velox {
     }
 
     void ItemState::SwitchState(Item &item, std::unique_ptr<ItemState> newState) {
-        item.state = move(newState);
+        item.state = std::move(newState);
     }
 
     std::shared_ptr<Item> ItemState::FindItem(const string &name) const {

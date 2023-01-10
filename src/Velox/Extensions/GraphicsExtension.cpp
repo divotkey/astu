@@ -102,16 +102,16 @@ namespace astu {
             return AntialiasingLevel::Good;
         } else if (param.IsInteger()) {
             switch (param.GetIntegerValue(lineNumber)) {
-                case 0:
+                case 1:
                     return AntialiasingLevel::Simple;
 
-                case 1:
+                case 2:
                     return AntialiasingLevel::Good;
 
-                case 2:
+                case 3:
                     return AntialiasingLevel::Beautiful;
 
-                case 3:
+                case 4:
                     return AntialiasingLevel::Insane;
 
                 default:
@@ -152,6 +152,77 @@ namespace astu {
     }
 
     void GraphicsExtension::InjectExtension(Interpreter &interpreter) const
+    {
+        AddCorePatterns(interpreter);
+        AddCompositePatterns(interpreter);
+        AddRenderers(interpreter);
+        AddPalette(interpreter);
+        AddWebColors(interpreter);
+        AddRalColors(interpreter);
+        //AddPatternInstants(interpreter);
+    }
+
+    void GraphicsExtension::AddRenderers(Interpreter &interpreter) const
+    {
+        ObjectTypeBuilder builder;
+
+        builder
+            .Reset()
+            .TypeName("SimplePatternRenderer")
+            .Constructor(ExtensionConstructorOneParameter<SimplePatternRenderer>::CreateItem(
+                    [](ScriptContext &sc, Item &param, unsigned int lineNumber) {
+                        return make_shared<SimplePatternRenderer>(ParamToMode(sc, param, lineNumber));
+                    }
+                ))
+            .AddFunction("Render", ExtensionFunctionTwoParameter<SimplePatternRenderer>::CreateItem(
+                    [](ScriptContext &sc, SimplePatternRenderer &renderer, Item &param1, Item &param2, unsigned int lineNumber) {
+                        auto pattern = dynamic_pointer_cast<Pattern>(param1.GetData());
+                        if (!pattern) {
+                            throw InterpreterError("a pattern is required as first parameter", lineNumber);
+                        }
+
+                        auto image = dynamic_pointer_cast<Image>(param2.GetData());
+                        if (!image) {
+                            throw InterpreterError("a image is required as second parameter", lineNumber);
+                        }
+
+                        renderer.Render(*pattern, *image);
+
+                        return Item::CreateUndefined();
+                    }
+                ))
+            .Build(interpreter);
+
+        builder
+            .Reset()
+            .TypeName("PatternRenderer")
+            .Constructor(ExtensionConstructorTwoParameter<AntiAliasingPatternRenderer>::CreateItem(
+                    [](ScriptContext &sc, Item &param1, Item &param2, unsigned int lineNumber) {
+                        return make_shared<AntiAliasingPatternRenderer>(
+                                ParamToMode(sc, param1, lineNumber), ParamToAaLevel(sc, param2, lineNumber));
+                    }
+            ))
+            .AddFunction("Render", ExtensionFunctionTwoParameter<AntiAliasingPatternRenderer>::CreateItem(
+                    [](ScriptContext &sc, AntiAliasingPatternRenderer &renderer, Item &param1, Item &param2, unsigned int lineNumber) {
+                        auto pattern = dynamic_pointer_cast<Pattern>(param1.GetData());
+                        if (!pattern) {
+                            throw InterpreterError("a pattern is required as first parameter", lineNumber);
+                        }
+
+                        auto image = dynamic_pointer_cast<Image>(param2.GetData());
+                        if (!image) {
+                            throw InterpreterError("a image is required as second parameter", lineNumber);
+                        }
+
+                        renderer.Render(*pattern, *image);
+
+                        return Item::CreateUndefined();
+                    }
+            ))
+            .Build(interpreter);
+    }
+
+    void GraphicsExtension::AddCorePatterns(Interpreter &interpreter) const
     {
         ObjectTypeBuilder builder;
 
@@ -233,44 +304,42 @@ namespace astu {
         AddCommonPatternFunctions(builder);
         builder.Build(interpreter);
 
-        builder
-                .Reset()
-                .TypeName("QuadtreePattern")
-                .Constructor(ExtensionConstructorTwoParameter<QuadtreePattern>::CreateItem(
-                        [](ScriptContext &sc, Item &param1, Item &param2, unsigned int lineNumber) {
-                            if (param1.IsUndefined()) {
-                                return make_shared<QuadtreePattern>();
-                            } else if (param2.IsUndefined()) {
-                                return make_shared<QuadtreePattern>(param1.GetIntegerValue(lineNumber));
-                            } else {
-                                return make_shared<QuadtreePattern>(param1.GetIntegerValue(lineNumber), param2.GetIntegerValue(lineNumber));
-                            }
+        builder.Reset()
+            .TypeName("QuadtreePattern")
+            .Constructor(ExtensionConstructorTwoParameter<QuadtreePattern>::CreateItem(
+                    [](ScriptContext &sc, Item &param1, Item &param2, unsigned int lineNumber) {
+                        if (param1.IsUndefined()) {
+                            return make_shared<QuadtreePattern>();
+                        } else if (param2.IsUndefined()) {
+                            return make_shared<QuadtreePattern>(param1.GetIntegerValue(lineNumber));
+                        } else {
+                            return make_shared<QuadtreePattern>(param1.GetIntegerValue(lineNumber), param2.GetIntegerValue(lineNumber));
                         }
-                ))
-                .AddFunction("AddPattern", ExtensionFunctionOneParameter<CompoundPattern>::CreateItem(
-                        [](ScriptContext &sc, CompoundPattern &pattern, Item &param, unsigned int lineNumber) {
-                            auto childPattern = dynamic_pointer_cast<Pattern>(param.GetData());
-                            if (!childPattern) {
-                                throw InterpreterError("AddPatter requires pattern as parameter", lineNumber);
-                            }
-                            pattern.AddPattern(childPattern);
+                    }
+            ))
+            .AddFunction("AddPattern", ExtensionFunctionOneParameter<CompoundPattern>::CreateItem(
+                    [](ScriptContext &sc, CompoundPattern &pattern, Item &param, unsigned int lineNumber) {
+                        auto childPattern = dynamic_pointer_cast<Pattern>(param.GetData());
+                        if (!childPattern) {
+                            throw InterpreterError("AddPatter requires pattern as parameter", lineNumber);
+                        }
+                        pattern.AddPattern(childPattern);
 
-                            return Item::CreateUndefined();
-                        }
-                ))
-                .AddFunction("BuildTree", ExtensionFunctionNoParameter<QuadtreePattern>::CreateItem(
-                        [](ScriptContext &sc, QuadtreePattern &quadtree, unsigned int lineNumber) {
-                            quadtree.BuildTree();
-                            return Item::CreateUndefined();
-                        }
-                ))
-                ;
+                        return Item::CreateUndefined();
+                    }
+            ))
+            .AddFunction("BuildTree", ExtensionFunctionNoParameter<QuadtreePattern>::CreateItem(
+                    [](ScriptContext &sc, QuadtreePattern &quadtree, unsigned int lineNumber) {
+                        quadtree.BuildTree();
+                        return Item::CreateUndefined();
+                    }
+            ))
+            ;
 
         AddCommonPatternFunctions(builder);
         builder.Build(interpreter);
 
-        builder
-            .Reset()
+        builder.Reset()
             .TypeName("UnicolorPattern")
             .Constructor(ExtensionConstructorOneParameter<UnicolorPattern>::CreateItem(
                     [](ScriptContext &sc, Item &param, unsigned int lineNumber) {
@@ -396,67 +465,11 @@ namespace astu {
 
         AddCommonPatternFunctions(builder);
         builder.Build(interpreter);
+    }
 
-
-        builder
-            .Reset()
-            .TypeName("SimplePatternRenderer")
-            .Constructor(ExtensionConstructorOneParameter<SimplePatternRenderer>::CreateItem(
-                    [](ScriptContext &sc, Item &param, unsigned int lineNumber) {
-                        return make_shared<SimplePatternRenderer>(ParamToMode(sc, param, lineNumber));
-                    }
-                ))
-            .AddFunction("Render", ExtensionFunctionTwoParameter<SimplePatternRenderer>::CreateItem(
-                    [](ScriptContext &sc, SimplePatternRenderer &renderer, Item &param1, Item &param2, unsigned int lineNumber) {
-                        auto pattern = dynamic_pointer_cast<Pattern>(param1.GetData());
-                        if (!pattern) {
-                            throw InterpreterError("a pattern is required as first parameter", lineNumber);
-                        }
-
-                        auto image = dynamic_pointer_cast<Image>(param2.GetData());
-                        if (!image) {
-                            throw InterpreterError("a image is required as second parameter", lineNumber);
-                        }
-
-                        renderer.Render(*pattern, *image);
-
-                        return Item::CreateUndefined();
-                    }
-                ))
-            .Build(interpreter);
-
-        builder
-            .Reset()
-            .TypeName("PatternRenderer")
-            .Constructor(ExtensionConstructorTwoParameter<AntiAliasingPatternRenderer>::CreateItem(
-                    [](ScriptContext &sc, Item &param1, Item &param2, unsigned int lineNumber) {
-                        return make_shared<AntiAliasingPatternRenderer>(
-                                ParamToMode(sc, param1, lineNumber), ParamToAaLevel(sc, param2, lineNumber));
-                    }
-            ))
-            .AddFunction("Render", ExtensionFunctionTwoParameter<AntiAliasingPatternRenderer>::CreateItem(
-                    [](ScriptContext &sc, AntiAliasingPatternRenderer &renderer, Item &param1, Item &param2, unsigned int lineNumber) {
-                        auto pattern = dynamic_pointer_cast<Pattern>(param1.GetData());
-                        if (!pattern) {
-                            throw InterpreterError("a pattern is required as first parameter", lineNumber);
-                        }
-
-                        auto image = dynamic_pointer_cast<Image>(param2.GetData());
-                        if (!image) {
-                            throw InterpreterError("a image is required as second parameter", lineNumber);
-                        }
-
-                        renderer.Render(*pattern, *image);
-
-                        return Item::CreateUndefined();
-                    }
-            ))
-            .Build(interpreter);
-
-        AddPalette(interpreter);
-        AddWebColors(interpreter);
-        AddRalColors(interpreter);
-        AddPatternInstants(interpreter);
+    void GraphicsExtension::AddCompositePatterns(velox::Interpreter &interpreter) const
+    {
+        // No composite patterns yet.
     }
 
     void GraphicsExtension::AddCommonPatternFunctions(ObjectTypeBuilder &builder) const
