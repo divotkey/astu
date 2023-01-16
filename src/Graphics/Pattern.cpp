@@ -29,6 +29,12 @@ namespace astu {
         dirty = true;
     }
 
+    void Pattern::TranslateGeometric(double tx, double ty)
+    {
+        transform *= Matrix3d::CreateTranslate(-tx, -ty);
+        dirty = true;
+    }
+
     void Pattern::Scale(double sx, double sy)
     {
         if (sx == 0 || sy == 0) {
@@ -38,9 +44,30 @@ namespace astu {
         dirty = true;
     }
 
+    void Pattern::ScaleGeometric(double sx, double sy)
+    {
+        if (sx == 0 || sy == 0) {
+            throw std::domain_error("Scaling factors must not be zero");
+        }
+
+        transform *= Matrix3d::CreateScale(1.0 / sx, 1.0 / sy);
+        dirty = true;
+    }
+
     void Pattern::Rotate(double phi) 
     {
         transform.Rotate(-phi);
+        dirty = true;
+    }
+
+    void Pattern::RotateGeometric(double phi)
+    {
+        transform *= Matrix3d::CreateRotate(phi);
+        dirty = true;
+    }
+
+    void Pattern::ClearTransform() {
+        transform.SetToIdentity();
         dirty = true;
     }
 

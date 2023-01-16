@@ -47,7 +47,12 @@ namespace velox {
     };
 
     FastSource::FastSource()
-        : curToken(TokenType::INVALID), curChar(-1), curPos(0, 0), curInteger(0), curReal(0)
+        : curToken(TokenType::INVALID)
+        , prevToken(TokenType::INVALID)
+        , curChar(-1)
+        , curPos(0, 0)
+        , curInteger(0)
+        , curReal(0)
     {
         // Intentionally left empty.
     }
@@ -541,10 +546,22 @@ namespace velox {
 
     int FastFileSource::NextChar()
     {
+        if (!source)
+            return -1;
+
         if (!source->good()) {
+            source->close();
+            source = nullptr;
             return -1;
         }
-        return source->get();
+
+        auto result = source->get();
+        if (result == EOF) {
+            source->close();
+            source = nullptr;
+        }
+
+        return result;
     }
 
     void FastFileSource::Store(astu::Memento &memento)
@@ -573,6 +590,7 @@ namespace velox {
     /////////////////////////////////////////////////
 
     FastStringSource::FastStringSource(const string &sourceCode)
+        : pos(0)
     {
         Reset(sourceCode);
     }
@@ -592,7 +610,7 @@ namespace velox {
 
     void FastStringSource::Store(astu::Memento &memento)
     {
-        int64_t convertedPos = static_cast<int64_t>(pos);
+        auto convertedPos = static_cast<int64_t>(pos);
         memento << convertedPos;
         FastSource::Store(memento);
     }

@@ -1,0 +1,627 @@
+// Velox ByteLight Extension Version 1.2.0
+// Copyright 2022-2023 Roman Divotkey. All rights reserved.
+//
+// AST-Utilities
+// Copyright 2020-2023 Roman Divotkey. All rights reserved.
+
+
+/////////////////////////////////////////////////
+/////// Rendering
+/////////////////////////////////////////////////
+
+instant Rendering {
+
+	function Rendering() {
+		this._width = 512;
+		this._height = 512;
+		this._patterns = [];
+		this._filepath = "./";
+		this._filename = undefined;
+		this._quality = "GOOD";
+		this._mode = "V_NORMALIZED";
+	}
+	
+	function filepath(path) {
+		_filepath = path;
+	}
+	
+	function filename(name) {
+		_filename = name;
+	}
+	
+	function width(w) {
+		_width = w;
+	}
+	
+	function weight(h) {
+		_height = h;
+	}
+	
+	function size(w, h) {
+		_width = w;
+		_height = h;
+	}
+	
+	function quality(q) {
+		LogDebug("Setting quality to " + q);
+		_quality = q;
+	}
+	
+	function mode(m) {
+		_mode = m;
+	}
+
+	function GetPixelRadius() {
+		return 1.0 / _width;
+	}
+	
+	function GetAspectRatio() {
+		return real(_width) / _height;
+	}
+	
+	function _AddPattern(pattern) {
+		_patterns.append(pattern);
+	}
+
+	function realize() {
+		if (_patterns.size() == 0) return;
+
+		img = new Image(_width, _height);
+		img.Clear(|0, 0, 0, 0|);
+		
+		renderer = undefined;
+		if (_quality == "FAST" || _quality == 0) {
+			renderer = new SimplePatternRenderer(_mode);
+		} else {
+			renderer = new PatternRenderer(_mode, _quality);
+		}
+
+		LogInfo("Rendering image (" + img.GetWidth() + " x " + img.GetHeight() + ")");
+		
+		if (_patterns.size() == 1) {
+			renderer.Render(_patterns[0], img);
+		} else {
+			union = new UnionPattern();
+			for (i = 0; i < _patterns.size(); ++i) {
+				union.AddPattern(_patterns[i]);
+			}
+			renderer.Render(union, img);
+		}
+
+		ShowImage(img);
+
+		if (_filename != undefined) {
+			LogInfo("Storing image to " + _filepath + _filename);
+			StoreImage(img, _filepath + _filename);
+		}
+	}
+}
+
+
+/////////////////////////////////////////////////
+/////// Union
+/////////////////////////////////////////////////
+
+instant Union {
+
+	function Union() {
+		this._pattern = new UnionPattern();
+		
+		// Debug attributes
+		this._debug = false;
+		this._debugColor = |rnd(), rnd(), rnd(), 0.5|;
+	}
+	
+	function debug(b) {
+		if (b == undefined)
+			return _debug;
+			
+		_debug = b;
+	}
+	
+	function debugColor(c) {
+		if (c == undefined)
+			return c;
+			
+		_debugColor = c;
+	}
+
+	function translate(tx, ty) { 
+		_pattern.Translate(tx, ty);
+	}
+
+	function scale(sx, sy) {
+		_pattern.Scale(sx, sy);
+	}
+
+	function rotate(phi) {
+		_pattern.Rotate(phi);
+	}
+
+	function rotateDeg(phi) {
+		_pattern.RotateDeg(phi);
+	}
+
+	function _AddPattern(pattern) {
+		_pattern.AddPattern(pattern);
+	}
+
+	function realize() {
+		if (parent == undefined) return;
+		
+		if (_debug) {
+			bbox = _pattern.GetBoundingBox();
+			rect = new RectanglePattern(bbox.GetWidth(), bbox.GetHeight());
+			rect.Translate(bbox.GetCenter());
+			rect.SetPattern(new UnicolorPattern(_debugColor));
+			parent._AddPattern(rect);
+		}
+		
+		parent._AddPattern(_pattern);
+	}
+}
+
+
+/////////////////////////////////////////////////
+/////// Blur
+/////////////////////////////////////////////////
+
+instant Blur {
+
+	function Blur() {
+		this._pattern = new BlurPattern();
+		this._radius = this._pattern.GetRadius();
+		this._numSamples = this._pattern.GetNumSamples();
+		this._numMinSamples = this._pattern.GetNumMinSamples();
+		this._threshold = this._pattern.GetThreshold();
+	}
+
+	function radius(r) {
+		_radius = r;
+	}
+
+	function numSamples(n) {
+		_numSamples = n;
+	}
+
+	function numMinSamples(n) {
+		_numMinSamples = n;
+	}
+
+	function threshold(th) {
+		_threshold = th;
+	}
+
+	function translate(tx, ty) { 
+		_pattern.Translate(tx, ty);
+	}
+
+	function scale(sx, sy) {
+		_pattern.Scale(sx, sy);
+	}
+
+	function rotate(phi) {
+		_pattern.Rotate(phi);
+	}
+
+	function rotateDeg(phi) {
+		_pattern.RotateDeg(phi);
+	}
+
+	function _AddPattern(pattern) {
+		_pattern.AddPattern(pattern);
+	}
+
+	function realize() {
+		if (parent == undefined) return;
+		_pattern.SetNumSamples(_numSamples);
+		_pattern.SetNumMinSamples(_numMinSamples);
+		_pattern.SetThreshold(_threshold);
+		_pattern.SetRadius(_radius);
+		parent._AddPattern(_pattern);
+	}
+}
+
+instant Quadtree {
+
+	function Quadtree() {
+		this._pattern = new QuadtreePattern();
+	}
+
+	function maxDepth(n) {
+		this._pattern.SetMaxDepth(n);
+	}
+	
+	function maxElems(n) {
+		this._pattern.SetMaxElems(n);
+	}
+
+	function translate(tx, ty) { 
+		_pattern.Translate(tx, ty);
+	}
+
+	function scale(sx, sy) {
+		_pattern.Scale(sx, sy);
+	}
+
+	function rotate(phi) {
+		_pattern.Rotate(phi);
+	}
+
+	function rotateDeg(phi) {
+		_pattern.RotateDeg(phi);
+	}
+
+	function _AddPattern(pattern) {
+		_pattern.AddPattern(pattern);
+	}
+
+	function realize() {
+		if (parent == undefined) return;
+		
+		_pattern.BuildTree();
+		parent._AddPattern(_pattern);
+	}
+}
+
+/////////////////////////////////////////////////
+/////// Unicolor
+/////////////////////////////////////////////////
+
+instant Unicolor {
+
+	function Unicolor() {
+		this._pattern = new UnicolorPattern();
+	}
+
+	function color(c) {
+		if (c == undefined)
+			return c;
+			
+		_pattern.SetColor(c);
+	}
+
+	function realize() {
+		if (parent == undefined) return;
+		parent._AddPattern(_pattern);
+	}
+}
+
+
+/////////////////////////////////////////////////
+/////// Circle
+/////////////////////////////////////////////////
+
+instant Circle {
+
+	function Circle() {
+		this._pattern = new CirclePattern();
+		
+		// Debug attributes
+		this._debug = false;
+		this._debugColor = |rnd(), rnd(), rnd(), 0.5|;
+	}
+
+	function debug(b) {
+		if (b == undefined)
+			return _debug;
+			
+		_debug = b;
+	}
+	
+	function debugColor(c) {
+		if (c == undefined)
+			return c;
+			
+		_debugColor = c;
+	}
+
+	function radius(r) {
+        if (r == undefined)
+            return _pattern.GetRadius();
+
+		_pattern.SetRadius(r);
+	}
+
+	function color(c) {
+		_pattern.SetPattern(new UnicolorPattern(c));
+	}
+
+	function translate(tx, ty) { 
+		_pattern.Translate(tx, ty);
+	}
+
+	function scale(sx, sy) {
+		_pattern.Scale(sx, sy);
+	}
+
+	function rotate(phi) {
+		_pattern.Rotate(phi);
+	}
+
+	function rotateDeg(phi) {
+		_pattern.RotateDeg(phi);
+	}
+
+	function _AddPattern(pattern) {
+		_pattern.SetPattern(pattern);
+	}
+
+	function realize() {
+		if (parent == undefined) return;
+		
+		if (_debug) {
+			bbox = _pattern.GetBoundingBox();
+			rect = new RectanglePattern(bbox.GetWidth(), bbox.GetHeight());
+			rect.Translate(bbox.GetCenter());
+			rect.SetPattern(new UnicolorPattern(_debugColor));
+			parent._AddPattern(rect);
+		}
+		
+		parent._AddPattern(_pattern);
+	}
+}
+
+
+/////////////////////////////////////////////////
+/////// Rectangle
+/////////////////////////////////////////////////
+
+instant Rectangle {
+
+	function Rectangle() {
+		this._pattern = new RectanglePattern();
+		
+		// Debug attributes
+		this._debug = false;
+		this._debugColor = |rnd(), rnd(), rnd(), 0.5|;
+	}
+
+	function debug(b) {
+		if (b == undefined)
+			return _debug;
+			
+		_debug = b;
+	}
+	
+	function debugColor(c) {
+		if (c == undefined)
+			return c;
+			
+		_debugColor = c;
+	}
+
+	function width(w) {
+	    if (w == undefined)
+    	    return _pattern.GetWidth();
+
+        _pattern.SetWidth(w);
+	}
+
+	function height(h) {
+	    if (h == undefined)
+    	    return _pattern.GetHeight();
+
+    	_pattern.SetHeight(h);
+	}
+	
+	function size(w, h) {
+        _pattern.SetSize(w, h);
+	}	
+
+	function color(c) {
+		this._pattern.SetPattern(new UnicolorPattern(c));
+	}
+
+	function translate(tx, ty) { 
+		_pattern.Translate(tx, ty);
+	}
+
+	function scale(sx, sy) {
+		_pattern.Scale(sx, sy);
+	}
+
+	function rotate(phi) {
+		_pattern.Rotate(phi);
+	}
+
+	function rotateDeg(phi) {
+		_pattern.RotateDeg(phi);
+	}
+	
+	function _AddPattern(pattern) {
+		_pattern.SetPattern(pattern);
+	}
+
+	function realize() {
+		if (parent == undefined) return;
+		
+		if (_debug) {
+			bbox = _pattern.GetBoundingBox();
+			rect = new RectanglePattern(bbox.GetWidth(), bbox.GetHeight());
+			rect.Translate(bbox.GetCenter());
+			rect.SetPattern(new UnicolorPattern(_debugColor));
+			parent._AddPattern(rect);
+		}
+		
+		parent._AddPattern(_pattern);
+	}
+
+}
+
+/////////////////////////////////////////////////
+/////// Polygon
+/////////////////////////////////////////////////
+
+instant Polygon {
+
+	function Polygon() {
+		this._pattern = new PolygonPattern();
+		
+		// Debug attributes
+		this._debug = false;
+		this._debugColor = |rnd(), rnd(), rnd(), 0.5|;
+	}
+
+	function debug(b) {
+		if (b == undefined)
+			return _debug;
+			
+		_debug = b;
+	}
+	
+	function debugColor(c) {
+		if (c == undefined)
+			return c;
+			
+		_debugColor = c;
+	}
+
+	function vertex(x, y) {
+		_pattern.AddVertex(x, y);
+	}
+
+	function outlineWidth(w) {
+		if (w == undefined)
+			return _pattern.GetOutlineWidth();
+			
+		_pattern.SetOutlineWidth(w);
+	}
+	
+	function outlineColor(c) {
+		this._pattern.SetOutlinePattern(new UnicolorPattern(c));
+	}
+
+	function color(c) {
+		this._pattern.SetPattern(new UnicolorPattern(c));
+	}
+
+	function translate(tx, ty) { 
+		_pattern.Translate(tx, ty);
+	}
+
+	function scale(sx, sy) {
+		_pattern.Scale(sx, sy);
+	}
+
+	function rotate(phi) {
+		_pattern.Rotate(phi);
+	}
+
+	function rotateDeg(phi) {
+		_pattern.RotateDeg(phi);
+	}
+
+	function _AddPattern(pattern) {
+		if (_pattern.HasPattern()) {
+			_pattern.SetOutlinePattern(pattern);				
+		} else {
+			_pattern.SetPattern(pattern);		
+		}
+	}
+
+	function realize() {
+		if (parent == undefined) return;
+		if (_debug) {
+			bbox = _pattern.GetBoundingBox();
+			rect = new RectanglePattern(bbox.GetWidth(), bbox.GetHeight());
+			rect.Translate(bbox.GetCenter());
+			rect.SetPattern(new UnicolorPattern(_debugColor));
+			parent._AddPattern(rect);
+		}
+		
+		parent._AddPattern(_pattern);
+	}
+
+}
+
+/////////////////////////////////////////////////
+/////// Line
+/////////////////////////////////////////////////
+
+instant Line {
+
+	function Line() {
+	    this._pattern = new LinePattern();
+	    this._caps = false;
+		
+		// Debug attributes
+		this._debug = false;
+		this._debugColor = |rnd(), rnd(), rnd(), 0.5|;
+	}
+
+	function debug(b) {
+		if (b == undefined)
+			return _debug;
+			
+		_debug = b;
+	}
+	
+	function debugColor(c) {
+		if (c == undefined)
+			return c;
+			
+		_debugColor = c;
+	}
+
+	function point1(x, y) {
+		_pattern.SetPoint1(x, y);
+	}
+
+	function point2(x, y) {
+		_pattern.SetPoint2(x, y);
+	}
+	
+	function caps(b) {
+	    if (b == undefined)
+	        return _caps;
+
+	    _caps = b;
+	}
+
+	function width(w) {
+	    if (w == undefined)
+	        return _pattern.GetWidth();
+
+        _pattern.SetWidth(w);
+	}
+
+	function color(c) {
+		_pattern.SetPattern(new UnicolorPattern(c));
+	}
+	
+	function translate(tx, ty) { 
+		_pattern.Translate(tx, ty);
+	}
+
+	function scale(sx, sy) {
+		_pattern.Scale(sx, sy);
+	}
+
+	function rotate(phi) {
+		_pattern.Rotate(phi);
+	}
+
+	function rotateDeg(phi) {
+		_pattern.RotateDeg(phi);
+	}	
+
+	function _AddPattern(pattern) {
+		_pattern.SetPattern(pattern);
+	}
+
+	function realize() {
+		if (parent == undefined) return;
+		
+		if (_debug) {
+			bbox = _pattern.GetBoundingBox();
+			rect = new RectanglePattern(bbox.GetWidth(), bbox.GetHeight());
+			rect.Translate(bbox.GetCenter());
+			rect.SetPattern(new UnicolorPattern(_debugColor));
+			parent._AddPattern(rect);
+		}
+		
+		parent._AddPattern(_pattern);
+	}
+
+}

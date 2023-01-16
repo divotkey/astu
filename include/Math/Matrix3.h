@@ -36,6 +36,84 @@ namespace astu {
         /** The Identity matrix. */
         static const Matrix3<T> Identity;
 
+
+        /**
+         * Creates a translation matrix.
+         *
+         * @param tx    the x-coordinate of the translation vector
+         * @param ty    the y-coordinate of the translation vector
+         * @return the scaling matrix
+         */
+        static Matrix3<T> CreateTranslate(T tx, T ty) {
+            return Matrix3<T>(
+                     1,  0,  0,
+                     0,  1,  0,
+                    tx, ty,  1);
+        }
+
+        /**
+         * Creates a translation matrix.
+         *
+         * @param tv    the translation vector
+         * @return the scaling matrix
+         */
+        static Matrix3<T> CreateTranslate(const Vector2<T> &tv) {
+            return Matrix3<T>(
+                       1,    0,    0,
+                       0,    1,    0,
+                    tv.x, tv.y,    1);
+        }
+
+        /**
+         * Creates a scaling matrix that scale about the origin.
+         *
+         * @param sx    the x-coordinate of the scaling vector
+         * @param sy    the y-coordinate of the scaling vector
+         * @return the scaling matrix
+         */
+        static Matrix3<T> CreateScale(T sx, T sy) {
+            return Matrix3<T>(
+                    sx,  0,  0,
+                     0, sy,  0,
+                     0,  0,  1);
+        }
+
+        /**
+         * Creates a scaling matrix that scale about the origin.
+         *
+         * @param sv    the scaling vector
+         * @return the scaling matrix
+         */
+        static Matrix3<T> CreateScale(const Vector2<T> &sv) {
+            return Matrix3<T>(
+                    sv.x,    0,    0,
+                       0, sv.y,    0,
+                       0,    0,    1);
+        }
+
+        /**
+         * Creates a rotation matrix that rotates about the origin with the specified angle.
+         *
+         * @param phi   the angle in radians
+         * @return the rotation matrix
+         */
+        static Matrix3<T> CreateRotate(T phi) {
+            if (phi == 0.0f) {
+                return Matrix3<T>(
+                        1, 0, 0,
+                        0, 1 ,0,
+                        0, 0, 1);
+            }
+
+            T sinPhi = std::sin(phi);
+            T cosPhi = std::cos(phi);
+
+            return Matrix3<T>(
+                    cosPhi,  sinPhi, 0,
+                    -sinPhi, cosPhi, 0,
+                          0,      0, 1);
+        }
+
 		/**
 		 * Constructor.
 		 * 
@@ -62,8 +140,8 @@ namespace astu {
 		 * @param m8	the third element of the third column
 		 */
 		Matrix3(T m0, T m1, T m2,
-				 T m3, T m4, T m5,
-				 T m6, T m7, T m8)
+				T m3, T m4, T m5,
+				T m6, T m7, T m8)
 		{
 			Set(m0, m1, m2, m3, m4, m5, m6, m7, m8);
 		}
@@ -259,9 +337,7 @@ namespace astu {
 		 * @return reference to this matrix for method chaining
 		 */
         Matrix3<T>& Rotate(T phi) {
-            Matrix3<T> tmp;
-            *this = tmp.SetToRotate(phi) * *this;
-
+            *this = CreateRotate(phi) * *this;
             return *this;
         } 
 

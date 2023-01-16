@@ -18,12 +18,15 @@
 #include "Velox/Extensions/ExtensionConstructorNoParameter.h"
 #include "Velox/Extensions/ExtensionConstructorOneParameter.h"
 #include "Velox/Extensions/ExtensionConstructorTwoParameter.h"
+#include "Graphics/BoundingBox.h"
 #include "Graphics/Pattern.h"
 #include "Graphics/UnionPattern.h"
 #include "Graphics/BlurPattern.h"
 #include "Graphics/UnicolorPattern.h"
 #include "Graphics/RectanglePattern.h"
 #include "Graphics/CirclePattern.h"
+#include "Graphics/LinePattern.h"
+#include "Graphics/PolygonPattern.h"
 #include "Graphics/QuadtreePattern.h"
 #include "Graphics/SimplePatternRenderer.h"
 #include "Graphics/AntiAliasingPatternRenderer.h"
@@ -33,6 +36,8 @@
 
 // C++ Standard Library includes
 #include <memory>
+
+#define BOUNDING_RECTANGLE_TYPE     "BoundingRectangle"
 
 using namespace velox;
 using namespace std;
@@ -153,6 +158,7 @@ namespace astu {
 
     void GraphicsExtension::InjectExtension(Interpreter &interpreter) const
     {
+        AddCoreObjects(interpreter);
         AddCorePatterns(interpreter);
         AddCompositePatterns(interpreter);
         AddRenderers(interpreter);
@@ -284,9 +290,25 @@ namespace astu {
                         return Item::CreateUndefined();
                     }
             ))
+            .AddFunction("GetThreshold", ExtensionFunctionNoParameter<BlurPattern>::CreateItem(
+                    [](ScriptContext &sc, BlurPattern &pattern, unsigned int lineNumber) {
+                        return Item::CreateReal(pattern.GetThreshold());
+                    }
+            ))
+            .AddFunction("SetThreshold", ExtensionFunctionOneParameter<BlurPattern>::CreateItem(
+                    [](ScriptContext &sc, BlurPattern &pattern, Item &param, unsigned int lineNumber) {
+                        pattern.SetThreshold(param.GetRealValue(lineNumber));
+                        return Item::CreateUndefined();
+                    }
+            ))
             .AddFunction("GetNumSamples", ExtensionFunctionNoParameter<BlurPattern>::CreateItem(
                     [](ScriptContext &sc, BlurPattern &pattern, unsigned int lineNumber) {
                         return Item::CreateInteger(static_cast<unsigned int>(pattern.GetNumSamples()));
+                    }
+            ))
+            .AddFunction("GetNumMinSamples", ExtensionFunctionNoParameter<BlurPattern>::CreateItem(
+                    [](ScriptContext &sc, BlurPattern &pattern, unsigned int lineNumber) {
+                        return Item::CreateInteger(static_cast<unsigned int>(pattern.GetNumMinSamples()));
                     }
             ))
             .AddFunction("SetNumSamples", ExtensionFunctionOneParameter<BlurPattern>::CreateItem(
@@ -296,6 +318,16 @@ namespace astu {
                             throw InterpreterError("Invalid number of samples " + to_string(n), lineNumber);
                         }
                         pattern.SetNumSamples(static_cast<unsigned int>(n));
+                        return Item::CreateUndefined();
+                    }
+            ))
+            .AddFunction("SetNumMinSamples", ExtensionFunctionOneParameter<BlurPattern>::CreateItem(
+                    [](ScriptContext &sc, BlurPattern &pattern, Item &param, unsigned int lineNumber) {
+                        int n = param.GetIntegerValue(lineNumber);
+                        if (n < 0) {
+                            throw InterpreterError("Invalid number of min-samples " + to_string(n), lineNumber);
+                        }
+                        pattern.SetNumMinSamples(static_cast<unsigned int>(n));
                         return Item::CreateUndefined();
                     }
             ))
@@ -325,6 +357,26 @@ namespace astu {
                         }
                         pattern.AddPattern(childPattern);
 
+                        return Item::CreateUndefined();
+                    }
+            ))
+            .AddFunction("SetMaxDepth", ExtensionFunctionOneParameter<QuadtreePattern>::CreateItem(
+                    [](ScriptContext &sc, QuadtreePattern &pattern, Item &param, unsigned int lineNumber) {
+                        int n = param.GetIntegerValue(lineNumber);
+                        if (n <= 0) {
+                            throw InterpreterError("Maximum depth of quadtree must be greater zero, got " + to_string(n), lineNumber);
+                        }
+                        pattern.SetMaxDepth(n);
+                        return Item::CreateUndefined();
+                    }
+            ))
+            .AddFunction("SetMaxElems", ExtensionFunctionOneParameter<QuadtreePattern>::CreateItem(
+                    [](ScriptContext &sc, QuadtreePattern &pattern, Item &param, unsigned int lineNumber) {
+                        int n = param.GetIntegerValue(lineNumber);
+                        if (n <= 0) {
+                            throw InterpreterError("Maximum number of elements per cell for quadtree must be greater zero, got " + to_string(n), lineNumber);
+                        }
+                        pattern.SetMaxElems(n);
                         return Item::CreateUndefined();
                     }
             ))
@@ -446,6 +498,22 @@ namespace astu {
                         return Item::CreateUndefined();
                     }
             ))
+            .AddFunction("SetSize", ExtensionFunctionTwoParameter<RectanglePattern>::CreateItem(
+                    [](ScriptContext &sc, RectanglePattern &pattern, Item &param1, Item &param2, unsigned int lineNumber) {
+                        if (param2.IsUndefined()) {
+                            if (param2.IsVector2()) {
+                                auto v = param2.GetVector2Value();
+                                pattern.SetSize(v.x, v.y);
+                            } else {
+                                double s = param1.GetRealValue(lineNumber);
+                                pattern.SetSize(s, s);
+                            }
+                        } else {
+                            pattern.SetSize(param1.GetRealValue(lineNumber), param2.GetRealValue(lineNumber));
+                        }
+                        return Item::CreateUndefined();
+                    }
+            ))
             .AddFunction("SetPattern", ExtensionFunctionOneParameter<RectanglePattern>::CreateItem(
                     [](ScriptContext &sc, RectanglePattern &pattern, Item &param, unsigned int lineNumber) {
                         if (param.IsUndefined()) {
@@ -465,6 +533,158 @@ namespace astu {
 
         AddCommonPatternFunctions(builder);
         builder.Build(interpreter);
+
+        builder
+                .Reset().TypeName("LinePattern")
+                .Constructor(ExtensionConstructorNoParameter<LinePattern>::CreateItem(
+                        [](ScriptContext &sc, unsigned int lineNumber) {
+                            return make_shared<LinePattern>();
+                        }
+                ))
+                .AddFunction("GetWidth", ExtensionFunctionNoParameter<LinePattern>::CreateItem(
+                        [](ScriptContext &sc, LinePattern &pattern, unsigned int lineNumber) {
+                            return Item::CreateReal(pattern.GetWidth());
+                        }
+                ))
+                .AddFunction("SetWidth", ExtensionFunctionOneParameter<LinePattern>::CreateItem(
+                        [](ScriptContext &sc, LinePattern &pattern, Item &param, unsigned int lineNumber) {
+                            pattern.SetWidth(param.GetRealValue(lineNumber));
+                            return Item::CreateUndefined();
+                        }
+                ))
+                .AddFunction("SetPoint1", ExtensionFunctionTwoParameter<LinePattern>::CreateItem(
+                        [](ScriptContext &sc, LinePattern &pattern, Item &param1, Item &param2, unsigned int lineNumber) {
+                            if (param2.IsUndefined()) {
+                                pattern.SetPoint1(param1.GetVector2Value());
+                            } else {
+                                pattern.SetPoint1(param1.GetRealValue(lineNumber), param2.GetRealValue(lineNumber));
+                            }
+                            return Item::CreateUndefined();
+                        }
+                ))
+                .AddFunction("SetPoint2", ExtensionFunctionTwoParameter<LinePattern>::CreateItem(
+                        [](ScriptContext &sc, LinePattern &pattern, Item &param1, Item &param2, unsigned int lineNumber) {
+                            if (param2.IsUndefined()) {
+                                pattern.SetPoint2(param1.GetVector2Value());
+                            } else {
+                                pattern.SetPoint2(param1.GetRealValue(lineNumber), param2.GetRealValue(lineNumber));
+                            }
+                            return Item::CreateUndefined();
+                        }
+                ))
+                .AddFunction("GetPoint1", ExtensionFunctionNoParameter<LinePattern>::CreateItem(
+                        [](ScriptContext &sc, LinePattern &pattern, unsigned int lineNumber) {
+                            return Item::CreateVector2(pattern.GetPoint1());
+                        }
+                ))
+                .AddFunction("GetPoint2", ExtensionFunctionNoParameter<LinePattern>::CreateItem(
+                        [](ScriptContext &sc, LinePattern &pattern, unsigned int lineNumber) {
+                            return Item::CreateVector2(pattern.GetPoint2());
+                        }
+                ))
+                .AddFunction("SetPattern", ExtensionFunctionOneParameter<LinePattern>::CreateItem(
+                        [](ScriptContext &sc, LinePattern &pattern, Item &param, unsigned int lineNumber) {
+                            if (param.IsUndefined()) {
+                                pattern.SetPattern(nullptr);
+                            } else {
+                                auto drawPattern = dynamic_pointer_cast<Pattern>(param.GetData());
+                                if (!drawPattern) {
+                                    throw InterpreterError("SetPattern requires pattern as parameter", lineNumber);
+                                }
+                                pattern.SetPattern(drawPattern);
+                            }
+
+                            return Item::CreateUndefined();
+                        }
+                ))
+                ;
+
+        AddCommonPatternFunctions(builder);
+        builder.Build(interpreter);
+
+        builder
+                .Reset().TypeName("PolygonPattern")
+                .Constructor(ExtensionConstructorNoParameter<PolygonPattern>::CreateItem(
+                        [](ScriptContext &sc, unsigned int lineNumber) {
+                            return make_shared<PolygonPattern>();
+                        }
+                ))
+                .AddFunction("NumVertices", ExtensionFunctionNoParameter<PolygonPattern>::CreateItem(
+                        [](ScriptContext &sc, PolygonPattern &pattern, unsigned int lineNumber) {
+                            return Item::CreateInteger(static_cast<int>(pattern.NumVertices()));
+                        }
+                ))
+                .AddFunction("CalcGeometricCenter", ExtensionFunctionNoParameter<PolygonPattern>::CreateItem(
+                        [](ScriptContext &sc, PolygonPattern &pattern, unsigned int lineNumber) {
+                            return Item::CreateVector2(pattern.CalcGeometricCenter());
+                        }
+                ))
+                .AddFunction("AddVertex", ExtensionFunctionTwoParameter<PolygonPattern>::CreateItem(
+                        [](ScriptContext &sc, PolygonPattern &pattern, Item &param1, Item &param2, unsigned int lineNumber) {
+                            if (param2.IsUndefined()) {
+                                pattern.AddVertex(param1.GetVector2Value());
+                            } else {
+                                pattern.AddVertex(param1.GetRealValue(lineNumber), param2.GetRealValue(lineNumber));
+                            }
+                            return Item::CreateUndefined();
+                        }
+                ))
+                .AddFunction("SetPattern", ExtensionFunctionOneParameter<PolygonPattern>::CreateItem(
+                        [](ScriptContext &sc, PolygonPattern &pattern, Item &param, unsigned int lineNumber) {
+                            if (param.IsUndefined()) {
+                                pattern.SetPattern(nullptr);
+                            } else {
+                                auto drawPattern = dynamic_pointer_cast<Pattern>(param.GetData());
+                                if (!drawPattern) {
+                                    throw InterpreterError("SetPattern requires pattern as parameter", lineNumber);
+                                }
+                                pattern.SetPattern(drawPattern);
+                            }
+
+                            return Item::CreateUndefined();
+                        }
+                ))
+                .AddFunction("HasPattern", ExtensionFunctionNoParameter<PolygonPattern>::CreateItem(
+                        [](ScriptContext &sc, PolygonPattern &pattern, unsigned int lineNumber) {
+                            return Item::CreateBoolean(pattern.HasPattern());
+                        }
+                ))
+                .AddFunction("HasOutlinePattern", ExtensionFunctionNoParameter<PolygonPattern>::CreateItem(
+                        [](ScriptContext &sc, PolygonPattern &pattern, unsigned int lineNumber) {
+                            return Item::CreateBoolean(pattern.HasOutlinePattern());
+                        }
+                ))
+                .AddFunction("SetOutlinePattern", ExtensionFunctionOneParameter<PolygonPattern>::CreateItem(
+                        [](ScriptContext &sc, PolygonPattern &pattern, Item &param, unsigned int lineNumber) {
+                            if (param.IsUndefined()) {
+                                pattern.SetOutlinePattern(nullptr);
+                            } else {
+                                auto drawPattern = dynamic_pointer_cast<Pattern>(param.GetData());
+                                if (!drawPattern) {
+                                    throw InterpreterError("SetOutlinePattern requires pattern as parameter", lineNumber);
+                                }
+                                pattern.SetOutlinePattern(drawPattern);
+                            }
+
+                            return Item::CreateUndefined();
+                        }
+                ))
+                .AddFunction("SetOutlineWidth", ExtensionFunctionOneParameter<PolygonPattern>::CreateItem(
+                        [](ScriptContext &sc, PolygonPattern &pattern, Item &param, unsigned int lineNumber) {
+                            pattern.SetOutlineWidth(param.GetRealValue(lineNumber));
+                            return Item::CreateUndefined();
+                        }
+                ))
+                .AddFunction("GetOutlineWidth", ExtensionFunctionNoParameter<PolygonPattern>::CreateItem(
+                        [](ScriptContext &sc, PolygonPattern &pattern, unsigned int lineNumber) {
+                            return Item::CreateReal(pattern.GetOutlineWidth());
+                        }
+                ))
+                ;
+
+        AddCommonPatternFunctions(builder);
+        builder.Build(interpreter);
+
     }
 
     void GraphicsExtension::AddCompositePatterns(velox::Interpreter &interpreter) const
@@ -475,33 +695,52 @@ namespace astu {
     void GraphicsExtension::AddCommonPatternFunctions(ObjectTypeBuilder &builder) const
     {
         builder
-            .AddFunction("Translate", ExtensionFunctionOneParameter<Pattern>::CreateItem(
-                    [](ScriptContext &sc, Pattern &pattern, Item &param, unsigned int lineNumber) {
-                        pattern.Translate(param.GetVector2Value());
+            .AddFunction("Translate", ExtensionFunctionTwoParameter<Pattern>::CreateItem(
+                    [](ScriptContext &sc, Pattern &pattern, Item &param1, Item &param2, unsigned int lineNumber) {
+                        if (param2.IsUndefined()) {
+                            pattern.TranslateGeometric(param1.GetVector2Value());
+                        } else {
+                            pattern.TranslateGeometric(Vector2d(param1.GetRealValue(lineNumber), param2.GetRealValue(lineNumber)));
+                        }
+
                         return Item::CreateUndefined();
                     }
                 ))
-                .AddFunction("Scale", ExtensionFunctionOneParameter<Pattern>::CreateItem(
-                        [](ScriptContext &sc, Pattern &pattern, Item &param, unsigned int lineNumber) {
-                            pattern.Scale(param.GetVector2Value());
+                .AddFunction("Scale", ExtensionFunctionTwoParameter<Pattern>::CreateItem(
+                        [](ScriptContext &sc, Pattern &pattern, Item &param1, Item &param2, unsigned int lineNumber) {
+                            if (param2.IsUndefined()) {
+                                if (param1.IsVector2()) {
+                                    pattern.ScaleGeometric(param1.GetVector2Value());
+                                } else {
+                                    double s = param1.GetRealValue(lineNumber);
+                                    pattern.ScaleGeometric(s, s);
+                                }
+                            } else {
+                                pattern.ScaleGeometric(param1.GetRealValue(lineNumber), param2.GetRealValue(lineNumber));
+                            }
                             return Item::CreateUndefined();
                         }
                 ))
                 .AddFunction("Rotate", ExtensionFunctionOneParameter<Pattern>::CreateItem(
                         [](ScriptContext &sc, Pattern &pattern, Item &param, unsigned int lineNumber) {
-                            pattern.Rotate(param.GetRealValue(lineNumber));
+                            pattern.RotateGeometric(param.GetRealValue(lineNumber));
                             return Item::CreateUndefined();
                         }
                 ))
                 .AddFunction("RotateDeg", ExtensionFunctionOneParameter<Pattern>::CreateItem(
                         [](ScriptContext &sc, Pattern &pattern, Item &param, unsigned int lineNumber) {
-                            pattern.Rotate(MathUtils::ToRadians(param.GetRealValue(lineNumber)));
+                            pattern.RotateGeometric(MathUtils::ToRadians(param.GetRealValue(lineNumber)));
                             return Item::CreateUndefined();
                         }
                 ))
+                .AddFunction("GetBoundingBox", ExtensionFunctionNoParameter<Pattern>::CreateItem(
+                        [](ScriptContext &sc, Pattern &pattern, unsigned int lineNumber) {
+                            auto result = sc.FindObjectType(BOUNDING_RECTANGLE_TYPE)->CreateObject(sc);
+                            result->SetData(make_shared<BoundingBox>(pattern.GetBoundingBox()));
+                            return result;
+                        }
+                ))
             ;
-
-
     }
 
     void GraphicsExtension::AddPalette(Interpreter &interpreter) const
@@ -942,6 +1181,37 @@ namespace astu {
         item->AddItem("PearlDarkGrey", Item::CreateColor(0x828282));
 
         interpreter.AddGlobal("RalColors", item);
+    }
+
+    void GraphicsExtension::AddCoreObjects(Interpreter &interpreter) const
+    {
+        ObjectTypeBuilder builder;
+
+        builder
+                .Reset()
+                .TypeName(BOUNDING_RECTANGLE_TYPE)
+                .Constructor(ExtensionConstructorOneParameter<BoundingBox>::CreateItem(
+                        [](ScriptContext &sc, Item &param, unsigned int lineNumber) {
+                            return make_shared<BoundingBox>();
+                        }
+                ))
+                .AddFunction("GetWidth", ExtensionFunctionNoParameter<BoundingBox>::CreateItem(
+                        [](ScriptContext &sc, BoundingBox &bbox, unsigned int lineNumber) {
+                            return Item::CreateReal(bbox.GetWidth());
+                        }
+                ))
+                .AddFunction("GetHeight", ExtensionFunctionNoParameter<BoundingBox>::CreateItem(
+                        [](ScriptContext &sc, BoundingBox &bbox, unsigned int lineNumber) {
+                            return Item::CreateReal(bbox.GetHeight());
+                        }
+                ))
+                .AddFunction("GetCenter", ExtensionFunctionNoParameter<BoundingBox>::CreateItem(
+                        [](ScriptContext &sc, BoundingBox &bbox, unsigned int lineNumber) {
+                            return Item::CreateVector2(bbox.GetCenter());
+                        }
+                ))
+                .Build(interpreter);
+
     }
 
 

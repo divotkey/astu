@@ -72,7 +72,7 @@ namespace velox {
         AddItem("Rotate", InterpreterFunctionOneParameter::CreateItem(
                 [this](ScriptContext &sc, std::shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item>
                 {
-                    if (param->IsNumber()) {
+                    if (!param->IsNumber()) {
                         throw InterpreterError("parameter for method 'Rotate' must be numerical", lineNumber);
                     }
 
@@ -83,7 +83,7 @@ namespace velox {
         AddItem("RotateDeg", InterpreterFunctionOneParameter::CreateItem(
                 [this](ScriptContext &sc, std::shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item>
                 {
-                    if (param->IsNumber()) {
+                    if (!param->IsNumber()) {
                         throw InterpreterError("parameter for method 'Rotate' must be numerical", lineNumber);
                     }
 

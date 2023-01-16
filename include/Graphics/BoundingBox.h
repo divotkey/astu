@@ -10,13 +10,15 @@
 // Local includes
 #include "Math/Vector2.h"
 #include "Math/Matrix3.h"
+#include "Velox/Interpreter/ItemData.h"
 
 namespace astu {
 
     /**
-     * An axis aligned bounding box.
+     * An axis aligned bounding rectangle.
+     * This class represents the two-dimensional version of a bounding box.
      */
-    class BoundingBox final {
+    class BoundingBox final : public velox::ItemData {
     public:
 
         static BoundingBox CreateInfinite();
@@ -28,6 +30,8 @@ namespace astu {
 
         /**
          * Constructor.
+         *
+         * Creates a bounding rectangle width the specified dimensions with its center at the origin.
          * 
          * @param w the width of this bounding box
          * @param h the height of this bounding box
@@ -120,13 +124,13 @@ namespace astu {
         /** The center of this bounding box. */
         Vector2<double> center;
 
-        /** The width of thsi bounding box. */
+        /** The width of this bounding box. */
         double width;
 
-        /** The height of thsi bounding box. */
+        /** The height of this bounding box. */
         double height;
 
-        /** Horicontal radius of this bounding box (height / 2). */
+        /** Horizontal radius of this bounding box (height / 2). */
         double hRadius;
 
         /** Vertical radius of this bounding box (width / 2). */
@@ -136,4 +140,4 @@ namespace astu {
         bool infinite;
     };
 
-}
+} // end of namespace

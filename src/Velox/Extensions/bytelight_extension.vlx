@@ -59,13 +59,13 @@ instant Rendering {
 		return real(_width) / _height;
 	}
 	
-	function AddPattern(pattern) {
+	function _AddPattern(pattern) {
 		_patterns.append(pattern);
 	}
-	
+
 	function realize() {
 		if (_patterns.size() == 0) return;
-		
+
 		img = new Image(_width, _height);
 		img.Clear(|0, 0, 0, 0|);
 		renderer = undefined;
@@ -86,7 +86,7 @@ instant Rendering {
 			}
 			renderer.Render(union, img);
 		}
-		
+
 		ShowImage(img);
 
 		if (_filename != undefined) {
@@ -127,17 +127,17 @@ instant Union {
 		_pattern.Rotate(phi);
 	}
 
-	function AddPattern(pattern) {
+	function _AddPattern(pattern) {
 		_pattern.AddPattern(pattern.GetPattern());
 	}
 
 	function GetPattern() {
 		return _pattern;
 	}
-	
+
 	function realize() {
 		if (parent == undefined) return;
-		parent.AddPattern(this);
+		parent._AddPattern(this);
 	}
 }
 
@@ -152,29 +152,65 @@ instant Blur {
 		this._pattern = new BlurPattern();
 		this._radius = this._pattern.GetRadius();
 		this._numSamples = this._pattern.GetNumSamples();
+		this._numMinSamples = this._pattern.GetNumMinSamples();
+		this._threshold = this._pattern.GetThreshold();
 	}
 
 	function radius(r) {
 		_radius = r;
 	}
-	
+
 	function numSamples(n) {
 		_numSamples = n;
 	}
 
-	function AddPattern(pattern) {
+	function numMinSamples(n) {
+		_numMinSamples = n;
+	}
+
+	function threshold(th) {
+		_threshold = th;
+	}
+
+	function translate(v, b) {
+		if (b == undefined) {
+			this._pattern.Translate(v);
+		} else {
+			this._pattern.Translate(<v, b>);
+		}
+	}
+
+	function scale(v, b) {
+		if (b == undefined) {
+			this._pattern.Scale(v);
+		} else {
+			this._pattern.Scale(<v, b>);
+		}
+	}
+
+	function rotate(phi) {
+		this._pattern.Rotate(phi);
+	}
+
+	function rotateDeg(phi) {
+		this._pattern.RotateDeg(phi);
+	}
+
+	function _AddPattern(pattern) {
 		_pattern.AddPattern(pattern.GetPattern());
 	}
-	
+
 	function GetPattern() {
 		return _pattern;
 	}
-	
+
 	function realize() {
 		if (parent == undefined) return;
 		_pattern.SetNumSamples(_numSamples);
+		_pattern.SetNumMinSamples(_numMinSamples);
+		_pattern.SetThreshold(_threshold);
 		_pattern.SetRadius(_radius);
-		parent.AddPattern(this);
+		parent._AddPattern(this);
 	}
 }
 
@@ -184,18 +220,50 @@ instant Quadtree {
 		this._pattern = new QuadtreePattern();
 	}
 
-	function AddPattern(pattern) {
-		_pattern.AddPattern(pattern.GetPattern());
+	function maxDepth(n) {
+		this._pattern.SetMaxDepth(n);
 	}
 	
+	function maxElems(n) {
+		this._pattern.SetMaxElems(n);
+	}
+
+	function translate(v, b) {
+		if (b == undefined) {
+			this._pattern.Translate(v);
+		} else {
+			this._pattern.Translate(<v, b>);
+		}
+	}
+
+	function scale(v, b) {
+		if (b == undefined) {
+			this._pattern.Scale(v);
+		} else {
+			this._pattern.Scale(<v, b>);
+		}
+	}
+
+	function rotate(phi) {
+		this._pattern.Rotate(phi);
+	}
+
+	function rotateDeg(phi) {
+		this._pattern.RotateDeg(phi);
+	}
+
+	function _AddPattern(pattern) {
+		_pattern.AddPattern(pattern.GetPattern());
+	}
+
 	function GetPattern() {
 		return _pattern;
 	}
-	
+
 	function realize() {
 		if (parent == undefined) return;
 		_pattern.BuildTree();
-		parent.AddPattern(this);
+		parent._AddPattern(this);
 	}
 }
 
@@ -208,18 +276,18 @@ instant Unicolor {
 	function Unicolor() {
 		this._pattern = new UnicolorPattern();
 	}
-	
+
 	function color(c) {
 		_pattern.SetColor(c);
 	}
 
 	function GetPattern() {
 		return _pattern;
-	}	
-	
-	function realize() {		
+	}
+
+	function realize() {
 		if (parent == undefined) return;
-		parent.AddPattern(this);
+		parent._AddPattern(this);
 	}
 }
 
@@ -232,54 +300,70 @@ instant Circle {
 
 	function Circle() {
 		this._pattern = new CirclePattern();
+		this._debug = false;
 	}
-	
+
+	function debug(b) {
+		if (b == undefined)
+			return _debug;
+			
+		_debug = b;
+	}
+
 	function radius(r) {
         if (r == undefined)
             return _pattern.GetRadius();
 
 		_pattern.SetRadius(r);
 	}
-	
+
 	function color(c) {
 		_pattern.SetPattern(new UnicolorPattern(c));
 	}
-	
+
 	function translate(v, b) {
 		if (b == undefined) {
-			_pattern.Translate(v);		
+			_pattern.Translate(v);
 		} else {
 			_pattern.Translate(<v, b>);
-		}	
+		}
 	}
-	
+
 	function scale(v, b) {
 		if (b == undefined) {
-			_pattern.Scale(v);		
+			_pattern.Scale(v);
 		} else {
 			_pattern.Scale(<v, b>);
-		}	
+		}
 	}
-	
+
 	function rotate(phi) {
-		_pattern.Rotate(phi);		
-	}	
-	
+		_pattern.Rotate(phi);
+	}
+
 	function rotateDeg(phi) {
-		_pattern.RotateDeg(phi);		
-	}	
-	
-	function AddPattern(pattern) {
+		_pattern.RotateDeg(phi);
+	}
+
+	function _AddPattern(pattern) {
 		_pattern.SetPattern(pattern.GetPattern());
 	}
-	
+
 	function GetPattern() {
 		return _pattern;
-	}	
-	
-	function realize() {		
+	}
+
+	function realize() {
 		if (parent == undefined) return;
-		parent.AddPattern(this);
+		
+		if (_debug) {
+			bbox = _pattern.GetBoundingBox();
+			rect = new RectanglePattern(bbox.GetWidth(), bbox.GetHeight());
+			rect.Translate(bbox.GetCenter());
+			rect.SetPattern(new UnicolorPattern(|rnd(), rnd(), rnd(), 0.5|));
+			parent._AddPattern(rect);
+		}
+		parent._AddPattern(this);
 	}
 }
 
@@ -336,7 +420,7 @@ instant Rectangle {
 		this._pattern.RotateDeg(phi);
 	}
 
-	function AddPattern(pattern) {
+	function _AddPattern(pattern) {
 		this._pattern.SetPattern(pattern.GetPattern());
 	}
 
@@ -346,10 +430,82 @@ instant Rectangle {
 
 	function realize() {
 		if (parent == undefined) return;
-		parent.AddPattern(this);
+		parent._AddPattern(this);
 	}
 
 }
+
+/////////////////////////////////////////////////
+/////// Polygon
+/////////////////////////////////////////////////
+
+instant Polygon {
+
+	function Polygon() {
+		this._pattern = new PolygonPattern();
+	}
+
+	function vertex(x, y) {
+		if (y == undefined)			
+			this._pattern.AddVertex(x);
+		else
+			this._pattern.AddVertex(<x, y>);
+	}
+
+	function color(c) {
+		this._pattern.SetPattern(new UnicolorPattern(c));
+	}
+
+	function CalcCenter() {
+		return this._pattern.CalcGeometricCenter();
+	}
+
+	function scaleCenter(v, b) {
+		center = this._pattern.CalcGeometricCenter();
+		this._pattern.Translate(center);
+		scale(v, b);
+		this._pattern.Translate(-center);
+	}
+
+	function translate(v, b) {
+		if (b == undefined) {
+			this._pattern.Translate(v);
+		} else {
+			this._pattern.Translate(<v, b>);
+		}
+	}
+
+	function scale(sx, sy) {
+		if (sy == undefined) {
+			this._pattern.Scale(<sx, sx>);
+		} else {
+			this._pattern.Scale(<sy, sy>);
+		}
+	}
+
+	function rotate(phi) {
+		this._pattern.Rotate(phi);
+	}
+
+	function rotateDeg(phi) {
+		this._pattern.RotateDeg(phi);
+	}
+
+	function _AddPattern(pattern) {
+		this._pattern.SetPattern(pattern.GetPattern());
+	}
+
+	function GetPattern() {
+		return this._pattern;
+	}
+
+	function realize() {
+		if (parent == undefined) return;
+		parent._AddPattern(this);
+	}
+
+}
+
 
 /////////////////////////////////////////////////
 /////// Line
@@ -408,7 +564,7 @@ instant Line {
         this._subPattern = new UnicolorPattern(c);
 	}
 
-	function AddPattern(pattern) {
+	function _AddPattern(pattern) {
         this._subPattern = pattern.GetPattern();
 	}
 
@@ -449,7 +605,69 @@ instant Line {
         this._pattern.Translate((this._p1 + this._p2) / 2.0);
         this._pattern.Rotate(-v.Angle(<1.0, 0.0>));
 
-        parent.AddPattern(this);
+        parent._AddPattern(this);
+	}
+
+}
+
+instant Line2 {
+
+	function Line2() {
+	    this._pattern = new LinePattern();
+	    this._caps = false;
+	}
+
+	function point1(x, y) {
+	    if (x == undefined)
+	        return this._pattern.GetPoint1();
+
+        if (y == undefined) {
+			this._pattern.SetPoint1(x);
+        } else {
+			this._pattern.SetPoint1(<x, y>);
+        }
+	}
+
+	function point2(x, y) {
+	    if (x == undefined)
+	        return this._pattern.GetPoint2();
+
+        if (y == undefined) {
+			this._pattern.SetPoint2(x);
+        } else {
+			this._pattern.SetPoint2(<x, x>);
+        }
+	}
+	
+	function caps(b) {
+	    if (b == undefined)
+	        return this._caps;
+
+	    this._caps = b;
+	}
+
+	function width(w) {
+	    if (w == undefined)
+	        return this._pattern.GetWidth();
+
+        this._pattern.SetWidth(w);
+	}
+
+	function color(c) {
+		this._pattern.SetPattern(new UnicolorPattern(c));
+	}
+
+	function _AddPattern(pattern) {
+		this._pattern.SetPattern(pattern.GetPattern());
+	}
+
+	function GetPattern() {
+		return this._pattern;
+	}
+
+	function realize() {
+		if (parent == undefined) return;
+        parent._AddPattern(this);
 	}
 
 }

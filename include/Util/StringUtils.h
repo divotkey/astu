@@ -91,11 +91,29 @@ namespace astu {
 		static std::string & Trim(std::string & s);
 
 		/**
-		 * Converts the specified amount of bytes to a human readable format
+		 * Converts the specified amount of bytes to a human readable format.
 		 *
 		 * @return string describing the specified memory size
 		 */
 		static std::string BytesToString(size_t mem, int precision = 2);
+
+
+        /**
+         * Converts the specified duration to a human readable format
+         *
+         * @param t				the duration
+         * @param showMillis	whether to show milliseconds
+         * @return string representing the duration
+         */
+
+        /**
+         * Converts the specified duration to a human readable format.
+         *
+         * @param duration	    the duration
+         * @param showMillis	whether to show milliseconds
+         * @return string describing the specified memory size
+         */
+        static std::string DurationToString(uint_fast64_t duration, bool showMillis = false);
 
 		/**
 		 * Converts the specified string to upper case letters in-place.

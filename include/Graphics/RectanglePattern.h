@@ -99,7 +99,7 @@ namespace astu {
          *
          * @return `true` if a pattern has been specified
          */
-        bool hasPattern() const {
+        bool HasPattern() const {
             return pattern != nullptr;
         }
 

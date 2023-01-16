@@ -37,5 +37,4 @@ namespace velox {
         z = inZ;
     }
 
-
-}
+} // end of namespace

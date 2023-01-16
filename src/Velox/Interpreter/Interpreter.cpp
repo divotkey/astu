@@ -105,7 +105,7 @@ namespace velox {
                     return Item::CreateReal(Random::GetInstance().NextDouble());
                 }));
 
-        AddGlobalFunction("RandomInt", make_shared<InterpreterFunctionTwoParameter>(
+        AddGlobalFunction("rndInt", make_shared<InterpreterFunctionTwoParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     if (param2->IsUndefined()) {
                         if (param1->IsUndefined()) {
@@ -128,9 +128,55 @@ namespace velox {
                     }
                 }));
 
+        AddGlobalFunction("rndReal", make_shared<InterpreterFunctionTwoParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    if (param2->IsUndefined()) {
+                        if (param1->IsUndefined()) {
+                            return Item::CreateReal(Random::GetInstance().NextDouble());
+                        } else {
+                            double value = param1->GetRealValue(lineNumber);
+                            if (value <= 0) {
+                                return Item::CreateReal(Random::GetInstance().NextDouble(std::numeric_limits<double>::min(), 0));
+                            } else {
+                                return Item::CreateReal(Random::GetInstance().NextDouble(0, std::numeric_limits<double>::max()));
+                            }
+                        }
+                    } else {
+                        double low = param1->GetRealValue(lineNumber);
+                        double high = param2->GetRealValue(lineNumber);
+                        if (high < low) {
+                            std::swap(low, high);
+                        }
+                        return Item::CreateReal(Random::GetInstance().NextDouble(low, high));
+                    }
+                }));
+
+        AddGlobalFunction("rndVec2", make_shared<InterpreterFunctionOneParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param1, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    if (param1->IsUndefined()) {
+                        return Item::CreateVector2(Random::GetInstance().NextVector2d());
+                    } else {
+                        return Item::CreateVector2(Random::GetInstance().NextVector2d(param1->GetRealValue(lineNumber)));
+                    }
+                }));
+
+        AddGlobalFunction("abs", make_shared<InterpreterFunctionOneParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    if (param->IsInteger()) {
+                        return Item::CreateInteger(std::abs(param->GetIntegerValue(lineNumber)));
+                    } else {
+                        return Item::CreateReal(std::abs(param->GetRealValue(lineNumber)));
+                    }
+                }));
+
         AddGlobalFunction("sqrt", make_shared<InterpreterFunctionOneParameter>(
                 [](ScriptContext &sc, shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(std::sqrt(param->GetRealValue(lineNumber)));
+                }));
+
+        AddGlobalFunction("pow", make_shared<InterpreterFunctionTwoParameter>(
+                [](ScriptContext &sc, shared_ptr<Item> param1, shared_ptr<Item> param2, unsigned int lineNumber) -> std::shared_ptr<Item> {
+                    return Item::CreateReal(std::pow(param1->GetRealValue(lineNumber), param2->GetRealValue(lineNumber)));
                 }));
 
         AddGlobalFunction("log", make_shared<InterpreterFunctionOneParameter>(

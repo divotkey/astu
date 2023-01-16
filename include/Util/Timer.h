@@ -7,7 +7,11 @@
 
 #pragma once
 
+// Local includes
+#include "Velox/Interpreter/ItemData.h"
+
 // C++ Standard Library includes
+#include <cstdint>
 #include <chrono>
 
 namespace astu {
@@ -17,7 +21,7 @@ namespace astu {
      *
 	 * @ingroup misc_group
      */
-    class Timer {
+    class Timer : public velox::ItemData {
     public:
 
         /**
@@ -62,6 +66,12 @@ namespace astu {
          */
         unsigned int GetMicroseconds() const;
 
+        /**
+         * Returns the elapsed time in microseconds.
+         *
+         * @return the elapsed time in microseconds (1/1000000 seconds)
+         */
+        uint_fast64_t GetNanoseconds() const;
 
     private:
         /** Indicates whether this Timer is currently running. */

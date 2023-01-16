@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.5
-# Generated Mon Jan 09 09:49:25 CET 2023 with SWORD Interpreter 1.9.0
+# Generated Sun Jan 15 19:07:55 CET 2023 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -115,10 +115,12 @@ list(APPEND astu_SOURCES
 	src/Graphics/HdrCodec.h 
 	src/Graphics/Image.cpp 
 	src/Graphics/ImageRenderer.cpp 
+	src/Graphics/LinePattern.cpp 
 	src/Graphics/Palette.cpp 
 	src/Graphics/Pattern.cpp 
 	src/Graphics/PatternRenderer.cpp 
-	src/Graphics/Quadtree.cpp 
+	src/Graphics/PolygonPattern.cpp 
+	src/Graphics/QuadtreePattern.cpp 
 	src/Graphics/RectanglePattern.cpp 
 	src/Graphics/SimplePatternRenderer.cpp 
 	src/Graphics/UnicolorPattern.cpp 
@@ -133,9 +135,11 @@ list(APPEND astu_SOURCES
 	include/Graphics/Font.h 
 	include/Graphics/Image.h 
 	include/Graphics/ImageRenderer.h 
+	include/Graphics/LinePattern.h 
 	include/Graphics/Palette.h 
 	include/Graphics/Pattern.h 
 	include/Graphics/PatternRenderer.h 
+	include/Graphics/PolygonPattern.h 
 	include/Graphics/QuadtreePattern.h 
 	include/Graphics/RalColors.h 
 	include/Graphics/RectanglePattern.h 
@@ -284,6 +288,7 @@ list(APPEND astu_SOURCES
 	include/Script/ScannerError.h 
 
 	# Module: Velox
+	src/Velox/Extensions/AstuExtension.cpp 
 	src/Velox/Extensions/CompiledSource.cpp 
 	src/Velox/Extensions/GraphicsExtension.cpp 
 	src/Velox/Extensions/GraphicsInstants.cpp 
@@ -376,12 +381,14 @@ list(APPEND astu_SOURCES
 	src/Velox/Service/VeloxConstants.cpp 
 	src/Velox/Service/VeloxExecutionService.cpp 
 	src/Velox/Service/VeloxExtensionService.cpp 
+	include/Velox/Extensions/AstuExtensions.h 
 	include/Velox/Extensions/CompiledSource.h 
 	include/Velox/Extensions/ExtensionConstructorNoParameter.h 
 	include/Velox/Extensions/ExtensionConstructorOneParameter.h 
 	include/Velox/Extensions/ExtensionConstructorTwoParameter.h 
 	include/Velox/Extensions/ExtensionFunctionNoParameter.h 
 	include/Velox/Extensions/ExtensionFunctionOneParameter.h 
+	include/Velox/Extensions/ExtensionFunctionThreeParameter.h 
 	include/Velox/Extensions/ExtensionFunctionTwoParameter.h 
 	include/Velox/Extensions/GraphicsExtensions.h 
 	include/Velox/Extensions/GraphicsInstants.h 
@@ -600,7 +607,7 @@ configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 #################################################
 
 # Define static library target.
-add_library(astu ${astu_SOURCES})
+add_library(astu ${astu_SOURCES} include/Service/ProgressSignal.h)
 
 # Set include directories for target astu
 target_include_directories(

@@ -47,7 +47,7 @@ namespace astu {
         }
 
         /**
-         * Sets the pattern of this rectangle.
+         * Sets the pattern of this circle.
          *
          * @param p the pattern
          */
@@ -56,7 +56,7 @@ namespace astu {
         }
 
         /**
-         * Returns the pattern of this rectangle.
+         * Returns the pattern of this circle.
          *
          * @return  the pattern
          */
@@ -65,11 +65,11 @@ namespace astu {
         }
 
         /**
-         * Returns whether a pattern has been specified by this rectangle.
+         * Returns whether a pattern has been specified by this circle.
          *
          * @return `true` if a pattern has been specified
          */
-        bool hasPattern() const {
+        bool HasPattern() const {
             return pattern != nullptr;
         }
 
@@ -85,7 +85,7 @@ namespace astu {
         /** The radius of this circular shape squared. */
         double radiusSquared;
 
-        /** The pattern of this rectangle. */
+        /** The pattern of this circle. */
         std::shared_ptr<Pattern> pattern;
     };
 

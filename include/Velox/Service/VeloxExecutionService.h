@@ -142,12 +142,6 @@ namespace astu {
             bool OnThreadError(int threadId, const std::string &message) override;
 
         private:
-            /** The thread identifier of the executing thread. */
-            int threadId;
-
-            /** Used to measure execution time. */
-            Timer timer;
-
             /** The velox interpreter used to execute scripts. */
             std::unique_ptr<velox::Interpreter> interpreter;
 

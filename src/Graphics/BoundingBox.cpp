@@ -110,10 +110,6 @@ namespace astu {
 
         SetWidth(right - left);
         SetHeight(top - bottom);
-        // hRadius = (right - left) * 0.5;
-        // vRadius = (top - bottom) * 0.5;
-        // width = hRadius * 2;
-        // height = vRadius * 2;
         center.Set(left + hRadius, bottom + vRadius);
     }
 

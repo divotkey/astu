@@ -13,6 +13,8 @@
 #include "Graphics/Color.h"
 #include "Graphics/RenderQuality.h"
 #include "Velox/Interpreter/ItemData.h"
+#include "Service/ProgressSignal.h"
+#include "Service/SignalServiceTs.h"
 
 // C++ Standard Library includes
 #include <map>
@@ -92,9 +94,19 @@ namespace astu {
         /** The the actual implementation of this renderer. */
         virtual void DoRender(const Pattern &pattern, Image &result) = 0;
 
+        /**
+         * Reports the percentage of completion.
+         *
+         * @param completed the completion in percentage [0, 1]
+         */
+        void ReportProgress(double completed);
+
     private:
         /** The render mode. */
         TransformMode mode;
+
+        /** Used to report progress of rendering. */
+        std::shared_ptr<ProgressSignalService> progressSignalService;
 
         /**
          * Calculates the transformation according to the current configuration.

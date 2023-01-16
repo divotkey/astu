@@ -153,9 +153,9 @@ namespace astu {
         /**
          * Exponentiation by squaring.
          * 
-         * This functions reises the parameter b to the power of e, comparable
+         * This functions raises the parameter b to the power of e, comparable
          * to the pow function of the C++ standard library. However, this
-         * funtions operates on integer values rather than floating point
+         * functions operates on integer values rather than floating point
          * values.
          * 
          * For more details of the algorithm see:

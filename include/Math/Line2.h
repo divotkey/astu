@@ -58,7 +58,7 @@ namespace astu {
             T &outS1,
             T &outS2)
         {
-            float d =  vA.x * vB.y - vA.y * vB.x;
+            T d =  vA.x * vB.y - vA.y * vB.x;
 
             if (d == 0) {
                 return false;
@@ -113,7 +113,7 @@ namespace astu {
          *          are parallel
          */
         bool Intersect(const Line2<T>& other, T& outS1) const {
-            float s2;
+            T s2;
             return Intersect(
                 GetOrigin(), 
                 GetDirection(), 
@@ -132,7 +132,7 @@ namespace astu {
          *          are parallel
          */
         bool Intersect(const Line2<T>& other, Vector2<T>& outPoint) const {
-            float s1, s2;
+            T s1, s2;
             bool valid = Intersect(
                 GetOrigin(), 
                 GetDirection(), 
@@ -149,11 +149,27 @@ namespace astu {
             return false;
         }
 
+        /**
+         * Calculates the distance between this line and a given point.
+         *
+         * @param p the point in question
+         * @return the distance
+         */
+        T CalcDistance(const Vector2<T> &p) const {
+            Line2<T> tmp(p, Vector2<T>(-dir.y, dir.x).Normalize());
+
+            double s;
+            if (tmp.Intersect(*this, s)) {
+                return std::abs(s);
+            }
+            return std::numeric_limits<T>::max();
+        }
+
     private:
-        /** The starting point of this ray. */
+        /** The starting point of this line. */
         Vector2<T> p0;
 
-        /** The direction of this ray. */
+        /** The direction of this line. */
         Vector2<T> dir;
     };
 

@@ -49,7 +49,7 @@ namespace astu {
     /**
      * Type definition for signal services that transmit thread progress report signals.
      *
-     * @ingroup input_group
+     * @ingroup srv_group
      */
     using ThreadProgressSignalService = SignalServiceTs<ThreadProgressSignal>;
 

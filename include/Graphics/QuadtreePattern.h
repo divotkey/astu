@@ -25,6 +25,17 @@ namespace astu {
          */
         QuadtreePattern(int maxElems = 5, int maxDepth = 5);
 
+        void SetMaxElems(int n);
+
+        int GetMaxElems() const {
+            return  maxElems;
+        }
+
+        void SetMaxDepth(int n);
+        int GetMaxDepth() const {
+            return maxDepth;
+        }
+
         /**
          * Builds the quad tree.
          */

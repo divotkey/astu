@@ -5,21 +5,42 @@
  * Copyright (c) 2020-2023 Roman Divotkey. All rights reserved.
  */
 
+// Local includes
+#include "Graphics/QuadtreePattern.h"
+
+// C++ Standard Library includes
 #include <cassert>
 #include <iostream>
-#include "Graphics/QuadtreePattern.h"
+#include <string>
 
 using namespace std;
 
 namespace astu {
 
-    QuadtreePattern::QuadtreePattern(int _maxElems, int _maxDepth)
-        : maxElems(_maxElems)
-        , maxDepth(_maxDepth)
-        , depth(0)
+    QuadtreePattern::QuadtreePattern(int inMaxElems, int inMaxDepth)
+        : depth(0)
         , leaf(false)
     {
-        // Intentionally left empty.
+        SetMaxElems(inMaxElems);
+        SetMaxDepth(inMaxDepth);
+    }
+
+    void QuadtreePattern::SetMaxElems(int n)
+    {
+        if (n < 0) {
+            throw std::domain_error("Maximum number of elements for quadtree mast be greater zero, got " + to_string(n));
+        }
+
+        maxElems = n;
+    }
+
+    void QuadtreePattern::SetMaxDepth(int n)
+    {
+        if (n < 0) {
+            throw std::domain_error("Maximum depth of quadtree mast be greater zero, got " + to_string(n));
+        }
+
+        maxDepth = n;
     }
 
     void printBox(const BoundingBox & box, const char *col)
@@ -172,4 +193,4 @@ namespace astu {
         return result;
     }
 
-}
+} // end of namespace

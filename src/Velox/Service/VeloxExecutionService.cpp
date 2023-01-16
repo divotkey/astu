@@ -120,8 +120,15 @@ namespace astu {
         VeloxState::OnEnter();
 
         assert(!context.executionQueue.empty());
-        fileSource.Reset(context.executionQueue.front());
-        context.LogDebug(VeloxConstants::LOGGING_TAG, "Parsing Velox script '" + fileSource.GetFilepath() + "'");
+        try {
+            fileSource.Reset(context.executionQueue.front());
+            context.LogDebug(VeloxConstants::LOGGING_TAG, "Parsing Velox script '" + fileSource.GetFilepath() + "'");
+        } catch (const std::runtime_error & e) {
+            context.LogError(VeloxConstants::LOGGING_TAG, e.what());
+            context.executionQueue.pop();
+            context.SwitchSubstate("IDLE");
+            return;
+        }
 
         timer.Start();
         curThreadId = context.StartThread([this](int threadId) {
@@ -229,7 +236,8 @@ namespace astu {
     void VeloxExecutionService::Executing::ExecuteScript(const std::string &filename)
     {
         context.executionQueue.push(filename);
-        context.LogInfo(VeloxConstants::LOGGING_TAG, "Scheduled script '" + filename + "' + for execution (executing other script at the moment)");
+        context.LogInfo(VeloxConstants::LOGGING_TAG, "Scheduled script '"
+            + filename + "' + for execution (executing other script at the moment)");
     }
 
     bool VeloxExecutionService::Executing::OnThreadSuccess(int threadId)
@@ -253,7 +261,7 @@ namespace astu {
             context.LogInfo(
                     VeloxConstants::LOGGING_TAG,
                     "Successfully executed Velox script '"
-                    + context.executionQueue.front() + "' in " + to_string(timer.GetMilliseconds()) + " ms");
+                    + context.executionQueue.front() + "' in " + StringUtils::DurationToString(timer.GetNanoseconds(), true));
         }
 
         interpreter->PopGlobalScope();

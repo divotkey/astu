@@ -113,8 +113,61 @@ namespace astu {
 				return stream.str();
 			}
 		}
-		return string();
 	}
+
+    std::string StringUtils::DurationToString(uint_fast64_t duration, bool showMillis)
+    {
+        const int_fast64_t nanosInDay = 86400000000000;
+        const int_fast64_t nanosInHour = 3600000000000;
+        const int_fast64_t nanosInMinute = 60000000000;
+        const int_fast64_t nanosInSecond = 1000000000;
+        const int_fast64_t nanosInMillis = 1000000;
+
+        std::string result;
+        auto nanos = duration;
+
+        auto days = nanos / nanosInDay;
+        nanos %= nanosInDay;
+        if (days > 0) {
+            result += std::to_string(days) + ' ';
+        }
+
+        auto hours = nanos / nanosInHour;
+        nanos %= nanosInHour;
+        if (hours < 10) {
+            result += '0';
+        }
+        result += std::to_string(hours) + ':';
+
+        auto minutes = nanos / nanosInMinute;
+        nanos %= nanosInMinute;
+
+        if (minutes < 10) {
+            result += '0';
+        }
+        result += std::to_string(minutes) + ':';
+
+        auto seconds = nanos / nanosInSecond;
+        if (seconds < 10) {
+            result += '0';
+        }
+        result += std::to_string(seconds);
+
+        if (showMillis) {
+            nanos %= nanosInSecond;
+            auto millis = nanos / nanosInMillis;
+            result += ",";
+            if (millis < 10) {
+                result += "0";
+            }
+            if (millis < 100) {
+                result += "0";
+            }
+            result += std::to_string(millis);
+        }
+
+        return result;
+    }
 
 	string & StringUtils::ToUpperCase(string & s)
 	{

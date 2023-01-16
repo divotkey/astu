@@ -38,6 +38,23 @@ namespace astu {
         unsigned int GetNumSamples() const;
 
         /**
+         * Sets the number of samples used to estimate the blurred result.
+         *
+         * @param n number of samples
+         */
+        void SetNumMinSamples(unsigned int n);
+
+        /**
+         * Returns the number of samples used to estimate the blurred result.
+         *
+         * @return number of samples
+         */
+        unsigned int GetNumMinSamples() const;
+
+        void SetThreshold(double th);
+        double GetThreshold() const;
+
+        /**
          * Returns the radius use to blur added sub-patterns.
          *
          * @return the blur radius
@@ -66,6 +83,12 @@ namespace astu {
 
         /** The number of samples used to estimate the blurred result. */
         unsigned int nSamples;
+
+        /** The number of minimum samples used to estimate the blurred result. */
+        unsigned int nMinSamples;
+
+        /** The threshold value used to preliminarily abort sampling if the color is not changing anymore. */
+        double threshold;
     };
 
 }

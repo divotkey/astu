@@ -25,6 +25,7 @@ namespace astu {
     private:
         GraphicsInstants graphicsInstants;
 
+        void AddCoreObjects(velox::Interpreter &interpreter) const;
         void AddPalette(velox::Interpreter &interpreter) const;
         void AddCommonPatternFunctions(ObjectTypeBuilder &builder) const;
         void AddPatternInstants(velox::Interpreter &interpreter) const;

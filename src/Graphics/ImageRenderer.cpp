@@ -36,6 +36,7 @@ namespace astu {
         Clear();
     }
 
+
     ImageRenderer::~ImageRenderer()
     {
         // Intentionally left empty.

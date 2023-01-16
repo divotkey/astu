@@ -12,7 +12,7 @@ using namespace std;
 
 namespace astu {
 
-    Timer::Timer() : running(false) {
+    Timer::Timer() : running(false), elapsed(0) {
         // intentionally left empty.
     }
 
@@ -45,6 +45,16 @@ namespace astu {
         }
 
         return static_cast<unsigned int>(chrono::duration_cast<chrono::microseconds>(elapsed).count());
+    }
+
+    uint_fast64_t Timer::GetNanoseconds() const
+    {
+        if (running) {
+            auto delta = chrono::high_resolution_clock::now() - startTime;
+            return static_cast<uint_fast64_t>(chrono::duration_cast<chrono::nanoseconds>(elapsed + delta).count());
+        }
+
+        return static_cast<uint_fast64_t>(chrono::duration_cast<chrono::nanoseconds>(elapsed).count());
     }
 
 };

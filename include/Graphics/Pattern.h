@@ -53,6 +53,25 @@ namespace astu {
         void Translate(double tx, double ty);
 
         /**
+         * Translates this pattern by the specified translation vector.
+         * This method transforms in geometric logical order instead of mathematical order.
+         *
+         * @param tx    the x-component of the translation vector
+         * @param sy    the y-component of the translation vector
+         */
+        void TranslateGeometric(double tx, double ty);
+
+        /**
+         * Translates this pattern by the specified translation vector.
+         * This method transforms in geometric logical order instead of mathematical order.
+         *
+         * @param vt    the translation vector
+         */
+        void TranslateGeometric(const Vector2d & vt) {
+            TranslateGeometric(vt.x, vt.y);
+        }
+
+        /**
          * Scales this pattern by the specified scaling vector.
          *
          * @param vt    the scaling vector
@@ -70,11 +89,43 @@ namespace astu {
         void Scale(double sx, double sy);
 
         /**
+         * Scales this pattern by the specified scaling vector.
+         * This method transforms in geometric logical order instead of mathematical order.
+         *
+         * @param sx    the x-component of the scaling vector
+         * @param sy    the y-component of the scaling vector
+         */
+        void ScaleGeometric(double sx, double sy);
+
+        /**
+         * Scales this pattern by the specified scaling vector in geometric order.
+         * This method transforms in geometric logical order instead of mathematical order.
+         *
+         * @param vt    the scaling vector
+         */
+        void ScaleGeometric(const Vector2d & vs) {
+            ScaleGeometric(vs.x, vs.y);
+        }
+
+        /**
          * Rotates this patten by the specified angle.
          *
-         * @param phi   the angle in degrees
+         * @param phi   the angle in radians
          */
         void Rotate(double phi);
+
+        /**
+         * Rotates this patten by the specified angle.
+         * This method transforms in geometric logical order instead of mathematical order.
+         *
+         * @param phi   the angle in radians
+         */
+        void RotateGeometric(double phi);
+
+        /**
+         * Clears all previously applied transformations.
+         */
+        void ClearTransform();
 
         /**
          * Returns the bounding box of this pattern.

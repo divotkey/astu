@@ -26,6 +26,7 @@ namespace astu {
         SimplePatternRenderer(TransformMode mode = TransformMode::RAW) : PatternRenderer(mode) {}
 
     protected:
+
         // Inherited via SimplePatternRenderer
         virtual void DoRender(const Pattern &pattern, Image &result) override;
     };

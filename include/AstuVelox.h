@@ -26,6 +26,7 @@
 #include "Velox/Service/VeloxExecutionService.h"
 #include "Velox/Service/VeloxExtensionService.h"
 #include "Velox/Extensions/LoggingExtension.h"
+#include "Velox/Extensions/AstuExtensions.h"
 #include "Velox/Extensions/ImageExtension.h"
 #include "Velox/Extensions/GraphicsExtensions.h"
 #include "Velox/Extensions/ExtensionConstructorNoParameter.h"
@@ -34,6 +35,7 @@
 #include "Velox/Extensions/ExtensionFunctionNoParameter.h"
 #include "Velox/Extensions/ExtensionFunctionOneParameter.h"
 #include "Velox/Extensions/ExtensionFunctionTwoParameter.h"
+#include "Velox/Extensions/ExtensionFunctionThreeParameter.h"
 
 namespace astu {
 
