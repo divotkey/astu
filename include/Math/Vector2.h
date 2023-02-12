@@ -85,7 +85,7 @@ namespace astu {
          * @return whether this vector contains a NaN component
          */
         bool IsNaN() const {
-            return std::isnan(x) || isnan(y);
+            return std::isnan(x) || std::isnan(y);
         }
 
         /**
