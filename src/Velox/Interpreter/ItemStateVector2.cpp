@@ -26,46 +26,46 @@ namespace velox {
     ItemStateVector2::ItemStateVector2(const Vector2d &inValue) : value(inValue) {
 
         AddItem("SetZero",
-                InterpreterFunctionNoParameter::CreateItem([this](unsigned int lineNumber) -> std::shared_ptr<Item> {
+                InterpreterFunctionNoParameter::CreateItem([this](ScriptContext &sc, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     this->value.SetZero();
                     return Item::CreateUndefined();
                 }));
 
         AddItem("IsZero",
-                InterpreterFunctionNoParameter::CreateItem([this](unsigned int lineNumber) -> std::shared_ptr<Item> {
+                InterpreterFunctionNoParameter::CreateItem([this](ScriptContext &sc, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateBoolean(value.IsZero());
                 }));
 
         AddItem("IsUnitVector",
-                InterpreterFunctionNoParameter::CreateItem([this](unsigned int lineNumber) -> std::shared_ptr<Item> {
+                InterpreterFunctionNoParameter::CreateItem([this](ScriptContext &sc, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateBoolean(value.IsUnitVector());
                 }));
 
         AddItem("Flip",
-                InterpreterFunctionNoParameter::CreateItem([this](unsigned int lineNumber) -> std::shared_ptr<Item> {
+                InterpreterFunctionNoParameter::CreateItem([this](ScriptContext &sc, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     this->value.Flip();
                     return Item::CreateUndefined();
                 }));
 
         AddItem("Normalize",
-                InterpreterFunctionNoParameter::CreateItem([this](unsigned int lineNumber) -> std::shared_ptr<Item> {
+                InterpreterFunctionNoParameter::CreateItem([this](ScriptContext &sc, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     this->value.Normalize();
                     return Item::CreateUndefined();
                 }));
 
         AddItem("Perpendicularize",
-                InterpreterFunctionNoParameter::CreateItem([this](unsigned int lineNumber) -> std::shared_ptr<Item> {
+                InterpreterFunctionNoParameter::CreateItem([this](ScriptContext &sc, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     this->value.Perpendicularize();
                     return Item::CreateUndefined();
                 }));
 
         AddItem("Length",
-                InterpreterFunctionNoParameter::CreateItem([this](unsigned int lineNumber) -> std::shared_ptr<Item> {
+                InterpreterFunctionNoParameter::CreateItem([this](ScriptContext &sc, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(value.Length());
                 }));
 
         AddItem("LengthSquared",
-                InterpreterFunctionNoParameter::CreateItem([this](unsigned int lineNumber) -> std::shared_ptr<Item> {
+                InterpreterFunctionNoParameter::CreateItem([this](ScriptContext &sc, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(value.LengthSquared());
                 }));
 

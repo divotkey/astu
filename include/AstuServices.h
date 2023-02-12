@@ -32,6 +32,7 @@
 #include "Service/SignalServiceTs.h"
 #include "Service/ThreadService.h"
 #include "Service/BlackboardServiceTs.h"
+#include "Service/ProgressSignal.h"
 
 namespace astu {
 

@@ -29,9 +29,10 @@ namespace astu {
 
     void PatternRenderer::Render(const Pattern &pattern, Image &result)
     {
-        progressSignalService = ASTU_GET_SERVICE(ProgressSignalService);
+        progressSignalService = ASTU_GET_SERVICE_OR_NULL(ProgressSignalService);
         UpdateTransform(result.GetWidth(), result.GetHeight());
         DoRender(pattern, result);
+        ReportProgress(1.0);
     }
 
     void PatternRenderer::UpdateTransform(double imageWidth, double imageHeight)

@@ -17,7 +17,7 @@
 namespace astu {
 
     /**
-     * A pattern representing a circular shape.
+     * A pattern representing a polygonal shape with n vertices.
      *
      * 1.) Draw a horizontal line to the right of each point and extend it to infinity.
      * 2.) Count the number of times the line intersects with polygon edges.
@@ -152,6 +152,8 @@ namespace astu {
         virtual bool GetColorTransformed(const Vector2<double> &pt, Color4d &outColor) const override;
         virtual BoundingBox GetLocalBoundingBox() const override;
 
+        bool IsInsideTransformed(const Vector2<double> &pt) const override;
+
     private:
         /** The vertices of this polygon. */
         std::vector<Vector2d> vertices;
@@ -164,8 +166,6 @@ namespace astu {
 
         /** The width of the outline of this polygon. */
         double outlineWidth;
-
-        bool IsInside(const Vector2d &pt) const;
     };
 
 } // end of namespace

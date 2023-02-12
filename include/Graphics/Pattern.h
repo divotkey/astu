@@ -143,6 +143,27 @@ namespace astu {
          */
         virtual bool GetColor(const Vector2<double> &p, Color4d &outColor) const;
 
+        /**
+         * Tests whether a point is inside or outside this pattern.
+         *
+         * @param p the point to be tested
+         * @return `true` if the point is in side this pattern
+         */
+         virtual bool IsInside(const Vector2<double> &p) const;
+
+         /**
+          * Tests whether this pattern either intersects or lies entirely inside a bounding box.
+          *
+          * @param bbox the bounding box to test
+          * @return `true` if this pattern intersects or lies entirely in side the bounding box
+          */
+         //virtual bool IsInside(const BoundingBox &bbox) const;
+
+        /**
+         * Prepares this patter for rendering.
+         */
+        virtual void Prepare();
+
     protected:
 
         /**
@@ -153,6 +174,15 @@ namespace astu {
          * @return `true` if the specified point lies within this pattern, `false` otherwise
          */
         virtual bool GetColorTransformed(const Vector2<double> &pt, Color4d & outColor) const = 0;
+
+        /**
+         * Tests whether a point is inside or outside this pattern.
+         *
+         * @param pt    the point in question in local space
+         * @return `true` if the point is in side this pattern
+         */
+        virtual bool IsInsideTransformed(const Vector2<double> &pt) const = 0;
+
 
         /**
          * Returns the bounding box of this pattern in local space.
@@ -170,6 +200,11 @@ namespace astu {
 
         /** The cached bounding box of this pattern. */
         mutable BoundingBox boundingBox;
+
+        /**
+         * Recalculates the bounding box based on current transformation.
+         */
+        void UpdateBoundingBox() const;
     };
 
 } // end of namespace

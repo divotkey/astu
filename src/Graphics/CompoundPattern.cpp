@@ -9,7 +9,7 @@
 #include "Graphics/CompoundPattern.h"
 
 // C++ Standard Library includes
-#include <string>
+#include <algorithm>
 
 namespace astu {
 
@@ -23,6 +23,12 @@ namespace astu {
     {
         children.clear();
         OnClear();
+    }
+
+    void CompoundPattern::RemovePattern(std::shared_ptr<Pattern> child)
+    {
+        children.erase(std::remove(children.begin(), children.end(), child), children.end());
+        OnPatternRemoved(*child);
     }
 
 } // end of namespace

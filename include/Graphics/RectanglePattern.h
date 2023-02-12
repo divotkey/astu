@@ -109,6 +109,8 @@ namespace astu {
         virtual bool GetColorTransformed(const Vector2<double> &pt, Color4d &outColor) const override;
         virtual BoundingBox GetLocalBoundingBox() const override;
 
+        bool IsInsideTransformed(const Vector2<double> &pt) const override;
+
     private:
         /** The width of this rectangle. */
         double width;

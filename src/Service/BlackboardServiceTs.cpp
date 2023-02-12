@@ -20,19 +20,30 @@ namespace astu {
         // Intentionally left empty.
     }
 
-    bool BlackboardServiceTs::HasStringTs(const string &key) const
+    void BlackboardServiceTs::OnStartup()
+    {
+        assert(stringMap.empty());
+    }
+
+    void BlackboardServiceTs::OnShutdown()
+    {
+        ClearStrings();
+        ClearImages();
+    }
+
+    bool BlackboardServiceTs::HasString(const string &key) const
     {
         std::lock_guard<std::mutex> lock(stringMapMutex);
         return stringMap.find(key) != stringMap.end();
     }
 
-    void BlackboardServiceTs::SetStringTs(const string &key, const string &value)
+    void BlackboardServiceTs::SetString(const string &key, const string &value)
     {
         std::lock_guard<std::mutex> lock(stringMapMutex);
         stringMap[key] = value;
     }
 
-    const std::string BlackboardServiceTs::GetStringTs(const string &key) const
+    const std::string BlackboardServiceTs::GetString(const string &key) const
     {
         std::lock_guard<std::mutex> lock(stringMapMutex);
         auto it = stringMap.find(key);
@@ -43,14 +54,39 @@ namespace astu {
         return it->second;
     }
 
-    void BlackboardServiceTs::OnStartup()
+    void BlackboardServiceTs::ClearStrings()
     {
-        assert(stringMap.empty());
+        std::lock_guard<std::mutex> lock(stringMapMutex);
+        stringMap.clear();
     }
 
-    void BlackboardServiceTs::OnShutdown()
+    bool BlackboardServiceTs::HasImage(const string &key) const
     {
-        stringMap.clear();
+        std::lock_guard<std::mutex> lock(imageMapMutex);
+        return imageMap.find(key) != imageMap.end();
+    }
+
+    void BlackboardServiceTs::SetImage(const string &key, std::shared_ptr<Image> value)
+    {
+        std::lock_guard<std::mutex> lock(imageMapMutex);
+        imageMap[key] = value;
+    }
+
+    std::shared_ptr<Image> BlackboardServiceTs::GetImage(const string &key) const
+    {
+        std::lock_guard<std::mutex> lock(imageMapMutex);
+        auto it = imageMap.find(key);
+        if (it == imageMap.end()) {
+            throw std::logic_error("Unable to retrieve image from blackboard, unknown key '" + key + "'");
+        }
+
+        return it->second;
+    }
+
+    void BlackboardServiceTs::ClearImages()
+    {
+        std::lock_guard<std::mutex> lock(imageMapMutex);
+        imageMap.clear();
     }
 
 } // end of namespace

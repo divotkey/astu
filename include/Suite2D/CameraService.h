@@ -158,7 +158,7 @@ namespace astu::suite2d {
         /**
          * Switches the camera to fitting view mode.
          * 
-         * The camera will show the specified height of the game world
+         * The camera will show the specified width and height of the game world
          * independently from the aspect ratio of the output window.
          * Empty areas on the top and bottom or on the left and right side 
          * of the screen might appear.
@@ -171,7 +171,7 @@ namespace astu::suite2d {
         /**
          * Switches the camera to fitting view mode.
          * 
-         * The camera will show the specified height of the game world 
+         * The camera will show the specified width and height of the game world
          * independently from the aspect ratio of the output window. 
          * Empty areas on the top and bottom or on the left and right side 
          * of the screen might appear. 
@@ -185,7 +185,7 @@ namespace astu::suite2d {
         /**
          * Switches the camera to filling view mode.
          * 
-         * The camera will show the specified height of the game world 
+         * The camera will show the specified width and height of the game world
          * independently from the aspect ratio of the output window.
          * 
          * If the aspect ratio of the output window does not match the
@@ -200,7 +200,7 @@ namespace astu::suite2d {
         /**
          * Switches the camera to filling view mode.
          * 
-         * The camera will show the specified height of the game world 
+         * The camera will show the specified width and height of the game world
          * independently from the aspect ratio of the output window. 
          * If the aspect ratio of the output window does not match the 
          * aspect ratio of the visible world area, parts of the game world 
@@ -213,28 +213,28 @@ namespace astu::suite2d {
         }
 
         /**
-         * Switches the camera to streched view mode.
+         * Switches the camera to stretched view mode.
          * 
          * In case aspect ratio of the output window does not match
          * the aspect ratio of the world dimensions, the output will
-         * be streched.
+         * be stretched.
          * 
          * @param width     the visible width in world units
          * @param height    the visible height in world units
          */
-        Camera& ShowStreched(float width, float height);
+        Camera& ShowStretched(float width, float height);
 
         /**
-         * Switches the camera to streched view mode.
+         * Switches the camera to stretched view mode.
          * 
          * In case aspect ratio of the output window does not match
          * the aspect ratio of the world dimensions, the output will
-         * be streched.
+         * be stretched.
          * 
          * @param size  vector containing width and height in world units
          */
-        Camera& ShowStreched(const astu::Vector2f size) {
-            return ShowStreched(size.x, size.y);
+        Camera& ShowStretched(const astu::Vector2f size) {
+            return ShowStretched(size.x, size.y);
         }
 
         /**
@@ -300,7 +300,7 @@ namespace astu::suite2d {
         // Internal States
         class CameraState {
         public:
-            virtual ~CameraState() {}
+            virtual ~CameraState() = default;
             virtual void UpdateScaling(Camera & cam) = 0;
         };
 

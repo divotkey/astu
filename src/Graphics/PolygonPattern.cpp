@@ -23,7 +23,7 @@ namespace astu {
 
     bool PolygonPattern::GetColorTransformed(const Vector2<double> &pt, Color4d &outColor) const
     {
-        if (IsInside(pt) && pattern) {
+        if (pattern && IsInside(pt)) {
             if (outlinePattern &&CalcDistance(pt) < outlineWidth) {
                 return outlinePattern->GetColor(pt, outColor);
             }
@@ -67,7 +67,7 @@ namespace astu {
         vertices.push_back(vtx);
     }
 
-    bool PolygonPattern::IsInside(const Vector2d &pt) const
+    bool PolygonPattern::IsInsideTransformed(const Vector2<double> &pt) const
     {
         int cnt = 0;
 

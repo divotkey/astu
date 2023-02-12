@@ -21,10 +21,15 @@ namespace astu {
     class BoundingBox final : public velox::ItemData {
     public:
 
+        /**
+         * Creates a bounding box with infinite dimensions.
+         *
+         * @return  the newly created bounding box
+         */
         static BoundingBox CreateInfinite();
 
         /**
-         * Constructor.
+         * Constructor creating an empty bounding box.
          */
         BoundingBox();
 
@@ -107,9 +112,12 @@ namespace astu {
             return infinite;
         }
 
-        bool IsZero() const {
-            return !IsInfinite() && (width == 0) && (height == 0);
-        }
+        /**
+         * Tests whether this bounding box represents an empty bounding box with no dimensions and center.
+         *
+         * @return `true` if this is an empty bounding box
+         */
+        bool IsEmpty() const;
 
         bool IsInside(const Vector2<double> & p) const;
         bool IsInside(const BoundingBox & box) const;
@@ -136,7 +144,7 @@ namespace astu {
         /** Vertical radius of this bounding box (width / 2). */
         double vRadius;
 
-        /** Determines that this bounding box is of infinite size. */
+        /** Indicates that this bounding box is of infinite size. */
         bool infinite;
     };
 

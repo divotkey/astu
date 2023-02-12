@@ -25,7 +25,7 @@ namespace velox {
 
     ItemStateColor::ItemStateColor(const Color4d &inValue) : value(inValue) {
 
-        AddItem("Saturate", InterpreterFunctionNoParameter::CreateItem([this](unsigned int lineNumber) -> std::shared_ptr<Item> {
+        AddItem("Saturate", InterpreterFunctionNoParameter::CreateItem([this](ScriptContext &sc, unsigned int lineNumber) -> std::shared_ptr<Item> {
             this->value.Saturate();
             return Item::CreateUndefined();
         }));

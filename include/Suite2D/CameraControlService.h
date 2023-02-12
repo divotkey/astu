@@ -6,12 +6,6 @@
  */
 
 #pragma once
-/*
- * ASTU - AST Utilities
- * A collection of Utilities for Applied Software Techniques (AST).
- *
- * Copyright (c) 2020 - 2022 Roman Divotkey. All rights reserved.
- */
 
 // Local includes
 #include "Suite2D/CameraService.h"
@@ -40,6 +34,18 @@ namespace astu::suite2d {
     {
     public:
 
+        /** Used to calculate camera scaling based on zoom level. */
+        static const float ZoomStep;
+
+
+        /**
+         * Calculates the camera zoom factor base on zoom level
+         *
+         * @param level the zoom level
+         * @return the zoom factor
+         */
+        static float CalcZoom(float level);
+
         /**
          * Constructor.
          * 
@@ -55,18 +61,18 @@ namespace astu::suite2d {
         void SetHomePosition(const Vector2f pos);
 
         /**
-         * Sets the zoom level to a specific value.
+         * Specifies the zoom level for the home position.
          *
          * @param level the zoom level
          */
-        void SetZoomLevel(int level);
+        void SetHomeZoom(float level);
 
         /**
-         * Returns the current zoom level.
+         * Sets the current camera position.
          *
-         * @return the zoom level
+         * @param pos   the new camera position
          */
-        int GetZoomLevel() const;
+        void SetCameraPosition(const Vector2f &pos);
 
         /**
          * Return the home position.
@@ -74,6 +80,22 @@ namespace astu::suite2d {
          * @return the home position
          */
         const Vector2f &GetHomePosition() const { return homePos; }
+
+        /**
+         * Sets the zoom level to a specific value.
+         *
+         * @param level the zoom level
+         */
+        void SetZoomLevel(float level);
+
+        /**
+         * Returns the current zoom level.
+         *
+         * @return the zoom level
+         */
+        float GetZoomLevel() const;
+
+    protected:
 
         // Inherited via BaseService
         virtual void OnStartup() override;
@@ -102,11 +124,14 @@ namespace astu::suite2d {
         /** The position where to place the camera when the home button is pressed. */
         Vector2f homePos;
 
+        /** The zoom level used the home button is pressed. */
+        float homeZoom;
+
         /** Indicates whether the user is currently changing the camera position. */
         bool dragging;
 
         /** Used to calculate the zoom factor. */
-        int zoomLevel;
+        float zoomLevel;
 
         /** The start position of the camera movement in screen coordinates. */
         astu::Vector2f startScreenPos;

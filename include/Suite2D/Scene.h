@@ -180,7 +180,7 @@ namespace astu::suite2d {
         /**
          * Returns the parent of this spatial.
          * 
-         * @return the parent or nullptr if this patial has not parrent
+         * @return the parent or nullptr if this spatial has not parent
          */
         Node* GetParent() const {
             return parent;
@@ -221,7 +221,7 @@ namespace astu::suite2d {
         }
 
         /**
-         * Creats a copy of this spatial.
+         * Creates a copy of this spatial.
          * 
          * @return the copy
          */
@@ -448,7 +448,7 @@ namespace astu::suite2d {
             return *vertexBuffer;
         }
 
-        // Inherited via Node2/Spatial
+        // Inherited via Spatial
         virtual void Render(SceneRenderer2D& renderer, float alpha) override;
         virtual std::shared_ptr<Spatial> Clone() const override;
 

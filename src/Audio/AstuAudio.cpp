@@ -36,7 +36,7 @@ namespace astu {
 
     size_t AudioSamples::NumOfFrames() const
     {
-        // In case we have no samples at all.
+        // In case we have no channels at all.
         if (NumOfChannels() == 0) {
             return 0;
         }

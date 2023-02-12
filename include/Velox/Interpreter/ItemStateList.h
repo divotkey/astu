@@ -33,6 +33,8 @@ namespace velox {
         std::shared_ptr<Item> GetListElement(size_t idx, unsigned int lineNumber) override;
         void AppendListElement(std::shared_ptr<Item> elem) override;
 
+        size_t NumListElements() const override;
+
     protected:
         // Inherited via ItemState
         bool Assign(Item &owner, const ItemState &rhs) override;

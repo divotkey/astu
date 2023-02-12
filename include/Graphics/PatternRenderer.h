@@ -63,7 +63,7 @@ namespace astu {
         /**
          * Virtual destructor.
          */
-        virtual ~PatternRenderer() {}
+        virtual ~PatternRenderer() = default;
 
         /**
          * Sets the transform mode, defining the transformation of patterns while rendering.

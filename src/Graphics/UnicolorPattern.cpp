@@ -7,12 +7,18 @@
 
 // Local includes
 #include "Graphics/UnicolorPattern.h"
+#include "Math/Random.h"
 
 // C++ Standard Library includes
-#include <stdexcept>
 #include <string>
 
 namespace astu {
+
+    std::shared_ptr<UnicolorPattern> UnicolorPattern::CreateRandomColored(double alpha)
+    {
+        auto &rnd = Random::GetInstance();
+        return std::make_shared<UnicolorPattern>(Color4d(rnd.NextDouble(), rnd.NextDouble(), rnd.NextDouble(), alpha));
+    }
 
     bool UnicolorPattern::GetColor(const Vector2<double> &p, Color4d &outColor) const
     {
@@ -33,4 +39,10 @@ namespace astu {
         return BoundingBox::CreateInfinite();
     }
 
-}
+    bool UnicolorPattern::IsInsideTransformed(const Vector2<double> &pt) const
+    {
+        return true;
+    }
+
+
+} // end of namespace

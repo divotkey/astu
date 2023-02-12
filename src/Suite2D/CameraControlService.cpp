@@ -12,13 +12,12 @@
 #include "Input/InputSignals.h"
 
 // C++ Standard Library includes
-#include <iostream>
 #include <cmath>
 using namespace std;
 
-#define ZOOM_STEP 1.1f
-
 namespace astu::suite2d {
+
+    const float CameraControlService::ZoomStep = 1.1f;
 
     CameraControlService::CameraControlService(int updatePriority)
         : Service("Camera 2D Control Service")
@@ -26,6 +25,9 @@ namespace astu::suite2d {
         , mouseButton(Mouse::Button::RIGHT)
         , homeKey(Keyboard::KEY_HOME)
         , homePos(Vector2f::Zero)
+        , dragging(false)
+        , zoomLevel(0)
+        , homeZoom(0)
     {
         // Intentionally left empty.
     }
@@ -33,7 +35,7 @@ namespace astu::suite2d {
     void CameraControlService::OnStartup()
     {
         dragging = false;
-        zoomLevel = 0;
+        zoomLevel = homeZoom;
     }
 
     void CameraControlService::OnShutdown()
@@ -55,8 +57,8 @@ namespace astu::suite2d {
     {
         if (keycode == homeKey) {
             GetCamera().SetPosition(homePos);
-            GetCamera().SetZoom(1.0f);
-            zoomLevel = 0;
+            GetCamera().SetZoom(CalcZoom(homeZoom));
+            zoomLevel = homeZoom;
             dragging = false;
             return true;
         }
@@ -89,8 +91,8 @@ namespace astu::suite2d {
 
     bool CameraControlService::OnMouseWheel(int amount)
     {
-        zoomLevel += amount;
-        GetCamera().SetZoom( std::pow(ZOOM_STEP, zoomLevel) );
+        zoomLevel += static_cast<float>(amount);
+        GetCamera().SetZoom( CalcZoom(zoomLevel) );
         return true;
     }
 
@@ -111,15 +113,30 @@ namespace astu::suite2d {
         homePos = pos;
     }
 
-    void CameraControlService::SetZoomLevel(int level)
+    void CameraControlService::SetCameraPosition(const Vector2f &pos)
     {
-        zoomLevel = level;
-        GetCamera().SetZoom( std::pow(ZOOM_STEP, zoomLevel) );
+        GetCamera().SetPosition(pos);
     }
 
-    int CameraControlService::GetZoomLevel() const
+    void CameraControlService::SetZoomLevel(float level)
+    {
+        zoomLevel = level;
+        GetCamera().SetZoom( CalcZoom(zoomLevel) );
+    }
+
+    float CameraControlService::GetZoomLevel() const
     {
         return zoomLevel;
+    }
+
+    float CameraControlService::CalcZoom(float level)
+    {
+        return std::pow(ZoomStep, level);
+    }
+
+    void CameraControlService::SetHomeZoom(float level)
+    {
+        homeZoom = level;
     }
 
 } // end of namespace

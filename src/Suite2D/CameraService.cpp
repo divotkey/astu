@@ -134,7 +134,7 @@ namespace astu::suite2d {
         return *this;
     }
 
-    Camera& Camera::ShowStreched(float width, float height)
+    Camera& Camera::ShowStretched(float width, float height)
     {
         SwitchState(make_unique<StrechedState>(width, height));
         return *this;
@@ -268,7 +268,7 @@ namespace astu::suite2d {
 
     bool CameraService::OnResize(int width, int height) 
     {
-        for (auto it : cameraMap) {
+        for (auto &it : cameraMap) {
             it.second->SetRenderTargetSize(width, height);
         }
         

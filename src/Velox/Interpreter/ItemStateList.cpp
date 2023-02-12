@@ -24,7 +24,7 @@ namespace velox {
 
     ItemStateList::ItemStateList() {
 
-        AddItem("size", InterpreterFunctionNoParameter::CreateItem([this](unsigned int lineNumber) -> std::shared_ptr<Item> {
+        AddItem("size", InterpreterFunctionNoParameter::CreateItem([this](ScriptContext &sc, unsigned int lineNumber) -> std::shared_ptr<Item> {
             return Item::CreateInteger(static_cast<int>(elements.size()));
         }));
 
@@ -32,6 +32,14 @@ namespace velox {
                 [this](ScriptContext &sc, std::shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item>
                 {
                     AppendListElement(param);
+                    return Item::CreateUndefined();
+                }));
+
+        AddItem("removeByIndex", InterpreterFunctionOneParameter::CreateItem(
+                [this](ScriptContext &sc, std::shared_ptr<Item> param, unsigned int lineNumber) -> std::shared_ptr<Item>
+                {
+                    auto idx = param->GetIntegerValue(lineNumber);
+                    elements.erase(elements.begin() + idx);
                     return Item::CreateUndefined();
                 }));
     }
@@ -86,6 +94,11 @@ namespace velox {
         } else {
             elements.push_back(Item::CreateReference(elem));
         }
+    }
+
+    size_t ItemStateList::NumListElements() const
+    {
+        return elements.size();
     }
 
 }

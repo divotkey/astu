@@ -32,6 +32,7 @@
 #include "Velox/Interpreter/InterpreterFunctionCall.h"
 #include "Velox/Interpreter/InterpreterFunctionScript.h"
 #include "Velox/Interpreter/InterpreterReturnStatement.h"
+#include "Velox/Interpreter/InterpreterStatementSequence.h"
 #include "Velox/Interpreter/InterpreterStatementGlobal.h"
 #include "Velox/Interpreter/InterpreterStatementIf.h"
 #include "Velox/Interpreter/InterpreterStatementWhile.h"
@@ -165,6 +166,21 @@ namespace velox {
 
         if (source.GetCurrentTokenType() != TokenType::EOS) {
             throw ParserError("End of script expected", source.GetLine());
+        }
+
+        return result;
+    }
+
+    std::shared_ptr<InterpreterStatement> Parser::ParseStatementSequence(ISource &source) {
+
+        auto result = make_shared<InterpreterStatementSequence>();
+
+        while (CONTAINS(STATEMENT_START, source.GetCurrentTokenType())) {
+            if (source.GetCurrentTokenType() == TokenType::SEMICOLON)
+                continue;
+
+            auto statement = ParseStatement(source);
+            result->AddStatement(statement);
         }
 
         return result;
@@ -332,7 +348,7 @@ namespace velox {
 
         FastFileSource includeSource(source.GetStringValue());
         source.GetNextTokenType();
-        return ParseStatementBlock(includeSource, false);
+        return ParseStatementSequence(includeSource);
     }
 
     std::shared_ptr<InterpreterStatement>

@@ -25,6 +25,11 @@ namespace astu {
         return rectangle.GetColor(pt, outColor);
     }
 
+    bool LinePattern::IsInsideTransformed(const Vector2<double> &pt) const
+    {
+        return rectangle.IsInside(pt);
+    }
+
     BoundingBox LinePattern::GetLocalBoundingBox() const
     {
         return rectangle.GetBoundingBox();

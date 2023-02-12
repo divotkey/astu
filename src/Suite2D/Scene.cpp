@@ -35,6 +35,7 @@ namespace astu::suite2d {
     Spatial::Spatial()
         : parent(nullptr)
         , alpha(1.0f)
+        , visible(true)
     {
         // Intentionally left empty.
     }
@@ -43,6 +44,7 @@ namespace astu::suite2d {
         : parent(nullptr)
         , name(o.name)
         , alpha(o.alpha)
+        , visible(o.visible)
         , localTransform(o.localTransform)
         , worldMatrix(o.worldMatrix)
         , localMatrix(o.localMatrix)
@@ -178,6 +180,8 @@ namespace astu::suite2d {
 
     Polyline::Polyline(std::shared_ptr<VertexBuffer2f> vertexBuffer)
         : vertexBuffer(vertexBuffer)
+        , closed(true)
+        , color(WebColors::Aqua)
     {
         // Intentionally left empty
     }

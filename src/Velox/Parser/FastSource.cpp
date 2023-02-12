@@ -30,7 +30,7 @@ namespace velox {
             {"else", TokenType::ELSE},
             {"else", TokenType::SWITCH},
             {"else", TokenType::CASE},
-            {"white", TokenType::WHILE},
+            {"while", TokenType::WHILE},
             {"do", TokenType::DO},
             {"loop", TokenType::LOOP},
             {"exit", TokenType::EXIT},
@@ -182,13 +182,19 @@ namespace velox {
                 }
             case '-':
                 ReadChar();
-                if (curChar == '=') {
-                    ReadChar();
-                    endPos = curPos;
-                    return curToken = TokenType::ASSIGN_SUB;
+                switch (curChar) {
+                    case '=':
+                        ReadChar();
+                        endPos = curPos;
+                        return curToken = TokenType::ASSIGN_SUB;
+                    case '-':
+                        ReadChar();
+                        endPos = curPos;
+                        return curToken = TokenType::DECREMENT;
+                    default:
+                        endPos = curPos;
+                        return curToken = TokenType::SUB;
                 }
-                endPos = curPos;
-                return curToken = TokenType::SUB;
             case '%':
                 ReadChar();
                 if (curChar == '=') {

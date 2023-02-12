@@ -80,6 +80,15 @@ namespace astu {
         }
 
         /**
+         * Tests whether at least on component of this vector is not-a-number (NaN).
+         *
+         * @return whether this vector contains a NaN component
+         */
+        bool IsNaN() const {
+            return std::isnan(x) || isnan(y);
+        }
+
+        /**
          * Sets this vector to the coordinates of another vector.
          *
          * @param o the other vector which coordinates to use
@@ -277,7 +286,7 @@ namespace astu {
         }
 
         /**
-         * Calculates the dot product.
+         * Calculates the cross product.
          * 
          * @param vx    the x-coordinate the the other vector
          * @param vy    the y-coordinate the the other vector
@@ -289,7 +298,7 @@ namespace astu {
         }
 
         /**
-         * Calculates the dot product.
+         * Calculates the cross product.
          * 
          * @param o the the other vector
          * @return the cross product of the two vectors

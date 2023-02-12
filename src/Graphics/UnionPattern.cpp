@@ -22,7 +22,6 @@ namespace astu {
             if (pattern->GetColor(pt, localColor)) {
                 if (hasColor) {
                     c.Blend(localColor);
-                    //Blend(c, localColor);
                 } else {
                     hasColor = true;
                     c = localColor;
@@ -33,20 +32,6 @@ namespace astu {
         return hasColor;
     }
 
-    //void UnionPattern::Blend(Color4d & a, const Color4d & b) const
-    //{
-    //    double iba = 1.0 - b.a;
-	//	a.a = b.a + a.a * iba;
-	//
-	//	a.r = b.r * b.a + a.r * a.a * iba;
-	//	a.g = b.g * b.a + a.g * a.a * iba;
-	//	a.b = b.b * b.a + a.b * a.a * iba;
-	//
-	//	a.r /= a.a;
-	//	a.g /= a.a;
-	//	a.b /= a.a;
-    //}
-
     BoundingBox UnionPattern::GetLocalBoundingBox() const
     {
         BoundingBox result;
@@ -56,6 +41,16 @@ namespace astu {
         }
 
         return result;
+    }
+
+    bool UnionPattern::IsInsideTransformed(const Vector2<double> &pt) const
+    {
+        for (const auto pattern : children) {
+            if (pattern->IsInside(pt))
+                return true;
+        }
+
+        return false;
     }
 
 } // end of namespace

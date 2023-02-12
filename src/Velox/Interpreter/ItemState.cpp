@@ -80,6 +80,11 @@ namespace velox {
         throw InterpreterError("Not a list", lineNumber);
     }
 
+    size_t ItemState::NumListElements() const
+    {
+        return 0;
+    }
+
     void ItemState::AppendListElement(std::shared_ptr<Item> elem) {
         throw InterpreterError("Not a list");
     }
@@ -112,4 +117,4 @@ namespace velox {
         return false;
     }
 
-}
+} // end of namespace

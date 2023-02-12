@@ -235,6 +235,16 @@ namespace astu {
             return true;
         }
 
+
+        /**
+         * Returns a valid index from an index that can possible over oder underrun the given limit.
+         *
+         * @param i the original index
+         * @param m the maximum positive limit
+         * @return a valid index within the range [0, m)
+         */
+        static size_t GetIndex(int i, size_t m);
+
     };
 
 } // end of namespace

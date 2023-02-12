@@ -23,8 +23,7 @@ namespace velox {
     }
 
     shared_ptr<Item> InterpreterFunctionNoParameter::DoEvaluate(ScriptContext &sc, unsigned int lineNumber) {
-        return func(lineNumber);
+        return func(sc, lineNumber);
     }
 
-
-}
+} // end of namespace

@@ -7,20 +7,21 @@
 
 #pragma once
 
+// Local includes
+#include "Controller.h"
+#include "Velox/Interpreter/ItemData.h"
+
 // C++ Standard Library includes
 #include <memory>
 #include <vector>
 
-// Local includes
-#include "Controller.h"
-
 namespace astu {
 
-    class Controllable {
+    class Controllable : public velox::ItemData {
     public:
 
         /** Virtual destructor. */
-        virtual ~Controllable() {}
+        virtual ~Controllable() = default;
 
         void AttachController(std::shared_ptr<Controller> ctrl);
         void DetachController(std::shared_ptr<Controller> ctrl);

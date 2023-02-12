@@ -1,5 +1,5 @@
 # CMake file for AST-Utilities Version 0.11.5
-# Generated Sun Jan 15 19:07:55 CET 2023 with SWORD Interpreter 1.9.0
+# Generated Sun Feb 12 08:24:43 CET 2023 with SWORD Interpreter 1.9.0
 
 # Define required CMake version
 cmake_minimum_required(VERSION 3.1)
@@ -111,18 +111,23 @@ list(APPEND astu_SOURCES
 	src/Graphics/BoundingBox.cpp 
 	src/Graphics/CirclePattern.cpp 
 	src/Graphics/CompoundPattern.cpp 
+	src/Graphics/DifferencePattern.cpp 
 	src/Graphics/HdrCodec.cpp 
 	src/Graphics/HdrCodec.h 
 	src/Graphics/Image.cpp 
 	src/Graphics/ImageRenderer.cpp 
+	src/Graphics/IntersectionPattern.cpp 
 	src/Graphics/LinePattern.cpp 
+	src/Graphics/ObjExporter.cpp 
 	src/Graphics/Palette.cpp 
 	src/Graphics/Pattern.cpp 
 	src/Graphics/PatternRenderer.cpp 
 	src/Graphics/PolygonPattern.cpp 
+	src/Graphics/PolygonPattern2.cpp 
 	src/Graphics/QuadtreePattern.cpp 
 	src/Graphics/RectanglePattern.cpp 
 	src/Graphics/SimplePatternRenderer.cpp 
+	src/Graphics/TrianglePattern.cpp 
 	src/Graphics/UnicolorPattern.cpp 
 	src/Graphics/UnionPattern.cpp 
 	include/Graphics/AntiAliasingPatternRenderer.h 
@@ -132,20 +137,25 @@ list(APPEND astu_SOURCES
 	include/Graphics/Color.h 
 	include/Graphics/ColorHsv.h 
 	include/Graphics/CompoundPattern.h 
+	include/Graphics/DifferencePattern.h 
 	include/Graphics/Font.h 
 	include/Graphics/Image.h 
 	include/Graphics/ImageRenderer.h 
+	include/Graphics/IntersectionPattern.h 
 	include/Graphics/LinePattern.h 
+	include/Graphics/ObjExporter.h 
 	include/Graphics/Palette.h 
 	include/Graphics/Pattern.h 
 	include/Graphics/PatternRenderer.h 
 	include/Graphics/PolygonPattern.h 
+	include/Graphics/PolygonPattern2.h 
 	include/Graphics/QuadtreePattern.h 
 	include/Graphics/RalColors.h 
 	include/Graphics/RectanglePattern.h 
 	include/Graphics/RenderQuality.h 
 	include/Graphics/SimplePatternRenderer.h 
 	include/Graphics/Texture.h 
+	include/Graphics/TrianglePattern.h 
 	include/Graphics/UnicolorPattern.h 
 	include/Graphics/UnionPattern.h 
 	include/Graphics/VertexBuffer2.h 
@@ -219,6 +229,7 @@ list(APPEND astu_SOURCES
 	include/Service/LoggingService.h 
 	include/Service/NetworkService.h 
 	include/Service/Priority.h 
+	include/Service/ProgressSignal.h 
 	include/Service/RenderService.h 
 	include/Service/Resolution.h 
 	include/Service/Service.h 
@@ -241,6 +252,7 @@ list(APPEND astu_SOURCES
 	src/Suite2D/CameraService.cpp 
 	src/Suite2D/CBody.cpp 
 	src/Suite2D/CColliders.cpp 
+	src/Suite2D/CommandService2D.cpp 
 	src/Suite2D/Scene.cpp 
 	src/Suite2D/SceneSystem.cpp 
 	src/Suite2D/ShapeGenerator.cpp 
@@ -251,6 +263,7 @@ list(APPEND astu_SOURCES
 	include/Suite2D/CBody.h 
 	include/Suite2D/CColliders.h 
 	include/Suite2D/CollisionSignal.h 
+	include/Suite2D/CommandService2D.h 
 	include/Suite2D/CPose.h 
 	include/Suite2D/CScene.h 
 	include/Suite2D/LineRenderer.h 
@@ -289,6 +302,7 @@ list(APPEND astu_SOURCES
 
 	# Module: Velox
 	src/Velox/Extensions/AstuExtension.cpp 
+	src/Velox/Extensions/AudioExtension.cpp 
 	src/Velox/Extensions/CompiledSource.cpp 
 	src/Velox/Extensions/GraphicsExtension.cpp 
 	src/Velox/Extensions/GraphicsInstants.cpp 
@@ -296,6 +310,7 @@ list(APPEND astu_SOURCES
 	src/Velox/Extensions/InstantBuilder.cpp 
 	src/Velox/Extensions/LoggingExtension.cpp 
 	src/Velox/Extensions/ObjectTypeBuilder.cpp 
+	src/Velox/Extensions/SceneGraphExtension2D.cpp 
 	src/Velox/Interpreter/Interpreter.cpp 
 	src/Velox/Interpreter/InterpreterActualParameterList.cpp 
 	src/Velox/Interpreter/InterpreterArithmeticOperation.cpp 
@@ -345,6 +360,7 @@ list(APPEND astu_SOURCES
 	src/Velox/Interpreter/InterpreterStatementIf.cpp 
 	src/Velox/Interpreter/InterpreterStatementLoop.cpp 
 	src/Velox/Interpreter/InterpreterStatementNop.cpp 
+	src/Velox/Interpreter/InterpreterStatementSequence.cpp 
 	src/Velox/Interpreter/InterpreterStatementWhile.cpp 
 	src/Velox/Interpreter/InterpreterVector.cpp 
 	src/Velox/Interpreter/Item.cpp 
@@ -382,6 +398,7 @@ list(APPEND astu_SOURCES
 	src/Velox/Service/VeloxExecutionService.cpp 
 	src/Velox/Service/VeloxExtensionService.cpp 
 	include/Velox/Extensions/AstuExtensions.h 
+	include/Velox/Extensions/AudioExtension.h 
 	include/Velox/Extensions/CompiledSource.h 
 	include/Velox/Extensions/ExtensionConstructorNoParameter.h 
 	include/Velox/Extensions/ExtensionConstructorOneParameter.h 
@@ -390,12 +407,13 @@ list(APPEND astu_SOURCES
 	include/Velox/Extensions/ExtensionFunctionOneParameter.h 
 	include/Velox/Extensions/ExtensionFunctionThreeParameter.h 
 	include/Velox/Extensions/ExtensionFunctionTwoParameter.h 
-	include/Velox/Extensions/GraphicsExtensions.h 
+	include/Velox/Extensions/GraphicsExtension.h 
 	include/Velox/Extensions/GraphicsInstants.h 
 	include/Velox/Extensions/ImageExtension.h 
 	include/Velox/Extensions/InstantBuilder.h 
 	include/Velox/Extensions/LoggingExtension.h 
 	include/Velox/Extensions/ObjectTypeBuilder.h 
+	include/Velox/Extensions/SceneGraphExtension2D.h 
 	include/Velox/Interpreter/IMemoryManager.h 
 	include/Velox/Interpreter/Interpreter.h 
 	include/Velox/Interpreter/InterpreterActualParameterList.h 
@@ -448,6 +466,7 @@ list(APPEND astu_SOURCES
 	include/Velox/Interpreter/InterpreterStatementIf.h 
 	include/Velox/Interpreter/InterpreterStatementLoop.h 
 	include/Velox/Interpreter/InterpreterStatementNop.h 
+	include/Velox/Interpreter/InterpreterStatementSequence.h 
 	include/Velox/Interpreter/InterpreterStatementWhile.h 
 	include/Velox/Interpreter/InterpreterVector.h 
 	include/Velox/Interpreter/Item.h 
@@ -607,7 +626,7 @@ configure_file(src/AstUtilsConfig.h.in AstUtilsConfig.h)
 #################################################
 
 # Define static library target.
-add_library(astu ${astu_SOURCES} include/Service/ProgressSignal.h)
+add_library(astu ${astu_SOURCES})
 
 # Set include directories for target astu
 target_include_directories(

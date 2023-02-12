@@ -34,6 +34,7 @@ namespace astu {
         void AddCorePatterns(velox::Interpreter &interpreter) const;
         void AddCompositePatterns(velox::Interpreter &interpreter) const;
         void AddRenderers(velox::Interpreter &interpreter) const;
+        void AddMiscellaneous(velox::Interpreter &interpreter) const;
     };
 
 } // end of namespace

@@ -145,6 +145,11 @@ namespace velox {
         return state->GetListElement(idx, lineNumber);
     }
 
+    size_t Item::NumListElements() const
+    {
+        return state->NumListElements();
+    }
+
     void Item::AppendListElement(std::shared_ptr<Item> elem) {
         return state->AppendListElement(elem);
     }
@@ -153,4 +158,4 @@ namespace velox {
         return state->IsReference();
     }
 
-}
+} // end of namespace

@@ -25,4 +25,13 @@ namespace astu {
     const float MathUtils::InvPIf = static_cast<float>(InvPId);
     const float MathUtils::InvPI2f = static_cast<float>(InvPI2d);
 
+    size_t MathUtils::GetIndex(int i, size_t m)
+    {
+        int idx = i % static_cast<int>(m);
+        if (idx < 0)
+            idx += static_cast<int>(m);
+
+        return static_cast<size_t>(idx);
+    }
+
 } // end of namespace

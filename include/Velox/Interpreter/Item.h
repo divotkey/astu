@@ -384,6 +384,13 @@ namespace velox {
         std::shared_ptr<Item> GetListElement(size_t idx, unsigned int lineNumber);
 
         /**
+         * Returns the number of list elements of this item.
+         *
+         * @return the number of list elements
+         */
+        size_t NumListElements() const;
+
+        /**
          * Append a list element to this item as last element.
          *
          * @param elem          the list element to append

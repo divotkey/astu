@@ -9,6 +9,7 @@
 
 // Local includes
 #include "Service.h"
+#include "Graphics/Image.h"
 
 // C++ Standard Library includes
 #include <string>
@@ -17,11 +18,11 @@
 
 namespace astu {
 
-    class BlackboardData {
-    private:
-        std::mutex dataMutex;
-        friend class BlackboardServiceTs;
-    };
+    //class BlackboardData {
+    //private:
+    //    std::mutex dataMutex;
+    //    friend class BlackboardServiceTs;
+    //};
 
     /**
      * A thread safe implementation of the blackboard communication concept.
@@ -33,18 +34,27 @@ namespace astu {
 
         BlackboardServiceTs();
 
-        bool HasStringTs(const std::string &key) const;
-        void SetStringTs(const std::string &key, const std::string &value);
-        const std::string GetStringTs(const std::string &key) const;
+        bool HasString(const std::string &key) const;
+        void SetString(const std::string &key, const std::string &value);
+        const std::string GetString(const std::string &key) const;
+        void ClearStrings();
+
+        bool HasImage(const std::string &key) const;
+        void SetImage(const std::string &key, std::shared_ptr<Image>);
+        std::shared_ptr<Image> GetImage(const std::string &key) const;
+        void ClearImages();
+
+    protected:
+        void OnStartup() override;
+        void OnShutdown() override;
 
     private:
 
         std::map<std::string, std::string> stringMap;
         mutable std::mutex stringMapMutex;
 
-    protected:
-        void OnStartup() override;
-        void OnShutdown() override;
+        std::map<std::string, std::shared_ptr<Image>> imageMap;
+        mutable std::mutex imageMapMutex;
     };
 
 } // end of namespace

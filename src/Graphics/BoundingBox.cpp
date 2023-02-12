@@ -37,7 +37,7 @@ namespace astu {
 
     void BoundingBox::Reset()
     {
-        center.SetZero();
+        center.Set(std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN());
         SetWidth(0);
         SetHeight(0);
         infinite = false;
@@ -103,19 +103,24 @@ namespace astu {
             return;
         }
 
-        double left = std::min(GetLeftBound(), p.x);
-        double right = std::max(GetRightBound(), p.x);
-        double top = std::max(GetUpperBound(), p.y);
-        double bottom = std::min(GetLowerBound(), p.y);
+        if (IsEmpty()) {
+            center = p;
+        } else {
+            double left = std::min(GetLeftBound(), p.x);
+            double right = std::max(GetRightBound(), p.x);
+            double top = std::max(GetUpperBound(), p.y);
+            double bottom = std::min(GetLowerBound(), p.y);
 
-        SetWidth(right - left);
-        SetHeight(top - bottom);
-        center.Set(left + hRadius, bottom + vRadius);
+            SetWidth(right - left);
+            SetHeight(top - bottom);
+            center.Set(left + hRadius, bottom + vRadius);
+        }
+
     }
 
     void BoundingBox::Transform(const Matrix3d & tx)
     {
-        if (IsInfinite()) {
+        if (IsInfinite() || IsEmpty()) {
             return;
         }
 
@@ -134,7 +139,11 @@ namespace astu {
 
     void BoundingBox::Merge(const BoundingBox & o)
     {
-        if (IsInfinite() || o.IsInfinite()) {
+        if (IsInfinite() || o.IsEmpty())
+            return;
+
+        // XXX This is an optimization hack, consider changing this.
+        if (o.IsInfinite()) {
             return;
         }
 
@@ -168,6 +177,11 @@ namespace astu {
         }
 
         return true;
+    }
+
+    bool BoundingBox::IsEmpty() const
+    {
+        return center.IsNaN();
     }
 
 }

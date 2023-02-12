@@ -429,6 +429,15 @@ namespace velox {
                         break;
 
                     case ItemType::Vector2:
+                        switch (op) {
+                            case RelationalOperator::EQUAL:
+                                return Item::CreateBoolean(
+                                        state->GetVector2Value() == item->state->GetVector2Value());
+
+                            case RelationalOperator::NOT_EQUAL:
+                                return Item::CreateBoolean(
+                                        state->GetVector2Value() != item->state->GetVector2Value());
+                        }
                         break;
 
                     case ItemType::Vector3:

@@ -5,13 +5,17 @@
  * Copyright (c) 2020-2023 Roman Divotkey. All rights reserved.
  */
 
+// Local includes
+#include "Velox/Interpreter/ItemData.h"
+
+// C++ Standard Library includes
 #include <string>
 #include <vector>
 #include <memory>
 
 namespace astu {
 
-    class AudioSamples {
+    class AudioSamples : public velox::ItemData {
     public:
 
         /**

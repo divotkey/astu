@@ -101,7 +101,7 @@ namespace velox {
                 }));
 
         AddGlobalFunction("rnd", make_shared<InterpreterFunctionNoParameter>(
-                [](unsigned int lineNumber) -> std::shared_ptr<Item> {
+                [](ScriptContext &sc, unsigned int lineNumber) -> std::shared_ptr<Item> {
                     return Item::CreateReal(Random::GetInstance().NextDouble());
                 }));
 

@@ -76,7 +76,31 @@ namespace astu {
         return GetColorTransformed(transform.TransformPoint(p), outColor);
     }
 
+    bool Pattern::IsInside(const Vector2<double> &p) const
+    {
+        return IsInsideTransformed(transform.TransformPoint(p));
+    }
+
+    //bool Pattern::IsInside(const BoundingBox &bbox) const
+    //{
+    //    BoundingBox bboxT(bbox);
+    //    bboxT.Transform(transform);
+    //
+    //    return IsInsideTransformed(bboxT);
+    //}
+
     BoundingBox Pattern::GetBoundingBox() const
+    {
+        UpdateBoundingBox();
+        return boundingBox;
+    }
+
+    void Pattern::Prepare()
+    {
+        UpdateBoundingBox();
+    }
+
+    void Pattern::UpdateBoundingBox() const
     {
         if (dirty) {
             boundingBox = GetLocalBoundingBox();
@@ -85,7 +109,6 @@ namespace astu {
             boundingBox.Transform(invTx);
             dirty = false;
         }
-        return boundingBox;
     }
 
 } // end of namespace

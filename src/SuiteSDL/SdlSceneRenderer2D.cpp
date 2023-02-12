@@ -131,4 +131,13 @@ namespace astu {
     //
     //}
 
+    /////////////////////////////////////////////////
+    /////// SdlVertexBuffer2D
+    /////////////////////////////////////////////////
+
+    size_t SdlVertexBuffer2D::NumVertices() const
+    {
+        return vertices.size();
+    }
+
 } // end of namespace

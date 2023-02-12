@@ -20,9 +20,12 @@
 #include "Velox/Extensions/ExtensionConstructorTwoParameter.h"
 #include "Util/StringUtils.h"
 #include "Util/Timer.h"
+#include "Graphics/ObjExporter.h"
+
 
 // C++ Standard Library includes
 #include <memory>
+#include <fstream>
 
 using namespace velox;
 using namespace std;
@@ -35,6 +38,19 @@ namespace astu {
 
     // Special cases requires dedicated classes instead of using the generic constructor and function templates.
     // These classes will be placed here.
+
+
+    class TextFileProxy : public velox::ItemData {
+    public:
+
+        TextFileProxy(const std::string& filename)
+            : ofs(filename.c_str(), std::ios::out)
+        {
+
+        }
+
+        std::ofstream ofs;
+    };
 
     /////////////////////////////////////////////////
     /////// Utility functions
@@ -101,6 +117,35 @@ namespace astu {
                         }
                 ))
                 .Build(interpreter);
+
+        builder
+            .Reset()
+            .TypeName("TextOutputFile")
+            .Constructor(ExtensionConstructorOneParameter<TextFileProxy>::CreateItem(
+                    [](ScriptContext &sc, Item &param, unsigned int lineNumber) {
+                        return make_shared<TextFileProxy>(param.GetStringValue(sc));
+                    }
+            ))
+            .AddFunction("Write", ExtensionFunctionOneParameter<TextFileProxy>::CreateItem(
+                    [](ScriptContext &sc, TextFileProxy &proxy, Item &param, unsigned int lineNumber) {
+                        proxy.ofs << param.GetStringValue(sc);
+                        return Item::CreateUndefined();
+                    }
+            ))
+            .AddFunction("WriteLine", ExtensionFunctionOneParameter<TextFileProxy>::CreateItem(
+                    [](ScriptContext &sc, TextFileProxy &proxy, Item &param, unsigned int lineNumber) {
+                        proxy.ofs << param.GetStringValue(sc) << std::endl;
+
+                        return Item::CreateUndefined();
+                    }
+            ))
+            .AddFunction("Close", ExtensionFunctionNoParameter<TextFileProxy>::CreateItem(
+                    [](ScriptContext &sc, TextFileProxy &proxy, unsigned int lineNumber) {
+                        proxy.ofs.close();
+                        return Item::CreateUndefined();
+                    }
+            ))
+            .Build(interpreter);
     }
 
 } // end of namespace

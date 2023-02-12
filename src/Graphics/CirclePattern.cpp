@@ -30,14 +30,15 @@ namespace astu {
 
     bool CirclePattern::GetColorTransformed(const Vector2<double> &pt, Color4d &outColor) const
     {
-        if (pt.LengthSquared() > radiusSquared) {
-            return false;
-        }
-
-        if (pattern) {
+        if (pattern && IsInsideTransformed(pt))
             return pattern->GetColor(pt, outColor);
-        }
+
         return false;
+    }
+
+    bool CirclePattern::IsInsideTransformed(const Vector2<double> &pt) const
+    {
+        return pt.LengthSquared() <= radiusSquared;
     }
 
     BoundingBox CirclePattern::GetLocalBoundingBox() const

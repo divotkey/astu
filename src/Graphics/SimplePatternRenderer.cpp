@@ -28,7 +28,6 @@ namespace astu {
 
         Vector2<double> p(0, startY);
 
-        cout << " 0 %";
         for (int j = 0; j < result.GetHeight(); ++j) {
             p.x = startX;
             for (int i = 0; i < result.GetWidth(); ++i) {
@@ -41,9 +40,7 @@ namespace astu {
             }
             p.y += dy;
 
-            std::cout << "\b" << "\b" << "\b" << "\b";
-            std::cout << std::setw(2) << static_cast<int>((static_cast<double>(j) / result.GetHeight()) * 100) << " %";
-            std::cout.flush();
+            ReportProgress(static_cast<double>(j) / result.GetHeight());
         }
     }
 

@@ -39,7 +39,7 @@ namespace astu {
         }
 
         /**
-         * Returns the number of queued dommands.
+         * Returns the number of queued commands.
          * 
          * @return the number of pendingCommands in the queue
          */

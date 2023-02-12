@@ -30,6 +30,7 @@
 #include "Suite2D/CColliders.h"
 #include "Suite2D/PhysicsSystem.h"
 #include "Suite2D/CollisionSignal.h"
+#include "Suite2D/CommandService2D.h"
 
 namespace astu2d = astu::suite2d;
 

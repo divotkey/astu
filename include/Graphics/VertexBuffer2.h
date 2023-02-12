@@ -9,6 +9,7 @@
 
 // Local includes
 #include "Math/Vector2.h"
+#include "Velox/Interpreter/ItemData.h"
 
 // C++ Standard Library includes
 #include <memory>
@@ -23,11 +24,18 @@ namespace astu {
      * @ingroup gfx_group
      */
     template <typename T>
-    class VertexBuffer2 {
+    class VertexBuffer2 : public velox::ItemData {
     public:
 
         /** Virtual destructor. */
         virtual ~VertexBuffer2() {}
+
+        /**
+         * Returns the number of vertices contained in this buffer.
+         *
+         * @return number of vertices
+         */
+        virtual size_t NumVertices() const = 0;
     };
     
     /**
@@ -51,7 +59,7 @@ namespace astu {
      * @ingroup gfx_group
      */
     template <typename T>
-    class VertexBufferBuilder2 {
+    class VertexBufferBuilder2 : public velox::ItemData {
     public:
 
         /** Virtual destructor. */

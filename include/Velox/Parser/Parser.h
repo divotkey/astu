@@ -52,6 +52,7 @@ namespace velox {
 
         std::shared_ptr<InterpreterStatementBlock> ParseStatementBlock(ISource &source, bool loopBody);
         std::shared_ptr<InterpreterStatement> ParseStatementOrBlock(ISource &source, bool loopBody);
+        std::shared_ptr<InterpreterStatement> ParseStatementSequence(ISource &source);
 
         std::shared_ptr<InterpreterStatement> ParseStatement(ISource &source);
         std::shared_ptr<InterpreterStatement> ParseIncludeStatement(ISource &source);

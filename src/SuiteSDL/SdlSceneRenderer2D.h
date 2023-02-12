@@ -23,7 +23,11 @@ namespace astu {
 
     class SdlVertexBuffer2D : public VertexBuffer2f {
     public:
+        /** The vertices of this buffer. */
         std::vector<Vector2f> vertices;
+
+        // Inherited via VertexBuffer2f
+        size_t NumVertices() const override;
     };
 
     class SdlSceneRenderer2D : public suite2d::SceneRenderer2D {

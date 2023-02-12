@@ -62,10 +62,10 @@ namespace astu {
 
         /**
          * Returns the number of vertices of this polygon.
-         * 
+         *
          * @return the number of vertices
          */
-        size_t NumVertices() const {
+        size_t NumVertices() const override {
             return vertices.size();
         }
 
@@ -184,7 +184,7 @@ namespace astu {
         /**
          * Transforms this polygon by the specified transformation.
          * 
-         * @param tx    the transfromation
+         * @param tx    the transformation
          * @return reference to this polygon for method chaining
          */
         Polygon& Transform(const Transform2<T>& tx) {

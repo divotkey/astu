@@ -42,6 +42,14 @@ namespace astu {
 
     bool RectanglePattern::GetColorTransformed(const Vector2<double> &pt, Color4d & outColor) const
     {
+        if (pattern && IsInsideTransformed(pt))
+            return pattern->GetColor(pt, outColor);
+
+        return false;
+    }
+
+    bool RectanglePattern::IsInsideTransformed(const Vector2<double> &pt) const
+    {
         if (pt.x > hRadius || pt.x < -hRadius) {
             return false;
         }
@@ -50,14 +58,10 @@ namespace astu {
             return false;
         }
 
-        if (pattern) {
-            return pattern->GetColor(pt, outColor);
-        }
-        
-        return false;
+        return true;
     }
 
-    BoundingBox RectanglePattern::GetLocalBoundingBox() const 
+    BoundingBox RectanglePattern::GetLocalBoundingBox() const
     {
         return BoundingBox(width, height);
     }

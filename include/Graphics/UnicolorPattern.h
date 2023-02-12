@@ -11,7 +11,6 @@
 #include "Graphics/Pattern.h"
 #include "Graphics/WebColors.h"
 
-
 // C++ Standard Library includes
 #include <memory>
 #include <vector>
@@ -23,6 +22,14 @@ namespace astu {
      */
     class UnicolorPattern : public Pattern {
     public:
+
+        /**
+         * Creates a new instance of an unicolor pattern with a random color.
+         *
+         * @param alpha the alpha value of the random color
+         * @return the newly created unicolor pattern
+         */
+        static std::shared_ptr<UnicolorPattern> CreateRandomColored(double alpha = 1.0);
 
         /**
          * Constructor.
@@ -57,6 +64,7 @@ namespace astu {
         // Inherited via Pattern
         virtual bool GetColorTransformed(const Vector2<double> &pt, Color4d & c) const override;
         virtual BoundingBox GetLocalBoundingBox() const override;
+        bool IsInsideTransformed(const Vector2<double> &pt) const override;
 
     private:
         /** The one and only color of this pattern. */

@@ -25,12 +25,21 @@ namespace astu {
         /**
          * Virtual destructor.
          */
-        virtual ~CompoundPattern() {}
+        virtual ~CompoundPattern() = default;
 
         /**
          * Adds the specified pattern to this compound.
+         *
+         * @param child the pattern to add
          */
         void AddPattern(std::shared_ptr<Pattern> child);
+
+        /**
+         * Removes the specified pattern from this compound.
+         *
+         * @param child the child pattern to remove
+         */
+        void RemovePattern(std::shared_ptr<Pattern> child);
 
         /**
          * Removes all child patterns from this compound.
@@ -50,9 +59,11 @@ namespace astu {
         }
 
     protected:
+        /** The child patterns of this compound pattern. */
         std::vector<std::shared_ptr<Pattern>> children;
 
         virtual void OnPatternAdded(Pattern & pattern) {}
+        virtual void OnPatternRemoved(Pattern & pattern) {}
         virtual void OnClear() {}
     };
 
