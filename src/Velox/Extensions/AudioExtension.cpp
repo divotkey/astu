@@ -60,7 +60,7 @@ namespace astu {
 
         builder
                 .Reset()
-                .TypeName("ObjExporter")
+                .TypeName(AUDIO_SAMPLES_TYPE)
                 .Constructor(ExtensionConstructorTwoParameter<AudioSamples>::CreateItem(
                         [](ScriptContext &sc, Item &param1, Item &param2, unsigned int lineNumber) {
                             return make_shared<AudioSamples>(param1.GetIntegerValue(lineNumber), param2.GetIntegerValue(lineNumber));
