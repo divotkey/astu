@@ -172,7 +172,7 @@ namespace astu {
         AddWebColors(interpreter);
         AddRalColors(interpreter);
         AddMiscellaneous(interpreter);
-        //AddPatternInstants(interpreter);
+        AddPatternInstants(interpreter);
     }
 
     void GraphicsExtension::AddRenderers(Interpreter &interpreter) const
